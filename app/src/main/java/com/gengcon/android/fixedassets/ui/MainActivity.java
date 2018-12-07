@@ -1,0 +1,361 @@
+package com.gengcon.android.fixedassets.ui;
+
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.baidu.mobstat.StatService;
+import com.example.iscandemo.ScannerInerface;
+import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.base.ApiCallBack;
+import com.gengcon.android.fixedassets.base.BaseActivity;
+import com.gengcon.android.fixedassets.bean.result.Bean;
+import com.gengcon.android.fixedassets.bean.result.Home;
+import com.gengcon.android.fixedassets.bean.result.ResultRole;
+import com.gengcon.android.fixedassets.htttp.URL;
+import com.gengcon.android.fixedassets.model.AssetDetailModel;
+import com.gengcon.android.fixedassets.presenter.HomePresenter;
+import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.RFIDUtils;
+import com.gengcon.android.fixedassets.util.RolePowerManager;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
+import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
+import com.gengcon.android.fixedassets.util.ToastUtils;
+import com.gengcon.android.fixedassets.view.HomeView;
+import com.tbruyelle.rxpermissions2.Permission;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+
+public class MainActivity extends BaseActivity implements View.OnClickListener, HomeView {
+
+    private TextView mTvSize;
+    private TextView inUseSize;
+    private TextView idleSize;
+    private HomePresenter mPresenter;
+    private boolean mIsBackPressed;
+    private ScannerInerface mControll;
+    private List<String> api_route;
+    private List<Boolean> checkApi;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initView();
+        addApi_route();
+
+        mControll = new ScannerInerface(this);
+        mControll.setOutputMode(1);
+
+        mPresenter = new HomePresenter();
+        mPresenter.attachView(this);
+        // 获取测试设备ID
+        String testDeviceId = StatService.getTestDeviceId(this);
+        // 日志输出
+        android.util.Log.d("BaiduMobStat", "Test DeviceId : " + testDeviceId);
+    }
+
+    @Override
+    protected void initView() {
+        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.app_name);
+        ((ImageView) findViewById(R.id.asset_management).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_asset_management);
+        ((TextView) findViewById(R.id.asset_management).findViewById(R.id.item_main_text)).setText(R.string.asset_management);
+        ((ImageView) findViewById(R.id.asset_storage).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_asset_storage);
+        ((TextView) findViewById(R.id.asset_storage).findViewById(R.id.item_main_text)).setText(R.string.asset_storage);
+        ((ImageView) findViewById(R.id.inventory_management).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_inventory_management);
+        ((TextView) findViewById(R.id.inventory_management).findViewById(R.id.item_main_text)).setText(R.string.inventory_management);
+        ((ImageView) findViewById(R.id.processing_record).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_processing_record);
+        ((TextView) findViewById(R.id.processing_record).findViewById(R.id.item_main_text)).setText(R.string.processing_record);
+        ((ImageView) findViewById(R.id.analysis_report).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_analysis_report);
+        ((TextView) findViewById(R.id.analysis_report).findViewById(R.id.item_main_text)).setText(R.string.analysis_report);
+        ((ImageView) findViewById(R.id.device_management).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_device_management);
+        ((TextView) findViewById(R.id.device_management).findViewById(R.id.item_main_text)).setText(R.string.setting_management);
+        ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_user);
+        ((ImageView) findViewById(R.id.iv_title_right)).setImageResource(R.drawable.ic_qr);
+
+        mTvSize = findViewById(R.id.tv_size);
+        inUseSize = findViewById(R.id.asset_inUse);
+        idleSize = findViewById(R.id.asset_idle);
+
+        findViewById(R.id.iv_title_left).setOnClickListener(this);
+        findViewById(R.id.iv_title_right).setOnClickListener(this);
+        findViewById(R.id.asset_management).setOnClickListener(this);
+        findViewById(R.id.asset_storage).setOnClickListener(this);
+        findViewById(R.id.inventory_management).setOnClickListener(this);
+        findViewById(R.id.processing_record).setOnClickListener(this);
+        findViewById(R.id.analysis_report).setOnClickListener(this);
+        findViewById(R.id.device_management).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mControll.open();
+        registerReceiver(mScanReceiver, new IntentFilter("android.intent.action.SCANRESULT"));
+        if (TextUtils.isEmpty((CharSequence) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.TOKEN, ""))) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.checkApiRoute(api_route);
+        mPresenter.getRoute();
+        if (!TextUtils.isEmpty((CharSequence) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.TOKEN, ""))) {
+            mPresenter.getHome();
+//            mRolePresenter.getRole("home_page");
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mIsBackPressed) {
+            mIsBackPressed = true;
+            ToastUtils.toastMessage(this, R.string.click_exit_app);
+        } else {
+            super.onBackPressed();
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mIsBackPressed = false;
+            }
+        }, 2000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mControll.close();
+        RFIDUtils.disconnect((GApplication) getApplication());
+        mPresenter.detachView();
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent webIntent = new Intent(MainActivity.this, WebActivity.class);
+        switch (view.getId()) {
+            case R.id.iv_title_left:
+                webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.USER);
+                webIntent.putExtra("webName", "用户中心");
+                webIntent.putExtra("webFrom", "MainActivity");
+                break;
+            case R.id.iv_title_right:
+                requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
+                return;
+            case R.id.inventory_management:
+//                if (checkApi != null) {
+//                    if (checkApi.get(2)) {
+                Intent intent = new Intent(MainActivity.this, InventoryListActivity.class);
+                startActivity(intent);
+//                    } else {
+//                        ToastUtils.toastMessage(this, "当前您没有权限");
+//                    }
+//                }
+                return;
+            case R.id.asset_management:
+                if (checkApi != null) {
+                    if (checkApi.get(0)) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
+                        webIntent.putExtra("webName", "资产列表");
+                        webIntent.putExtra("webTitle", "选择");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
+                }
+                break;
+            case R.id.asset_storage:
+                if (checkApi != null) {
+                    if (checkApi.get(1)) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
+                        webIntent.putExtra("webName", "资产入库");
+                        webIntent.putExtra("webTitle", "保存");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
+                }
+                break;
+            case R.id.processing_record:
+                if (checkApi.get(3)) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.RECODE);
+                    webIntent.putExtra("webName", "处理记录");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
+                break;
+            case R.id.analysis_report:
+                if (checkApi.get(4)) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ANALYSE);
+                    webIntent.putExtra("webName", "分析报表");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
+                break;
+            case R.id.device_management:
+                if (checkApi.get(5) || checkApi.get(6)) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.DEVICE_MANAGE);
+                    webIntent.putExtra("webName", "设置管理");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
+                break;
+        }
+        startActivity(webIntent);
+    }
+
+    private void addApi_route() {
+        api_route = new ArrayList<>();
+        api_route.add("asset/list");
+        api_route.add("asset/add");
+        api_route.add("inventory/list");
+        api_route.add("doc/list");
+        api_route.add("reports/status");
+        api_route.add("org/getTreeList");
+        api_route.add("emp/list");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constant.REQ_QR_CODE && resultCode == Constant.RESULT_QR_CODE) {
+            if (TextUtils.isEmpty(data.getStringExtra("resultString"))) {
+                return;
+            }
+            final String assetId = data.getStringExtra("resultString");
+            isAssetId(assetId);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mScanReceiver);
+    }
+
+    private Consumer<Permission> mCamearConsumer = new Consumer<Permission>() {
+        @Override
+        public void accept(Permission permission) throws Exception {
+            if (permission.granted) {
+                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                intent.putExtra(Constant.INTENT_EXTRA_KEY_SCAN_MODE, ScanActivity.QR_SCAN_LOGIN_MODE);
+                startActivityForResult(intent, Constant.REQ_QR_CODE);
+            } else if (permission.shouldShowRequestPermissionRationale) {
+                ToastUtils.toastMessage(MainActivity.this, R.string.permission_camera_tips);
+                requestPermission(this, Manifest.permission.CAMERA);
+            } else {
+                ToastUtils.toastMessage(MainActivity.this, R.string.permission_camera_tips);
+            }
+        }
+    };
+
+    private void isAssetId(final String assetId) {
+        final AssetDetailModel mode = new AssetDetailModel();
+        subscribe(mode.assetDetail(assetId),
+                new ApiCallBack<Bean<Object>>() {
+                    @Override
+                    public void onSuccess(Bean<Object> modelBean) {
+                        if (modelBean.getCode().equals("CODE_200")) {
+                            if (modelBean.getData() != null) {
+                                Intent webIntent = new Intent(MainActivity.this, WebActivity.class);
+                                webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.SCANDETAIL + "?id=" + assetId);
+                                webIntent.putExtra("webName", "资产详情");
+                                startActivity(webIntent);
+                            } else {
+                                ToastUtils.toastMessage(MainActivity.this, "未找到该资产");
+                            }
+                        } else {
+                            showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int status, String errorMsg) {
+                        showErrorMsg(status, errorMsg);
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+
+                    @Override
+                    public void onStart() {
+
+                    }
+                });
+    }
+
+    BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String scanResult = intent.getStringExtra("value");
+            if (!TextUtils.isEmpty(scanResult)) {
+                addAssetId(scanResult);
+            }
+        }
+    };
+
+    private void addAssetId(String id) {
+        if (id.startsWith("\\000026")) {
+            id = id.substring(7);
+        }
+        if (StringIsDigitUtil.isLetterDigit(id)) {
+            if (id.length() == 26) {
+                isAssetId(id);
+            } else {
+                ToastUtils.toastMessage(this, "非固定资产二维码");
+            }
+        } else {
+            ToastUtils.toastMessage(this, "非固定资产二维码");
+        }
+    }
+
+    private void subscribe(Observable observable, Observer subscriber) {
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(subscriber);
+    }
+
+    @Override
+    public void showHome(Home resultHome) {
+        mTvSize.setText(resultHome.getTotal().getValue() + "");
+        inUseSize.setText(resultHome.getUseing().getValue() + "");
+        idleSize.setText(resultHome.getFree().getValue() + "");
+    }
+
+    @Override
+    public void checkApiRoute(List<Boolean> data) {
+        checkApi = new ArrayList<>();
+        checkApi.addAll(data);
+        Log.e("MainActivity", "checkApiRoute: " + checkApi);
+    }
+
+    @Override
+    public void showApiRoute(ResultRole apiRoute) {
+        RolePowerManager.getInstance().setApi_route(apiRoute.getApi_route());
+    }
+}

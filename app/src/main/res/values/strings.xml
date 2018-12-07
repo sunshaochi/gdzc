@@ -1,0 +1,135 @@
+<resources>
+    <string name="app_name">精臣固定资产</string>
+
+    <!-- main activity -->
+    <string name="asset_management">资产管理</string>
+    <string name="asset_storage">资产入库</string>
+    <string name="inventory_management">盘点管理</string>
+    <string name="processing_record">处理记录</string>
+    <string name="analysis_report">分析报表</string>
+    <string name="setting_management">设置管理</string>
+
+    <!-- inventory_management -->
+    <string name="inventory_list">盘点单</string>
+    <string name="asset_list">资产列表</string>
+    <string name="new_create">新建</string>
+    <string name="new_inventory_list">新建盘点单</string>
+    <string name="edit_inventory_list">编辑盘点单</string>
+    <string name="inventory_name">盘点单名称</string>
+    <string name="input_inventory_list_name">输入盘点单名字</string>
+    <string name="remarks">备注</string>
+    <string name="input_remarks">输入备注</string>
+    <string name="distribution_user">分配用户</string>
+    <string name="select_user">选择用户</string>
+    <string name="add_asset">添加资产</string>
+    <string name="no_data_tips">咦，还没有数据呢～</string>
+    <string name="no_net_tips">咦，网络跟丢了～</string>
+    <string name="no_search_tips">没有找到相关数据～</string>
+
+    <string name="inventory_not">未盘</string>
+    <string name="inventory_error">异常</string>
+    <string name="inventory_normal">正常</string>
+    <string name="inventory_details">盘点单详情</string>
+    <string name="input_asset_search">输入资产名称查询</string>
+    <string name="pending_inventory_assets">待盘点资产</string>
+    <string name="view_details">查看详情</string>
+    <string name="single_inventory">单条盘点</string>
+    <string name="start_inventory">开始盘点</string>
+    <string name="inventory_preview">盘点预览</string>
+    <string name="inventory_result">盘点结果</string>
+    <string name="create_inventory">新建盘点单</string>
+    <string name="rfid_connect">连接RFID</string>
+    <string name="open_rfid">请打开RFID...</string>
+    <string name="back_list">返回列表</string>
+    <string name="inventorying">盘点中...</string>
+    <string name="normal">正常</string>
+    <string name="inventory_earn">盘盈</string>
+    <string name="inventory_loss">盘亏</string>
+    <string name="create_time">创建时间</string>
+    <string name="create_user">创建人</string>
+    <string name="do_user">执行人</string>
+    <string name="actual_check_size">实际检测到的数量</string>
+    <string name="actual_inventory_size">实际盘点到资产共</string>
+    <string name="inventoty_list_save_successed">盘点单任务保存成功!</string>
+    <string name="if_using_ordinary_labels">如果您使用的是普通标签</string>
+    <string name="place_click_single_inventory">请点击【单条盘点】</string>
+    <string name="continue_inventory">继续盘点</string>
+    <string name="plase_inventory">请先开始盘点</string>
+    <string name="already_inventory">已盘点</string>
+    <string name="infra_red_scan_tips">扫描到一件资产</string>
+    <string name="inventory_name_notnull">盘点单名称不能为空</string>
+    <string name="inventory_name_length">盘点单名称不能超过40位</string>
+    <string name="user_not_null">用户不能为空</string>
+    <string name="asset_not_null">资产不能为空</string>
+    <string name="can_upload">确定要上传吗？</string>
+    <string name="ont_antenna">一天线</string>
+    <string name="total">共</string>
+
+    <string name="asset_status_idel">闲置</string>
+    <string name="asset_status_perair">维修</string>
+    <string name="asset_status_scrap">废弃</string>
+    <string name="asset_status_in_uer">在用</string>
+    <string name="inventory_delete">是否确认删除该条盘点单?</string>
+
+    <string name="remote_login_title">精臣固定资产</string>
+    <string name="remote_tips1">精臣固定资产网页版登录确认</string>
+    <string name="remote_tips2">*使用您的账号登录该应用</string>
+    <string name="remote_tips3">请确认被扫描的二维码</string>
+    <string name="permission_denied_tips">您没有使用该功能的权限</string>
+    <string name="permission_camera_tips">没有摄像头权限将无法进行下一步</string>
+    <string name="permission_write_tips">没有写文件权限将无法进行下一步</string>
+    <string name="permission_bluetooth_tips">没有蓝牙扫描权限将无法发现设备</string>
+    <string name="permission_write_external_tips">没有读写权限将无法进行下一步</string>
+
+    <string name="my_device_type">我的机型</string>
+    <string name="confirm_login">确认登录</string>
+
+    <string name="qr_lable1">将取景框对准二维码</string>
+    <string name="qr_lable2">即可进行扫描</string>
+
+    <string name="bluetooth_connect">蓝牙连接</string>
+    <string name="bluetooth">蓝牙</string>
+
+    <string name="default_name">B11&#8211;70402470</string>
+    <string name="default_status">未配对</string>
+    <string name="print_not_connect">已配对未连接</string>
+    <string name="print_connect">打印机已连接</string>
+    <string name="print_connect_fail">打印机连接失败，请检查打印机</string>
+    <string name="current_connect_device">当前连接设备</string>
+    <string name="click_exit_app">再次点击返回退出程序</string>
+
+    <string name="loading">正在加载中...</string>
+    <string name="select">选择</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="save">保存</string>
+    <string name="complete">完成</string>
+    <string name="edit">编辑</string>
+    <string name="all_select">全选</string>
+    <string name="del">删除</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开</string>
+    <string name="tips">提示</string>
+    <string name="preview">预览</string>
+    <string name="check_preview">查看预览</string>
+    <string name="upload">上传</string>
+    <string name="address">地址</string>
+    <string name="antenna">天线</string>
+    <string name="fail">失败</string>
+    <string name="success">成功</string>
+    <string name="pause">暂停</string>
+    <string name="continu">继续</string>
+    <string name="among">其中</string>
+    <string name="invalid">无效</string>
+    <string name="search">搜索</string>
+    <string name="camera">拍照</string>
+    <string name="checkImage">预览</string>
+    <string name="already_chosen">已选择</string>
+    <string name="item">条</string>
+    <string name="update">更新</string>
+    <string name="version_update">版本升级</string>
+
+
+    <!-- galleryfinal -->
+    <string name="photo_preview">图片预览</string>
+</resources>

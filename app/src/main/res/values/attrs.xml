@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CircleProgressView">
+        <attr name="stripeWidth" format="dimension"></attr>
+        <attr name="smallColor" format="color"></attr>
+        <attr name="percent" format="integer"></attr>
+        <attr name="bigColor" format="color"></attr>
+        <attr name="centerTextSize" format="dimension"></attr>
+        <attr name="radius" format="dimension"></attr>
+    </declare-styleable>
+
+</resources>

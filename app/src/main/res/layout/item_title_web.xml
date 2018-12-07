@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/blue"
+    android:layout_height="48dp">
+
+    <ImageView
+        android:id="@+id/iv_title_left"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="19dp"
+        android:paddingRight="15dp"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tv_title_text"
+        android:textSize="17sp"
+        android:layout_centerInParent="true"
+        android:text="资产列表"
+        android:textColor="@color/white"
+        android:paddingBottom="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_title_right"
+        android:layout_alignParentRight="true"
+        android:paddingRight="19dp"
+        android:paddingLeft="15dp"
+        android:layout_centerVertical="true"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/iv_title_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" />
+
+</RelativeLayout>
