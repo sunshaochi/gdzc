@@ -362,7 +362,6 @@ public class WebActivity extends BasePullRefreshActivity {
 
                     @Override
                     public void onSubscribe(Disposable d) {
-                        showLoading();
                         disposable = d;
                     }
 
@@ -384,7 +383,6 @@ public class WebActivity extends BasePullRefreshActivity {
 
                     @Override
                     public void onComplete() {
-                        hideLoading();
                         disposable.dispose();
                     }
                 });

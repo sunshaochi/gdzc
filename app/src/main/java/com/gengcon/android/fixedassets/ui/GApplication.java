@@ -14,6 +14,7 @@ import com.gengcon.android.fixedassets.loader.GlidePauseOnScrollListener;
 import com.gengcon.android.fixedassets.util.EmshConstant;
 import com.gengcon.android.fixedassets.util.FontUtils;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
+
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -50,10 +51,10 @@ public class GApplication extends Application {
         FunctionConfig functionConfig = new FunctionConfig.Builder()
                 .setEnableCamera(false)
                 .setEnableEdit(true)
-                .setEnableCrop(false)
+                .setEnableCrop(true)
                 .setEnableRotate(false)
                 .setCropSquare(true)
-                .setForceCrop(false)
+                .setForceCrop(true)
                 .setEnablePreview(false)
                 .build();
         CoreConfig coreConfig = new CoreConfig.Builder(this, new GlideImageLoader(), theme)
