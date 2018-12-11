@@ -21,6 +21,7 @@ public class Constant {
     public static final String INTENT_EXTRA_KEY_ASSETS = "assets";
     public static final String INTENT_EXTRA_KEY_ASSET_IDS = "asset_ids";
     public static final String INTENT_EXTRA_KEY_ASSER_ID = "asset_id";
+    public static final String INTENT_IS_HISTORY_ASSER_ID = "isHistory";
     public static final String INTENT_EXTRA_KEY_URL = "url";
 
 }

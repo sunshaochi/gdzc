@@ -263,6 +263,8 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BEDETAIL);
         intent.putExtra("webName", "资产详情");
         intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID, mResultInventoryList.get(position).getAsset_id());
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
+        intent.putExtra(Constant.INTENT_IS_HISTORY_ASSER_ID, "0");
         startActivity(intent);
     }
 

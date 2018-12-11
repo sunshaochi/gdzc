@@ -178,6 +178,8 @@ public class PreviewActivity extends BasePullRefreshActivity implements View.OnC
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BEDETAIL);
         intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID, mAdapter.getAssets().get(position).getAsset_id());
+        intent.putExtra(Constant.INTENT_IS_HISTORY_ASSER_ID, "0");
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
         startActivity(intent);
     }
 

@@ -252,6 +252,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
             Intent intent = new Intent(this, WebActivity.class);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BEDETAIL);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID, mAssets.get(position).getAsset_id());
+            intent.putExtra(Constant.INTENT_IS_HISTORY_ASSER_ID, "0");
             intent.putExtra("webName", "资产详情");
             startActivity(intent);
         } else {
@@ -307,7 +308,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
         for (int i = 0; i < mAssets.size(); i++) {
             ids.add(mAssets.get(i).getAsset_id());
         }
-        Log.e("CreateActivity", "getAssetIds: " + ids );
+        Log.e("CreateActivity", "getAssetIds: " + ids);
         return ids;
     }
 }

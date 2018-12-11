@@ -161,6 +161,8 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BEDETAIL);
         intent.putExtra("webName", "资产详情");
         intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID, mResultList.get(position).getAsset_id());
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
+        intent.putExtra(Constant.INTENT_IS_HISTORY_ASSER_ID, "1");
         startActivity(intent);
     }
 

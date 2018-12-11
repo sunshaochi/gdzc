@@ -134,7 +134,9 @@ public class WebActivity extends BasePullRefreshActivity {
                 }
                 if (url.equals(URL.HTTP_HEAD + URL.BEDETAIL)) {
                     String id = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID);
-                    mWebView.loadUrl("javascript:beDetail(" + "'" + id + "'" + ")");
+                    String isHistory = getIntent().getStringExtra(Constant.INTENT_IS_HISTORY_ASSER_ID);
+                    String docId = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID);
+                    mWebView.loadUrl("javascript:beDetail(" + "'" + isHistory + "&" + id + "&" + docId + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.BECALL)) {
                     intentType = getIntent().getStringExtra("intentType");
                     ArrayList<AssetBean> assets = (ArrayList<AssetBean>) getIntent().getSerializableExtra(Constant.INTENT_EXTRA_KEY_ASSETS);

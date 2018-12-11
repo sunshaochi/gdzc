@@ -286,6 +286,8 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
             Intent intent = new Intent(this, WebActivity.class);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BEDETAIL);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID, mAssets.get(position).getAsset_id());
+            intent.putExtra(Constant.INTENT_IS_HISTORY_ASSER_ID, "0");
+            intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, inv_no);
             intent.putExtra("webName", "资产详情");
             startActivity(intent);
         } else {
