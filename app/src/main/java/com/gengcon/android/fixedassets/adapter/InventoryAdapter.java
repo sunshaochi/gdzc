@@ -26,6 +26,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     private int type;
     private boolean can_edit;
     private boolean can_del;
+    private boolean noData;
 
     public InventoryAdapter(Context context, int type, boolean can_edit, boolean can_del) {
         mContext = context;
@@ -54,10 +55,19 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             return;
         } else if (position >= 0 && position < mInventorys.size()) {
             mInventorys.remove(position);
+            if (mInventorys.size() == 0) {
+                noData = true;
+            } else {
+                noData = false;
+            }
             notifyItemRemoved(position);
         }
         notifyDataSetChanged();
 
+    }
+
+    public boolean isNoData() {
+        return noData;
     }
 
     public void changeDataSource(ResultInventorys resultInventorys) {

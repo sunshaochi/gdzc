@@ -18,7 +18,6 @@ import com.gengcon.android.fixedassets.bean.Inventory;
 import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
 import com.gengcon.android.fixedassets.presenter.InventoryFragmentListPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
-import com.gengcon.android.fixedassets.util.RolePowerManager;
 import com.gengcon.android.fixedassets.view.InventoryListView;
 import com.gengcon.android.fixedassets.view.ItemTouchListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -54,7 +53,7 @@ public class MyTaskFragment extends BasePullRefreshFragment implements View.OnCl
         mRecyclerView.addItemDecoration(divider);
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
         mRefreshLayout.setPrimaryColors(getResources().getColor(R.color.asset_gray));
-        mRefreshLayout.setRefreshHeader(new ClassicsHeader(getActivity()));
+        mRefreshLayout.setRefreshHeader(new ClassicsHeader(getActivity()).setTextSizeTitle(14).setEnableLastTime(false));
         mRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
         return view;
     }

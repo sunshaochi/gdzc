@@ -29,13 +29,14 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     private TextView myTaskTitle, myCreateTitle;
     private FrameLayout myTaskLayout, myCreateLayout;
     private View myTaskView, myCreateView;
+    String taskTitle = "我的任务";
+    String createTitle = "我创建的";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_list);
         initView();
-
     }
 
     @Override
@@ -60,6 +61,8 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         assetPager.setAdapter(pagerAdapter);
         myTaskTitle.setTextColor(getResources().getColor(R.color.blue));
         myCreateTitle.setTextColor(getResources().getColor(R.color.black));
+        myTaskTitle.setText(taskTitle);
+        myCreateTitle.setText(createTitle);
         myTaskView.setVisibility(View.VISIBLE);
         assetPager.setCurrentItem(0);
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -135,8 +138,6 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
             public void run() {
                 StringBuilder taskTitleSB = new StringBuilder();
                 StringBuilder createTitleSB = new StringBuilder();
-                String taskTitle = "我的任务";
-                String createTitle = "我创建的";
                 taskTitleSB.append(taskTitle);
                 createTitleSB.append(createTitle);
                 final String newTaskTitle = taskTitleSB.append("(" + resultInventorysNum.getTask_num() + ")").toString();

@@ -103,7 +103,7 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
         mRecyclerView.addItemDecoration(divider);
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
         mRefreshLayout.setPrimaryColors(getResources().getColor(R.color.asset_gray));
-        mRefreshLayout.setRefreshHeader(new ClassicsHeader(getActivity()));
+        mRefreshLayout.setRefreshHeader(new ClassicsHeader(getActivity()).setTextSizeTitle(14).setEnableLastTime(false));
         mRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
         return view;
     }
@@ -179,7 +179,7 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.deleteInventory(docId, activity);
                 mAdapter.removeAsset(position);
-                if (position == 0) {
+                if (mAdapter.isNoData()) {
                     initDefault(NO_DATA);
                 }
             }
