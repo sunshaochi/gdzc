@@ -164,14 +164,14 @@ public class MyTaskFragment extends BasePullRefreshFragment implements View.OnCl
     @Override
     public void onItemClick(int position) {
         Inventory inventory = mAdapter.getItem(position);
-        if (!RolePowerManager.getInstance().check("inventory/getAssetList")) {
-            showPermissionDeniedTips();
-            return;
-        }
-        if (!RolePowerManager.getInstance().check("inventory/getResultDetail")) {
-            showPermissionDeniedTips();
-            return;
-        }
+//        if (!RolePowerManager.getInstance().check("inventory/getAssetList")) {
+//            showPermissionDeniedTips();
+//            return;
+//        }
+//        if (!RolePowerManager.getInstance().check("inventory/getResultDetail")) {
+//            showPermissionDeniedTips();
+//            return;
+//        }
         Intent intent = null;
         if (inventory.getStatus() == Inventory.NOT_INVENTORY) {
             intent = new Intent(getActivity(), InventoryDetailsActivity.class);

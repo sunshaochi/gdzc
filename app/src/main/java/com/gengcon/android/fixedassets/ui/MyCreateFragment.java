@@ -84,13 +84,13 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
         mRecyclerView = view.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        if (RolePowerManager.getInstance().check("inventory/edit")) {
+        if (RolePowerManager.getInstance().isInventoryEdit()) {
             can_edit = true;
         } else {
             can_edit = false;
         }
 
-        if (RolePowerManager.getInstance().check("inventory/del")) {
+        if (RolePowerManager.getInstance().isInventoryDel()) {
             can_del = true;
         } else {
             can_del = false;
@@ -134,14 +134,14 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
     @Override
     public void onItemClick(int position) {
         Inventory inventory = mAdapter.getItem(position);
-        if (!RolePowerManager.getInstance().check("inventory/getAssetList")) {
-            showPermissionDeniedTips();
-            return;
-        }
-        if (!RolePowerManager.getInstance().check("inventory/getResultDetail")) {
-            showPermissionDeniedTips();
-            return;
-        }
+//        if (!RolePowerManager.getInstance().check("inventory/getAssetList")) {
+//            showPermissionDeniedTips();
+//            return;
+//        }
+//        if (!RolePowerManager.getInstance().check("inventory/getResultDetail")) {
+//            showPermissionDeniedTips();
+//            return;
+//        }
         Intent intent = null;
         if (inventory.getStatus() == Inventory.NOT_INVENTORY) {
             intent = new Intent(getActivity(), InventoryDetailsActivity.class);

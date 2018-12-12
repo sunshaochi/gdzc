@@ -152,20 +152,20 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         findViewById(R.id.btn_upload).setOnClickListener(this);
 
         //TODO 单条盘点权限
-        if (RolePowerManager.getInstance().check("")) {
+        if (RolePowerManager.getInstance().isInventoryPd()) {
             findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
             findViewById(R.id.btn_single_inventory).setVisibility(View.VISIBLE);
         }
         //TODO PDA盘点权限
-        if (RolePowerManager.getInstance().check("")) {
+        if (RolePowerManager.getInstance().isInventoryPd()) {
             findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
             findViewById(R.id.btn_start_inventory).setVisibility(View.VISIBLE);
         }
-        if (RolePowerManager.getInstance().check("inventory/preview")) {
+        if (RolePowerManager.getInstance().isInventoryPd()) {
             findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
             findViewById(R.id.btn_preview).setVisibility(View.VISIBLE);
         }
-        if (RolePowerManager.getInstance().check("inventory/uploadResult")) {
+        if (RolePowerManager.getInstance().isInventoryPd()) {
             findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
             findViewById(R.id.btn_upload).setVisibility(View.VISIBLE);
         }

@@ -52,20 +52,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private boolean mIsBackPressed;
     private ScannerInerface mControll;
     private List<String> api_route;
-    private List<Boolean> checkApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        addApi_route();
 
         mControll = new ScannerInerface(this);
         mControll.setOutputMode(1);
 
         mPresenter = new HomePresenter();
         mPresenter.attachView(this);
+        mPresenter.getRoute();
         // 获取测试设备ID
         String testDeviceId = StatService.getTestDeviceId(this);
         // 日志输出
@@ -117,8 +116,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.checkApiRoute(api_route);
-        mPresenter.getRoute();
         if (!TextUtils.isEmpty((CharSequence) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.TOKEN, ""))) {
             mPresenter.getHome();
 //            mRolePresenter.getRole("home_page");
@@ -162,41 +159,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
                 return;
             case R.id.inventory_management:
-//                if (checkApi != null) {
-//                    if (checkApi.get(2)) {
-                Intent intent = new Intent(MainActivity.this, InventoryListActivity.class);
-                startActivity(intent);
-//                    } else {
-//                        ToastUtils.toastMessage(this, "当前您没有权限");
-//                    }
-//                }
+                if (RolePowerManager.getInstance().isInventoryModule()) {
+                    Intent intent = new Intent(MainActivity.this, InventoryListActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
                 return;
             case R.id.asset_management:
-                if (checkApi != null) {
-                    if (checkApi.get(0)) {
-                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
-                        webIntent.putExtra("webName", "资产列表");
-                        webIntent.putExtra("webTitle", "选择");
-                        webIntent.putExtra("webFrom", "MainActivity");
-                    } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
-                    }
+                if (RolePowerManager.getInstance().isAssetModule()) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
+                    webIntent.putExtra("webName", "资产列表");
+                    webIntent.putExtra("webTitle", "选择");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
                 }
                 break;
             case R.id.asset_storage:
-                if (checkApi != null) {
-                    if (checkApi.get(1)) {
-                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
-                        webIntent.putExtra("webName", "资产入库");
-                        webIntent.putExtra("webTitle", "保存");
-                        webIntent.putExtra("webFrom", "MainActivity");
-                    } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
-                    }
+                if (RolePowerManager.getInstance().isAddModule()) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
+                    webIntent.putExtra("webName", "资产入库");
+                    webIntent.putExtra("webTitle", "保存");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
                 }
                 break;
             case R.id.processing_record:
-                if (checkApi.get(3)) {
+                if (RolePowerManager.getInstance().isDocModule()) {
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.RECODE);
                     webIntent.putExtra("webName", "处理记录");
                     webIntent.putExtra("webFrom", "MainActivity");
@@ -205,7 +196,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 break;
             case R.id.analysis_report:
-                if (checkApi.get(4)) {
+                if (RolePowerManager.getInstance().isReportModule()) {
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ANALYSE);
                     webIntent.putExtra("webName", "分析报表");
                     webIntent.putExtra("webFrom", "MainActivity");
@@ -214,7 +205,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 break;
             case R.id.device_management:
-                if (checkApi.get(5) || checkApi.get(6)) {
+                if (RolePowerManager.getInstance().isEmpModule() || RolePowerManager.getInstance().isEmpModule()) {
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.DEVICE_MANAGE);
                     webIntent.putExtra("webName", "设置管理");
                     webIntent.putExtra("webFrom", "MainActivity");
@@ -224,17 +215,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
         }
         startActivity(webIntent);
-    }
-
-    private void addApi_route() {
-        api_route = new ArrayList<>();
-        api_route.add("asset/list");
-        api_route.add("asset/add");
-        api_route.add("inventory/list");
-        api_route.add("doc/list");
-        api_route.add("reports/status");
-        api_route.add("org/getTreeList");
-        api_route.add("emp/list");
     }
 
     @Override
@@ -348,14 +328,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void checkApiRoute(List<Boolean> data) {
-        checkApi = new ArrayList<>();
-        checkApi.addAll(data);
-        Log.e("MainActivity", "checkApiRoute: " + checkApi);
-    }
-
-    @Override
     public void showApiRoute(ResultRole apiRoute) {
-        RolePowerManager.getInstance().setApi_route(apiRoute.getApi_route());
+        RolePowerManager.getInstance().setApi_route(apiRoute);
     }
 }

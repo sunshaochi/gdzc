@@ -10,7 +10,5 @@ public interface HomeView extends Iview {
 
     void showHome(Home resultHome);
 
-    void checkApiRoute(List<Boolean> data);
-
     void showApiRoute(ResultRole apiRoute);
 }

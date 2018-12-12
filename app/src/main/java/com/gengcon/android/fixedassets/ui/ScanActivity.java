@@ -228,7 +228,7 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                 builder.setNeutralButton(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (RolePowerManager.getInstance().check("inventory/preview")) {
+                        if (RolePowerManager.getInstance().isInventoryPd()) {
                             Intent intent = new Intent(ScanActivity.this, PreviewActivity.class);
                             intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mDocId);
                             intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mAssetIds);

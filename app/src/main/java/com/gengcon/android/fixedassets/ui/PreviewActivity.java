@@ -146,7 +146,7 @@ public class PreviewActivity extends BasePullRefreshActivity implements View.OnC
                 onBackPressed();
                 break;
             case R.id.tv_title_right:
-                if (RolePowerManager.getInstance().check("inventory/uploadResult")) {
+                if (RolePowerManager.getInstance().isInventoryPd()) {
                     showUploadDialog();
                 } else {
                     showPermissionDeniedTips();

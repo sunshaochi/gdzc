@@ -35,8 +35,14 @@ public class ApiService {
      * v3.0接口
      */
     //权限管理
+//    public interface GetRoleResourceForApp {
+//        @GET("feRoute")
+//        Observable<Bean<ResultRole>> getRoleResourceForAPP();
+//    }
+
+    //权限管理
     public interface GetRoleResourceForApp {
-        @GET("feRoute")
+        @GET("common/getAppPower")
         Observable<Bean<ResultRole>> getRoleResourceForAPP();
     }
 

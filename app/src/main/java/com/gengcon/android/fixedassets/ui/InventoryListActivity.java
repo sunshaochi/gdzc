@@ -64,7 +64,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         assetPager.setCurrentItem(0);
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider1));
-        findViewById(R.id.tv_title_right).setVisibility(RolePowerManager.getInstance().check("inventory/add") ? View.VISIBLE : View.GONE);
+        findViewById(R.id.tv_title_right).setVisibility(RolePowerManager.getInstance().isInventoryAdd() ? View.VISIBLE : View.GONE);
         initData();
     }
 
