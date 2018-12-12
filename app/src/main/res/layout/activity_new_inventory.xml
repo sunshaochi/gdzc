@@ -35,6 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:singleLine="true"
                     android:background="@null"
                     android:hint="@string/input_inventory_list_name"
                     android:textSize="16sp" />
@@ -106,6 +107,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:singleLine="true"
                     android:hint="@string/input_remarks"
                     android:textSize="16sp" />
 
