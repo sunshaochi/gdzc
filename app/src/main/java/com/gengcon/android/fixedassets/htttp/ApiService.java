@@ -48,7 +48,7 @@ public class ApiService {
 
     //首页数据
     public interface GetHome {
-        @GET("reports/status")
+        @GET("reports/appHome")
         Observable<Bean<Home>> getHome();
     }
 

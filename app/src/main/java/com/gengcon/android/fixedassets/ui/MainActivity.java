@@ -139,6 +139,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    public void showCodeMsg(String code, String msg) {
+        super.showCodeMsg(code, msg);
+    }
+
+    @Override
+    public void showErrorMsg(int status, String msg) {
+        super.showErrorMsg(status, msg);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mControll.close();

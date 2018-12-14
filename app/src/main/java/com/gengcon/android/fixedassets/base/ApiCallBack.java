@@ -1,6 +1,7 @@
 package com.gengcon.android.fixedassets.base;
 
 
+import com.gengcon.android.fixedassets.htttp.ResultException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -52,14 +53,14 @@ public abstract class ApiCallBack<M> implements Observer<M> {
                 msg = "服务器无响应，请稍后再试！";
             }
             onFailure(exceptionCode, msg);
-        } else {
-            onFailure(-1, e.getMessage());
+        } else if (e instanceof ResultException) {
+            onFailure(-1, ((ResultException) e).getMsg());
         }
         onFinished();
         dispose();
     }
 
-    private void dispose(){
+    private void dispose() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }

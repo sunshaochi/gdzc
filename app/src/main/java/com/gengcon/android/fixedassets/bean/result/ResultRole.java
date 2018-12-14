@@ -275,7 +275,7 @@ public class ResultRole implements Serializable {
          */
 
         private String cn;
-        private boolean allow;
+        private boolean is_show;
         private String type;
 
         public String getCn() {
@@ -287,11 +287,11 @@ public class ResultRole implements Serializable {
         }
 
         public boolean isAllow() {
-            return allow;
+            return is_show;
         }
 
         public void setAllow(boolean allow) {
-            this.allow = allow;
+            this.is_show = allow;
         }
 
         public String getType() {

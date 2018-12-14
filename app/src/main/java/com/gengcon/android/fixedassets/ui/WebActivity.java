@@ -224,8 +224,15 @@ public class WebActivity extends BasePullRefreshActivity {
     }
 
     @JavascriptInterface
-    public void back_home(String message) {
-        finish();
+    public void back_home(String message) throws JSONException {
+        JSONObject object = new JSONObject(message);
+        String code = object.getString("msg");
+        if (code.equals("CODE_406")) {
+            ToastUtils.toastMessage(this, "您当前无操作权限");
+            finish();
+        } else {
+            finish();
+        }
     }
 
     @JavascriptInterface
@@ -334,7 +341,11 @@ public class WebActivity extends BasePullRefreshActivity {
         if (mWebView.canGoBack()) {
             mWebView.goBack();
         } else {
-            back_home("");
+            try {
+                back_home("");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

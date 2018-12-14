@@ -80,7 +80,7 @@ public enum RxService {
             mRetrofit = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(URL.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())//返回值为Gson的支持(以实体类返回)
+                    .addConverterFactory(ResponseConverterFactory.create())//返回值为Gson的支持(以实体类返回)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//返回值为Oservable<T>的支持
                     .build();
         }

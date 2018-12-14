@@ -3,7 +3,7 @@ package com.gengcon.android.fixedassets.htttp;
 public class URL {
 
 //        public static final String BASE_URL = "http://asset.jc-saas.com.cn";
-    public static final String HTTP_HEAD = "http://10.10.10.121:9999/#/";
+//    public static final String HTTP_HEAD = "http://10.10.10.121:9999/#/";
 
     /**
      * 正式服务器
@@ -31,9 +31,9 @@ public class URL {
      */
 //    public static final String BASE_URL = "http://cg.jingchenyun.com";
 //    public static final String BASE_URL = "http://demo.cg.jingchenyun.com";
-    public static final String BASE_URL = "http://api.g.jc-test.cn";
+    public static final String BASE_URL = "http://api.g.jc-test.cn/";
 //    public static final String HTTP_HEAD = "http://api.jc-saas.com.cn/#/home/project/api/";
-//    public static final String HTTP_HEAD = "http://mobile.g.jc-test.cn/#/";
+    public static final String HTTP_HEAD = "http://mobile.g.jc-test.cn/#/";
 
     public static final String LOGIN = "login";
     public static final String USER = "index/user";
