@@ -10,15 +10,15 @@ public class Print implements Serializable {
      * list : [{"id":"ojbnedlfkjel3kv6idv40tkk5k","template_attr":["武汉精臣智慧","资产名称:变更","资产编号:201811215170","使用人:赵嫱嫱"]}]
      */
 
-    private LableBean lable;
+    private LableBean label;
     private List<ListBean> list;
 
-    public LableBean getLable() {
-        return lable;
+    public LableBean getLabel() {
+        return label;
     }
 
-    public void setLable(LableBean lable) {
-        this.lable = lable;
+    public void setLabel(LableBean label) {
+        this.label = label;
     }
 
     public List<ListBean> getList() {

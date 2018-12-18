@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--编辑界面一级菜单文字颜色选择器-->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:color="@color/toolbar_bg"/>
-    <item android:color="@color/gray"/>
-</selector>

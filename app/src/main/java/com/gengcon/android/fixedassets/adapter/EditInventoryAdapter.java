@@ -1,7 +1,9 @@
 package com.gengcon.android.fixedassets.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,11 +106,19 @@ public class EditInventoryAdapter extends MyRecyclerView.Adapter<EditInventoryAd
         return true;
     }
 
+    public int getmSelectListSize() {
+        if (mSelectList != null) {
+            return mSelectList.size();
+        }
+        return 0;
+    }
+
     public List<String> getDelIds() {
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < mSelectList.size(); i++) {
             ids.add(mSelectList.get(i).getAsset_id());
         }
+        mSelectList.clear();
         return ids;
     }
 

@@ -1,7 +1,9 @@
 package com.gengcon.android.fixedassets.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +86,13 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
         notifyItemChanged(position);
     }
 
+    public int getmSelectListSize() {
+        if (mSelectList != null) {
+            return mSelectList.size();
+        }
+        return 0;
+    }
+
     public void allSelect() {
         mSelectList.clear();
         for (int i = 0; i < mAssets.size(); i++) {
@@ -98,14 +107,10 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
     }
 
     public void del() {
-        List<Integer> indexs = new ArrayList<>();
         for (int i = 0; i < mSelectList.size(); i++) {
             mAssets.remove(mSelectList.get(i));
-            indexs.add(i);
         }
-        for (int i = 0; i < indexs.size(); i++) {
-            mSelectList.remove(indexs.get(i));
-        }
+        mSelectList.clear();
         notifyDataSetChanged();
     }
 

@@ -3,16 +3,20 @@ package com.gengcon.android.fixedassets.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,6 +54,8 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
     private ArrayList<AssetBean> mAssets;
     private boolean mIsCreated = false;
     private int assetSize;
+    private int selectSize;
+    private Button del_btn;
 
     private CreateInventoryPresenter presenter;
 
@@ -69,6 +75,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
         ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.new_inventory_list);
         ((TextView) findViewById(R.id.tv_title_right)).setText(R.string.save);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
+        del_btn = findViewById(R.id.btn_del);
         mEtInputName = findViewById(R.id.et_input_name);
         mEtRemarks = findViewById(R.id.et_remarks);
         mTvInputUser = findViewById(R.id.tv_select_user);
@@ -87,7 +94,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
         ((TextView) findViewById(R.id.tv_user)).setText(spannableString);
 
         mRecyclerView = findViewById(R.id.recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new AssetAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -152,12 +159,18 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
                 mIvChoice.setImageResource(mIsAllSelect ? R.drawable.ic_select : R.drawable.ic_unchecked);
                 if (mIsAllSelect) {
                     mAdapter.allSelect();
+                    selectSize = mAdapter.getmSelectListSize();
+                    setDel_btn_text(selectSize);
                 } else {
                     mAdapter.unSelect();
+                    selectSize = mAdapter.getmSelectListSize();
+                    setDel_btn_text(selectSize);
                 }
                 break;
             case R.id.btn_del:
                 mAdapter.del();
+                selectSize = 0;
+                del_btn.setText("删除");
                 mAssets.clear();
                 mAssets.addAll(mAdapter.getAssets());
                 if (mAssets.size() == 0) {
@@ -259,6 +272,8 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
             mAdapter.changeSelect(position);
             mIsAllSelect = mAdapter.isAllSelect();
             mIvChoice.setImageResource(mIsAllSelect ? R.drawable.ic_select : R.drawable.ic_unchecked);
+            selectSize = mAdapter.getmSelectListSize();
+            setDel_btn_text(selectSize);
         }
 
     }
@@ -310,5 +325,13 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
         }
         Log.e("CreateActivity", "getAssetIds: " + ids);
         return ids;
+    }
+
+    private void setDel_btn_text(int selectSize) {
+        if (selectSize == 0) {
+            del_btn.setText("删除");
+        } else {
+            del_btn.setText("删除(" + selectSize + ")");
+        }
     }
 }

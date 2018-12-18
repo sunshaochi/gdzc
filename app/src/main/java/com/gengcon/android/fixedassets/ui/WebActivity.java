@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -269,7 +269,7 @@ public class WebActivity extends BasePullRefreshActivity {
         Print printResult = new Gson().fromJson(message, Print.class);
         if (JCPrinter.isPrinterConnected()) {
             for (Print.ListBean list : printResult.getList()) {
-                if (!JCPrinter.printLabel(printResult.getLable(), list)) {
+                if (!JCPrinter.printLabel(printResult.getLabel(), list)) {
                     return;
                 }
                 success++;

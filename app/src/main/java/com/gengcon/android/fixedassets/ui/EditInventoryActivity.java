@@ -3,15 +3,19 @@ package com.gengcon.android.fixedassets.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +61,8 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
     private boolean editAssets = false;
     private int mPage = 1;
     private int user_id;
+    private int selectSize;
+    private Button del_btn;
 
     private List<String> add_ids = new ArrayList<>();
     private List<String> del_ids = new ArrayList<>();
@@ -87,6 +93,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
         ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.edit_inventory_list);
         ((TextView) findViewById(R.id.tv_title_right)).setText(R.string.save);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
+        del_btn = findViewById(R.id.btn_del);
         mEtInputName = findViewById(R.id.et_input_name);
         mEtRemarks = findViewById(R.id.et_remarks);
         mTvInputUser = findViewById(R.id.tv_select_user);
@@ -127,7 +134,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
         ((TextView) findViewById(R.id.tv_user)).setText(spannableString);
 
         mRecyclerView = findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new EditInventoryAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -192,8 +199,12 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
                 mIvChoice.setImageResource(mIsAllSelect ? R.drawable.ic_select : R.drawable.ic_unchecked);
                 if (mIsAllSelect) {
                     mAdapter.allSelect();
+                    selectSize = mAdapter.getmSelectListSize();
+                    setDel_btn_text(selectSize);
                 } else {
                     mAdapter.unSelect();
+                    selectSize = mAdapter.getmSelectListSize();
+                    setDel_btn_text(selectSize);
                 }
                 break;
             case R.id.btn_del:
@@ -207,6 +218,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
                     }
                     mPage = 1;
                     presenter.getEditDeleteList(inv_no, add_ids, del_ids, mPage);
+                    del_btn.setText("删除");
                     mIsAllSelect = false;
                     mIvChoice.setImageResource(R.drawable.ic_unchecked);
                 } else {
@@ -294,6 +306,8 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
             mAdapter.changeSelect(position);
             mIsAllSelect = mAdapter.isAllSelect();
             mIvChoice.setImageResource(mIsAllSelect ? R.drawable.ic_select : R.drawable.ic_unchecked);
+            selectSize = mAdapter.getmSelectListSize();
+            setDel_btn_text(selectSize);
         }
     }
 
@@ -326,6 +340,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
             mAdapter.clear();
             findViewById(R.id.ll_asset).setVisibility(View.GONE);
             findViewById(R.id.v_divider).setVisibility(View.VISIBLE);
+            mTvEdit.performClick();
         }
         mIsCreated = true;
     }
@@ -371,6 +386,14 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
             return false;
         }
         return true;
+    }
+
+    private void setDel_btn_text(int selectSize) {
+        if (selectSize == 0) {
+            del_btn.setText("删除");
+        } else {
+            del_btn.setText("删除(" + selectSize + ")");
+        }
     }
 
 }

@@ -1,8 +1,8 @@
 package com.gengcon.android.fixedassets.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +109,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             }
         }
         if (type == 1) {
-            holder.tvCreateName.setText(mContext.getString(R.string.create_user) + ":" + inventory.getCreator_name());
+            holder.tvCreateName.setText(mContext.getString(R.string.create_user) + "：" + inventory.getCreator_name());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -117,7 +117,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
                 }
             });
         } else {
-            holder.tvCreateName.setText(mContext.getString(R.string.do_user) + ":" + inventory.getAllot_username());
+            holder.tvCreateName.setText(mContext.getString(R.string.do_user) + "：" + inventory.getAllot_username());
             if (canEdit) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -157,7 +157,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             }
         }
 
-        holder.tvCreateTime.setText(mContext.getString(R.string.create_time) + ":" + inventory.getCreated_at());
+        holder.tvCreateTime.setText(mContext.getString(R.string.create_time) + "：" + inventory.getCreated_at());
         holder.tvName.setText(inventory.getInv_name());
         holder.tvStatus.setText(inventory.getStatus_cn());
         holder.tvStatus.setTextColor(mContext.getResources().getColor(inventory.getStatus() == Inventory.ERROR ? R.color.inventory_error : inventory.getStatus() == Inventory.NORMAL ? R.color.inventory_normal : R.color.inventory_not));
