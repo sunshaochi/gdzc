@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.HomeView;
 import com.tbruyelle.rxpermissions2.Permission;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -49,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private HomePresenter mPresenter;
     private boolean mIsBackPressed;
     private ScannerInerface mControll;
+    private List<String> api_route;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
