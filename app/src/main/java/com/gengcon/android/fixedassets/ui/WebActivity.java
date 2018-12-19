@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -131,6 +133,12 @@ public class WebActivity extends BasePullRefreshActivity {
                 }, 100);
                 if (isNetworkConnected(WebActivity.this)) {
                     initDefault(NORMAL);
+                }
+                if (url.equals(URL.HTTP_HEAD + URL.ASSET_MANAGE)) {
+                    String status = getIntent().getStringExtra("status");
+                    if (!TextUtils.isEmpty(status)) {
+                        mWebView.loadUrl("javascript:getAssetsList(" + "'" + status + "'" + ")");
+                    }
                 }
                 if (url.equals(URL.HTTP_HEAD + URL.BEDETAIL)) {
                     String id = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID);

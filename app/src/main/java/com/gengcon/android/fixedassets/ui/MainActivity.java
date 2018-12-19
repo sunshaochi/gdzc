@@ -51,7 +51,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private HomePresenter mPresenter;
     private boolean mIsBackPressed;
     private ScannerInerface mControll;
-    private List<String> api_route;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +100,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.processing_record).setOnClickListener(this);
         findViewById(R.id.analysis_report).setOnClickListener(this);
         findViewById(R.id.device_management).setOnClickListener(this);
+        findViewById(R.id.totalLayout).setOnClickListener(this);
+        findViewById(R.id.usingLayout).setOnClickListener(this);
+        findViewById(R.id.freeLayout).setOnClickListener(this);
     }
 
     @Override
@@ -218,6 +220,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (RolePowerManager.getInstance().isEmpModule() || RolePowerManager.getInstance().isEmpModule()) {
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.DEVICE_MANAGE);
                     webIntent.putExtra("webName", "设置管理");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
+                break;
+            case R.id.totalLayout:
+                if (RolePowerManager.getInstance().isAssetModule()) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
+                    webIntent.putExtra("webName", "资产列表");
+                    webIntent.putExtra("webTitle", "选择");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
+                break;
+            case R.id.freeLayout:
+                if (RolePowerManager.getInstance().isAssetModule()) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
+                    webIntent.putExtra("status", "1");
+                    webIntent.putExtra("webName", "资产列表");
+                    webIntent.putExtra("webTitle", "选择");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
+                break;
+            case R.id.usingLayout:
+                if (RolePowerManager.getInstance().isAssetModule()) {
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
+                    webIntent.putExtra("status", "2");
+                    webIntent.putExtra("webName", "资产列表");
+                    webIntent.putExtra("webTitle", "选择");
                     webIntent.putExtra("webFrom", "MainActivity");
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");

@@ -21,9 +21,11 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/totalLayout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="65dp"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -56,6 +58,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/usingLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="47dp"
@@ -86,6 +89,7 @@
                     android:background="#eeeeee" />
 
                 <LinearLayout
+                    android:id="@+id/freeLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="47dp"
