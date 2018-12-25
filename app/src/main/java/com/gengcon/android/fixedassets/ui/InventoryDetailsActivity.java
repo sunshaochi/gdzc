@@ -347,6 +347,9 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
 
     private boolean addAssetId(String id) {
         if (duplicate(id)) {
+            if (id.startsWith("\\000026")) {
+                id = id.substring(7);
+            }
             mReadAssetsIds.add(id);
             checkId(id);
             return true;

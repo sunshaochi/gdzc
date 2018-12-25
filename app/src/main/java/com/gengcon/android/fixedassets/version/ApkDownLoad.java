@@ -148,6 +148,7 @@ public class ApkDownLoad {
                 case DownloadManager.STATUS_SUCCESSFUL:
                     // 完成
                     Log.v("tag", "下载完成");
+                    downloadDialog.dismiss();
                     // dowanloadmanager.remove(downloadId);
                     break;
                 case DownloadManager.STATUS_FAILED:

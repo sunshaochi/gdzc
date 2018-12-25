@@ -42,14 +42,16 @@ public abstract class ApiCallBack<M> implements Observer<M> {
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
             int exceptionCode = httpException.code();
-            String msg = httpException.getMessage();
+            String msg = "";
             if (exceptionCode == 401) {
                 msg = "用户名密码错误，请重新登录！";
             }
             if (exceptionCode == 403 || exceptionCode == 404 || exceptionCode == 407 || exceptionCode == 408) {
                 msg = "网络链接超时，请稍后再试！";
             }
-            if (exceptionCode == 501 || exceptionCode == 502 || exceptionCode == 504) {
+            if (exceptionCode == 500 || exceptionCode == 501 || exceptionCode == 502 || exceptionCode == 504) {
+                msg = "服务器无响应，请稍后再试！";
+            }else {
                 msg = "服务器无响应，请稍后再试！";
             }
             onFailure(exceptionCode, msg);

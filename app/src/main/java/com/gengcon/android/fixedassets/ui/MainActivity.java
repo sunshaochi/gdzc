@@ -120,6 +120,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onResume();
         if (!TextUtils.isEmpty((CharSequence) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.TOKEN, ""))) {
             mPresenter.getHome();
+            mPresenter.getRoute();
 //            mRolePresenter.getRole("home_page");
         }
     }
@@ -166,6 +167,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.USER);
                 webIntent.putExtra("webName", "用户中心");
                 webIntent.putExtra("webFrom", "MainActivity");
+                startActivity(webIntent);
                 break;
             case R.id.iv_title_right:
                 requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
@@ -180,10 +182,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 return;
             case R.id.asset_management:
                 if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
                     webIntent.putExtra("webName", "资产列表");
                     webIntent.putExtra("webTitle", "选择");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
@@ -194,6 +197,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     webIntent.putExtra("webName", "资产入库");
                     webIntent.putExtra("webTitle", "保存");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
@@ -203,6 +207,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.RECODE);
                     webIntent.putExtra("webName", "处理记录");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
@@ -212,6 +217,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ANALYSE);
                     webIntent.putExtra("webName", "分析报表");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
@@ -221,44 +227,45 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.DEVICE_MANAGE);
                     webIntent.putExtra("webName", "设置管理");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
                 break;
             case R.id.totalLayout:
                 if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
                     webIntent.putExtra("webName", "资产列表");
                     webIntent.putExtra("webTitle", "选择");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
                 break;
             case R.id.freeLayout:
                 if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
-                    webIntent.putExtra("status", "1");
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "1");
                     webIntent.putExtra("webName", "资产列表");
                     webIntent.putExtra("webTitle", "选择");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
                 break;
             case R.id.usingLayout:
                 if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE);
-                    webIntent.putExtra("status", "2");
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "2");
                     webIntent.putExtra("webName", "资产列表");
                     webIntent.putExtra("webTitle", "选择");
                     webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, "当前您没有权限");
                 }
                 break;
         }
-        startActivity(webIntent);
     }
 
     @Override
@@ -347,7 +354,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             id = id.substring(7);
         }
         if (StringIsDigitUtil.isLetterDigit(id)) {
-            if (id.length() == 26) {
+            if (id.length() == 24) {
                 isAssetId(id);
             } else {
                 ToastUtils.toastMessage(this, "非固定资产二维码");

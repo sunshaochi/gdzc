@@ -38,6 +38,7 @@ public class URL {
     public static final String LOGIN = "login";
     public static final String USER = "index/user";
     public static final String ASSET_MANAGE = "index/assetsList";
+    public static final String ASSET_STATUS = "?status=";
     public static final String ASSET_STORAGE = "index/addAssets";
     public static final String RECODE = "index/recode";
     public static final String ANALYSE = "index/analyse";

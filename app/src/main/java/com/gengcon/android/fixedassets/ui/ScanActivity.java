@@ -225,6 +225,7 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.tips);
                 builder.setText(R.string.already_inventory);
+                builder.setNegativeButtonClickable(true);
                 builder.setNeutralButton(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

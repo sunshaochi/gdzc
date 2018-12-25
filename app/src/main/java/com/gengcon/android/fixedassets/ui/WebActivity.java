@@ -9,6 +9,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -54,6 +55,7 @@ import java.util.List;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -78,10 +80,12 @@ public class WebActivity extends BasePullRefreshActivity {
     private String webFrom;
     private String intentType;
     private int index;
+    private int imgType;
     private int updateImg;
     private String versionName;
     private boolean isUpdate;
     private UpdateVersion mVersion;
+    private String rgsId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,12 +138,6 @@ public class WebActivity extends BasePullRefreshActivity {
                 if (isNetworkConnected(WebActivity.this)) {
                     initDefault(NORMAL);
                 }
-                if (url.equals(URL.HTTP_HEAD + URL.ASSET_MANAGE)) {
-                    String status = getIntent().getStringExtra("status");
-                    if (!TextUtils.isEmpty(status)) {
-                        mWebView.loadUrl("javascript:getAssetsList(" + "'" + status + "'" + ")");
-                    }
-                }
                 if (url.equals(URL.HTTP_HEAD + URL.BEDETAIL)) {
                     String id = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID);
                     String isHistory = getIntent().getStringExtra(Constant.INTENT_IS_HISTORY_ASSER_ID);
@@ -155,6 +153,10 @@ public class WebActivity extends BasePullRefreshActivity {
                     mWebView.loadUrl("javascript:beCall(" + "'" + new Gson().toJson(new AddAssetRequest(assets, ids)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.ABOUTUS)) {
                     mWebView.loadUrl("javascript:checkVersion(" + "'" + new Gson().toJson(new UpdateVersionRequest(versionName, isUpdate)) + "'" + ")");
+                } else if (url.equals(URL.HTTP_HEAD + URL.LOGIN)) {
+                    rgsId = JPushInterface.getRegistrationID(WebActivity.this);
+                    Log.e("WebActivity", "onPageFinished: " + rgsId );
+                    mWebView.loadUrl("javascript:setRegId(" + "'" + rgsId + "'" + ")");
                 }
             }
 
@@ -170,7 +172,7 @@ public class WebActivity extends BasePullRefreshActivity {
                 if (updateImg == 1) {
                     mWebView.loadUrl("javascript:deleteImg(" + "'" + "'" + ")");
                 } else if (updateImg == 2) {
-                    mWebView.loadUrl("javascript:deleteImg(" + "'" + index + "'" + ")");
+                    mWebView.loadUrl("javascript:deleteImg(" + "'" + imgType + "==========" + index + "'" + ")");
                 }
                 mActionSheet.hide();
             }
@@ -181,7 +183,7 @@ public class WebActivity extends BasePullRefreshActivity {
                 if (updateImg == 1) {
                     mWebView.loadUrl("javascript:checkImg(" + "'" + "'" + ")");
                 } else if (updateImg == 2) {
-                    mWebView.loadUrl("javascript:checkImg(" + "'" + index + "'" + ")");
+                    mWebView.loadUrl("javascript:checkImg(" + "'" + imgType + "==========" + index + "'" + ")");
                 }
                 mActionSheet.hide();
             }
@@ -326,8 +328,8 @@ public class WebActivity extends BasePullRefreshActivity {
             public void run() {
                 updateImg = 2;
                 UpdateImgRBean result = new Gson().fromJson(data, UpdateImgRBean.class);
-                Log.e("WebActivityUpdateImg", "result: " + result);
                 if (result != null) {
+                    imgType = result.getType();
                     index = result.getIndex();
                     mActionSheet.show();
                 }
@@ -337,7 +339,12 @@ public class WebActivity extends BasePullRefreshActivity {
 
     @JavascriptInterface
     public void updateVersion(String message) {
-        showUpdateVersionDialog();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showUpdateVersionDialog();
+            }
+        });
     }
 
     @Override
@@ -391,9 +398,8 @@ public class WebActivity extends BasePullRefreshActivity {
                         if (updateImg == 1) {
                             mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + bitmap + "'" + ")");
                         } else if (updateImg == 2) {
-                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + index + "==========" + bitmap + "'" + ")");
+                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + imgType + "==========" + index + "==========" + bitmap + "'" + ")");
 //                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + new Gson().toJson(new UpdateImgRequest(bitmap, index)) + "'" + ")");
-                            Log.e("WebActivityUpdateImg", "updateJson: " + new Gson().toJson(new UpdateImgRequest(bitmap, index)));
                         }
                     }
 
@@ -424,6 +430,11 @@ public class WebActivity extends BasePullRefreshActivity {
     @Override
     public void showCodeMsg(String code, String msg) {
         super.showCodeMsg(code, msg);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

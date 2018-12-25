@@ -6,10 +6,20 @@ public class UpdateImgRBean implements Serializable {
 
     String id;
     int index;
+    int type;
 
-    public UpdateImgRBean(String id, int index) {
+    public UpdateImgRBean(int type, String id, int index) {
+        this.type = type;
         this.id = id;
         this.index = index;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getId() {

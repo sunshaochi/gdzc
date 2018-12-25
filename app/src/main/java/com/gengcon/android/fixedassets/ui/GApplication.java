@@ -19,6 +19,7 @@ import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
+import cn.jpush.android.api.JPushInterface;
 
 public class GApplication extends Application {
 
@@ -30,6 +31,8 @@ public class GApplication extends Application {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         FontUtils.getInstance().replaceSystemDefaultFontFromAsset(this, "fonts/PingFangRegular.ttf");
         initGallery();
     }

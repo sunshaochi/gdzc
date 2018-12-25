@@ -25,8 +25,8 @@ android {
             applicationId "com.gengcon.android.fixedassets"
             minSdkVersion 15
             targetSdkVersion 28
-            versionCode 8
-            versionName "V2.2.7"
+            versionCode 9
+            versionName "V2.2.8"
             testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
             externalNativeBuild {
                 cmake {
@@ -36,6 +36,12 @@ android {
             ndk {
                 abiFilters("armeabi-v7a", "x86")
             }
+
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME : applicationId,
+                    JPUSH_APPKEY : "82c5a1594f3c5dc748c204d9", //JPush 上注册的包名对应的 Appkey.
+                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+            ]
 
         }
         buildTypes {
@@ -106,4 +112,7 @@ android {
         api 'com.zyao89:zloading:1.1.2'
         api 'cn.finalteam:galleryfinal:1.4.8.7'
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+        implementation 'cn.jiguang.sdk:jpush:3.1.6'  // 此处以JPush 3.1.6 版本为例。
+        implementation 'cn.jiguang.sdk:jcore:1.2.5'  // 此处以JCore 1.2.5 版本为例。
     }

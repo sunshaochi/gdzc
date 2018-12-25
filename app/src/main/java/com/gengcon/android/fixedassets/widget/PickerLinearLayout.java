@@ -1,7 +1,9 @@
 package com.gengcon.android.fixedassets.widget;
 
 import android.content.Context;
+
 import androidx.annotation.Nullable;
+
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,8 @@ import java.util.List;
 
 public class PickerLinearLayout extends LinearLayout implements View.OnClickListener {
 
-    private PickerScrollView mPicker;
+        private PickerScrollView mPicker;
+    private WheelView wva;
     private User select;
     private OnPickerListener onSelectListener;
 
@@ -36,8 +39,10 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
 
     private void init(Context context) {
         View contentView = LayoutInflater.from(context).inflate(R.layout.picker_linear_layout, null);
-        mPicker = contentView.findViewById(R.id.picker);
-        mPicker.setOnSelectListener(pickerListener);
+        wva = contentView.findViewById(R.id.main_wv);
+        wva.setOnWheelViewListener(onWheelViewListener);
+//        mPicker = contentView.findViewById(R.id.picker);
+//        mPicker.setOnSelectListener(pickerListener);
         contentView.findViewById(R.id.btn_confirm).setOnClickListener(this);
         contentView.findViewById(R.id.btn_cancel).setOnClickListener(this);
         contentView.findViewById(R.id.v_cancel).setOnClickListener(this);
@@ -49,13 +54,14 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
     }
 
     public void setData(List<User> users) {
-        mPicker.setData(users);
-        mPicker.setSelected(0);
+        wva.setData(users);
+//        mPicker.setData(users);
+//        mPicker.setSelected(0);
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_confirm:
                 if (onSelectListener != null) {
                     onSelectListener.onConfirm(select);
@@ -72,17 +78,25 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
         }
     }
 
-    // 滚动选择器选中事件
-    PickerScrollView.OnSelectListener pickerListener = new PickerScrollView.OnSelectListener() {
-
+//    // 滚动选择器选中事件
+//    PickerScrollView.OnSelectListener pickerListener = new PickerScrollView.OnSelectListener() {
+//
+//        @Override
+//        public void onSelect(User user) {
+//            select = user;
+//        }
+//    };
+//
+    WheelView.OnWheelViewListener onWheelViewListener = new WheelView.OnWheelViewListener() {
         @Override
-        public void onSelect(User user) {
-            select = user;
+        public void onSelected(User item) {
+            select = item;
         }
     };
 
     public interface OnPickerListener {
         void onConfirm(User user);
+
         void onCancel();
     }
 

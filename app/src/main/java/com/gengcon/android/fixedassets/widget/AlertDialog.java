@@ -99,6 +99,12 @@ public class AlertDialog extends Dialog {
             return this;
         }
 
+        public Builder setNegativeButtonClickable(boolean clickable) {
+            ((Button) mContentView.findViewById(R.id.btn_negative)).setTextColor(mContext.getResources().getColor(clickable ? R.color.blue : R.color.light_gray_text));
+            (mContentView.findViewById(R.id.btn_negative)).setClickable(clickable);
+            return this;
+        }
+
         public Builder setNeutralDismiss(boolean neutralDismiss) {
             mNeutralDismiss = neutralDismiss;
             return this;
