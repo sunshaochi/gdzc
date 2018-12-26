@@ -1,6 +1,7 @@
 package com.gengcon.android.fixedassets.ui;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -126,6 +128,13 @@ public class WebActivity extends BasePullRefreshActivity {
 //        webSettings.setBlockNetworkImage(true);
         mWebView.addJavascriptInterface(this, "android");
         mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                Log.e("WebActivity", "onReceivedError: " + error);
+                initDefault(NO_NET);
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -136,7 +145,7 @@ public class WebActivity extends BasePullRefreshActivity {
                     }
                 }, 100);
                 if (isNetworkConnected(WebActivity.this)) {
-                    initDefault(NORMAL);
+//                    initDefault(NO_NET);
                 }
                 if (url.equals(URL.HTTP_HEAD + URL.BEDETAIL)) {
                     String id = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID);
@@ -155,7 +164,7 @@ public class WebActivity extends BasePullRefreshActivity {
                     mWebView.loadUrl("javascript:checkVersion(" + "'" + new Gson().toJson(new UpdateVersionRequest(versionName, isUpdate)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.LOGIN)) {
                     rgsId = JPushInterface.getRegistrationID(WebActivity.this);
-                    Log.e("WebActivity", "onPageFinished: " + rgsId );
+                    Log.e("WebActivity", "onPageFinished: " + rgsId);
                     mWebView.loadUrl("javascript:setRegId(" + "'" + rgsId + "'" + ")");
                 }
             }
@@ -235,13 +244,17 @@ public class WebActivity extends BasePullRefreshActivity {
 
     @JavascriptInterface
     public void back_home(String message) throws JSONException {
-        JSONObject object = new JSONObject(message);
-        String code = object.getString("msg");
-        if (code.equals("CODE_406")) {
-            ToastUtils.toastMessage(this, "您当前无操作权限");
+        if (TextUtils.isEmpty(message)) {
             finish();
         } else {
-            finish();
+            JSONObject object = new JSONObject(message);
+            String code = object.getString("msg");
+            if (code.equals("CODE_406")) {
+                ToastUtils.toastMessage(this, "您当前无操作权限");
+                finish();
+            } else {
+                finish();
+            }
         }
     }
 
