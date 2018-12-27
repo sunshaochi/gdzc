@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -22,6 +23,7 @@ import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
 import com.gengcon.android.fixedassets.presenter.InventoryFragmentListPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.RolePowerManager;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.InventoryListView;
 import com.gengcon.android.fixedassets.view.ItemTouchListener;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
@@ -63,6 +65,17 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 mPresenter.getInventory(++mPage, 2);
+            }
+        });
+        reloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNetworkConnected(getActivity())) {
+                    initDefault(NORMAL);
+                    mRefreshLayout.autoRefresh();
+                } else {
+                    ToastUtils.toastMessage(getActivity(), "网络连接不给力,请检查您的网络");
+                }
             }
         });
     }
@@ -123,7 +136,12 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
             return;
         }
         if (isVisibleToUser) {
-            mRefreshLayout.autoRefresh();
+            if (isNetworkConnected(getActivity())) {
+                initDefault(NORMAL);
+                mRefreshLayout.autoRefresh();
+            } else {
+                initDefault(NO_NET);
+            }
         }
     }
 
@@ -219,5 +237,15 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
         super.showCodeMsg(code, msg);
         mRefreshLayout.finishRefresh();
         mRefreshLayout.finishLoadmore();
+    }
+
+    @Override
+    public void hideLoading() {
+        if (isNetworkConnected(getActivity())) {
+            initDefault(NORMAL);
+        } else {
+            initDefault(NO_NET);
+        }
+        mRefreshLayout.finishRefresh();
     }
 }

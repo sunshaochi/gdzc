@@ -53,12 +53,12 @@ public class InventoryFragmentListPresenter extends BasePresenter<InventoryListV
 
                 @Override
                 public void onFinished() {
-//                mMvpView.hideLoading();
+                    mMvpView.hideLoading();
                 }
 
                 @Override
                 public void onStart() {
-//                mMvpView.showLoading();
+//                    mMvpView.showLoading();
                 }
             });
         } else {
@@ -86,12 +86,12 @@ public class InventoryFragmentListPresenter extends BasePresenter<InventoryListV
 
                 @Override
                 public void onFinished() {
-//                mMvpView.hideLoading();
+                    mMvpView.hideLoading();
                 }
 
                 @Override
                 public void onStart() {
-//                mMvpView.showLoading();
+//                    mMvpView.showLoading();
                 }
             });
         }

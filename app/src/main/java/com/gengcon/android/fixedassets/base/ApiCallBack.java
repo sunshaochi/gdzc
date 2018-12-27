@@ -51,12 +51,16 @@ public abstract class ApiCallBack<M> implements Observer<M> {
             }
             if (exceptionCode == 500 || exceptionCode == 501 || exceptionCode == 502 || exceptionCode == 504) {
                 msg = "服务器无响应，请稍后再试！";
-            }else {
+            } else {
                 msg = "服务器无响应，请稍后再试！";
             }
             onFailure(exceptionCode, msg);
         } else if (e instanceof ResultException) {
-            onFailure(-1, ((ResultException) e).getMsg());
+            if (((ResultException) e).getCode().equals("CODE_401")) {
+                onFailure(401, ((ResultException) e).getMsg());
+            } else {
+                onFailure(-1, ((ResultException) e).getMsg());
+            }
         }
         onFinished();
         dispose();

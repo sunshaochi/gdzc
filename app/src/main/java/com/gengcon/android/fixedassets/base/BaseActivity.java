@@ -94,6 +94,12 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         } else {
             ToastUtils.toastMessage(BaseActivity.this, msg);
         }
+        if (status == 401) {
+            SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+            Intent intent = new Intent(BaseActivity.this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
+            startActivity(intent);
+        }
     }
 
     @Override

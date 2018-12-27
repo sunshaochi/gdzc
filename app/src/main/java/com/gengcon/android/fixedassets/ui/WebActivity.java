@@ -131,8 +131,9 @@ public class WebActivity extends BasePullRefreshActivity {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.e("WebActivity", "onReceivedError: " + error);
-                initDefault(NO_NET);
+                if (!isNetworkConnected(WebActivity.this)) {
+                    initDefault(NO_NET);
+                }
             }
 
             @Override
@@ -145,7 +146,7 @@ public class WebActivity extends BasePullRefreshActivity {
                     }
                 }, 100);
                 if (isNetworkConnected(WebActivity.this)) {
-//                    initDefault(NO_NET);
+                    initDefault(NORMAL);
                 }
                 if (url.equals(URL.HTTP_HEAD + URL.BEDETAIL)) {
                     String id = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID);
@@ -164,7 +165,6 @@ public class WebActivity extends BasePullRefreshActivity {
                     mWebView.loadUrl("javascript:checkVersion(" + "'" + new Gson().toJson(new UpdateVersionRequest(versionName, isUpdate)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.LOGIN)) {
                     rgsId = JPushInterface.getRegistrationID(WebActivity.this);
-                    Log.e("WebActivity", "onPageFinished: " + rgsId);
                     mWebView.loadUrl("javascript:setRegId(" + "'" + rgsId + "'" + ")");
                 }
             }

@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -64,6 +67,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mPresenter = new HomePresenter();
         mPresenter.attachView(this);
         mPresenter.getRoute();
+        initReceiver();
         // 获取测试设备ID
         String testDeviceId = StatService.getTestDeviceId(this);
         // 日志输出
@@ -125,6 +129,49 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    /**
+     * 注册网络监听的广播
+     */
+    private void initReceiver() {
+        IntentFilter timeFilter = new IntentFilter();
+        timeFilter.addAction("android.net.ethernet.ETHERNET_STATE_CHANGED");
+        timeFilter.addAction("android.net.ethernet.STATE_CHANGE");
+        timeFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        timeFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        timeFilter.addAction("android.net.wifi.STATE_CHANGE");
+        timeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        registerReceiver(netReceiver, timeFilter);
+    }
+
+    BroadcastReceiver netReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isAvailable()) {
+                    int type2 = networkInfo.getType();
+                    String typeName = networkInfo.getTypeName();
+
+                    switch (type2) {
+                        case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
+                            mPresenter.getRoute();
+                            mPresenter.getHome();
+                            break;
+                        case 1: //wifi网络
+                            mPresenter.getRoute();
+                            mPresenter.getHome();
+                            break;
+                    }
+                }
+            }
+        }
+
+    };
+
     @Override
     public void onBackPressed() {
         if (!mIsBackPressed) {
@@ -154,6 +201,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (netReceiver != null) {
+            unregisterReceiver(netReceiver);
+            netReceiver = null;
+        }
         mControll.close();
         RFIDUtils.disconnect((GApplication) getApplication());
         mPresenter.detachView();
@@ -161,6 +212,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View view) {
+        String msg = "网络连接不给力,请检查您的网络";
         Intent webIntent = new Intent(MainActivity.this, WebActivity.class);
         switch (view.getId()) {
             case R.id.iv_title_left:
@@ -170,99 +222,139 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 startActivity(webIntent);
                 break;
             case R.id.iv_title_right:
-                requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
+                if (isNetworkConnected(this)) {
+                    requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
+                } else {
+                    ToastUtils.toastMessage(this, msg);
+                }
                 return;
             case R.id.inventory_management:
-                if (RolePowerManager.getInstance().isInventoryModule()) {
-                    Intent intent = new Intent(MainActivity.this, InventoryListActivity.class);
-                    startActivity(intent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isInventoryModule()) {
+                        Intent intent = new Intent(MainActivity.this, InventoryListActivity.class);
+                        startActivity(intent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 return;
             case R.id.asset_management:
-                if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
-                    webIntent.putExtra("webName", "资产列表");
-                    webIntent.putExtra("webTitle", "选择");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isAssetModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
+                        webIntent.putExtra("webName", "资产列表");
+                        webIntent.putExtra("webTitle", "选择");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.asset_storage:
-                if (RolePowerManager.getInstance().isAddModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
-                    webIntent.putExtra("webName", "资产入库");
-                    webIntent.putExtra("webTitle", "保存");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isAddModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
+                        webIntent.putExtra("webName", "资产入库");
+                        webIntent.putExtra("webTitle", "保存");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.processing_record:
-                if (RolePowerManager.getInstance().isDocModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.RECODE);
-                    webIntent.putExtra("webName", "处理记录");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isDocModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.RECODE);
+                        webIntent.putExtra("webName", "处理记录");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.analysis_report:
-                if (RolePowerManager.getInstance().isReportModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ANALYSE);
-                    webIntent.putExtra("webName", "分析报表");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isReportModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ANALYSE);
+                        webIntent.putExtra("webName", "分析报表");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.device_management:
-                if (RolePowerManager.getInstance().isEmpModule() || RolePowerManager.getInstance().isEmpModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.DEVICE_MANAGE);
-                    webIntent.putExtra("webName", "设置管理");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isEmpModule() || RolePowerManager.getInstance().isEmpModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.DEVICE_MANAGE);
+                        webIntent.putExtra("webName", "设置管理");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.totalLayout:
-                if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
-                    webIntent.putExtra("webName", "资产列表");
-                    webIntent.putExtra("webTitle", "选择");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isAssetModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
+                        webIntent.putExtra("webName", "资产列表");
+                        webIntent.putExtra("webTitle", "选择");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.freeLayout:
-                if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "1");
-                    webIntent.putExtra("webName", "资产列表");
-                    webIntent.putExtra("webTitle", "选择");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isAssetModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "1");
+                        webIntent.putExtra("webName", "资产列表");
+                        webIntent.putExtra("webTitle", "选择");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.usingLayout:
-                if (RolePowerManager.getInstance().isAssetModule()) {
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "2");
-                    webIntent.putExtra("webName", "资产列表");
-                    webIntent.putExtra("webTitle", "选择");
-                    webIntent.putExtra("webFrom", "MainActivity");
-                    startActivity(webIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isAssetModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "2");
+                        webIntent.putExtra("webName", "资产列表");
+                        webIntent.putExtra("webTitle", "选择");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, msg);
                 }
                 break;
         }

@@ -2,6 +2,7 @@ package com.gengcon.android.fixedassets.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -20,6 +21,7 @@ import com.gengcon.android.fixedassets.bean.Inventory;
 import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
 import com.gengcon.android.fixedassets.presenter.InventoryFragmentListPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.InventoryListView;
 import com.gengcon.android.fixedassets.view.ItemTouchListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -91,6 +93,17 @@ public class MyTaskFragment extends BasePullRefreshFragment implements View.OnCl
                 mPresenter.getInventory(++mPage, 1);
             }
         });
+        reloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNetworkConnected(getActivity())) {
+                    initDefault(NORMAL);
+                    mRefreshLayout.autoRefresh();
+                } else {
+                    ToastUtils.toastMessage(getActivity(), "网络连接不给力,请检查您的网络");
+                }
+            }
+        });
     }
 
     @Override
@@ -105,7 +118,12 @@ public class MyTaskFragment extends BasePullRefreshFragment implements View.OnCl
             return;
         }
         if (isVisibleToUser) {
-            mRefreshLayout.autoRefresh();
+            if (isNetworkConnected(getActivity())) {
+                initDefault(NORMAL);
+                mRefreshLayout.autoRefresh();
+            } else {
+                initDefault(NO_NET);
+            }
         }
     }
 
@@ -140,7 +158,12 @@ public class MyTaskFragment extends BasePullRefreshFragment implements View.OnCl
 
     @Override
     public void hideLoading() {
-
+        if (isNetworkConnected(getActivity())) {
+            initDefault(NORMAL);
+        } else {
+            initDefault(NO_NET);
+        }
+        mRefreshLayout.finishRefresh();
     }
 
     @Override
