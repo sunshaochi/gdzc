@@ -97,7 +97,7 @@ public class PreviewActivity extends BasePullRefreshActivity implements View.OnC
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                mPreviewPresenter.previewInfo(mInventoryId, AssetBean.INVENTORY_NOT, ++mPage, mAssetIds);
+                mPreviewPresenter.previewInfo(mInventoryId, mSelect, ++mPage, mAssetIds);
             }
         });
 

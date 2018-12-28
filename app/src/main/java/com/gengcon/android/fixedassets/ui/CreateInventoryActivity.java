@@ -139,6 +139,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
                 onBackPressed();
                 break;
             case R.id.tv_edit:
+                del_btn.setText("删除");
                 if (mMode == AssetAdapter.NORMAL) {
                     findViewById(R.id.ll_add).setVisibility(View.GONE);
                     findViewById(R.id.ll_all_select).setVisibility(View.VISIBLE);

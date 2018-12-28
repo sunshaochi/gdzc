@@ -179,6 +179,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
                 onBackPressed();
                 break;
             case R.id.tv_edit:
+                del_btn.setText("删除");
                 if (mMode == EditInventoryAdapter.NORMAL) {
                     findViewById(R.id.ll_add).setVisibility(View.GONE);
                     findViewById(R.id.ll_all_select).setVisibility(View.VISIBLE);

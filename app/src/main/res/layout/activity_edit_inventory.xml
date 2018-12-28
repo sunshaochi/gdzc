@@ -21,9 +21,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
                 android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -37,9 +37,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:singleLine="true"
                     android:background="@null"
                     android:hint="@string/input_inventory_list_name"
+                    android:singleLine="true"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -92,9 +92,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
                 android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_remarks"
@@ -111,8 +111,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:singleLine="true"
                     android:hint="@string/input_remarks"
+                    android:singleLine="true"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -143,8 +143,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -196,10 +196,10 @@
             android:background="@color/all_select_bg"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingBottom="9dp"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:paddingTop="9dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="9dp"
             android:visibility="gone">
 
             <LinearLayout
@@ -230,9 +230,12 @@
 
             <Button
                 android:id="@+id/btn_del"
-                android:layout_width="61dp"
+                android:layout_width="wrap_content"
                 android:layout_height="33dp"
                 android:background="@drawable/btn_orange_red"
+                android:minWidth="61dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="@string/del"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
@@ -244,10 +247,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingBottom="15dp"
             android:paddingLeft="15dp"
+            android:paddingTop="15dp"
             android:paddingRight="15dp"
-            android:paddingTop="15dp">
+            android:paddingBottom="15dp">
 
             <Button
                 android:id="@+id/btn_add"
