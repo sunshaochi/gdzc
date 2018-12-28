@@ -470,7 +470,9 @@ public class WebActivity extends BasePullRefreshActivity {
 
     private void showUpdateVersionDialog() {
         if (mVersion.getVersion_number() > Utils.getVersionCode(this)) {
-            SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+            if (mVersion.getUpdate_type() == 1) {
+                SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setUpDate(true);
             builder.setTitle(getString(R.string.version_update));

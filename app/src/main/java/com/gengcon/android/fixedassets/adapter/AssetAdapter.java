@@ -152,17 +152,15 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
         holder.tvId.setText(asset.getAsset_code());
         holder.tvStatus.setText(asset.getStatus_cn());
         holder.itemView.setTag(position);
-        if (TextUtils.isEmpty(asset.getPhotourl())) {
-            Glide.with(mContext).load(asset.getPhotourl());
-        } else {
-            Glide.with(mContext)
-                    .load(URL.BASE_URL + asset.getPhotourl())
-                    .error(R.drawable.ic_default_img)
-                    .placeholder(R.drawable.ic_default_img)
-                    .fallback(R.drawable.ic_default_img)
-                    .into(holder.ivIcon);
-        }
-//        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : URL.BASE_URL + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+//        if (!TextUtils.isEmpty(asset.getPhotourl())) {
+//            Glide.with(mContext)
+//                    .load(URL.BASE_URL + asset.getPhotourl())
+//                    .error(R.drawable.ic_default_img)
+//                    .placeholder(R.drawable.ic_default_img)
+//                    .fallback(R.drawable.ic_default_img)
+//                    .into(holder.ivIcon);
+//        }
+        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : URL.BASE_URL + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
         switch (asset.getStatus()) {
             case AssetBean.IDEL:
                 holder.tvStatus.setText(R.string.asset_status_idel);

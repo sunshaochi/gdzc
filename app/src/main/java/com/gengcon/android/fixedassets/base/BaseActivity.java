@@ -34,6 +34,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import io.reactivex.functions.Consumer;
@@ -133,7 +134,9 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
             if (!isUpdate() && mVersion.getUpdate_type() != 1) {
                 return;
             }
-            SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+            if (mVersion.getUpdate_type() == 1) {
+                SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setUpDate(true);
             builder.setTitle(getString(R.string.version_update));
@@ -223,6 +226,19 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
             if (mNetworkInfo != null) {
                 return mNetworkInfo.isAvailable();
             }
+        }
+        return false;
+    }
+
+    public boolean isNetworkOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("ping -c 3 www.baidu.com");
+            int exitValue = ipProcess.waitFor();
+            Log.i("Avalible", "Process:"+exitValue);
+            return (exitValue == 0);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
         return false;
     }

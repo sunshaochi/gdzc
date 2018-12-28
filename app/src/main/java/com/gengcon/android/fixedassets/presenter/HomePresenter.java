@@ -47,14 +47,14 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onFinished() {
                 if (isViewAttached()) {
-                    mMvpView.hideLoading();
+//                    mMvpView.hideLoading();
                 }
             }
 
             @Override
             public void onStart() {
                 if (isViewAttached()) {
-                    mMvpView.showLoading();
+//                    mMvpView.showLoading();
                 }
             }
         });
@@ -87,14 +87,14 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onFinished() {
                 if (isViewAttached()) {
-                    mMvpView.hideLoading();
+//                    mMvpView.hideLoading();
                 }
             }
 
             @Override
             public void onStart() {
                 if (isViewAttached()) {
-                    mMvpView.showLoading();
+//                    mMvpView.showLoading();
                 }
             }
         });
