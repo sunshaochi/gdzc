@@ -183,11 +183,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
             mResultList.clear();
             mResultList.addAll(inventoryR.getAsset_data().getList());
         }
-
-        int size = mSelect == AssetBean.INVENTORY_NORMAL ? inventoryR.getBase_data().getNormal_num()
-                : mSelect == AssetBean.INVENTORY_LOSS ? inventoryR.getBase_data().getLoss_num()
-                : inventoryR.getBase_data().getSurplus_num();
-        if ((size / 20 + (size % 20 > 0 ? 1 : 0)) <= mPage) {
+        if (inventoryR.getAsset_data().getPage_count() <= mPage) {
             mRefreshLayout.setEnableLoadmore(false);
         } else {
             mRefreshLayout.setEnableLoadmore(true);
