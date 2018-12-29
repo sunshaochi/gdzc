@@ -13,6 +13,6 @@ public class EditDetailModel extends BaseModel {
     ApiService.GetEditDetail editDetail = createService(ApiService.GetEditDetail.class);
 
     public Observable<Bean<InventoryDetail>> getEditDetail(String inv_no, int page) {
-        return editDetail.getEditDetail(new EditAssetRequest(inv_no, page));
+        return editDetail.getEditDetail(new EditAssetRequest(inv_no, page, 30));
     }
 }

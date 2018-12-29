@@ -2,6 +2,7 @@ package com.gengcon.android.fixedassets.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -128,6 +129,16 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+    }
+
+    @Override
+    public void showErrorMsg(int status, String msg) {
+        super.showErrorMsg(status, msg);
+    }
+
+    @Override
+    public void showCodeMsg(String code, String msg) {
+        super.showCodeMsg(code, msg);
     }
 
     @Override

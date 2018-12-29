@@ -162,6 +162,16 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
     }
 
     @Override
+    public void showErrorMsg(int status, String msg) {
+        super.showErrorMsg(status, msg);
+    }
+
+    @Override
+    public void showCodeMsg(String code, String msg) {
+        super.showCodeMsg(code, msg);
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
         if (compoundButton.getId() == R.id.ck_bluetooth) {
             if (checked) {

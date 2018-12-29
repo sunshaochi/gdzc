@@ -10,10 +10,12 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -404,10 +406,10 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (mRfidBuilder.getNegativeText().equals(getString(R.string.continu))) {
 //                    if (RolePowerManager.getInstance().checkInventoryPower(getString(R.string.preview))) {
-                        Intent intent = new Intent(InventoryDetailsActivity.this, PreviewActivity.class);
-                        intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
-                        intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mReadAssetsIds);
-                        startActivity(intent);
+                    Intent intent = new Intent(InventoryDetailsActivity.this, PreviewActivity.class);
+                    intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
+                    intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mReadAssetsIds);
+                    startActivity(intent);
 //                    } else {
 //                        showPermissionDeniedTips();
 //                    }
@@ -421,6 +423,16 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
             }
         }, getString(R.string.complete));
         mRfidBuilder.show();
+    }
+
+    @Override
+    public void showCodeMsg(String code, String msg) {
+        super.showCodeMsg(code, msg);
+    }
+
+    @Override
+    public void showErrorMsg(int status, String msg) {
+        super.showErrorMsg(status, msg);
     }
 
     private void showRfidErrorDialog() {

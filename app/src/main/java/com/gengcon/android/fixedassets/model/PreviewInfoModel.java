@@ -22,7 +22,7 @@ public class PreviewInfoModel extends BaseModel {
 //        map.put("page", page);
 //        map.put("assets_ids", new Gson().toJson(assetIds));
 //        Log.e("PreviewInfoModel", "previewInventoryInfo: ");
-        return previewInventoryInfo.previewInventoryInfo(new PreviewRequest(inv_no, (ArrayList) asset_ids, status, page));
+        return previewInventoryInfo.previewInventoryInfo(new PreviewRequest(inv_no, (ArrayList) asset_ids, status, page, 30));
 //        return previewInventoryInfo.previewInventoryInfo(docId, status, page, new Gson().toJson(assetIds));
     }
 

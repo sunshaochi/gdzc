@@ -261,6 +261,16 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
+    public void showErrorMsg(int status, String msg) {
+        super.showErrorMsg(status, msg);
+    }
+
+    @Override
+    public void showCodeMsg(String code, String msg) {
+        super.showCodeMsg(code, msg);
+    }
+
+    @Override
     public void onItemClick(int position) {
         if (mAdapter.getMode() == AssetAdapter.NORMAL) {
             Intent intent = new Intent(this, WebActivity.class);

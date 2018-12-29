@@ -389,6 +389,16 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
         return true;
     }
 
+    @Override
+    public void showCodeMsg(String code, String msg) {
+        super.showCodeMsg(code, msg);
+    }
+
+    @Override
+    public void showErrorMsg(int status, String msg) {
+        super.showErrorMsg(status, msg);
+    }
+
     private void setDel_btn_text(int selectSize) {
         if (selectSize == 0) {
             del_btn.setText("删除");

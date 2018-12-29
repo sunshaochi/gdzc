@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.view.View;
 
 import com.gengcon.android.fixedassets.R;
@@ -62,10 +64,16 @@ public class BaseFragment extends Fragment implements Iview {
 
     @Override
     public void showErrorMsg(int code, String msg) {
-        if (!isNetworkConnected(getContext())) {
-            ToastUtils.toastMessage(getContext(), "网络连接不可用");
+        if (!isNetworkConnected(getActivity())) {
+            ToastUtils.toastMessage(getActivity(), "网络连接不可用");
         } else {
-            ToastUtils.toastMessage(getContext(), msg);
+            ToastUtils.toastMessage(getActivity(), msg);
+        }
+        if (code == 401) {
+            SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+            Intent intent = new Intent(getActivity(), WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
+            startActivity(intent);
         }
     }
 

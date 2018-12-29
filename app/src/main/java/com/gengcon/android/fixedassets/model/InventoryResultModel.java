@@ -13,6 +13,6 @@ public class InventoryResultModel extends BaseModel {
     ApiService.ShowInventoryResult inventoryResult = createService(ApiService.ShowInventoryResult.class);
 
     public Observable<Bean<InventoryR>> showInventoryResult(String inv_no, int status, int page) {
-        return inventoryResult.showInventoryResult(new InventoryRRequest(inv_no, status, page));
+        return inventoryResult.showInventoryResult(new InventoryRRequest(inv_no, status, page, 30));
     }
 }

@@ -7,12 +7,14 @@ public class PreviewRequest {
     String inv_no;
     int status;
     int page;
+    int limit;
     ArrayList<String> asset_ids;
 
-    public PreviewRequest(String inv_no, ArrayList asset_ids, int status, int page) {
+    public PreviewRequest(String inv_no, ArrayList asset_ids, int status, int page, int limit) {
         this.inv_no = inv_no;
         this.status = status;
         this.page = page;
         this.asset_ids = asset_ids;
+        this.limit = limit;
     }
 }

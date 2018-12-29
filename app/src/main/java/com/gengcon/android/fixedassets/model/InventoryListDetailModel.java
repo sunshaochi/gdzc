@@ -13,6 +13,6 @@ public class InventoryListDetailModel extends BaseModel {
     ApiService.GetAssetListDetail getAssetListDetail = createService(ApiService.GetAssetListDetail.class);
 
     public Observable<Bean<InventoryDetail>> getListDetail(String inv_no, int page) {
-        return getAssetListDetail.getInventoryDetail(new InventoryAssetRequest(inv_no, page));
+        return getAssetListDetail.getInventoryDetail(new InventoryAssetRequest(inv_no, page, 30));
     }
 }

@@ -16,7 +16,7 @@ public class EditAssetListModel extends BaseModel {
     ApiService.GetEditAssetListDetail editAssetListDetail = createService(ApiService.GetEditAssetListDetail.class);
 
     public Observable<Bean<InventoryDetail>> editAssetListDetail(String inv_no, List<String> add_assetids, List<String> del_assetids, int page) {
-        return editAssetListDetail.getEditAssetListDetail(new EditAssetListRequest(inv_no, (ArrayList<String>) add_assetids, (ArrayList<String>) del_assetids, page));
+        return editAssetListDetail.getEditAssetListDetail(new EditAssetListRequest(inv_no, (ArrayList<String>) add_assetids, (ArrayList<String>) del_assetids, page, 30));
     }
 
 }
