@@ -95,7 +95,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         } else {
             ToastUtils.toastMessage(BaseActivity.this, msg);
         }
-        if (status == 401) {
+        if (status == 401 || status == 301) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
             Intent intent = new Intent(BaseActivity.this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
@@ -110,7 +110,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         } else {
             ToastUtils.toastMessage(BaseActivity.this, msg);
         }
-        if (code.equals("CODE_401")) {
+        if (code.equals("CODE_401") || code.equals("CODE_301")) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
             Intent intent = new Intent(BaseActivity.this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
@@ -235,7 +235,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         try {
             Process ipProcess = runtime.exec("ping -c 3 www.baidu.com");
             int exitValue = ipProcess.waitFor();
-            Log.i("Avalible", "Process:"+exitValue);
+            Log.i("Avalible", "Process:" + exitValue);
             return (exitValue == 0);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

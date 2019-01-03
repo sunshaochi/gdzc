@@ -49,7 +49,23 @@
         <service
             android:name="cn.jpush.android.service.PushService"
             android:process=":multiprocess"
-            tools:node="replace"/>
+            tools:node="replace" />
+
+        <receiver
+            android:name=".util.MyReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+
+                <category android:name="com.gengcon.android.fixedassets" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".ui.MainActivity"
@@ -84,6 +100,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.RFIDConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MessageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.WebActivity"

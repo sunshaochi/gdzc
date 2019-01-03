@@ -89,16 +89,16 @@ public class JCPrinter {
      */
     private static boolean printerLabel50301(Print.ListBean list) {
         mDzAPI.startJob(50, 30, 0);
-        mDzAPI.drawText(list.getTemplate_attr().get(0), 1.5, 4, 46, 6, 3.125);
-        mDzAPI.drawText(list.getTemplate_attr().get(1), 1.5, 10, 46, 6, 3.125);
-        mDzAPI.drawText(list.getTemplate_attr().get(2), 1.5, 16, 33, 6, 3.125);
-        mDzAPI.drawText(list.getTemplate_attr().get(3), 1.5, 23, 33, 6, 3.125);
-        mDzAPI.draw2DQRCode(list.getId(), 35, 15.8, 11);
-        mDzAPI.drawRectangle(1, 2, 46, 26, 0.2);
-        mDzAPI.drawLine(1, 8.5, 46.8, 8.5, 0.2);
-        mDzAPI.drawLine(1, 15, 46.8, 15, 0.2);
-        mDzAPI.drawLine(1, 21.5, 34, 21.5, 0.2);
-        mDzAPI.drawLine(34, 15, 34, 28, 0.2);
+        mDzAPI.drawText(list.getTemplate_attr().get(0), 1, 4, 45, 6, 3.125);
+        mDzAPI.drawText(list.getTemplate_attr().get(1), 1, 10, 45, 6, 3.125);
+        mDzAPI.drawText(list.getTemplate_attr().get(2), 1, 16, 32, 6, 3.125);
+        mDzAPI.drawText(list.getTemplate_attr().get(3), 1, 23, 32, 6, 3.125);
+        mDzAPI.draw2DQRCode(list.getId(), 33.7, 15.8, 11);
+        mDzAPI.drawRectangle(0, 2, 45.5, 26, 0.2);
+        mDzAPI.drawLine(0, 8.5, 45.3, 8.5, 0.2);
+        mDzAPI.drawLine(0, 15, 45.3, 15, 0.2);
+        mDzAPI.drawLine(0, 21.5, 33, 21.5, 0.2);
+        mDzAPI.drawLine(33, 15, 33, 27.8, 0.2);
         return mDzAPI.commitJob();
     }
 
@@ -130,8 +130,8 @@ public class JCPrinter {
         mDzAPI.drawText(list.getTemplate_attr().get(2), 1.5, 23., 45, 10, 3.125);
         mDzAPI.drawText(list.getTemplate_attr().get(3), 1.5, 33.26, 45, 10, 3.125);
         mDzAPI.drawText(list.getTemplate_attr().get(4), 1.5, 42.68, 45, 10, 3.125);
-        mDzAPI.drawText(list.getTemplate_attr().get(5), 1.5, 52.1, 45, 10, 2.725);
-        mDzAPI.drawText(list.getTemplate_attr().get(6), 1.5, 61.52, 45, 10, 3.125);
+        mDzAPI.drawText(list.getTemplate_attr().get(5), 1.5, 52.1, 27.5, 10, 2.725);
+        mDzAPI.drawText(list.getTemplate_attr().get(6), 1.5, 61.52, 27.5, 10, 3.125);
         return mDzAPI.commitJob();
     }
 
@@ -168,9 +168,9 @@ public class JCPrinter {
         mDzAPI.draw2DQRCode(list.getId(), 51, 5, 16);
         mDzAPI.drawText(list.getTemplate_attr().get(0), 2.5, 7, 49, 10, 3.125);
         mDzAPI.drawText(list.getTemplate_attr().get(1), 2.5, 16, 49, 10, 3.125);
-        mDzAPI.drawText(list.getTemplate_attr().get(2), 2.5, 25, 70, 10, 3.125);
-        mDzAPI.drawText(list.getTemplate_attr().get(3), 2.5, 35, 70, 10, 3.125);
-        mDzAPI.drawText(list.getTemplate_attr().get(4), 2.5, 44, 70, 10, 3.125);
+        mDzAPI.drawText(list.getTemplate_attr().get(2), 2.5, 25, 65, 10, 3.125);
+        mDzAPI.drawText(list.getTemplate_attr().get(3), 2.5, 35, 65, 10, 3.125);
+        mDzAPI.drawText(list.getTemplate_attr().get(4), 2.5, 44, 65, 10, 3.125);
 
         return mDzAPI.commitJob();
     }

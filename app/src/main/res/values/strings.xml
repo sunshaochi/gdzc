@@ -37,6 +37,7 @@
     <string name="start_inventory">开始盘点</string>
     <string name="inventory_preview">盘点预览</string>
     <string name="inventory_result">盘点结果</string>
+    <string name="message">消息</string>
     <string name="create_inventory">新建盘点单</string>
     <string name="rfid_connect">连接RFID</string>
     <string name="open_rfid">请打开RFID...</string>

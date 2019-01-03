@@ -1,7 +1,6 @@
 package com.gengcon.android.fixedassets.ui;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -30,7 +28,6 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.AssetBean;
 import com.gengcon.android.fixedassets.bean.UpdateImgRBean;
 import com.gengcon.android.fixedassets.bean.request.AddAssetRequest;
-import com.gengcon.android.fixedassets.bean.request.UpdateImgRequest;
 import com.gengcon.android.fixedassets.bean.request.UpdateVersionRequest;
 import com.gengcon.android.fixedassets.bean.result.Print;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;

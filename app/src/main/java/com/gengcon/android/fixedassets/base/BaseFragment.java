@@ -69,7 +69,7 @@ public class BaseFragment extends Fragment implements Iview {
         } else {
             ToastUtils.toastMessage(getActivity(), msg);
         }
-        if (code == 401) {
+        if (code == 401 || code == 301) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
             Intent intent = new Intent(getActivity(), WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
@@ -84,7 +84,7 @@ public class BaseFragment extends Fragment implements Iview {
         } else {
             ToastUtils.toastMessage(getActivity(), msg);
         }
-        if (code.equals("CODE_401")) {
+        if (code.equals("CODE_401") || code.equals("CODE_301")) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
             Intent intent = new Intent(getActivity(), WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);

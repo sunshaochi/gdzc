@@ -11,7 +11,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,9 +34,6 @@ import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.HomeView;
 import com.tbruyelle.rxpermissions2.Permission;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -91,6 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ((TextView) findViewById(R.id.device_management).findViewById(R.id.item_main_text)).setText(R.string.setting_management);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_user);
         ((ImageView) findViewById(R.id.iv_title_right)).setImageResource(R.drawable.ic_qr);
+        ((ImageView) findViewById(R.id.iv_title_msg)).setImageResource(R.drawable.ic_msg);
 
         mTvSize = findViewById(R.id.tv_size);
         inUseSize = findViewById(R.id.asset_inUse);
@@ -107,6 +104,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.totalLayout).setOnClickListener(this);
         findViewById(R.id.usingLayout).setOnClickListener(this);
         findViewById(R.id.freeLayout).setOnClickListener(this);
+        findViewById(R.id.iv_title_msg).setOnClickListener(this);
     }
 
     @Override
@@ -239,6 +237,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 } else {
                     ToastUtils.toastMessage(this, msg);
                 }
+                return;
+            case R.id.iv_title_msg:
+                Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+                startActivity(intent);
                 return;
             case R.id.asset_management:
                 if (isNetworkConnected(this)) {

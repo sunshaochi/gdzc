@@ -58,6 +58,8 @@ public abstract class ApiCallBack<M> implements Observer<M> {
         } else if (e instanceof ResultException) {
             if (((ResultException) e).getCode().equals("CODE_401")) {
                 onFailure(401, ((ResultException) e).getMsg());
+            } else if (((ResultException) e).getCode().equals("CODE_301")) {
+                onFailure(301, ((ResultException) e).getMsg());
             } else {
                 onFailure(-1, ((ResultException) e).getMsg());
             }
