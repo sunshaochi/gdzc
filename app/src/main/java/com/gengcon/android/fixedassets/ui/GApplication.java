@@ -54,10 +54,10 @@ public class GApplication extends Application {
         FunctionConfig functionConfig = new FunctionConfig.Builder()
                 .setEnableCamera(false)
                 .setEnableEdit(true)
-                .setEnableCrop(true)
+                .setEnableCrop(false)
                 .setEnableRotate(false)
                 .setCropSquare(true)
-                .setForceCrop(true)
+                .setForceCrop(false)
                 .setEnablePreview(false)
                 .build();
         CoreConfig coreConfig = new CoreConfig.Builder(this, new GlideImageLoader(), theme)

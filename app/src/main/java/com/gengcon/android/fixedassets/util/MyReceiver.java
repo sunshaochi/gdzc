@@ -56,9 +56,15 @@ public class MyReceiver extends BroadcastReceiver {
                     }
                     if (messageType == 1) {
                         Intent i = new Intent(context, InventoryListActivity.class);
+                        i.putExtras(bundle);
+                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
                     } else {
                         Intent i = new Intent(context, MainActivity.class);
+                        i.putExtras(bundle);
+                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
                     }
                 }

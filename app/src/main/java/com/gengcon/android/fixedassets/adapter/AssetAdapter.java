@@ -16,6 +16,7 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.AssetBean;
 import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.util.DensityUtils;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -160,7 +161,7 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
 //                    .fallback(R.drawable.ic_default_img)
 //                    .into(holder.ivIcon);
 //        }
-        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : URL.BASE_URL + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
         switch (asset.getStatus()) {
             case AssetBean.IDEL:
                 holder.tvStatus.setText(R.string.asset_status_idel);

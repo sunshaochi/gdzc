@@ -194,7 +194,7 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
         } else {
             if (mMode == QR_SCAN_LOGIN_MODE) {
                 if (StringIsDigitUtil.isLetterDigit(resultString)) {
-                    if (resultString.length() == 26) {
+                    if (resultString.length() == 24) {
                         Intent intent = getIntent();
                         intent.putExtra("resultString", resultString);
                         setResult(Constant.RESULT_QR_CODE, intent);

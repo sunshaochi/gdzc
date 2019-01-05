@@ -7,6 +7,8 @@ public class SharedPreferencesUtils {
 
     public static final String TOKEN = "token";
     private static final String FILE_NAME = "share_data";
+    public static final String IMG_URL = "imgUrl";
+    public static final String IS_SUPERADMIN = "is_superadmin";
 
     private static SharedPreferencesUtils mInstance;
     private Context mContext;

@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.AssetBean;
+import com.gengcon.android.fixedassets.bean.LoginUserBean;
 import com.gengcon.android.fixedassets.bean.UpdateImgRBean;
 import com.gengcon.android.fixedassets.bean.request.AddAssetRequest;
 import com.gengcon.android.fixedassets.bean.request.UpdateVersionRequest;
@@ -159,6 +160,7 @@ public class WebActivity extends BasePullRefreshActivity {
                     }
                     mWebView.loadUrl("javascript:beCall(" + "'" + new Gson().toJson(new AddAssetRequest(assets, ids)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.ABOUTUS)) {
+                    String versionName = Utils.getVersionName(WebActivity.this);
                     mWebView.loadUrl("javascript:checkVersion(" + "'" + new Gson().toJson(new UpdateVersionRequest(versionName, isUpdate)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.LOGIN)) {
                     rgsId = JPushInterface.getRegistrationID(WebActivity.this);
@@ -226,9 +228,11 @@ public class WebActivity extends BasePullRefreshActivity {
     }
 
     @JavascriptInterface
-    public void login(String token) throws JSONException {
-        JSONObject object = new JSONObject(token);
-        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.TOKEN, object.getString("token"));
+    public void login(String token) {
+        LoginUserBean userBean = new Gson().fromJson(token, LoginUserBean.class);
+        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.TOKEN, userBean.getToken());
+        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IMG_URL, userBean.getImgurl());
+        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IS_SUPERADMIN, userBean.getIs_superadmin());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -431,16 +435,6 @@ public class WebActivity extends BasePullRefreshActivity {
             ToastUtils.toastMessage(WebActivity.this, errorMsg);
         }
     };
-
-    @Override
-    public void showErrorMsg(int code, String msg) {
-        super.showErrorMsg(code, msg);
-    }
-
-    @Override
-    public void showCodeMsg(String code, String msg) {
-        super.showCodeMsg(code, msg);
-    }
 
     @Override
     protected void onResume() {
