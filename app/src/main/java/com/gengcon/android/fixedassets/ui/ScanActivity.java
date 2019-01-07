@@ -222,7 +222,7 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                 if (duplicate(resultString)) {
                     mAssetIds.add(resultString);
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
                 builder.setTitle(R.string.tips);
                 builder.setText(R.string.already_inventory);
                 builder.setNegativeButtonClickable(true);

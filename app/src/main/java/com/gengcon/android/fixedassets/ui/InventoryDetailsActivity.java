@@ -382,7 +382,7 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     private void showRfidInventoryingDialog() {
-        mRfidBuilder = new AlertDialog.Builder(this);
+        mRfidBuilder = new AlertDialog.Builder(this, false);
         mRfidBuilder.setTitle(R.string.inventorying);
         mRfidBuilder.setText(getString(R.string.pending_inventory_assets) + inventoryDetail.getAll_ids().size() + getString(R.string.item) + "\r\n" + getString(R.string.actual_inventory_size) + mReadAssetsIds.size() + getString(R.string.item));
         mRfidBuilder.setNegativeDismiss(false);
@@ -436,7 +436,7 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     private void showRfidErrorDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
         builder.setTitle(R.string.tips);
         builder.setText(getString(R.string.open_rfid) + "\r\n" + getString(R.string.if_using_ordinary_labels) + "\r\n" + getString(R.string.place_click_single_inventory));
 //        builder.setNegativeButton(new DialogInterface.OnClickListener() {
@@ -455,7 +455,7 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     private void showUploadDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
         builder.setTitle(R.string.tips);
         SpannableString spannableString = new SpannableString(getString(R.string.pending_inventory_assets) + mResultInventoryList.size() + getString(R.string.item) + "\r\n"
                 + getString(R.string.actual_inventory_size) + mReadAssetsIds.size() + getString(R.string.item) + "\r\n"

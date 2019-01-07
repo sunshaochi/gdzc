@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -200,7 +201,7 @@ public class PreviewActivity extends BasePullRefreshActivity implements View.OnC
         SpannableString spannableString = new SpannableString(getString(R.string.pending_inventory_assets) + (mResultPreviewInfo.getBase_data().getLoss_num() + mResultPreviewInfo.getBase_data().getNormal_num()) + getString(R.string.item) + "\r\n"
                 + getString(R.string.actual_inventory_size) + mAssetIds.size() + getString(R.string.item) + "\r\n"
                 + getString(R.string.can_upload));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
         builder.setTitle(R.string.tips);
         builder.setText(spannableString.toString());
         builder.setNegativeButton(new DialogInterface.OnClickListener() {

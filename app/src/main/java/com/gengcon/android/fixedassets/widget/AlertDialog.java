@@ -8,9 +8,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.util.DensityUtils;
 
 public class AlertDialog extends Dialog {
@@ -27,14 +30,24 @@ public class AlertDialog extends Dialog {
         private View mContentView;
         private TextView mTvText;
         private boolean isUpdate;
+        private ImageView imgView;
+        private String url;
+        private boolean isImg;
 
         private OnClickListener mPositiveListener, mNeutralListener, mNegativeListener;
 
-        public Builder(Context context) {
+        public Builder(Context context, boolean isImg) {
             mContext = context;
-            mContentView = LayoutInflater.from(mContext).inflate(
-                    R.layout.alert_dialog, null);
-            mTvText = mContentView.findViewById(R.id.tv_text);
+            this.isImg = isImg;
+            if (isImg) {
+                mContentView = LayoutInflater.from(mContext).inflate(
+                        R.layout.alert_dialog_img, null);
+                imgView = mContentView.findViewById(R.id.summaryImg);
+            } else {
+                mContentView = LayoutInflater.from(mContext).inflate(
+                        R.layout.alert_dialog, null);
+                mTvText = mContentView.findViewById(R.id.tv_text);
+            }
             mNegativeDismiss = true;
             mNeutralDismiss = true;
             mPositiveDismiss = true;
@@ -57,6 +70,11 @@ public class AlertDialog extends Dialog {
 
         public Builder setText(int resId) {
             mText = mContext.getString(resId);
+            return this;
+        }
+
+        public Builder setImg(String url) {
+            this.url = url;
             return this;
         }
 
@@ -194,13 +212,67 @@ public class AlertDialog extends Dialog {
             return dialog;
         }
 
-        public AlertDialog show() {
-            AlertDialog dialog = create();
-            if (mContext instanceof Activity
-                    && !((Activity) mContext).isFinishing()) {
-                dialog.show();
+        public AlertDialog createImg() {
+            final AlertDialog dialog = new AlertDialog(mContext);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setContentView(mContentView);
+            Glide.with(mContext)
+                    .load(URL.BASE_URL + url)
+                    .into(imgView);
+
+            if (TextUtils.isEmpty(mPositiveText)) {
+                mContentView.findViewById(R.id.btn_positive).setVisibility(View.GONE);
+            } else {
+                ((Button) mContentView.findViewById(R.id.btn_positive)).setText(mPositiveText);
+                mContentView.findViewById(R.id.btn_positive).setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if (mPositiveDismiss)
+                            dialog.dismiss();
+                        if (mPositiveListener != null) {
+                            mPositiveListener.onClick(dialog, BUTTON_POSITIVE);
+                        }
+                    }
+                });
+            }
+
+            if (TextUtils.isEmpty(mNeutralText)) {
+                mContentView.findViewById(R.id.ll_neutral).setVisibility(View.GONE);
+            } else {
+                ((Button) mContentView.findViewById(R.id.btn_neutral)).setText(mNeutralText);
+                mContentView.findViewById(R.id.btn_neutral).setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if (mNeutralDismiss)
+                            dialog.dismiss();
+                        if (mNeutralListener != null) {
+                            mNeutralListener.onClick(dialog, BUTTON_NEUTRAL);
+                        }
+                    }
+                });
             }
             return dialog;
+        }
+
+        public AlertDialog show() {
+            if (isImg) {
+                AlertDialog dialog = createImg();
+                if (mContext instanceof Activity
+                        && !((Activity) mContext).isFinishing()) {
+                    dialog.show();
+                }
+                return dialog;
+            } else {
+                AlertDialog dialog = create();
+                if (mContext instanceof Activity
+                        && !((Activity) mContext).isFinishing()) {
+                    dialog.show();
+                }
+                return dialog;
+            }
         }
 
     }

@@ -137,7 +137,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
             if (mVersion.getUpdate_type() == 1) {
                 SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
             builder.setUpDate(true);
             builder.setTitle(getString(R.string.version_update));
             StringBuilder updateContent = new StringBuilder();

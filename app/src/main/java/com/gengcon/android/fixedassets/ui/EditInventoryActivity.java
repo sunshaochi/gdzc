@@ -248,7 +248,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
     }
 
     private void showSavedDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
         builder.setTitle(R.string.tips);
         builder.setText(R.string.inventoty_list_save_successed);
 //        builder.setNegativeButton(new DialogInterface.OnClickListener() {

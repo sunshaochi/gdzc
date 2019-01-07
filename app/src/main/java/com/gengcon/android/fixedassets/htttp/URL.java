@@ -17,8 +17,8 @@ public class URL {
     /**
      * V3.0正式服务器
      */
-    public static final String BASE_URL = "http://api.jingchenyun.com";
-    public static final String HTTP_HEAD = "http://apps.jingchenyun.com/#/";
+//    public static final String BASE_URL = "http://api.jingchenyun.com";
+//    public static final String HTTP_HEAD = "http://apps.jingchenyun.com/#/";
 
     /**
      * 本地部署服务器
@@ -40,9 +40,9 @@ public class URL {
     /**
      * V3.0测试
      */
-//    public static final String BASE_URL = "http://api.g.jc-test.cn/";
-//////    public static final String HTTP_HEAD = "http://api.jc-saas.com.cn/#/home/project/api/";
-//    public static final String HTTP_HEAD = "http://mobile.g.jc-test.cn/#/";
+    public static final String BASE_URL = "http://api.g.jc-test.cn/";
+////    public static final String HTTP_HEAD = "http://api.jc-saas.com.cn/#/home/project/api/";
+    public static final String HTTP_HEAD = "http://mobile.g.jc-test.cn/#/";
 
     /**
      * V3.0开发

@@ -185,7 +185,7 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
     }
 
     private void showDeleteDialog(final String docId, final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), false);
         builder.setTitle(R.string.tips);
         builder.setText(R.string.inventory_delete);
         builder.setNegativeButton(new DialogInterface.OnClickListener() {
