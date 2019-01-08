@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,19 +49,21 @@ public class MyReceiver extends BroadcastReceiver {
                 Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
                 String msg = bundle.getString(JPushInterface.EXTRA_EXTRA);
                 if (!TextUtils.isEmpty(msg)) {
-                    Gson gson = new Gson();
-                    MessageType message = gson.fromJson(msg, MessageType.class);
-                    int messageType = message.getType();
-                    if (!isBackground(context)){
+                    JSONObject msgJson = new JSONObject(msg);
+                    int messageType = msgJson.getInt("type");
+                    Logger.d(TAG, "[MyReceiver] 用户点击打开了通知: " + messageType);
+                    if (!isBackground(context)) {
                         return;
                     }
                     if (messageType == 1) {
+                        Logger.d(TAG, "[MyReceiver] 用户打开了盘点" + messageType);
                         Intent i = new Intent(context, InventoryListActivity.class);
                         i.putExtras(bundle);
                         //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
                     } else {
+                        Logger.d(TAG, "[MyReceiver] 用户打开了主页" + messageType);
                         Intent i = new Intent(context, MainActivity.class);
                         i.putExtras(bundle);
                         //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -148,17 +151,26 @@ public class MyReceiver extends BroadcastReceiver {
 //        }
 //    }
 
-    public class MessageType {
-        int type;
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-    }
+//    public class MessageType implements Serializable {
+//        private String inv_no;
+//        private int type;
+//
+//        public int getType() {
+//            return type;
+//        }
+//
+//        public void setType(int type) {
+//            this.type = type;
+//        }
+//
+//        public String getInv_no() {
+//            return inv_no;
+//        }
+//
+//        public void setInv_no(String inv_no) {
+//            this.inv_no = inv_no;
+//        }
+//    }
 
 
     public static boolean isBackground(Context context) {
