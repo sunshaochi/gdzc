@@ -57,6 +57,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
     private int mMode = EditInventoryAdapter.NORMAL;
     private boolean mIsAllSelect = false;
     private ArrayList<AssetBean> mAssets;
+    private ArrayList<String> assetIds;
     private boolean mIsCreated = false;
     private boolean editAssets = false;
     private int mPage = 1;
@@ -80,6 +81,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_inventory);
         mAssets = new ArrayList<>();
+        assetIds = new ArrayList<>();
         initIntent(getIntent());
         initView();
     }
@@ -169,7 +171,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
             case R.id.btn_add:
                 Intent intent = new Intent(this, WebActivity.class);
                 intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BECALL);
-                intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSETS, mAssets);
+                intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSETS, assetIds);
                 intent.putExtra("webName", "资产列表");
                 intent.putExtra("webTitle", "选择");
                 intent.putExtra("intentType", "edit");
@@ -321,10 +323,12 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void showInventoryResult(InventoryDetail inventoryDetail) {
         mAssets.clear();
+        assetIds.clear();
         List<AssetBean> assets = inventoryDetail.getList();
         assetSize = inventoryDetail.getAll_ids().size();
         mAdapter.changeDataSource(assets);
         mAssets.addAll(assets);
+        assetIds.addAll(inventoryDetail.getAll_ids());
         SpannableString spannableString = new SpannableString(getString(R.string.already_chosen) + getString(R.string.pending_inventory_assets) + assetSize + getString(R.string.item));
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.light_gray_text)), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.blue)), 8, spannableString.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
