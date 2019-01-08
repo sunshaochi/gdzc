@@ -74,6 +74,7 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     private InventoryDetail inventoryDetail;
     private ArrayList<String> mReadAssetsIds;
     private int mInventorySize = 0;
+    private int waitInventorySize;
     private boolean mIsOpenRFID = false;
     private Runnable mInventoryRunnable;
     private Handler mHandler;
@@ -457,7 +458,7 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     private void showUploadDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
         builder.setTitle(R.string.tips);
-        SpannableString spannableString = new SpannableString(getString(R.string.pending_inventory_assets) + mResultInventoryList.size() + getString(R.string.item) + "\r\n"
+        SpannableString spannableString = new SpannableString(getString(R.string.pending_inventory_assets) + waitInventorySize + getString(R.string.item) + "\r\n"
                 + getString(R.string.actual_inventory_size) + mReadAssetsIds.size() + getString(R.string.item) + "\r\n"
                 + getString(R.string.can_upload));
         builder.setText(spannableString.toString());
@@ -494,6 +495,7 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         mTvSize.setText(spannableString);
         mAdapter.addDataSource(inventoryDetailResult.getList());
         mResultInventoryList.addAll(inventoryDetailResult.getList());
+        waitInventorySize = inventoryDetailResult.getTotal();
         if (mPage >= inventoryDetailResult.getPage_count()) {
             mRefreshLayout.setEnableLoadmore(false);
         } else {

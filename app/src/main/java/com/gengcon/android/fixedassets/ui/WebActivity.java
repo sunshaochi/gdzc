@@ -153,12 +153,8 @@ public class WebActivity extends BasePullRefreshActivity {
                     mWebView.loadUrl("javascript:beDetail(" + "'" + isHistory + "&" + id + "&" + docId + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.BECALL)) {
                     intentType = getIntent().getStringExtra("intentType");
-                    ArrayList<AssetBean> assets = (ArrayList<AssetBean>) getIntent().getSerializableExtra(Constant.INTENT_EXTRA_KEY_ASSETS);
-                    ArrayList<String> ids = new ArrayList<>();
-                    for (int i = 0; i < assets.size(); i++) {
-                        ids.add(assets.get(i).getAsset_id());
-                    }
-                    mWebView.loadUrl("javascript:beCall(" + "'" + new Gson().toJson(new AddAssetRequest(assets, ids)) + "'" + ")");
+                    ArrayList<String> assetIds = (ArrayList<String>) getIntent().getSerializableExtra(Constant.INTENT_EXTRA_KEY_ASSETS);
+                    mWebView.loadUrl("javascript:beCall(" + "'" + new Gson().toJson(new AddAssetRequest(assetIds)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.ABOUTUS)) {
                     String versionName = Utils.getVersionName(WebActivity.this);
                     mWebView.loadUrl("javascript:checkVersion(" + "'" + new Gson().toJson(new UpdateVersionRequest(versionName, isUpdate)) + "'" + ")");

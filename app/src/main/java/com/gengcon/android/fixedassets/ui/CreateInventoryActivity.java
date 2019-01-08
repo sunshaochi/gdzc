@@ -129,7 +129,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
             case R.id.btn_add:
                 Intent intent = new Intent(this, WebActivity.class);
                 intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BECALL);
-                intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSETS, mAssets);
+                intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSETS, getAssetIds());
                 intent.putExtra("webName", "资产列表");
                 intent.putExtra("webTitle", "选择");
                 intent.putExtra("intentType", "create");
