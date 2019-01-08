@@ -101,7 +101,8 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.iv_title_left:
-                onBackPressed();
+                Intent intent1 = new Intent(InventoryListActivity.this, MainActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.myTaskLayout:
                 myTaskTitle.setTextColor(getResources().getColor(R.color.blue));
