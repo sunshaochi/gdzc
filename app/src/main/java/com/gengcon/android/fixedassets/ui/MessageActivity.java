@@ -1,21 +1,50 @@
 package com.gengcon.android.fixedassets.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.adapter.OnItemClickListener;
+import com.gengcon.android.fixedassets.adapter.MessageAdapter;
+import com.gengcon.android.fixedassets.base.BaseActivity;
+import com.gengcon.android.fixedassets.bean.result.MessageBean;
+import com.gengcon.android.fixedassets.htttp.URL;
+import com.gengcon.android.fixedassets.presenter.HomePresenter;
+import com.gengcon.android.fixedassets.presenter.MessagePresenter;
+import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.view.MessageView;
+import com.gengcon.android.fixedassets.widget.MyRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class MessageActivity extends BasePullRefreshActivity implements View.OnClickListener, OnItemClickListener {
+public class MessageActivity extends BaseActivity implements View.OnClickListener, MessageView, MessageAdapter.MessageCallback {
+
+    private MessageAdapter messageAdapter;
+    private MessagePresenter messagePresenter;
+    private List<MessageBean.ListBean> messageList;
+    private MyRecyclerView recyclerView;
+    private LinearLayout noDataLayout;
+    private HomePresenter homePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+        messageList = new ArrayList<>();
+        messagePresenter = new MessagePresenter();
+        homePresenter = new HomePresenter();
+        messagePresenter.attachView(this);
+        messagePresenter.getUserNotice();
         initView();
     }
 
@@ -26,6 +55,13 @@ public class MessageActivity extends BasePullRefreshActivity implements View.OnC
         ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.message);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_home);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
+        noDataLayout = findViewById(R.id.ll_no_data);
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        messageAdapter = new MessageAdapter(this);
+        messageAdapter.setCallBack(this);
+        recyclerView.setAdapter(messageAdapter);
     }
 
     @Override
@@ -53,8 +89,21 @@ public class MessageActivity extends BasePullRefreshActivity implements View.OnC
     }
 
     @Override
-    public void onItemClick(int position) {
-
+    public void showMessage(MessageBean message) {
+        if (message.getList() != null && message.getList().size() > 0) {
+            noDataLayout.setVisibility(View.GONE);
+            messageList = message.getList();
+            messageAdapter.addDataSource(messageList);
+        } else {
+            noDataLayout.setVisibility(View.VISIBLE);
+        }
     }
 
+    @Override
+    public void clickMessage(int msgId) {
+        homePresenter.getReadEditNotice(msgId);
+        Intent webIntent = new Intent(MessageActivity.this, MessageDetailsActivity.class);
+        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + msgId);
+        startActivity(webIntent);
+    }
 }

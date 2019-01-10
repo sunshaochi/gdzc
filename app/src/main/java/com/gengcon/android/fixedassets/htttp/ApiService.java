@@ -13,6 +13,7 @@ import com.gengcon.android.fixedassets.bean.request.UploadInventoryRequest;
 import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryHeadDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryR;
+import com.gengcon.android.fixedassets.bean.result.MessageBean;
 import com.gengcon.android.fixedassets.bean.result.PreviewInfo;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.Home;
@@ -20,6 +21,7 @@ import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
 import com.gengcon.android.fixedassets.bean.result.ResultInventorysNum;
 import com.gengcon.android.fixedassets.bean.result.ResultRole;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
+import com.gengcon.android.fixedassets.bean.result.UserPopupNotice;
 
 import java.util.List;
 
@@ -158,5 +160,29 @@ public class ApiService {
     public interface AssetDetail {
         @GET("asset/scanDetail")
         Observable<Bean> getAssetDetail(@Query("asset_id") String asset_id);
+    }
+
+    //首页消息通知
+    public interface GetUserPopupNotice {
+        @GET("noticeTag/getUserPopupNotice")
+        Observable<Bean<UserPopupNotice>> getUserPopupNotice();
+    }
+
+    //全体消息已读接口
+    public interface GetReadAddNotice {
+        @POST("noticeTag/add")
+        Observable<Bean> getReadAddNotice(@Query("notice_id") int notice_id);
+    }
+
+    //非全体消息已读接口
+    public interface GetReadEditNotice {
+        @POST("noticeTag/edit")
+        Observable<Bean> getReadEditNotice(@Query("notice_id") int notice_id);
+    }
+
+    //消息列表页面
+    public interface GetUserNotice {
+        @GET("noticeTag/getUserNotice")
+        Observable<Bean<MessageBean>> getUserNotice();
     }
 }

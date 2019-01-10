@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.ui;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -23,6 +24,7 @@ import com.gengcon.android.fixedassets.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.Home;
 import com.gengcon.android.fixedassets.bean.result.ResultRole;
+import com.gengcon.android.fixedassets.bean.result.UserPopupNotice;
 import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.model.AssetDetailModel;
 import com.gengcon.android.fixedassets.presenter.HomePresenter;
@@ -33,6 +35,7 @@ import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.HomeView;
+import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.tbruyelle.rxpermissions2.Permission;
 
 import io.reactivex.Observable;
@@ -50,6 +53,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private HomePresenter mPresenter;
     private boolean mIsBackPressed;
     private ScannerInerface mControll;
+    private ImageView messageView;
+    private UserPopupNotice userPopupNotice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mPresenter = new HomePresenter();
         mPresenter.attachView(this);
         mPresenter.getRoute();
+        mPresenter.getUsetNotice();
         initReceiver();
         // 获取测试设备ID
         String testDeviceId = StatService.getTestDeviceId(this);
@@ -92,6 +98,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mTvSize = findViewById(R.id.tv_size);
         inUseSize = findViewById(R.id.asset_inUse);
         idleSize = findViewById(R.id.asset_idle);
+        messageView = findViewById(R.id.iv_title_msg);
 
         findViewById(R.id.iv_title_left).setOnClickListener(this);
         findViewById(R.id.iv_title_right).setOnClickListener(this);
@@ -104,7 +111,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.totalLayout).setOnClickListener(this);
         findViewById(R.id.usingLayout).setOnClickListener(this);
         findViewById(R.id.freeLayout).setOnClickListener(this);
-        findViewById(R.id.iv_title_msg).setOnClickListener(this);
+        messageView.setOnClickListener(this);
     }
 
     @Override
@@ -475,5 +482,92 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void showApiRoute(ResultRole apiRoute) {
         RolePowerManager.getInstance().setApi_route(apiRoute);
+    }
+
+    @Override
+    public void showNotice(UserPopupNotice userPopupNotice) {
+        this.userPopupNotice = userPopupNotice;
+        if (userPopupNotice.getUnread() == 0) {
+            messageView.setImageResource(R.drawable.ic_msg);
+        } else {
+            messageView.setImageResource(R.drawable.ic_msg_unread);
+        }
+        if (userPopupNotice.getList() != null) {
+            String photoUrl = userPopupNotice.getList().getPhotourl();
+            int model = userPopupNotice.getList().getPush_model();
+            if (!TextUtils.isEmpty(photoUrl)) {
+                showNoticeImgDialog(photoUrl, model);
+            } else {
+                showNoticeDialog(model);
+            }
+        }
+    }
+
+    private void showNoticeImgDialog(String url, int model) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, true);
+        builder.setImg(url);
+        if (model == 1) {
+            builder.setPositiveButton(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mPresenter.getReadAddNotice(userPopupNotice.getList().getId());
+                    dialog.dismiss();
+                }
+            }, "我知道了");
+        } else {
+            builder.setPositiveButton(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent webIntent = new Intent(MainActivity.this, MessageDetailsActivity.class);
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + userPopupNotice.getList().getId());
+                    startActivity(webIntent);
+                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
+                    dialog.dismiss();
+
+                }
+            }, "立即查看");
+            builder.setNeutralButton(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
+                    dialog.dismiss();
+                }
+            }, "稍后查看");
+        }
+        builder.show();
+    }
+
+    private void showNoticeDialog(int model) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
+        builder.setTitle(userPopupNotice.getList().getTitle());
+        builder.setText(userPopupNotice.getList().getOutline());
+        if (model == 1) {
+            builder.setPositiveButton(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mPresenter.getReadAddNotice(userPopupNotice.getList().getId());
+                    dialog.dismiss();
+                }
+            }, "我知道了");
+        } else {
+            builder.setPositiveButton(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent webIntent = new Intent(MainActivity.this, MessageDetailsActivity.class);
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + userPopupNotice.getList().getId());
+                    startActivity(webIntent);
+                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
+                    dialog.dismiss();
+                }
+            }, "立即查看");
+            builder.setNeutralButton(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
+                    dialog.dismiss();
+                }
+            }, "稍后查看");
+        }
+        builder.show();
     }
 }

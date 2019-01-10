@@ -106,6 +106,10 @@
             android:name=".ui.MessageActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.MessageDetailsActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+        <activity
             android:name=".ui.WebActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

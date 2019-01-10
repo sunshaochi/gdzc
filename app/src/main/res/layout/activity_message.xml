@@ -1,60 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/asset_gray"
+    android:background="#eeeeee"
     android:orientation="vertical">
 
     <include layout="@layout/item_title_3" />
 
-    <LinearLayout
-        android:id="@+id/ll_no_data"
-        android:gravity="center"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="visible"
-        tools:visibility="visible"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_no_data" />
+        <com.gengcon.android.fixedassets.widget.MyRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/asset_gray"
+            android:layout_marginBottom="9dp"
+            android:overScrollMode="never" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="50dp"
-            android:text="暂无消息"
-            android:textColor="@color/light_gray_text"
-            android:textSize="15sp" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_no_data" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="50dp"
+                android:text="暂无消息"
+                android:textColor="@color/light_gray_text"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </FrameLayout>
+
 
     <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-        <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout-->
-            <!--android:id="@+id/refreshLayout"-->
-            <!--android:layout_marginTop="6dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
+    <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout-->
+    <!--android:id="@+id/refreshLayout"-->
+    <!--android:layout_marginTop="6dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-            <!--<com.gengcon.android.fixedassets.widget.MyRecyclerView-->
-                <!--android:id="@+id/recyclerview"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="@color/asset_gray"-->
-                <!--android:overScrollMode="never" />-->
-        <!--</com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
+    <!--</com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
 
-        <!--<include layout="@layout/layout_default"/>-->
+    <!--<include layout="@layout/layout_default"/>-->
 
     <!--</RelativeLayout>-->
 

@@ -61,5 +61,6 @@ public class URL {
     public static final String ABOUTUS = "index/aboutUs";
 
     public static final String SCANDETAIL = "index/scanDetail";
+    public static final String MESSAGEDETAIL = "index/notice?id=";
 
 }
