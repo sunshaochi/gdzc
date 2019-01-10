@@ -37,46 +37,46 @@ android {
                 abiFilters("armeabi-v7a", "x86")
             }
 
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME : applicationId,
-                    JPUSH_APPKEY : "f01f3be3210bf30e90f8b02a", //JPush 上注册的包名对应的 Appkey.
-                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
-            ]
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "f01f3be3210bf30e90f8b02a", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
 
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.fixedAssets
         }
-        buildTypes {
-            release {
-                minifyEnabled true
-                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-                signingConfig signingConfigs.fixedAssets
-            }
-            debug {
-                signingConfig signingConfigs.fixedAssets
-            }
-        }
-        sourceSets {
-            main {
-                jniLibs.srcDirs = ['libs']
-            }
-        }
-        externalNativeBuild {
-            cmake {
-                path "CMakeLists.txt"
-            }
-        }
-        lintOptions {
-            abortOnError false
+        debug {
+            signingConfig signingConfigs.fixedAssets
         }
     }
-
-    MtjCirclePluginConfig {
-        // 设置appkey，必须设置，否则插件使用无效
-        appkey = 'bb991b6f58'
-        // 设置debug 开关，默认关闭，如果需要查看日志则打开开关（true），建议正式版关闭以避免影响性能
-        debug = true
-        // 默认启动此插件，如果开发者不需要可以禁用（false）
-        enabled = true
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+MtjCirclePluginConfig {
+    // 设置appkey，必须设置，否则插件使用无效
+    appkey = 'bb991b6f58'
+    // 设置debug 开关，默认关闭，如果需要查看日志则打开开关（true），建议正式版关闭以避免影响性能
+    debug = true
+    // 默认启动此插件，如果开发者不需要可以禁用（false）
+    enabled = true
+}
 
     dependencies {
         implementation fileTree(include: ['*.jar'], dir: 'libs')
