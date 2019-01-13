@@ -299,7 +299,6 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
     private String readConnectDeviceName() {
         SharedPreferences read = getSharedPreferences("Connect", MODE_PRIVATE);
         return read.getString("device_name", "");
-
     }
 
     @Override

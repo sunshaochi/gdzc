@@ -19,15 +19,15 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private HomeModel model;
     private RouteModel routeModel;
     private UserPopupNoticeModel userPopupNoticeModel;
-    private ReadAddNoticeModel addNoticeModel;
-    private ReadEditNoticeModel editNoticeModel;
+//    private ReadAddNoticeModel addNoticeModel;
+//    private ReadEditNoticeModel editNoticeModel;
 
     public HomePresenter() {
         this.model = new HomeModel();
         this.routeModel = new RouteModel();
         this.userPopupNoticeModel = new UserPopupNoticeModel();
-        this.addNoticeModel = new ReadAddNoticeModel();
-        this.editNoticeModel = new ReadEditNoticeModel();
+//        this.addNoticeModel = new ReadAddNoticeModel();
+//        this.editNoticeModel = new ReadEditNoticeModel();
     }
 
     public void getHome() {
@@ -145,54 +145,54 @@ public class HomePresenter extends BasePresenter<HomeView> {
         });
     }
 
-    public void getReadAddNotice(int notice_id) {
-        subscribe(addNoticeModel.getReadAddNotice(notice_id), new ApiCallBack<Bean>() {
+//    public void getReadAddNotice(int notice_id) {
+//        subscribe(addNoticeModel.getReadAddNotice(notice_id), new ApiCallBack<Bean>() {
+//
+//            @Override
+//            public void onSuccess(Bean modelBean) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int status, String errorMsg) {
+//
+//            }
+//
+//            @Override
+//            public void onFinished() {
+//
+//            }
+//
+//            @Override
+//            public void onStart() {
+//
+//            }
+//        });
+//    }
 
-            @Override
-            public void onSuccess(Bean modelBean) {
-
-            }
-
-            @Override
-            public void onFailure(int status, String errorMsg) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-
-            @Override
-            public void onStart() {
-
-            }
-        });
-    }
-
-    public void getReadEditNotice(int notice_id) {
-        subscribe(editNoticeModel.getReadEditNotice(notice_id), new ApiCallBack<Bean>() {
-
-            @Override
-            public void onSuccess(Bean modelBean) {
-
-            }
-
-            @Override
-            public void onFailure(int status, String errorMsg) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-
-            @Override
-            public void onStart() {
-
-            }
-        });
-    }
+//    public void getReadEditNotice(int notice_id) {
+//        subscribe(editNoticeModel.getReadEditNotice(notice_id), new ApiCallBack<Bean>() {
+//
+//            @Override
+//            public void onSuccess(Bean modelBean) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int status, String errorMsg) {
+//
+//            }
+//
+//            @Override
+//            public void onFinished() {
+//
+//            }
+//
+//            @Override
+//            public void onStart() {
+//
+//            }
+//        });
+//    }
 
 }

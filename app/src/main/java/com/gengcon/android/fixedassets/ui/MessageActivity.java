@@ -33,7 +33,7 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
     private List<MessageBean.ListBean> messageList;
     private MyRecyclerView recyclerView;
     private LinearLayout noDataLayout;
-    private HomePresenter homePresenter;
+//    private HomePresenter homePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
 
         messageList = new ArrayList<>();
         messagePresenter = new MessagePresenter();
-        homePresenter = new HomePresenter();
+//        homePresenter = new HomePresenter();
         messagePresenter.attachView(this);
         messagePresenter.getUserNotice();
         initView();
@@ -101,7 +101,7 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void clickMessage(int msgId) {
-        homePresenter.getReadEditNotice(msgId);
+//        homePresenter.getReadEditNotice(msgId);
         Intent webIntent = new Intent(MessageActivity.this, MessageDetailsActivity.class);
         webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + msgId);
         startActivity(webIntent);

@@ -487,11 +487,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void showNotice(UserPopupNotice userPopupNotice) {
         this.userPopupNotice = userPopupNotice;
-        if (userPopupNotice.getUnread() == 0) {
-            messageView.setImageResource(R.drawable.ic_msg);
-        } else {
-            messageView.setImageResource(R.drawable.ic_msg_unread);
-        }
+//        if (userPopupNotice.getUnread() == 0) {
+//            messageView.setImageResource(R.drawable.ic_msg);
+//        } else {
+//            messageView.setImageResource(R.drawable.ic_msg_unread);
+//        }
         if (userPopupNotice.getList() != null) {
             String photoUrl = userPopupNotice.getList().getPhotourl();
             int model = userPopupNotice.getList().getPush_model();
@@ -510,7 +510,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             builder.setPositiveButton(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mPresenter.getReadAddNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
             }, "我知道了");
@@ -521,18 +520,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     Intent webIntent = new Intent(MainActivity.this, MessageDetailsActivity.class);
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + userPopupNotice.getList().getId());
                     startActivity(webIntent);
-                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
+//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
 
                 }
-            }, "立即查看");
+            }, "查看详情");
             builder.setNeutralButton(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 //                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
-            }, "稍后查看");
+            }, "我知道了");
         }
         builder.show();
     }
@@ -545,7 +544,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             builder.setPositiveButton(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mPresenter.getReadAddNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
             }, "我知道了");
@@ -556,17 +554,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     Intent webIntent = new Intent(MainActivity.this, MessageDetailsActivity.class);
                     webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + userPopupNotice.getList().getId());
                     startActivity(webIntent);
-                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
+//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
-            }, "立即查看");
+            }, "查看详情");
             builder.setNeutralButton(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 //                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
-            }, "稍后查看");
+            }, "我知道了");
         }
         builder.show();
     }
