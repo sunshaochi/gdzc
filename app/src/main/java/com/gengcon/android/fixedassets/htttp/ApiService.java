@@ -185,4 +185,10 @@ public class ApiService {
         @GET("noticeTag/getUserNotice")
         Observable<Bean<MessageBean>> getUserNotice();
     }
+
+    //打印接口
+    public interface GetPrintTag {
+        @POST("printTag/addLog")
+        Observable<Bean> getPrintTag(@Query("equipment_name") String equipment_name);
+    }
 }

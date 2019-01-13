@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.ui;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -33,6 +34,7 @@ import com.gengcon.android.fixedassets.bean.request.UpdateVersionRequest;
 import com.gengcon.android.fixedassets.bean.result.Print;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
 import com.gengcon.android.fixedassets.htttp.URL;
+import com.gengcon.android.fixedassets.presenter.WebPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ImageFactory;
 import com.gengcon.android.fixedassets.util.JCPrinter;
@@ -86,6 +88,7 @@ public class WebActivity extends BasePullRefreshActivity {
     private boolean isUpdate;
     private UpdateVersion mVersion;
     private String rgsId;
+    private WebPresenter webPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +112,8 @@ public class WebActivity extends BasePullRefreshActivity {
         } else {
             toolBar.setVisibility(View.GONE);
         }
+        webPresenter = new WebPresenter();
+        webPresenter.attachView(this);
         initView();
         imageFactory = new ImageFactory();
         mActionSheet = findViewById(R.id.actionsheet);
@@ -300,6 +305,8 @@ public class WebActivity extends BasePullRefreshActivity {
             @Override
             public void run() {
                 mWebView.loadUrl("javascript:printingResult(" + "'" + finalSuccess + "'" + ")");
+                String printTag = readPrintName();
+                webPresenter.getPrintTag(printTag);
             }
         });
     }
@@ -512,4 +519,26 @@ public class WebActivity extends BasePullRefreshActivity {
             }
         }
     };
+
+    private String readPrintName() {
+        SharedPreferences read = getSharedPreferences("Connect", MODE_PRIVATE);
+        String name = read.getString("device_name", "");
+        if (TextUtils.isEmpty(name)) {
+            name = "UNKNOWN";
+        }
+        if (name.startsWith("B50")) {
+            if (name.contains("B50W")) {
+                name = "JC-B50W";
+            } else {
+                name = "JC-B50";
+            }
+        } else if (name.startsWith("T6")) {
+            name = "JC-T6";
+        } else if (name.startsWith("T7")) {
+            name = "JC-T7";
+        } else {
+            name = "UNKNOWN";
+        }
+        return name;
+    }
 }
