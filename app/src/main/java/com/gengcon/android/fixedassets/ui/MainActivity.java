@@ -67,8 +67,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         mPresenter = new HomePresenter();
         mPresenter.attachView(this);
-        mPresenter.getRoute();
-        mPresenter.getUsetNotice();
         initReceiver();
         // 获取测试设备ID
         String testDeviceId = StatService.getTestDeviceId(this);
@@ -130,6 +128,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (!TextUtils.isEmpty((CharSequence) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.TOKEN, ""))) {
             mPresenter.getHome();
             mPresenter.getRoute();
+            mPresenter.getUserNotice();
 //            mRolePresenter.getRole("home_page");
         }
     }
@@ -487,11 +486,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void showNotice(UserPopupNotice userPopupNotice) {
         this.userPopupNotice = userPopupNotice;
-//        if (userPopupNotice.getUnread() == 0) {
-//            messageView.setImageResource(R.drawable.ic_msg);
-//        } else {
-//            messageView.setImageResource(R.drawable.ic_msg_unread);
-//        }
+        if (userPopupNotice.getUnread() == 0) {
+            messageView.setImageResource(R.drawable.ic_msg);
+        } else {
+            messageView.setImageResource(R.drawable.ic_msg_unread);
+        }
         if (userPopupNotice.getList() != null) {
             String photoUrl = userPopupNotice.getList().getPhotourl();
             int model = userPopupNotice.getList().getPush_model();

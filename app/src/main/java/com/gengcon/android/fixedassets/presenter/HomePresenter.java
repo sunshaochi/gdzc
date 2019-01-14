@@ -110,7 +110,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         });
     }
 
-    public void getUsetNotice() {
+    public void getUserNotice() {
         subscribe(userPopupNoticeModel.getUserPopupNotice(), new ApiCallBack<Bean<UserPopupNotice>>() {
 
             @Override

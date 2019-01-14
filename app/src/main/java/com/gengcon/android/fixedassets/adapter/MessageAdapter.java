@@ -57,7 +57,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.noticeName.setText(message.getNotice_name());
         holder.messageTitle.setText(message.getTitle());
         holder.messageContent.setText(message.getOutline());
-        holder.isReadImg.setBackgroundResource(message.getIs_read().equals("0") ? R.drawable.bg_message_unread : R.drawable.bg_message_read);
+//        holder.isReadImg.setBackgroundResource(message.getIs_read().equals("0") ? R.drawable.bg_message_unread : R.drawable.bg_message_read);
         if (message.getPush_model() == 2) {
             holder.hasDataLayout.setVisibility(View.VISIBLE);
             holder.messageLayout.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     class ViewHolder extends MyRecyclerView.ViewHolder {
 
         TextView timeText, noticeName, messageTitle, messageContent;
-        ImageView isReadImg;
+//        ImageView isReadImg;
         LinearLayout messageLayout, hasDataLayout;
 
         public ViewHolder(View view) {
@@ -88,7 +88,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             noticeName = view.findViewById(R.id.noticeName);
             messageTitle = view.findViewById(R.id.messageTitle);
             messageContent = view.findViewById(R.id.messageContent);
-            isReadImg = view.findViewById(R.id.isReadImg);
+//            isReadImg = view.findViewById(R.id.isReadImg);
             messageLayout = view.findViewById(R.id.messageLayout);
             hasDataLayout = view.findViewById(R.id.hasDataLayout);
         }

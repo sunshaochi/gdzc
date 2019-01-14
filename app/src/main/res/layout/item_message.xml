@@ -37,13 +37,13 @@
                 android:textColor="#333333"
                 android:textSize="16dp" />
 
-            <ImageView
-                android:id="@+id/isReadImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/bg_message_unread" />
+            <!--<ImageView-->
+                <!--android:id="@+id/isReadImg"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="6dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:background="@drawable/bg_message_unread" />-->
         </LinearLayout>
 
         <TextView

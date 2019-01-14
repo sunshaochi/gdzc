@@ -295,6 +295,10 @@ public class WebActivity extends BasePullRefreshActivity {
         if (JCPrinter.isPrinterConnected()) {
             for (Print.ListBean list : printResult.getList()) {
                 if (!JCPrinter.printLabel(printResult.getLabel(), list)) {
+                    if (printResult.getLabel().getSize_id() != 1) {
+                        ToastUtils.toastMessage(this, "移动端暂不支持该模板的打印");
+                        return;
+                    }
                     return;
                 }
                 success++;
