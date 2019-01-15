@@ -26,13 +26,17 @@ public class InventoryResultPresenter extends BasePresenter<InventoryResultView>
                         if (modelBean.getData() != null) {
                             mMvpView.showInventoryResult(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
-
+                if (isViewAttached()) {
+                    mMvpView.showErrorMsg(status, errorMsg);
+                }
             }
 
             @Override

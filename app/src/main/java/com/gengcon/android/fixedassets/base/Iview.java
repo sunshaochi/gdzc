@@ -10,4 +10,5 @@ public interface Iview<T> {
 
     void showCodeMsg(String code, String msg);
 
+    void showInvalidType(int invalid_type);
 }

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.webkit.WebSettings;
 
 
-import com.gengcon.android.fixedassets.ui.GApplication;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 
 import java.io.IOException;
@@ -19,7 +18,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public enum RxService {
     RETROFIT;

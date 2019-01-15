@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -138,6 +139,11 @@ public class PreviewActivity extends BasePullRefreshActivity implements View.OnC
     @Override
     public void showCodeMsg(String code, String msg) {
         super.showCodeMsg(code, msg);
+    }
+
+    @Override
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
     }
 
     @Override

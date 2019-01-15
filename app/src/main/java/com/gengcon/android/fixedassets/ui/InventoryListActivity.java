@@ -68,7 +68,6 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider1));
         findViewById(R.id.tv_title_right).setVisibility(RolePowerManager.getInstance().isInventoryAdd() ? View.VISIBLE : View.GONE);
-        initData();
     }
 
     public void initData() {
@@ -130,6 +129,11 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     @Override
     public void showCodeMsg(String code, String msg) {
         super.showCodeMsg(code, msg);
+    }
+
+    @Override
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
     }
 
     @Override

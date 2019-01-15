@@ -30,6 +30,8 @@ public class InventoryDetailPresenter extends BasePresenter<InventoryDetailView>
                         if (modelBean.getData() != null) {
                             mMvpView.initDetail(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -72,17 +74,13 @@ public class InventoryDetailPresenter extends BasePresenter<InventoryDetailView>
                         if (modelBean.getData() != null) {
                             mMvpView.initHeadDetail(modelBean.getData());
                         }
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+
             }
 
             @Override

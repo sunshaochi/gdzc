@@ -65,11 +65,6 @@ public class ScanLoginActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    public void showErrorMsg(int status, String msg) {
-        super.showErrorMsg(status, msg);
-    }
-
-    @Override
     public void showCodeMsg(String code, String msg) {
         super.showCodeMsg(code, msg);
     }

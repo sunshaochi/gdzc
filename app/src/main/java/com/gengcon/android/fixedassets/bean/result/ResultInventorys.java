@@ -5,7 +5,7 @@ import com.gengcon.android.fixedassets.bean.Inventory;
 import java.io.Serializable;
 import java.util.List;
 
-public class ResultInventorys implements Serializable {
+public class ResultInventorys extends InvalidBean implements Serializable {
 
     int total;
     int page_size;

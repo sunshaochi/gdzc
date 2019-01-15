@@ -50,17 +50,13 @@ public class ScanLoginPresenter extends BasePresenter<ScanLoginView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.showScanResult(modelBean);
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+
             }
 
             @Override

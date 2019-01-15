@@ -3,7 +3,7 @@ package com.gengcon.android.fixedassets.bean.result;
 
 import java.io.Serializable;
 
-public class ResultInventorysNum implements Serializable {
+public class ResultInventorysNum extends InvalidBean implements Serializable {
 
     int create_num;
     int task_num;

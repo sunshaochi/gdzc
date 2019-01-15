@@ -28,6 +28,8 @@ public class PreviewInfoPresenter extends BasePresenter<PreviewInfoView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showPreviewInfo(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

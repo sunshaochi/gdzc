@@ -89,6 +89,8 @@ public class WebActivity extends BasePullRefreshActivity {
     private UpdateVersion mVersion;
     private String rgsId;
     private WebPresenter webPresenter;
+    String invalid_type;
+    private boolean backHome;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +99,7 @@ public class WebActivity extends BasePullRefreshActivity {
         webName = getIntent().getStringExtra("webName");
         webTitle = getIntent().getStringExtra("webTitle");
         webFrom = getIntent().getStringExtra("webFrom");
+        invalid_type = getIntent().getStringExtra("invalid_type");
         setContentView(R.layout.activity_web);
         toolBar = findViewById(R.id.toolBar);
         if (!TextUtils.isEmpty(webName)) {
@@ -164,6 +167,11 @@ public class WebActivity extends BasePullRefreshActivity {
                     String versionName = Utils.getVersionName(WebActivity.this);
                     mWebView.loadUrl("javascript:checkVersion(" + "'" + new Gson().toJson(new UpdateVersionRequest(versionName, isUpdate)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.LOGIN)) {
+                    backHome = true;
+                    if (!TextUtils.isEmpty(invalid_type)) {
+                        mWebView.loadUrl("javascript:ToastMsg(" + "'" + invalid_type + "'" + ")");
+                        invalid_type = null;
+                    }
                     rgsId = JPushInterface.getRegistrationID(WebActivity.this);
                     mWebView.loadUrl("javascript:setRegId(" + "'" + rgsId + "'" + ")");
                 }
@@ -295,6 +303,10 @@ public class WebActivity extends BasePullRefreshActivity {
         if (JCPrinter.isPrinterConnected()) {
             for (Print.ListBean list : printResult.getList()) {
                 if (!JCPrinter.printLabel(printResult.getLabel(), list)) {
+                    if (printResult.getLabel().getSize_id() != 1 && printResult.getLabel().getSize_id() != 2) {
+                        ToastUtils.toastMessage(this, "移动端暂不支持该模板的打印");
+                        return;
+                    }
                     return;
                 }
                 success++;

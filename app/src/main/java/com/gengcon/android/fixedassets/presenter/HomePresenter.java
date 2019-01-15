@@ -31,6 +31,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showHome(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -71,17 +73,13 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showApiRoute(modelBean.getData());
                         }
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+
             }
 
             @Override

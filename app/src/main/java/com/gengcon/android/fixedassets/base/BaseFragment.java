@@ -92,6 +92,15 @@ public class BaseFragment extends Fragment implements Iview {
         }
     }
 
+    @Override
+    public void showInvalidType(int invalid_type) {
+        SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+        Intent intent = new Intent(getActivity(), WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
+        intent.putExtra("invalid_type", invalid_type + "");
+        startActivity(intent);
+    }
+
     public void showPermissionDeniedTips() {
         ToastUtils.toastMessage(getActivity(), R.string.permission_denied_tips);
     }

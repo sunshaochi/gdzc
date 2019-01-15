@@ -142,6 +142,11 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     }
 
     @Override
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_title_left:

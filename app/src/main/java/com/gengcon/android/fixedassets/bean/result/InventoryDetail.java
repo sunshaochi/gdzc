@@ -5,7 +5,7 @@ import com.gengcon.android.fixedassets.bean.AssetBean;
 import java.io.Serializable;
 import java.util.List;
 
-public class InventoryDetail implements Serializable {
+public class InventoryDetail extends InvalidBean implements Serializable {
 
 
     /**

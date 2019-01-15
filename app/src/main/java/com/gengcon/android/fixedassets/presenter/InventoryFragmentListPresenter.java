@@ -38,6 +38,8 @@ public class InventoryFragmentListPresenter extends BasePresenter<InventoryListV
                             if (modelBean.getData() != null) {
                                 mMvpView.showInventorys(modelBean.getData());
                             }
+                        } else if (modelBean.getCode().equals("CODE_401")) {
+                            mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                         } else {
                             mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                         }
@@ -71,6 +73,8 @@ public class InventoryFragmentListPresenter extends BasePresenter<InventoryListV
                             if (modelBean.getData() != null) {
                                 mMvpView.showInventorys(modelBean.getData());
                             }
+                        } else if (modelBean.getCode().equals("CODE_401")) {
+                            mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                         } else {
                             mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                         }
@@ -104,8 +108,6 @@ public class InventoryFragmentListPresenter extends BasePresenter<InventoryListV
             public void onSuccess(Bean modelBean) {
                 if (modelBean.getCode().equals("CODE_200")) {
                     activity.initData();
-                } else {
-                    mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                 }
             }
 
