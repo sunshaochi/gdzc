@@ -68,7 +68,6 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
 
         presenter = new CreateInventoryPresenter();
         presenter.attachView(this);
-        presenter.getUsers();
     }
 
     @Override
@@ -124,6 +123,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.tv_select_user_layout:
             case R.id.tv_select_user:
+                presenter.getUsers();
                 hideSoftInput();
                 break;
             case R.id.btn_add:

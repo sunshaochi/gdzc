@@ -15,7 +15,8 @@ public class StringIsDigitUtil {
         }
 
         String regex = "^[a-z0-9]+$";
-        boolean isRight = isDigit && isLetter && str.matches(regex);
-        return isRight;
+        boolean isRight = isDigit || isLetter;
+        boolean right = isRight && str.matches(regex);
+        return right;
     }
 }
