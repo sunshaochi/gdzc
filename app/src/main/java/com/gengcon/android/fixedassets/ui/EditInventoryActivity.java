@@ -121,6 +121,8 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
                     } else {
                         presenter.getInventoryDetail(inv_no, mPage);
                     }
+                } else {
+                    mRefreshLayout.setEnableLoadmore(false);
                 }
                 mRefreshLayout.finishLoadmore();
             }
@@ -334,7 +336,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.blue)), 8, spannableString.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.light_gray_text)), spannableString.length() - 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvSelectSize.setText(spannableString);
-        totalPage = inventoryDetail.getTotal();
+        totalPage = inventoryDetail.getPage_count();
         if (mPage <= totalPage) {
             mPage = ++mPage;
         }
@@ -355,7 +357,7 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
         List<AssetBean> assets = inventoryDetail.getList();
         mAdapter.addDataSource(assets);
         mAssets.addAll(assets);
-        totalPage = inventoryDetail.getTotal();
+        totalPage = inventoryDetail.getPage_count();
         if (mPage <= totalPage) {
             mPage = ++mPage;
         }
@@ -396,6 +398,11 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void showCodeMsg(String code, String msg) {
         super.showCodeMsg(code, msg);
+    }
+
+    @Override
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
     }
 
     @Override

@@ -26,8 +26,6 @@ public class UpdateVersionPresenter extends BasePresenter<UpdateVersionView> {
                         if (modelBean.getData() != null) {
                             mMvpView.updateVersion(modelBean.getData());
                         }
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }

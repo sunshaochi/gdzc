@@ -31,6 +31,8 @@ public class CreateInventoryPresenter extends BasePresenter<CreateInventoryView>
                         if (modelBean.getData() != null) {
                             mMvpView.initUsers(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(2);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

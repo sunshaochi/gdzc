@@ -123,8 +123,8 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.tv_select_user_layout:
             case R.id.tv_select_user:
-                hideSoftInput();
                 presenter.getUsers();
+                hideSoftInput();
                 break;
             case R.id.btn_add:
                 Intent intent = new Intent(this, WebActivity.class);

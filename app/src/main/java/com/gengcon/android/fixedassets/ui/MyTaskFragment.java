@@ -181,6 +181,11 @@ public class MyTaskFragment extends BasePullRefreshFragment implements View.OnCl
     }
 
     @Override
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
+    }
+
+    @Override
     public void onClick(View v) {
 
     }

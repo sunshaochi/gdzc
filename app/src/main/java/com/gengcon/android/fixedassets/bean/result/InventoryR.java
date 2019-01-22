@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 盘点返回結果
  */
-public class InventoryR implements Serializable {
+public class InventoryR extends InvalidBean implements Serializable {
 
     /**
      * base_data : {"inv_name":"测试3","remark":"test","created_userid":31,"allot_username":"wanwan","normal_num":29,"surplus_num":1,"loss_num":0}

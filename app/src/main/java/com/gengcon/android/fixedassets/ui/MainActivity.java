@@ -198,6 +198,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
+    }
+
+    @Override
     public void showErrorMsg(int status, String msg) {
         super.showErrorMsg(status, msg);
     }

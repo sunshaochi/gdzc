@@ -45,6 +45,7 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
     private InventoryListActivity activity;
     private boolean can_edit;
     private boolean can_del;
+    private boolean isFristLoad = true;
 
 
     @Override
@@ -54,13 +55,6 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
         mPresenter = new InventoryFragmentListPresenter();
         mPresenter.attachView(this);
         mRefreshLayout.autoRefresh();
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                mPage = 1;
-                mPresenter.getInventory(mPage, 2);
-            }
-        });
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
@@ -138,7 +132,19 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
         if (isVisibleToUser) {
             if (isNetworkConnected(getActivity())) {
                 initDefault(NORMAL);
+                if (isFristLoad) {
+                    mPage = 1;
+                    mPresenter.getInventory(mPage, 1);
+                    isFristLoad = false;
+                }
                 mRefreshLayout.autoRefresh();
+                mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                    @Override
+                    public void onRefresh(RefreshLayout refreshlayout) {
+                        mPage = 1;
+                        mPresenter.getInventory(mPage, 1);
+                    }
+                });
             } else {
                 initDefault(NO_NET);
             }
@@ -237,6 +243,11 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
         super.showCodeMsg(code, msg);
         mRefreshLayout.finishRefresh();
         mRefreshLayout.finishLoadmore();
+    }
+
+    @Override
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
     }
 
     @Override

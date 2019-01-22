@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Home implements Serializable {
+public class Home extends InvalidBean implements Serializable {
 
     /**
      * 0 : {"name":"所有","value":4726}

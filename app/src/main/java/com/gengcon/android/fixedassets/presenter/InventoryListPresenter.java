@@ -26,17 +26,13 @@ public class InventoryListPresenter extends BasePresenter<InventoryNumView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showInventorys(modelBean.getData());
                         }
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+
             }
 
             @Override

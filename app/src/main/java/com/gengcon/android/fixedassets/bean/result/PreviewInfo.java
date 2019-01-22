@@ -5,7 +5,7 @@ import com.gengcon.android.fixedassets.bean.AssetBean;
 import java.io.Serializable;
 import java.util.List;
 
-public class PreviewInfo  implements Serializable {
+public class PreviewInfo extends InvalidBean implements Serializable {
     /**
      * base_data : {"normal_num":1,"surplus_num":0,"loss_num":13,"invalid_num":0}
      * asset_data : {"total":1,"page_size":10,"page_count":1,"current_page":1,"list":[{"asset_code":"JC2JHLA4LY","asset_id":"0mtls5nuhssm4saj20rhdt8p4b","photourl":"","status":1,"asset_name":"2121212","created_at":"2018-11-28 10:39:47","custom_type_name":"通用","org_name":"总经办","emp_name":"弯弯","user_name":""}]}

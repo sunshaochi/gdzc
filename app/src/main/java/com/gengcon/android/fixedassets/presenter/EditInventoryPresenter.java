@@ -42,6 +42,8 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
                         if (modelBean.getData() != null) {
                             mMvpView.initUsers(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -80,17 +82,13 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.updateInventoryResult(modelBean);
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+
             }
 
             @Override
@@ -124,31 +122,27 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
                                 mMvpView.showInventoryMoreResult(modelBean.getData());
                             }
                         }
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+
             }
 
             @Override
             public void onFinished() {
-                if (isViewAttached()) {
-                    mMvpView.hideLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.hideLoading();
+//                }
             }
 
             @Override
             public void onStart() {
-                if (isViewAttached()) {
-                    mMvpView.showLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.showLoading();
+//                }
             }
         });
     }
@@ -168,6 +162,8 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
                                 mMvpView.showInventoryMoreResult(modelBean.getData());
                             }
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -183,16 +179,16 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
 
             @Override
             public void onFinished() {
-                if (isViewAttached()) {
-                    mMvpView.hideLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.hideLoading();
+//                }
             }
 
             @Override
             public void onStart() {
-                if (isViewAttached()) {
-                    mMvpView.showLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.showLoading();
+//                }
             }
         });
     }
