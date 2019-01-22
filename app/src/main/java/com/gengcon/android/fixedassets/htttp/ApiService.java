@@ -8,6 +8,7 @@ import com.gengcon.android.fixedassets.bean.request.EditAssetListRequest;
 import com.gengcon.android.fixedassets.bean.request.InventoryAssetRequest;
 import com.gengcon.android.fixedassets.bean.request.InventoryRRequest;
 import com.gengcon.android.fixedassets.bean.request.PreviewRequest;
+import com.gengcon.android.fixedassets.bean.request.PrintTagRequest;
 import com.gengcon.android.fixedassets.bean.request.UpdateInventoryRequest;
 import com.gengcon.android.fixedassets.bean.request.UploadInventoryRequest;
 import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
@@ -189,6 +190,6 @@ public class ApiService {
     //打印接口
     public interface GetPrintTag {
         @POST("printTag/addLog")
-        Observable<Bean> getPrintTag(@Query("equipment_name") String equipment_name);
+        Observable<Bean> getPrintTag(@Body PrintTagRequest printTagRequest);
     }
 }
