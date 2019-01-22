@@ -200,7 +200,8 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                         setResult(Constant.RESULT_QR_CODE, intent);
                         finish();
                     } else {
-                        ToastUtils.toastMessage(this, "非固定资产二维码");
+                        ToastUtils.toastMessage(this, "非精臣固定资产有效二维码");
+                        finish();
                     }
                 } else {
                     Log.e("ScanLoginActivity", "handleDecode:" + resultString);
@@ -208,6 +209,7 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                     if (i == -1) {
                         ToastUtils.toastMessage(this, R.string.remote_tips3);
                         handler.restartPreviewAndDecode();
+                        finish();
                         return;
                     }
                     int index = resultString.lastIndexOf("=");

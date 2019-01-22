@@ -133,16 +133,16 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
 
             @Override
             public void onFinished() {
-                if (isViewAttached()) {
-                    mMvpView.hideLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.hideLoading();
+//                }
             }
 
             @Override
             public void onStart() {
-                if (isViewAttached()) {
-                    mMvpView.showLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.showLoading();
+//                }
             }
         });
     }
@@ -179,16 +179,16 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
 
             @Override
             public void onFinished() {
-                if (isViewAttached()) {
-                    mMvpView.hideLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.hideLoading();
+//                }
             }
 
             @Override
             public void onStart() {
-                if (isViewAttached()) {
-                    mMvpView.showLoading();
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.showLoading();
+//                }
             }
         });
     }
