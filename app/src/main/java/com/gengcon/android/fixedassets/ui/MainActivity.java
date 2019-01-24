@@ -544,6 +544,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
         builder.setTitle(userPopupNotice.getList().getTitle());
         builder.setText(userPopupNotice.getList().getOutline());
+        builder.setUpDate(true);
         if (model == 1) {
             builder.setPositiveButton(new DialogInterface.OnClickListener() {
                 @Override

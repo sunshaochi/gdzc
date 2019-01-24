@@ -3,7 +3,7 @@ package com.gengcon.android.fixedassets.bean.result;
 import java.io.Serializable;
 import java.util.List;
 
-public class MessageBean implements Serializable {
+public class MessageBean extends InvalidBean implements Serializable {
 
     /**
      * total : 7
@@ -11,6 +11,7 @@ public class MessageBean implements Serializable {
      */
 
     private int total;
+    private int page_count;
     private List<ListBean> list;
 
     public int getTotal() {
@@ -19,6 +20,14 @@ public class MessageBean implements Serializable {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public int getPage_count() {
+        return page_count;
+    }
+
+    public void setPage_count(int page_count) {
+        this.page_count = page_count;
     }
 
     public List<ListBean> getList() {

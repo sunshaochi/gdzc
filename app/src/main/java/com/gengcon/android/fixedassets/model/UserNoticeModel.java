@@ -11,7 +11,7 @@ public class UserNoticeModel extends BaseModel {
 
     ApiService.GetUserNotice userNotice = createService(ApiService.GetUserNotice.class);
 
-    public Observable<Bean<MessageBean>> getUserNotice() {
-        return userNotice.getUserNotice();
+    public Observable<Bean<MessageBean>> getUserNotice(int page) {
+        return userNotice.getUserNotice(page);
     }
 }

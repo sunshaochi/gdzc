@@ -14,16 +14,22 @@ public class MessagePresenter extends BasePresenter<MessageView> {
         this.userNoticeModel = new UserNoticeModel();
     }
 
-    public void getUserNotice() {
-        subscribe(userNoticeModel.getUserNotice(), new ApiCallBack<Bean<MessageBean>>() {
+    public void getUserNotice(final int page) {
+        subscribe(userNoticeModel.getUserNotice(page), new ApiCallBack<Bean<MessageBean>>() {
 
             @Override
             public void onSuccess(Bean<MessageBean> modelBean) {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         if (modelBean.getData() != null) {
-                            mMvpView.showMessage(modelBean.getData());
+                            if (page == 1) {
+                                mMvpView.showMessage(modelBean.getData());
+                            } else {
+                                mMvpView.showMoreMessage(modelBean.getData());
+                            }
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

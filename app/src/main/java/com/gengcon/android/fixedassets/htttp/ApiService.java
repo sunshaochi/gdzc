@@ -184,7 +184,7 @@ public class ApiService {
     //消息列表页面
     public interface GetUserNotice {
         @GET("noticeTag/getUserNotice")
-        Observable<Bean<MessageBean>> getUserNotice();
+        Observable<Bean<MessageBean>> getUserNotice(@Query("page") int page);
     }
 
     //打印接口

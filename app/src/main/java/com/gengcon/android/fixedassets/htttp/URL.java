@@ -47,6 +47,8 @@ public class URL {
     /**
      * V3.0开发
      */
+//    public static final String BASE_URL = "http://fixasset.jc-dev.cn/";
+//    public static final String HTTP_HEAD = "http://10.10.10.121:9999/#/";
 
     public static final String LOGIN = "login";
     public static final String USER = "index/user";

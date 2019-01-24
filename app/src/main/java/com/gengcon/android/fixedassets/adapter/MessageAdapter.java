@@ -4,13 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.MessageBean;
-import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -34,11 +32,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         messageCallback = callBack;
     }
 
-    public void addDataSource(List<MessageBean.ListBean> messages) {
-        if (messages.size() > 0) {
-            this.messages = messages;
-            notifyDataSetChanged();
+    public void addDataSource(List<MessageBean.ListBean> message) {
+        messages.clear();
+        if (message != null && message.size() > 0) {
+            messages.addAll(message);
         }
+        notifyDataSetChanged();
+    }
+
+    public void addMoreDataSource(List<MessageBean.ListBean> message) {
+        if (message != null && message.size() > 0) {
+            messages.addAll(message);
+        }
+        notifyDataSetChanged();
     }
 
 
@@ -79,7 +85,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     class ViewHolder extends MyRecyclerView.ViewHolder {
 
         TextView timeText, noticeName, messageTitle, messageContent;
-//        ImageView isReadImg;
+        //        ImageView isReadImg;
         LinearLayout messageLayout, hasDataLayout;
 
         public ViewHolder(View view) {

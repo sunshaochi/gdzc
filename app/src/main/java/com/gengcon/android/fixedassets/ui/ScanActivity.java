@@ -207,8 +207,7 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                     Log.e("ScanLoginActivity", "handleDecode:" + resultString);
                     int i = resultString.indexOf("qr_string=");
                     if (i == -1) {
-                        ToastUtils.toastMessage(this, R.string.remote_tips3);
-                        handler.restartPreviewAndDecode();
+                        ToastUtils.toastMessage(this, "非精臣固定资产有效二维码");
                         finish();
                         return;
                     }

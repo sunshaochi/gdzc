@@ -12,11 +12,14 @@ import com.gengcon.android.fixedassets.adapter.MessageAdapter;
 import com.gengcon.android.fixedassets.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.MessageBean;
 import com.gengcon.android.fixedassets.htttp.URL;
-import com.gengcon.android.fixedassets.presenter.HomePresenter;
 import com.gengcon.android.fixedassets.presenter.MessagePresenter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.view.MessageView;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +33,13 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
 
     private MessageAdapter messageAdapter;
     private MessagePresenter messagePresenter;
+    private RefreshLayout mRefreshLayout;
     private List<MessageBean.ListBean> messageList;
     private MyRecyclerView recyclerView;
     private LinearLayout noDataLayout;
-//    private HomePresenter homePresenter;
+    //    private HomePresenter homePresenter;
+    private int pageCount;
+    private int mPage = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,10 +47,6 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_message);
 
         messageList = new ArrayList<>();
-        messagePresenter = new MessagePresenter();
-//        homePresenter = new HomePresenter();
-        messagePresenter.attachView(this);
-        messagePresenter.getUserNotice();
         initView();
     }
 
@@ -57,6 +59,26 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.iv_title_left).setOnClickListener(this);
         noDataLayout = findViewById(R.id.ll_no_data);
         recyclerView = findViewById(R.id.recyclerview);
+
+        messagePresenter = new MessagePresenter();
+//        homePresenter = new HomePresenter();
+        messagePresenter.attachView(this);
+        messagePresenter.getUserNotice(mPage);
+
+        mRefreshLayout = findViewById(R.id.refreshLayout);
+        mRefreshLayout.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
+        mRefreshLayout.setEnableRefresh(false);
+        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                if (mPage <= pageCount) {
+                    messagePresenter.getUserNotice(mPage);
+                } else {
+                    mRefreshLayout.setEnableLoadmore(false);
+                }
+                mRefreshLayout.finishLoadmore();
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         messageAdapter = new MessageAdapter(this);
@@ -94,8 +116,23 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
             noDataLayout.setVisibility(View.GONE);
             messageList = message.getList();
             messageAdapter.addDataSource(messageList);
+            pageCount = message.getPage_count();
+            if (mPage <= pageCount) {
+                mPage = ++mPage;
+            }
         } else {
             noDataLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void showMoreMessage(MessageBean message) {
+        if (message.getList() != null && message.getList().size() > 0) {
+            messageAdapter.addMoreDataSource(message.getList());
+            pageCount = message.getPage_count();
+            if (mPage <= pageCount) {
+                mPage = ++mPage;
+            }
         }
     }
 
