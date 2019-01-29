@@ -194,6 +194,11 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
         if (requestCode == Constant.GET_ASSET_CODE && resultCode == RESULT_OK) {
             ArrayList<AssetBean> assets = (ArrayList<AssetBean>) data.getSerializableExtra(Constant.INTENT_EXTRA_KEY_ASSETS);
             if (assets != null && assets.size() > 0) {
+//                for (int i = 0; i < assets.size(); i++) {
+//                    if (getAssetIds().contains(assets.get(i).getAsset_id())) {
+//                        assets.remove(i);
+//                    }
+//                }
                 mAssets.addAll(assets);
             }
             if (mAssets.size() > 0) {

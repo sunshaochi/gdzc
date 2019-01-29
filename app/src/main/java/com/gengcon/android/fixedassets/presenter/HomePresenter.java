@@ -51,9 +51,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.showErrorMsg(status, errorMsg);
+//                }
             }
 
             @Override
@@ -126,9 +126,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onFailure(int status, String errorMsg) {
-                if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
-                }
+//                if (isViewAttached()) {
+//                    mMvpView.showErrorMsg(status, errorMsg);
+//                }
             }
 
             @Override

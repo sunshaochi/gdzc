@@ -128,6 +128,7 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void showMoreMessage(MessageBean message) {
         if (message.getList() != null && message.getList().size() > 0) {
+            noDataLayout.setVisibility(View.GONE);
             messageAdapter.addMoreDataSource(message.getList());
             pageCount = message.getPage_count();
             if (mPage <= pageCount) {

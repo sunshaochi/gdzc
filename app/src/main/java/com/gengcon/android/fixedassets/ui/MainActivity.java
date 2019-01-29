@@ -553,6 +553,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
             }, "我知道了");
         } else {
+            builder.setNeutralButtonColor();
             builder.setPositiveButton(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

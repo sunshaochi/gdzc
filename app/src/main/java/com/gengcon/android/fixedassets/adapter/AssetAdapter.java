@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.AssetBean;
-import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.util.DensityUtils;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;

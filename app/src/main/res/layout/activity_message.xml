@@ -12,13 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.gengcon.android.fixedassets.widget.MyRecyclerView
-            android:id="@+id/recyclerview"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/asset_gray"
-            android:layout_marginBottom="9dp"
-            android:overScrollMode="never" />
+            android:layout_height="match_parent">
+
+            <com.gengcon.android.fixedassets.widget.MyRecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="9dp"
+                android:overScrollMode="never" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <LinearLayout
             android:id="@+id/ll_no_data"
@@ -27,7 +32,7 @@
             android:background="@color/white"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:visibility="visible">
 
             <ImageView

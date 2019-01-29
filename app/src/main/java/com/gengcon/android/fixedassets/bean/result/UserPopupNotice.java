@@ -21,6 +21,9 @@ public class UserPopupNotice implements Serializable {
     }
 
     public ListBean getList() {
+        if (list == null){
+            return null;
+        }
         return list;
     }
 
