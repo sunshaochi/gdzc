@@ -8,7 +8,7 @@ android {
         fixedAssets {
             keyAlias 'key0'
             keyPassword 'whsf2018'
-            storeFile file('D:/Android/JCgdzc/app/JC_sign.jks')
+            storeFile file('JC_sign.jks')
             storePassword 'whsf2018'
         }
     }
