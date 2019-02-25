@@ -134,7 +134,7 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
                 initDefault(NORMAL);
                 if (isFristLoad) {
                     mPage = 1;
-                    mPresenter.getInventory(mPage, 1);
+                    mPresenter.getInventory(mPage, 2);
                     isFristLoad = false;
                 }
                 mRefreshLayout.autoRefresh();
@@ -142,7 +142,7 @@ public class MyCreateFragment extends BasePullRefreshFragment implements ItemTou
                     @Override
                     public void onRefresh(RefreshLayout refreshlayout) {
                         mPage = 1;
-                        mPresenter.getInventory(mPage, 1);
+                        mPresenter.getInventory(mPage, 2);
                     }
                 });
             } else {

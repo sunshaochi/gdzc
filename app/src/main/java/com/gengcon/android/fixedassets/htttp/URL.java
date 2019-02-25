@@ -17,7 +17,7 @@ public class URL {
     /**
      * V3.0正式服务器
      */
-    public static final String BASE_URL = "https://api.jingchenyun.com";
+    public static final String BASE_URL = "https://api.jingchenyun.com/";
     public static final String HTTP_HEAD = "https://apps.jingchenyun.com/#/";
 
     /**
