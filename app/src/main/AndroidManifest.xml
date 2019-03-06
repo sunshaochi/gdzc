@@ -30,10 +30,10 @@
     <application
         android:name=".ui.GApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:hardwareAccelerated="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
@@ -107,8 +107,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MessageDetailsActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.WebActivity"
             android:launchMode="singleTop"
@@ -119,6 +119,18 @@
         <activity
             android:name=".ui.ScanLoginActivity"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ApprovalListActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ApprovalDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.RejectActivity"
             android:screenOrientation="portrait" />
 
         <provider

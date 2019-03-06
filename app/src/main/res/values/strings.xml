@@ -8,6 +8,7 @@
     <string name="processing_record">处理记录</string>
     <string name="analysis_report">分析报表</string>
     <string name="setting_management">设置管理</string>
+    <string name="wait_approval">待审批</string>
 
     <!-- inventory_management -->
     <string name="inventory_list">盘点单</string>
@@ -38,6 +39,9 @@
     <string name="inventory_preview">盘点预览</string>
     <string name="inventory_result">盘点结果</string>
     <string name="message">消息</string>
+    <string name="approval">待审数据</string>
+    <string name="allocation_detail">调拨单详情</string>
+    <string name="scrap_detail">报废单详情</string>
     <string name="create_inventory">新建盘点单</string>
     <string name="rfid_connect">连接RFID</string>
     <string name="open_rfid">请打开RFID...</string>

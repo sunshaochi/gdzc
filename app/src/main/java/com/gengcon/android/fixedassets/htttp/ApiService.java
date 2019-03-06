@@ -1,6 +1,8 @@
 package com.gengcon.android.fixedassets.htttp;
 
 import com.gengcon.android.fixedassets.bean.User;
+import com.gengcon.android.fixedassets.bean.request.ApprovalAssetRequest;
+import com.gengcon.android.fixedassets.bean.request.AuditSaveRequest;
 import com.gengcon.android.fixedassets.bean.request.CheckApiRouteRequest;
 import com.gengcon.android.fixedassets.bean.request.CreateInventoryRequest;
 import com.gengcon.android.fixedassets.bean.request.EditAssetRequest;
@@ -11,6 +13,9 @@ import com.gengcon.android.fixedassets.bean.request.PreviewRequest;
 import com.gengcon.android.fixedassets.bean.request.PrintTagRequest;
 import com.gengcon.android.fixedassets.bean.request.UpdateInventoryRequest;
 import com.gengcon.android.fixedassets.bean.request.UploadInventoryRequest;
+import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
+import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
+import com.gengcon.android.fixedassets.bean.result.ApprovalListBean;
 import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryHeadDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryR;
@@ -191,5 +196,29 @@ public class ApiService {
     public interface GetPrintTag {
         @POST("printTag/addLog")
         Observable<Bean> getPrintTag(@Body PrintTagRequest printTagRequest);
+    }
+
+    //待审批列表
+    public interface GetApprovalList {
+        @GET("doc/appAuditList")
+        Observable<Bean<ApprovalListBean>> getApprovalList(@Query("page") int page);
+    }
+
+    //待审批资产列表
+    public interface GetApprovalAssetList {
+        @POST("doc/getAssetList")
+        Observable<Bean<ApprovalDetailBean>> getApprovalAssetList(@Body ApprovalAssetRequest request);
+    }
+
+    //获取待审批头部基本信息
+    public interface GetApprovalHeadDetail {
+        @GET("doc/baseDetail")
+        Observable<Bean<List<ApprovalHeadDetail>>> getApprovalHeadDetail(@Query("doc_no") String doc_no);
+    }
+
+    //待审批审核
+    public interface GetAuditSave {
+        @POST("doc/auditSave")
+        Observable<Bean> getAuditSave(@Body AuditSaveRequest request);
     }
 }

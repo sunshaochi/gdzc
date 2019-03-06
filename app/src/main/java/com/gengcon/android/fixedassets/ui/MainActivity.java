@@ -89,6 +89,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ((TextView) findViewById(R.id.analysis_report).findViewById(R.id.item_main_text)).setText(R.string.analysis_report);
         ((ImageView) findViewById(R.id.device_management).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_device_management);
         ((TextView) findViewById(R.id.device_management).findViewById(R.id.item_main_text)).setText(R.string.setting_management);
+        ((ImageView) findViewById(R.id.wait_approval).findViewById(R.id.item_main_img)).setImageResource(R.drawable.wait_approval);
+        ((TextView) findViewById(R.id.wait_approval).findViewById(R.id.item_main_text)).setText(R.string.wait_approval);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_user);
         ((ImageView) findViewById(R.id.iv_title_right)).setImageResource(R.drawable.ic_qr);
         ((ImageView) findViewById(R.id.iv_title_msg)).setImageResource(R.drawable.ic_msg);
@@ -106,6 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.processing_record).setOnClickListener(this);
         findViewById(R.id.analysis_report).setOnClickListener(this);
         findViewById(R.id.device_management).setOnClickListener(this);
+        findViewById(R.id.wait_approval).setOnClickListener(this);
         findViewById(R.id.totalLayout).setOnClickListener(this);
         findViewById(R.id.usingLayout).setOnClickListener(this);
         findViewById(R.id.freeLayout).setOnClickListener(this);
@@ -370,6 +373,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     ToastUtils.toastMessage(this, msg);
                 }
                 break;
+            case R.id.wait_approval:
+                Intent approvalIntent = new Intent(MainActivity.this, ApprovalListActivity.class);
+                startActivity(approvalIntent);
+                return;
         }
     }
 

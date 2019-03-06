@@ -18,6 +18,8 @@ public class Constant {
     public static final String INTENT_EXTRA_KEY_QR_SCAN = "qr_scan_result";
     public static final String INTENT_EXTRA_KEY_SCAN_MODE = "qr_scan_mode";
     public static final String INTENT_EXTRA_KEY_INVENTORY_ID = "inventory_id";
+    public static final String INTENT_EXTRA_KEY_APPROVAL_ID = "approvalId";
+    public static final String INTENT_EXTRA_KEY_APPROVAL_TYPE = "approvalType";
     public static final String INTENT_EXTRA_KEY_ASSETS = "assets";
     public static final String INTENT_EXTRA_KEY_ASSET_IDS = "asset_ids";
     public static final String INTENT_EXTRA_KEY_ASSER_ID = "asset_id";
