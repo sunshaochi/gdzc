@@ -39,6 +39,7 @@
     <string name="inventory_preview">盘点预览</string>
     <string name="inventory_result">盘点结果</string>
     <string name="message">消息</string>
+    <string name="reject">驳回</string>
     <string name="approval">待审数据</string>
     <string name="allocation_detail">调拨单详情</string>
     <string name="scrap_detail">报废单详情</string>

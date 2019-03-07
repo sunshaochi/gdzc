@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
@@ -26,6 +27,7 @@ public class RejectActivity extends BaseActivity implements View.OnClickListener
     private Button sureButton;
     private String doc_no;
     private ApprovalRejectPresenter presenter;
+    private static int MAX_COUNT = 40;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +42,15 @@ public class RejectActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initView() {
         super.initView();
+        ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
+        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.reject);
+        findViewById(R.id.iv_title_left).setOnClickListener(this);
         textCount = findViewById(R.id.textCount);
         textReason = findViewById(R.id.textReason);
         sureButton = findViewById(R.id.sureButton);
         sureButton.setOnClickListener(this);
-        textCount.setText(0 + "/" + 40);
-        showCharNumber(40);
+        textCount.setText(0 + "/" + MAX_COUNT);
+        showCharNumber(MAX_COUNT);
     }
 
     private void initIntent(Intent intent) {
@@ -61,6 +66,9 @@ public class RejectActivity extends BaseActivity implements View.OnClickListener
                 } else {
                     presenter.getAuditSave(doc_no, 2, textReason.getText().toString());
                 }
+                break;
+            case R.id.iv_title_left:
+                onBackPressed();
                 break;
         }
     }
