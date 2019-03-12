@@ -228,10 +228,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Intent webIntent = new Intent(MainActivity.this, WebActivity.class);
         switch (view.getId()) {
             case R.id.iv_title_left:
-                webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.USER);
-                webIntent.putExtra("webName", "用户中心");
-                webIntent.putExtra("webFrom", "MainActivity");
-                startActivity(webIntent);
+                Intent personalIntent = new Intent(this,PersonalActivity.class);
+
+//                webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.USER);
+//                webIntent.putExtra("webName", "用户中心");
+//                webIntent.putExtra("webFrom", "MainActivity");
+                startActivity(personalIntent);
                 break;
             case R.id.iv_title_right:
                 if (isNetworkConnected(this)) {

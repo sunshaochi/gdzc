@@ -36,7 +36,7 @@ public class URL {
      * V3.*测试
      */
 //    public static final String BASE_URL = "http://api.g.jc-test.cn/";
-////    public static final String HTTP_HEAD = "http://api.jc-saas.com.cn/#/home/project/api/";
+//    public static final String HTTP_HEAD = "http://api.jc-saas.com.cn/#/home/project/api/";
     public static final String HTTP_HEAD = "http://mobile.g.jc-test.cn/#/";
 
     /**

@@ -17,6 +17,7 @@ import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
 import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.presenter.ApprovalDetailPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.ApprovalDetailView;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -311,6 +312,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void agreeApproval() {
+        ToastUtils.toastMessage(this, "审批成功");
         finish();
     }
 }

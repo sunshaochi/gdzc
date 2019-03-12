@@ -39,6 +39,14 @@
     <string name="inventory_preview">盘点预览</string>
     <string name="inventory_result">盘点结果</string>
     <string name="message">消息</string>
+    <string name="personal">用户中心</string>
+    <string name="feedback">意见反馈</string>
+    <string name="personalData">个人资料</string>
+    <string name="modifyPassword">修改密码</string>
+    <string name="personal_about_us">精臣固定资产管理云平台</string>
+    <string name="about_us">关于我们</string>
+    <string name="change_phone">更换手机号</string>
+    <string name="contact_us">联系我们</string>
     <string name="reject">驳回</string>
     <string name="approval">待审数据</string>
     <string name="allocation_detail">调拨单详情</string>

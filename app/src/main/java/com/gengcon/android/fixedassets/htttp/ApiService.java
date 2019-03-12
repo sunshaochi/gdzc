@@ -4,11 +4,15 @@ import com.gengcon.android.fixedassets.bean.User;
 import com.gengcon.android.fixedassets.bean.request.ApprovalAssetRequest;
 import com.gengcon.android.fixedassets.bean.request.AuditSaveRequest;
 import com.gengcon.android.fixedassets.bean.request.CheckApiRouteRequest;
+import com.gengcon.android.fixedassets.bean.request.CheckPhoneRequest;
 import com.gengcon.android.fixedassets.bean.request.CreateInventoryRequest;
 import com.gengcon.android.fixedassets.bean.request.EditAssetRequest;
 import com.gengcon.android.fixedassets.bean.request.EditAssetListRequest;
+import com.gengcon.android.fixedassets.bean.request.FeedbackRequest;
 import com.gengcon.android.fixedassets.bean.request.InventoryAssetRequest;
 import com.gengcon.android.fixedassets.bean.request.InventoryRRequest;
+import com.gengcon.android.fixedassets.bean.request.ModifyPasswordRequest;
+import com.gengcon.android.fixedassets.bean.request.PhoneCodeRequest;
 import com.gengcon.android.fixedassets.bean.request.PreviewRequest;
 import com.gengcon.android.fixedassets.bean.request.PrintTagRequest;
 import com.gengcon.android.fixedassets.bean.request.UpdateInventoryRequest;
@@ -16,10 +20,12 @@ import com.gengcon.android.fixedassets.bean.request.UploadInventoryRequest;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
 import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
 import com.gengcon.android.fixedassets.bean.result.ApprovalListBean;
+import com.gengcon.android.fixedassets.bean.result.ContactUs;
 import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryHeadDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryR;
 import com.gengcon.android.fixedassets.bean.result.MessageBean;
+import com.gengcon.android.fixedassets.bean.result.PersonalBean;
 import com.gengcon.android.fixedassets.bean.result.PreviewInfo;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.Home;
@@ -220,5 +226,56 @@ public class ApiService {
     public interface GetAuditSave {
         @POST("doc/auditSave")
         Observable<Bean> getAuditSave(@Body AuditSaveRequest request);
+    }
+
+    //意见反馈
+    public interface GetFeedback {
+        @POST("ucenter/userFeedback")
+        Observable<Bean> getFeedback(@Body FeedbackRequest request);
+    }
+
+    //修改密码
+    public interface GetModifyPassword {
+        @POST("ucenter/editPwd")
+        Observable<Bean> getModifyPassword(@Body ModifyPasswordRequest request);
+    }
+
+    //联系我们
+    public interface GetContactUs {
+        @GET("common/getContactUs")
+        Observable<Bean<ContactUs>> getContactUs();
+    }
+
+    //个人资料
+    public interface GetPersonal {
+        @GET("ucenter/personalData")
+        Observable<Bean<PersonalBean>> getPersonal();
+    }
+
+    //修改密码
+
+    /**
+     * type = 1,注册验证码;
+     * type = 2,忘记密码验证码;
+     * type = 3,修改手机号验证码;
+     * type = 4,修改资料;
+     * type = 5,注销账号;
+     * type = 6,旧手机号验证码;
+     */
+    public interface GetPhoneCode {
+        @POST("system/getcode")
+        Observable<Bean> getPhoneCode(@Body PhoneCodeRequest request);
+    }
+
+    //校验旧手机号
+    public interface GetCheckOldPhone {
+        @POST("ucenter/checkOldPhone")
+        Observable<Bean> getCheckOldPhone(@Body CheckPhoneRequest request);
+    }
+
+    //修改手机号
+    public interface GetCheckNewPhone {
+        @POST("ucenter/editPhone")
+        Observable<Bean> getCheckNewPhone(@Body CheckPhoneRequest request);
     }
 }
