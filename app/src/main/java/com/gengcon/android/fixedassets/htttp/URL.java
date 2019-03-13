@@ -37,13 +37,13 @@ public class URL {
      */
 //    public static final String BASE_URL = "http://api.g.jc-test.cn/";
 //    public static final String HTTP_HEAD = "http://api.jc-saas.com.cn/#/home/project/api/";
-    public static final String HTTP_HEAD = "http://mobile.g.jc-test.cn/#/";
+//    public static final String HTTP_HEAD = "http://mobile.g.jc-test.cn/#/";
 
     /**
      * V3.0开发
      */
     public static final String BASE_URL = "http://fixasset.jc-dev.cn/";
-//    public static final String HTTP_HEAD = "http://10.10.10.121:9999/#/";
+    public static final String HTTP_HEAD = "http://10.10.10.4:9999/#/";
 
     public static final String LOGIN = "login";
     public static final String USER = "index/user";
@@ -59,5 +59,6 @@ public class URL {
 
     public static final String SCANDETAIL = "index/scanDetail";
     public static final String MESSAGEDETAIL = "index/notice?id=";
+    public static final String APPROVALASSETDETAIL = "index/approval_detail?id=";
 
 }

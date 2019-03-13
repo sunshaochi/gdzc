@@ -58,6 +58,7 @@ public class ResultRole implements Serializable {
     private RoleBean org_add;
     private RoleBean org_edit;
     private RoleBean org_del;
+    private RoleBean audit_module;
 
     public RoleBean getAsset_module() {
         return asset_module;
@@ -265,6 +266,14 @@ public class ResultRole implements Serializable {
 
     public void setOrg_del(RoleBean org_del) {
         this.org_del = org_del;
+    }
+
+    public RoleBean getAudit_module() {
+        return audit_module;
+    }
+
+    public void setAudit_module(RoleBean audit_module) {
+        this.audit_module = audit_module;
     }
 
     public static class RoleBean {

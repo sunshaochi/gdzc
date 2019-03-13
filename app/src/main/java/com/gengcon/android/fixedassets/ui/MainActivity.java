@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.mobstat.StatService;
@@ -55,6 +56,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ScannerInerface mControll;
     private ImageView messageView;
     private UserPopupNotice userPopupNotice;
+    private LinearLayout waitApprovalLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_user);
         ((ImageView) findViewById(R.id.iv_title_right)).setImageResource(R.drawable.ic_qr);
         ((ImageView) findViewById(R.id.iv_title_msg)).setImageResource(R.drawable.ic_msg);
+
+        waitApprovalLayout = findViewById(R.id.approvalLayout);
 
         mTvSize = findViewById(R.id.tv_size);
         inUseSize = findViewById(R.id.asset_inUse);
@@ -228,12 +232,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Intent webIntent = new Intent(MainActivity.this, WebActivity.class);
         switch (view.getId()) {
             case R.id.iv_title_left:
-                Intent personalIntent = new Intent(this,PersonalActivity.class);
-
-//                webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.USER);
-//                webIntent.putExtra("webName", "用户中心");
-//                webIntent.putExtra("webFrom", "MainActivity");
-                startActivity(personalIntent);
+                if (isNetworkConnected(this)) {
+                    Intent personalIntent = new Intent(this, PersonalActivity.class);
+                    startActivity(personalIntent);
+                } else {
+                    ToastUtils.toastMessage(this, msg);
+                }
                 break;
             case R.id.iv_title_right:
                 if (isNetworkConnected(this)) {
@@ -290,28 +294,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.processing_record:
                 if (isNetworkConnected(this)) {
-                    if (RolePowerManager.getInstance().isDocModule()) {
-                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.RECODE);
-                        webIntent.putExtra("webName", "处理记录");
-                        webIntent.putExtra("webFrom", "MainActivity");
-                        startActivity(webIntent);
-                    } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
-                    }
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.RECODE);
+                    webIntent.putExtra("webName", "处理记录");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, msg);
                 }
                 break;
             case R.id.analysis_report:
                 if (isNetworkConnected(this)) {
-                    if (RolePowerManager.getInstance().isReportModule()) {
-                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ANALYSE);
-                        webIntent.putExtra("webName", "分析报表");
-                        webIntent.putExtra("webFrom", "MainActivity");
-                        startActivity(webIntent);
-                    } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
-                    }
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ANALYSE);
+                    webIntent.putExtra("webName", "分析报表");
+                    webIntent.putExtra("webFrom", "MainActivity");
+                    startActivity(webIntent);
                 } else {
                     ToastUtils.toastMessage(this, msg);
                 }
@@ -495,6 +491,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void showApiRoute(ResultRole apiRoute) {
         RolePowerManager.getInstance().setApi_route(apiRoute);
+        if (RolePowerManager.getInstance().isAuditModule()) {
+            waitApprovalLayout.setVisibility(View.VISIBLE);
+        } else {
+            waitApprovalLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override

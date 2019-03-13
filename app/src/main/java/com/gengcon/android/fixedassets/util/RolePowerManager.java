@@ -58,29 +58,41 @@ public class RolePowerManager {
         }
     }
 
-    //处理记录
-    public boolean isDocModule() {
+    //待审批
+    public boolean isAuditModule() {
         if ((int) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IS_SUPERADMIN, -1) == 1) {
             return true;
         } else {
             if (api_route != null) {
-                return api_route.getDoc_module().isAllow();
+                return api_route.getAudit_module().isAllow();
             }
             return false;
         }
     }
 
-    //分析报表
-    public boolean isReportModule() {
-        if ((int) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IS_SUPERADMIN, -1) == 1) {
-            return true;
-        } else {
-            if (api_route != null) {
-                return api_route.getReport_module().isAllow();
-            }
-            return false;
-        }
-    }
+//    //处理记录
+//    public boolean isDocModule() {
+//        if ((int) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IS_SUPERADMIN, -1) == 1) {
+//            return true;
+//        } else {
+//            if (api_route != null) {
+//                return api_route.getDoc_module().isAllow();
+//            }
+//            return false;
+//        }
+//    }
+//
+//    //分析报表
+//    public boolean isReportModule() {
+//        if ((int) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IS_SUPERADMIN, -1) == 1) {
+//            return true;
+//        } else {
+//            if (api_route != null) {
+//                return api_route.getReport_module().isAllow();
+//            }
+//            return false;
+//        }
+//    }
 
     //设置管理1组织
     public boolean isOrgModule() {

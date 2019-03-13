@@ -131,6 +131,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.ApprovalAssetDetailsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.RejectActivity"
             android:screenOrientation="portrait" />
 

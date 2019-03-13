@@ -163,11 +163,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BEDETAIL);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID, mAssets.get(position).getAsset_id());
-        intent.putExtra(Constant.INTENT_IS_HISTORY_ASSER_ID, "0");
-        intent.putExtra("webName", "资产详情");
+        Intent intent = new Intent(this, ApprovalAssetDetailsActivity.class);
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.APPROVALASSETDETAIL + mAssets.get(position).getAsset_id());
         startActivity(intent);
     }
 
