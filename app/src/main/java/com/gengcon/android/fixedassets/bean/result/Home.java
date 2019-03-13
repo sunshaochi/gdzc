@@ -1,78 +1,63 @@
 package com.gengcon.android.fixedassets.bean.result;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
+import java.util.List;
 
 public class Home extends InvalidBean implements Serializable {
 
+
     /**
-     * 0 : {"name":"所有","value":4726}
-     * 1 : {"name":"闲置","value":4726}
-     * 2 : {"name":"在用","value":0}
-     * 3 : {"name":"报废","value":0}
-     * 4 : {"name":"维修","value":0}
+     * total : 17
+     * free_num : 1
+     * useing_num : 9
+     * reports_data : [{"name":"闲置","value":"3"},{"name":"在用","value":"9"},{"name":"借出","value":"0"},{"name":"报废","value":"1"},{"name":"维修","value":"1"},{"name":"待审","value":"3"}]
      */
 
-    @SerializedName("free")
-    private AssetNum free;
-    @SerializedName("useing")
-    private AssetNum useing;
-    @SerializedName("scrap")
-    private AssetNum scrap;
-    @SerializedName("repair")
-    private AssetNum repair;
-    @SerializedName("total")
-    private AssetNum total;
+    private int total;
+    private int free_num;
+    private int useing_num;
+    private List<ReportsDataBean> reports_data;
 
-    public AssetNum getFree() {
-        return free;
-    }
-
-    public void setFree(AssetNum free) {
-        this.free = free;
-    }
-
-    public AssetNum getUseing() {
-        return useing;
-    }
-
-    public void setUseing(AssetNum useing) {
-        this.useing = useing;
-    }
-
-    public AssetNum getScrap() {
-        return scrap;
-    }
-
-    public void setScrap(AssetNum scrap) {
-        this.scrap = scrap;
-    }
-
-    public AssetNum getRepair() {
-        return repair;
-    }
-
-    public void setRepair(AssetNum repair) {
-        this.repair = repair;
-    }
-
-    public AssetNum getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(AssetNum total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
-    public static class AssetNum {
+    public int getFree_num() {
+        return free_num;
+    }
+
+    public void setFree_num(int free_num) {
+        this.free_num = free_num;
+    }
+
+    public int getUseing_num() {
+        return useing_num;
+    }
+
+    public void setUseing_num(int useing_num) {
+        this.useing_num = useing_num;
+    }
+
+    public List<ReportsDataBean> getReports_data() {
+        return reports_data;
+    }
+
+    public void setReports_data(List<ReportsDataBean> reports_data) {
+        this.reports_data = reports_data;
+    }
+
+    public static class ReportsDataBean {
         /**
-         * name : 所有
-         * value : 4726
+         * name : 闲置
+         * value : 3
          */
 
         private String name;
-        private int value;
+        private String value;
 
         public String getName() {
             return name;
@@ -82,13 +67,12 @@ public class Home extends InvalidBean implements Serializable {
             this.name = name;
         }
 
-        public int getValue() {
+        public String getValue() {
             return value;
         }
 
-        public void setValue(int value) {
+        public void setValue(String value) {
             this.value = value;
         }
     }
-
 }

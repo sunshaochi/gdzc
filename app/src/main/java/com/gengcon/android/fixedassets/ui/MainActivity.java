@@ -483,9 +483,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void showHome(Home resultHome) {
-        mTvSize.setText(resultHome.getTotal().getValue() + "");
-        inUseSize.setText(resultHome.getUseing().getValue() + "");
-        idleSize.setText(resultHome.getFree().getValue() + "");
+        mTvSize.setText(resultHome.getTotal() + "");
+        inUseSize.setText(resultHome.getUseing_num() + "");
+        idleSize.setText(resultHome.getFree_num() + "");
     }
 
     @Override

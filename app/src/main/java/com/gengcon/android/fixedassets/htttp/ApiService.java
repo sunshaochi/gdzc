@@ -62,7 +62,7 @@ public class ApiService {
 
     //首页数据
     public interface GetHome {
-        @GET("reports/appHome")
+        @GET("reports/appAssetStatus")
         Observable<Bean<Home>> getHome();
     }
 
