@@ -12,6 +12,7 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.base.BaseActivity;
 import com.gengcon.android.fixedassets.presenter.CheckPhonePresenter;
 import com.gengcon.android.fixedassets.presenter.PhoneCodePresenter;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.CheckOldPhoneView;
 import com.gengcon.android.fixedassets.view.PhoneCodeView;
@@ -30,11 +31,13 @@ public class ChangePhoneSecondActivity extends BaseActivity implements View.OnCl
     private MyCountDownTimer myCountDownTimer;
     private PhoneCodeLayout phoneCodeLayout;
     private CheckPhonePresenter checkPhonePresenter;
+    private long currentTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_phone_two);
+        currentTime = System.currentTimeMillis();
         initView();
     }
 
@@ -52,7 +55,10 @@ public class ChangePhoneSecondActivity extends BaseActivity implements View.OnCl
         setPhoneView(phone);
         phoneCodePresenter = new PhoneCodePresenter();
         phoneCodePresenter.attachView(this);
-        phoneCodePresenter.getPhoneCode(phone, "6");
+        long time = (long) SharedPreferencesUtils.getInstance().getParam("oldPhoneCodeTime", -1l);
+        if (currentTime - time > 1000 * 60 * 5) {
+            phoneCodePresenter.getPhoneCode(phone, "6");
+        }
         checkPhonePresenter = new CheckPhonePresenter();
         checkPhonePresenter.attachView(this);
         myCountDownTimer = new MyCountDownTimer(60000, 1000);
@@ -101,7 +107,8 @@ public class ChangePhoneSecondActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void showPhoneCode() {
-
+        long currentTime = System.currentTimeMillis();
+        SharedPreferencesUtils.getInstance().setParam("oldPhoneCodeTime", currentTime);
     }
 
     private class MyCountDownTimer extends CountDownTimer {

@@ -33,11 +33,13 @@ public class ChangePhoneFourthActivity extends BaseActivity implements View.OnCl
     private MyCountDownTimer myCountDownTimer;
     private PhoneCodeLayout phoneCodeLayout;
     private CheckPhonePresenter checkPhonePresenter;
+    private long currentTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_phone_two);
+        currentTime = System.currentTimeMillis();
         initView();
     }
 
@@ -55,7 +57,10 @@ public class ChangePhoneFourthActivity extends BaseActivity implements View.OnCl
         setPhoneView(newPhone);
         phoneCodePresenter = new PhoneCodePresenter();
         phoneCodePresenter.attachView(this);
-        phoneCodePresenter.getPhoneCode(newPhone, "3");
+        long time = (long) SharedPreferencesUtils.getInstance().getParam("newPhoneCodeTime", -1l);
+        if (currentTime - time > 1000 * 60 * 5) {
+            phoneCodePresenter.getPhoneCode(newPhone, "3");
+        }
         checkPhonePresenter = new CheckPhonePresenter();
         checkPhonePresenter.attachView(this);
         myCountDownTimer = new MyCountDownTimer(60000, 1000);
@@ -107,7 +112,8 @@ public class ChangePhoneFourthActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void showPhoneCode() {
-
+        long currentTime = System.currentTimeMillis();
+        SharedPreferencesUtils.getInstance().setParam("newPhoneCodeTime", currentTime);
     }
 
     private class MyCountDownTimer extends CountDownTimer {

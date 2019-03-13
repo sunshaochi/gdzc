@@ -31,9 +31,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         super.initView();
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
         ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.personalData);
-        ((TextView) findViewById(R.id.tv_title_right)).setText(R.string.edit);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
-        findViewById(R.id.tv_title_right).setOnClickListener(this);
         nameView = findViewById(R.id.nameView);
         phoneView = findViewById(R.id.phoneView);
         companyView = findViewById(R.id.companyView);
