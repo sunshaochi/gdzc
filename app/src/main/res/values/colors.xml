@@ -36,6 +36,9 @@
     <color name="asset_status_in_use">#2dae73</color>
     <color name="asset_status_perair">#ff445a</color>
     <color name="asset_status_scrap">#8e8e8e</color>
+    <color name="asset_status_lend">#409eff</color>
+    <color name="asset_status_scrap_auditing">#dc4bc2</color>
+    <color name="asset_status_allot_auditing">#9b3bcc</color>
 
 
     <!--zxing-->

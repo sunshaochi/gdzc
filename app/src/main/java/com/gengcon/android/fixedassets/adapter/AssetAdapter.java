@@ -178,6 +178,18 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
                 holder.tvStatus.setText(R.string.asset_status_scrap);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap);
                 break;
+            case AssetBean.LEND:
+                holder.tvStatus.setText(R.string.asset_status_lend);
+                holder.tvStatus.setBackgroundResource(R.color.asset_status_lend);
+                break;
+            case AssetBean.SCRAP_AUDITING:
+                holder.tvStatus.setText(R.string.asset_status_scrap_auditing);
+                holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap_auditing);
+                break;
+            case AssetBean.ALLOT_AUDITING:
+                holder.tvStatus.setText(R.string.asset_status_allot_auditing);
+                holder.tvStatus.setBackgroundResource(R.color.asset_status_allot_auditing);
+                break;
         }
     }
 

@@ -123,8 +123,4 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         phoneNo = data.getPhone();
     }
 
-    @Override
-    public void showPersonalDataFail(String msg) {
-        ToastUtils.toastMessage(this, msg);
-    }
 }

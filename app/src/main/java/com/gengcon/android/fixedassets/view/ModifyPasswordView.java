@@ -7,6 +7,4 @@ public interface ModifyPasswordView extends Iview {
 
     void  modifyPassword();
 
-    void  modifyPasswordFail(String msg);
-
 }

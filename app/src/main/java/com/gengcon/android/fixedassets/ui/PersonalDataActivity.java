@@ -71,9 +71,4 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         }
 
     }
-
-    @Override
-    public void showPersonalDataFail(String msg) {
-        ToastUtils.toastMessage(this, msg);
-    }
 }

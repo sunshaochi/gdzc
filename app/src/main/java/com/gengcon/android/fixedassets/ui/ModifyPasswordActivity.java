@@ -131,18 +131,6 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 onBackPressed();
                 break;
             case R.id.sureButton:
-//                if (TextUtils.isEmpty(oldPasswordEdit.getText().toString())) {
-//                    ToastUtils.toastMessage(this, "请输入旧密码");
-//                    return;
-//                }
-//                if (TextUtils.isEmpty(newPasswordEdit.getText().toString())) {
-//                    ToastUtils.toastMessage(this, "请输入新密码");
-//                    return;
-//                }
-//                if (TextUtils.isEmpty(confirmPasswordEdit.getText().toString())) {
-//                    ToastUtils.toastMessage(this, "请确认新密码");
-//                    return;
-//                }
                 if (newPasswordEdit.getText().toString().length() < 6 || newPasswordEdit.getText().toString().length() > 20) {
                     ToastUtils.toastMessage(this, "密码格式错误（6-20位，可包含数字，字母，符号）");
                     return;
@@ -165,8 +153,4 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         startActivity(intent);
     }
 
-    @Override
-    public void modifyPasswordFail(String msg) {
-        ToastUtils.toastMessage(this, msg);
-    }
 }

@@ -82,6 +82,9 @@
     <string name="asset_status_idel">闲置</string>
     <string name="asset_status_perair">维修</string>
     <string name="asset_status_scrap">废弃</string>
+    <string name="asset_status_lend">借出</string>
+    <string name="asset_status_scrap_auditing">报废待审</string>
+    <string name="asset_status_allot_auditing">调拨待审</string>
     <string name="asset_status_in_uer">在用</string>
     <string name="inventory_delete">是否确认删除该条盘点单?</string>
 

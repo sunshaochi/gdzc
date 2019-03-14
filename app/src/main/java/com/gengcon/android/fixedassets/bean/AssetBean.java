@@ -8,6 +8,9 @@ public class AssetBean implements Serializable {
     public static final int IN_USE = 0x02;//使用中
     public static final int SCRAP = 0x03;//废弃
     public static final int PEPAIR = 0x04;//维修中
+    public static final int LEND = 0x05;//借出
+    public static final int SCRAP_AUDITING = 21;//报废审核中
+    public static final int ALLOT_AUDITING = 22;//调拨审核中
 
     /**
      * 处理状态:0-未盘,2-正常,3-盘赢, 4-盘亏

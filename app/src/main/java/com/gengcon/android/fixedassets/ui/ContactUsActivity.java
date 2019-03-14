@@ -58,7 +58,7 @@ public class ContactUsActivity extends BaseActivity implements View.OnClickListe
                 onBackPressed();
                 break;
             case R.id.callPhoneView:
-                if (TextUtils.isEmpty(officialTel)) {
+                if (!TextUtils.isEmpty(officialTel)) {
                     onCall(officialTel);
                 }
                 break;
