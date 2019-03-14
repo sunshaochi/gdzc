@@ -50,9 +50,9 @@ public abstract class ApiCallBack<M> implements Observer<M> {
                 msg = "网络链接超时，请稍后再试！";
             }
             if (exceptionCode == 500 || exceptionCode == 501 || exceptionCode == 502 || exceptionCode == 504) {
-                msg = "服务器无响应，请稍后再试！";
+                msg = "系统繁忙，请稍后重试！";
             } else {
-                msg = "服务器无响应，请稍后再试！";
+                msg = "系统繁忙，请稍后重试！";
             }
             onFailure(exceptionCode, msg);
         } else if (e instanceof ResultException) {
@@ -60,6 +60,10 @@ public abstract class ApiCallBack<M> implements Observer<M> {
                 onFailure(401, ((ResultException) e).getMsg());
             } else if (((ResultException) e).getCode().equals("CODE_301")) {
                 onFailure(301, ((ResultException) e).getMsg());
+            } else if (((ResultException) e).getCode().equals("CODE_400")) {
+                onFailure(400, ((ResultException) e).getMsg());
+            } else if (((ResultException) e).getCode().equals("CODE_500")) {
+                onFailure(500, "系统繁忙，请稍后重试！");
             } else {
                 onFailure(-1, ((ResultException) e).getMsg());
             }

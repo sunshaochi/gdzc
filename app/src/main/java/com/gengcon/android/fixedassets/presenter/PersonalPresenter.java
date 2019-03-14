@@ -34,7 +34,7 @@ public class PersonalPresenter extends BasePresenter<PersonalView> {
             @Override
             public void onFailure(int status, String errorMsg) {
                 if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
+                    mMvpView.showPersonalDataFail(errorMsg);
                 }
             }
 

@@ -87,7 +87,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                     changePhoneIntent.putExtra("phone", phoneNo);
                     startActivity(changePhoneIntent);
                 } else {
-                    ToastUtils.toastMessage(this, "");
+                    ToastUtils.toastMessage(this, "系统繁忙，请稍后重试！");
                 }
                 break;
             case R.id.modifyPasswordLayout:
@@ -121,5 +121,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         powerView.setText(data.getRole_name());
         companyView.setText(data.getOrg_name());
         phoneNo = data.getPhone();
+    }
+
+    @Override
+    public void showPersonalDataFail(String msg) {
+        ToastUtils.toastMessage(this, msg);
     }
 }

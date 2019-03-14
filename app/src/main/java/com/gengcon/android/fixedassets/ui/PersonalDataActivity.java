@@ -10,6 +10,7 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.PersonalBean;
 import com.gengcon.android.fixedassets.presenter.PersonalPresenter;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.PersonalView;
 
 import androidx.annotation.Nullable;
@@ -69,5 +70,10 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
             powerView.setText(data.getRole_name());
         }
 
+    }
+
+    @Override
+    public void showPersonalDataFail(String msg) {
+        ToastUtils.toastMessage(this, msg);
     }
 }

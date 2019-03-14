@@ -349,18 +349,14 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     };
 
     private boolean addAssetId(String id) {
-        if (duplicate(id)) {
-            if (id.startsWith("\\000026")) {
-                id = id.substring(7);
+        String newId = id.replaceAll(" ", "");
+        if (duplicate(newId)) {
+            if (newId.startsWith("\\000026")) {
+                newId = newId.substring(7);
             }
-            mReadAssetsIds.add(id);
-            checkId(id);
+            mReadAssetsIds.add(newId);
+            checkId(newId);
             return true;
-            /*SpannableString spannableString = new SpannableString(getString(R.string.pending_inventory_assets) + (mResultInventoryDetail.getAsset_ids().size() - mInventorySize) + getString(R.string.item));
-            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.light_gray_text)), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.blue)), 5, spannableString.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.light_gray_text)), spannableString.length() - 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            mTvNotInventotySize.setText(spannableString);*/
         }
         return false;
     }

@@ -460,12 +460,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     };
 
     private void addAssetId(String id) {
-        if (id.startsWith("\\000026")) {
-            id = id.substring(7);
+        String newId = id.replaceAll(" ", "");
+        if (newId.startsWith("\\000026")) {
+            newId = newId.substring(7);
         }
-        if (StringIsDigitUtil.isLetterDigit(id)) {
-            if (id.length() == 24) {
-                isAssetId(id);
+        if (StringIsDigitUtil.isLetterDigit(newId)) {
+            if (newId.length() == 24) {
+                isAssetId(newId);
             } else {
                 ToastUtils.toastMessage(this, "非固定资产二维码");
             }

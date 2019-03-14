@@ -164,4 +164,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
         startActivity(intent);
     }
+
+    @Override
+    public void modifyPasswordFail(String msg) {
+        ToastUtils.toastMessage(this, msg);
+    }
 }

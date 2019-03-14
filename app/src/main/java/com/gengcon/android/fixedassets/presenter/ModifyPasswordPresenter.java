@@ -33,7 +33,7 @@ public class ModifyPasswordPresenter extends BasePresenter<ModifyPasswordView> {
             @Override
             public void onFailure(int status, String errorMsg) {
                 if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
+                    mMvpView.modifyPasswordFail(errorMsg);
                 }
             }
 

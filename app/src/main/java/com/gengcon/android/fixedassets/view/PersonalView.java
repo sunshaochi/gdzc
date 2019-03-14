@@ -6,4 +6,6 @@ import com.gengcon.android.fixedassets.bean.result.PersonalBean;
 
 public interface PersonalView extends Iview {
     void showPersonalData(PersonalBean data);
+
+    void showPersonalDataFail(String msg);
 }
