@@ -56,7 +56,7 @@ public class ChangePhoneSecondActivity extends BaseActivity implements View.OnCl
         phoneCodePresenter = new PhoneCodePresenter();
         phoneCodePresenter.attachView(this);
         long time = (long) SharedPreferencesUtils.getInstance().getParam("oldPhoneCodeTime", -1l);
-        if (currentTime - time > 1000 * 60 * 5) {
+        if (currentTime - time > 1000 * 60) {
             phoneCodePresenter.getPhoneCode(phone, "6");
         }
         checkPhonePresenter = new CheckPhonePresenter();
