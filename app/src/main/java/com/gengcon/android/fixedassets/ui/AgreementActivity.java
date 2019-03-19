@@ -16,13 +16,11 @@ public class AgreementActivity extends BaseActivity implements View.OnClickListe
 
     private WebView mWebView;
     private String url;
-    private int type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_URL);
-        type = getIntent().getIntExtra("agreeType", -1);
         setContentView(R.layout.activity_agreement);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.set_return);
         findViewById(R.id.iv_title_left).setOnClickListener(this);

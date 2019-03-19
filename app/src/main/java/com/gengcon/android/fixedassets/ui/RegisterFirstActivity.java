@@ -102,7 +102,6 @@ public class RegisterFirstActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.permitView:
                 Intent webIntent = new Intent(RegisterFirstActivity.this, AgreementActivity.class);
-                webIntent.putExtra("agreeType", 1);
                 webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.REGISTER_AGREEMENT + 1);
                 startActivity(webIntent);
                 break;
@@ -111,7 +110,6 @@ public class RegisterFirstActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.protectView:
                 Intent protectIntent = new Intent(RegisterFirstActivity.this, AgreementActivity.class);
-                protectIntent.putExtra("agreeType", 2);
                 protectIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.REGISTER_AGREEMENT + 2);
                 startActivity(protectIntent);
                 break;
