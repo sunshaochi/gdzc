@@ -620,6 +620,5 @@ public class WebActivity extends BasePullRefreshActivity {
         } else {
             callPhoneNumber(mobile);
         }
-
     }
 }

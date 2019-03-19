@@ -145,6 +145,7 @@
     <string name="item">条</string>
     <string name="update">更新</string>
     <string name="version_update">版本升级</string>
+    <string name="contract_expire_title">温馨提示</string>
 
 
     <!-- galleryfinal -->

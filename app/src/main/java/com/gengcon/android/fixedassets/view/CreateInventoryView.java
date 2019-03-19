@@ -11,4 +11,6 @@ public interface CreateInventoryView extends Iview {
     void addInventoryResult(Bean resultBean);
 
     void initUsers(List<User> user);
+
+    void contractExpire();
 }

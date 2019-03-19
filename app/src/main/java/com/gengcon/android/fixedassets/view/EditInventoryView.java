@@ -20,4 +20,6 @@ public interface EditInventoryView extends Iview {
 
     void initHeadDetail(InventoryHeadDetail headDetail);
 
+    void contractExpire();
+
 }

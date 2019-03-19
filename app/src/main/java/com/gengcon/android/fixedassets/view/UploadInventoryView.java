@@ -6,4 +6,6 @@ import com.gengcon.android.fixedassets.bean.result.Bean;
 public interface UploadInventoryView extends Iview {
 
     void uploadResult(Bean resultBean);
+
+    void contractExpire();
 }

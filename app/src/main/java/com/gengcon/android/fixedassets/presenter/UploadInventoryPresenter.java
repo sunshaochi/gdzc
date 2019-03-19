@@ -34,7 +34,12 @@ public class UploadInventoryPresenter extends BasePresenter<UploadInventoryView>
             @Override
             public void onFailure(int status, String errorMsg) {
                 if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
+                    if (status == 402) {
+                        mMvpView.contractExpire();
+                    } else {
+                        mMvpView.showErrorMsg(status, errorMsg);
+                    }
+
                 }
             }
 

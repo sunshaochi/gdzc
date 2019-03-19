@@ -7,4 +7,6 @@ public interface ApprovalRejectView extends Iview {
 
     void rejectApproval();
 
+    void contractExpire();
+
 }

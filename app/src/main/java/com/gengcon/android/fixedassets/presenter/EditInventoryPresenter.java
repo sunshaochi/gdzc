@@ -88,7 +88,11 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
 
             @Override
             public void onFailure(int status, String errorMsg) {
-
+                if (isViewAttached()) {
+                    if (status == 402) {
+                        mMvpView.contractExpire();
+                    }
+                }
             }
 
             @Override

@@ -17,4 +17,6 @@ public interface ApprovalDetailView extends Iview {
 
     void agreeApproval();
 
+    void contractExpire();
+
 }
