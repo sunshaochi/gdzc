@@ -12,8 +12,10 @@ import android.widget.ImageView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.base.BaseActivity;
+import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.presenter.PhoneCodePresenter;
 import com.gengcon.android.fixedassets.util.CacheActivity;
+import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.PhoneCodeView;
@@ -99,11 +101,19 @@ public class RegisterFirstActivity extends BaseActivity implements View.OnClickL
                 }
                 break;
             case R.id.permitView:
+                Intent webIntent = new Intent(RegisterFirstActivity.this, AgreementActivity.class);
+                webIntent.putExtra("agreeType", 1);
+                webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.REGISTER_AGREEMENT + 1);
+                startActivity(webIntent);
                 break;
             case R.id.clearButton:
                 phoneView.setText("");
                 break;
             case R.id.protectView:
+                Intent protectIntent = new Intent(RegisterFirstActivity.this, AgreementActivity.class);
+                protectIntent.putExtra("agreeType", 2);
+                protectIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.REGISTER_AGREEMENT + 2);
+                startActivity(protectIntent);
                 break;
             case R.id.nextButton:
                 newPhone = phoneView.getText().toString();

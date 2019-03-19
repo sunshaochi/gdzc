@@ -61,5 +61,6 @@ public class URL {
     public static final String SCANDETAIL = "index/scanDetail";
     public static final String MESSAGEDETAIL = "index/notice?id=";
     public static final String APPROVALASSETDETAIL = "index/approval_detail?id=";
+    public static final String REGISTER_AGREEMENT = "agreement?title=";
 
 }
