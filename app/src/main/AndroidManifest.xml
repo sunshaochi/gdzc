@@ -169,16 +169,40 @@
         <activity
             android:name=".ui.ChangePhoneSecondActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
             android:name=".ui.ChangePhoneThirdActivity"
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.RegisterFirstActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.RegisterSecondActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.SetPasswordActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.RegisterLastActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ForgetPwdFirstActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ForgetSecondActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.ChangePhoneFourthActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

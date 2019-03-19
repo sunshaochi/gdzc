@@ -10,17 +10,17 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.base.BaseActivity;
+import com.gengcon.android.fixedassets.bean.result.ForgetPwd;
 import com.gengcon.android.fixedassets.presenter.CheckPhonePresenter;
 import com.gengcon.android.fixedassets.presenter.PhoneCodePresenter;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
-import com.gengcon.android.fixedassets.util.ToastUtils;
-import com.gengcon.android.fixedassets.view.CheckOldPhoneView;
+import com.gengcon.android.fixedassets.view.CheckPhoneCodeView;
 import com.gengcon.android.fixedassets.view.PhoneCodeView;
 import com.gengcon.android.fixedassets.widget.PhoneCodeLayout;
 
 import androidx.annotation.Nullable;
 
-public class ChangePhoneSecondActivity extends BaseActivity implements View.OnClickListener, PhoneCodeView, CheckOldPhoneView, PhoneCodeLayout.OnInputFinishListener {
+public class ChangePhoneSecondActivity extends BaseActivity implements View.OnClickListener, PhoneCodeView, CheckPhoneCodeView, PhoneCodeLayout.OnInputFinishListener {
 
     private String phone;
     private PhoneCodePresenter phoneCodePresenter;
@@ -95,14 +95,14 @@ public class ChangePhoneSecondActivity extends BaseActivity implements View.OnCl
     }
 
     @Override
-    public void checkPhone() {
+    public void checkPhoneCode() {
         Intent intent = new Intent(this, ChangePhoneThirdActivity.class);
         startActivity(intent);
     }
 
     @Override
-    public void checkPhoneFail(String msg) {
-        ToastUtils.toastMessage(this, msg);
+    public void checkForgetPhoneCode(ForgetPwd forgetPwd) {
+
     }
 
     @Override

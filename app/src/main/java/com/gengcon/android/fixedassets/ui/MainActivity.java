@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.mobstat.StatService;
@@ -56,7 +55,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ScannerInerface mControll;
     private ImageView messageView;
     private UserPopupNotice userPopupNotice;
-    private LinearLayout waitApprovalLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +87,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ((TextView) findViewById(R.id.processing_record).findViewById(R.id.item_main_text)).setText(R.string.processing_record);
         ((ImageView) findViewById(R.id.analysis_report).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_analysis_report);
         ((TextView) findViewById(R.id.analysis_report).findViewById(R.id.item_main_text)).setText(R.string.analysis_report);
-        ((ImageView) findViewById(R.id.device_management).findViewById(R.id.item_main_img)).setImageResource(R.drawable.ic_device_management);
-        ((TextView) findViewById(R.id.device_management).findViewById(R.id.item_main_text)).setText(R.string.setting_management);
         ((ImageView) findViewById(R.id.wait_approval).findViewById(R.id.item_main_img)).setImageResource(R.drawable.wait_approval);
         ((TextView) findViewById(R.id.wait_approval).findViewById(R.id.item_main_text)).setText(R.string.wait_approval);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_user);
         ((ImageView) findViewById(R.id.iv_title_right)).setImageResource(R.drawable.ic_qr);
         ((ImageView) findViewById(R.id.iv_title_msg)).setImageResource(R.drawable.ic_msg);
 
-        waitApprovalLayout = findViewById(R.id.approvalLayout);
 
         mTvSize = findViewById(R.id.tv_size);
         inUseSize = findViewById(R.id.asset_inUse);
@@ -111,7 +106,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.inventory_management).setOnClickListener(this);
         findViewById(R.id.processing_record).setOnClickListener(this);
         findViewById(R.id.analysis_report).setOnClickListener(this);
-        findViewById(R.id.device_management).setOnClickListener(this);
         findViewById(R.id.wait_approval).setOnClickListener(this);
         findViewById(R.id.totalLayout).setOnClickListener(this);
         findViewById(R.id.usingLayout).setOnClickListener(this);
@@ -259,7 +253,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 return;
             case R.id.iv_title_msg:
-                Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+                Intent intent = new Intent(MainActivity.this, RegisterFirstActivity.class);
                 startActivity(intent);
                 return;
             case R.id.asset_management:
@@ -312,20 +306,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     ToastUtils.toastMessage(this, msg);
                 }
                 break;
-            case R.id.device_management:
-                if (isNetworkConnected(this)) {
-                    if (RolePowerManager.getInstance().isEmpModule() || RolePowerManager.getInstance().isEmpModule()) {
-                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.DEVICE_MANAGE);
-                        webIntent.putExtra("webName", "设置管理");
-                        webIntent.putExtra("webFrom", "MainActivity");
-                        startActivity(webIntent);
-                    } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
-                    }
-                } else {
-                    ToastUtils.toastMessage(this, msg);
-                }
-                break;
             case R.id.totalLayout:
                 if (isNetworkConnected(this)) {
                     if (RolePowerManager.getInstance().isAssetModule()) {
@@ -372,8 +352,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 break;
             case R.id.wait_approval:
-                Intent approvalIntent = new Intent(MainActivity.this, ApprovalListActivity.class);
-                startActivity(approvalIntent);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isAuditModule()) {
+                        Intent approvalIntent = new Intent(MainActivity.this, ApprovalListActivity.class);
+                        startActivity(approvalIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
+                } else {
+                    ToastUtils.toastMessage(this, msg);
+                }
                 return;
         }
     }
@@ -492,11 +480,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void showApiRoute(ResultRole apiRoute) {
         RolePowerManager.getInstance().setApi_route(apiRoute);
-        if (RolePowerManager.getInstance().isAuditModule()) {
-            waitApprovalLayout.setVisibility(View.VISIBLE);
-        } else {
-            waitApprovalLayout.setVisibility(View.GONE);
-        }
     }
 
     @Override

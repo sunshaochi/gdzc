@@ -7,6 +7,7 @@
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
     <color name="blue">#5a8dff</color>
+    <color name="light_blue">#505a8dff</color>
 
     <color name="item_divider">#e4e4e4</color>
 

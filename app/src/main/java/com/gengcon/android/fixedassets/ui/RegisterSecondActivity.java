@@ -11,19 +11,17 @@ import android.widget.TextView;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.ForgetPwd;
-import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.presenter.CheckPhonePresenter;
 import com.gengcon.android.fixedassets.presenter.PhoneCodePresenter;
-import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.CacheActivity;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
-import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.CheckPhoneCodeView;
 import com.gengcon.android.fixedassets.view.PhoneCodeView;
 import com.gengcon.android.fixedassets.widget.PhoneCodeLayout;
 
 import androidx.annotation.Nullable;
 
-public class ChangePhoneFourthActivity extends BaseActivity implements View.OnClickListener, PhoneCodeView, CheckPhoneCodeView, PhoneCodeLayout.OnInputFinishListener {
+public class RegisterSecondActivity extends BaseActivity implements View.OnClickListener, PhoneCodeView, CheckPhoneCodeView, PhoneCodeLayout.OnInputFinishListener {
 
     private String newPhone;
     private PhoneCodePresenter phoneCodePresenter;
@@ -34,34 +32,30 @@ public class ChangePhoneFourthActivity extends BaseActivity implements View.OnCl
     private MyCountDownTimer myCountDownTimer;
     private PhoneCodeLayout phoneCodeLayout;
     private CheckPhonePresenter checkPhonePresenter;
-    private long currentTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_phone_two);
-        currentTime = System.currentTimeMillis();
+        setContentView(R.layout.activity_register_two);
+        if (!CacheActivity.activityList.contains(RegisterSecondActivity.this)) {
+            CacheActivity.activityList.add(RegisterSecondActivity.this);
+        }
         initView();
     }
 
     @Override
     protected void initView() {
         super.initView();
-        ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
-        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.change_phone);
+        ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.set_return);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
         phoneView = findViewById(R.id.phoneView);
         timeView = findViewById(R.id.timeView);
         timeLayout = findViewById(R.id.timeLayout);
         againSendView = findViewById(R.id.againSendView);
-        newPhone = getIntent().getStringExtra("newPhone");
+        newPhone = getIntent().getStringExtra("registerPhone");
         setPhoneView(newPhone);
         phoneCodePresenter = new PhoneCodePresenter();
         phoneCodePresenter.attachView(this);
-        long time = (long) SharedPreferencesUtils.getInstance().getParam("newPhoneCodeTime", -1l);
-        if (currentTime - time > 1000 * 60) {
-            phoneCodePresenter.getPhoneCode(newPhone, "3");
-        }
         checkPhonePresenter = new CheckPhonePresenter();
         checkPhonePresenter.attachView(this);
         myCountDownTimer = new MyCountDownTimer(60000, 1000);
@@ -78,7 +72,7 @@ public class ChangePhoneFourthActivity extends BaseActivity implements View.OnCl
                 onBackPressed();
                 break;
             case R.id.againSendView:
-                phoneCodePresenter.getPhoneCode(newPhone, "3");
+                phoneCodePresenter.getPhoneCode(newPhone, "1");
                 againSendView.setVisibility(View.GONE);
                 myCountDownTimer.start();
                 break;
@@ -94,15 +88,14 @@ public class ChangePhoneFourthActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onFinish(String code) {
-        checkPhonePresenter.getCheckNewPhone(newPhone, code);
+        checkPhonePresenter.getRegisterPhone(newPhone, code);
     }
 
     @Override
     public void checkPhoneCode() {
-        ToastUtils.toastMessage(this, "手机号更换成功");
-        SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
-        Intent intent = new Intent(this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
+        Intent intent = new Intent(this, SetPasswordActivity.class);
+        intent.putExtra("phoneNumber", newPhone);
+        intent.putExtra("type", "register");
         startActivity(intent);
     }
 
@@ -114,7 +107,7 @@ public class ChangePhoneFourthActivity extends BaseActivity implements View.OnCl
     @Override
     public void showPhoneCode() {
         long currentTime = System.currentTimeMillis();
-        SharedPreferencesUtils.getInstance().setParam("newPhoneCodeTime", currentTime);
+        SharedPreferencesUtils.getInstance().setParam("registerPhoneCodeTime", currentTime);
     }
 
     private class MyCountDownTimer extends CountDownTimer {

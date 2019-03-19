@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/item_title_transparent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="40dp"
+            android:text="填写基本信息"
+            android:textColor="@color/black_text"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="7dp"
+            android:text="请务必填写企业的真实信息"
+            android:textColor="@color/gray_text"
+            android:textSize="12dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="50dp"
+            android:text="用户名"
+            android:textColor="@color/black_text"
+            android:textSize="13dp" />
+
+
+        <EditText
+            android:id="@+id/userNameView"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginRight="33dp"
+            android:background="@null"
+            android:hint="请填写真实姓名,可作为资产管理员"
+            android:textColor="@color/black_text"
+            android:textCursorDrawable="@drawable/phone_blue"
+            android:textSize="17dp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginRight="33dp"
+            android:background="#eeeeee" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="18dp"
+            android:text="企业名称"
+            android:textColor="@color/black_text"
+            android:textSize="13dp" />
+
+
+        <EditText
+            android:id="@+id/companyNameView"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginRight="33dp"
+            android:background="@null"
+            android:hint="将默认用于企业组织机构"
+            android:textColor="@color/black_text"
+            android:textCursorDrawable="@drawable/phone_blue"
+            android:textSize="17dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginRight="33dp"
+            android:background="#eeeeee" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="18dp"
+            android:text="所属行业"
+            android:textColor="@color/black_text"
+            android:textSize="13dp" />
+
+        <LinearLayout
+            android:id="@+id/tv_select_industry_layout"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginRight="33dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/industryView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="可根据行业定义资产模板"
+                android:textColor="@color/black_text"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_right_arrow" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginRight="33dp"
+            android:background="#eeeeee" />
+
+        <Button
+            android:id="@+id/completeBtn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="33dp"
+            android:background="@drawable/btn_enable"
+            android:text="完成"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <com.gengcon.android.fixedassets.widget.IndustryPickerLinearLayout
+        android:id="@+id/pickerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+    </WebView>
+
+
+</RelativeLayout>

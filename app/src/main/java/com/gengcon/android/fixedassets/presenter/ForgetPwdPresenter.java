@@ -3,26 +3,24 @@ package com.gengcon.android.fixedassets.presenter;
 import com.gengcon.android.fixedassets.base.ApiCallBack;
 import com.gengcon.android.fixedassets.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;
-import com.gengcon.android.fixedassets.model.PhoneCodeModel;
-import com.gengcon.android.fixedassets.view.PhoneCodeView;
+import com.gengcon.android.fixedassets.model.ForgetPwdModel;
+import com.gengcon.android.fixedassets.view.ForgetPwdView;
 
-public class PhoneCodePresenter extends BasePresenter<PhoneCodeView> {
-    private PhoneCodeModel phoneCodeModel;
+public class ForgetPwdPresenter extends BasePresenter<ForgetPwdView> {
+    private ForgetPwdModel forgetPwdModel;
 
-    public PhoneCodePresenter() {
-        this.phoneCodeModel = new PhoneCodeModel();
+    public ForgetPwdPresenter() {
+        this.forgetPwdModel = new ForgetPwdModel();
     }
 
-    public void getPhoneCode(String phone, String type) {
-        subscribe(phoneCodeModel.getPhoneCode(phone, type), new ApiCallBack<Bean>() {
+    public void getForgetPwd(String secret_key, String new_pwd, String new_repwd) {
+        subscribe(forgetPwdModel.getResetPwd(secret_key, new_pwd, new_repwd), new ApiCallBack<Bean>() {
 
             @Override
             public void onSuccess(Bean modelBean) {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
-                        mMvpView.showPhoneCode();
-                    } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+                        mMvpView.setPwdSuccess();
                     }
                 }
             }

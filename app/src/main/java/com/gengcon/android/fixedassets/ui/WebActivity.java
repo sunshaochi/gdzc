@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -35,6 +38,7 @@ import com.gengcon.android.fixedassets.bean.result.Print;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
 import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.presenter.WebPresenter;
+import com.gengcon.android.fixedassets.util.CacheActivity;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ImageFactory;
 import com.gengcon.android.fixedassets.util.JCPrinter;
@@ -55,6 +59,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.jpush.android.api.JPushInterface;
@@ -376,6 +382,26 @@ public class WebActivity extends BasePullRefreshActivity {
         });
     }
 
+    @JavascriptInterface
+    public void loginRegister(String message) {
+        if (!CacheActivity.activityList.contains(WebActivity.this)) {
+            CacheActivity.activityList.add(WebActivity.this);
+        }
+        Intent intent = new Intent(this, RegisterFirstActivity.class);
+        startActivity(intent);
+    }
+
+    @JavascriptInterface
+    public void loginForget(String message) {
+        Intent intent = new Intent(this, ForgetPwdFirstActivity.class);
+        startActivity(intent);
+    }
+
+    @JavascriptInterface
+    public void callPhone(String message) {
+        onCall("4008608800");
+    }
+
     @Override
     public void onBackPressed() {
         if (mActionSheet.isVisibility()) {
@@ -552,5 +578,48 @@ public class WebActivity extends BasePullRefreshActivity {
             name = "UNKNOWN";
         }
         return name;
+    }
+
+    public void callPhoneNumber(String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        startActivity(intent);
+    }
+
+    final public static int REQUEST_CODE_ASK_CALL_PHONE = 123;
+
+    //动态权限申请后处理
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_CALL_PHONE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted callDirectly(mobile);
+                } else {
+                    // Permission Denied Toast.makeText(MainActivity.this,"CALL_PHONE Denied", Toast.LENGTH_SHORT) .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public void onCall(String mobile) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.CALL_PHONE);
+            if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.CALL_PHONE
+                }, REQUEST_CODE_ASK_CALL_PHONE);
+                return;
+            } else {
+                callPhoneNumber(mobile);
+            }
+        } else {
+            callPhoneNumber(mobile);
+        }
+
     }
 }
