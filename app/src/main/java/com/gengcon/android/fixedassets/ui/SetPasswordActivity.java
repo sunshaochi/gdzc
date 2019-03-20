@@ -34,6 +34,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
     private Button hidePwdBtn;
     private boolean isHidePwd = false;
     private ForgetPwdPresenter forgetPwdPresenter;
+    private Button clearButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +57,9 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         passwordEdit = findViewById(R.id.passwordEdit);
         nextButton = findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
+        clearButton = findViewById(R.id.clearButton);
+        clearButton.setVisibility(View.GONE);
+        clearButton.setOnClickListener(this);
         nextButton.setEnabled(false);
         passwordEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -73,8 +77,10 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 int length = s.length();
                 if (length > 0) {
                     nextButton.setEnabled(true);
+                    clearButton.setVisibility(View.VISIBLE);
                 } else {
                     nextButton.setEnabled(false);
+                    clearButton.setVisibility(View.GONE);
                 }
             }
         });
@@ -111,6 +117,10 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     nextButton.setEnabled(false);
                 }
+                break;
+
+            case R.id.clearButton:
+                passwordEdit.setText("");
                 break;
             case R.id.nextButton:
                 if (passwordEdit.getText().toString().length() < 6 || passwordEdit.getText().toString().length() > 20) {
