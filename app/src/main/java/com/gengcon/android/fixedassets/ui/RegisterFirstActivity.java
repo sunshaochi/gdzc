@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.base.BaseActivity;
@@ -28,6 +29,7 @@ public class RegisterFirstActivity extends BaseActivity implements View.OnClickL
     private Button nextButton;
     private String newPhone;
     private ImageView choiceView;
+    private LinearLayout choiceLayout;
     private boolean isChoice = false;
     private PhoneCodePresenter phoneCodePresenter;
     private Button clearButton;
@@ -50,7 +52,8 @@ public class RegisterFirstActivity extends BaseActivity implements View.OnClickL
         findViewById(R.id.permitView).setOnClickListener(this);
         findViewById(R.id.protectView).setOnClickListener(this);
         choiceView = findViewById(R.id.choiceView);
-        choiceView.setOnClickListener(this);
+        choiceLayout = findViewById(R.id.choiceLayout);
+        choiceLayout.setOnClickListener(this);
         phoneView = findViewById(R.id.phoneView);
         nextButton = findViewById(R.id.nextButton);
         clearButton = findViewById(R.id.clearButton);
@@ -91,7 +94,7 @@ public class RegisterFirstActivity extends BaseActivity implements View.OnClickL
             case R.id.iv_title_left:
                 onBackPressed();
                 break;
-            case R.id.choiceView:
+            case R.id.choiceLayout:
                 isChoice = !isChoice;
                 choiceView.setImageResource(isChoice ? R.drawable.ic_select : R.drawable.ic_unchecked);
                 if (!TextUtils.isEmpty(phoneView.getText().toString()) && isChoice) {
