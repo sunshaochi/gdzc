@@ -253,7 +253,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 return;
             case R.id.iv_title_msg:
-                Intent intent = new Intent(MainActivity.this, RegisterFirstActivity.class);
+                Intent intent = new Intent(MainActivity.this, MessageActivity.class);
                 startActivity(intent);
                 return;
             case R.id.asset_management:
