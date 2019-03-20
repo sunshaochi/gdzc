@@ -346,8 +346,12 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         public void onReceive(Context context, Intent intent) {
             final String scanResult = intent.getStringExtra("value");
             if (!TextUtils.isEmpty(scanResult)) {
-                ToastUtils.toastMessage(InventoryDetailsActivity.this, R.string.infra_red_scan_tips);
-                addAssetId(scanResult);
+                if (scanResult.length() == 24) {
+                    ToastUtils.toastMessage(InventoryDetailsActivity.this, R.string.infra_red_scan_tips);
+                    addAssetId(scanResult);
+                } else {
+                    ToastUtils.toastMessage(InventoryDetailsActivity.this, "非精臣固定资产有效二维码");
+                }
             }
         }
 

@@ -8,7 +8,7 @@
     <string name="processing_record">处理记录</string>
     <string name="analysis_report">分析报表</string>
     <string name="setting_management">设置管理</string>
-    <string name="wait_approval">待审批</string>
+    <string name="wait_approval">待审单据</string>
 
     <!-- inventory_management -->
     <string name="inventory_list">盘点单</string>

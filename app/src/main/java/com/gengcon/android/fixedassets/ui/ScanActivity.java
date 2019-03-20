@@ -220,44 +220,50 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                     finish();
                 }
             } else {
-                if (duplicate(resultString)) {
-                    mAssetIds.add(resultString);
-                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
-                builder.setTitle(R.string.tips);
-                builder.setText(R.string.already_inventory);
-                builder.setNegativeButtonClickable(true);
-                builder.setNeutralButton(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (RolePowerManager.getInstance().isInventoryPd()) {
-                            Intent intent = new Intent(ScanActivity.this, PreviewActivity.class);
-                            intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mDocId);
-                            intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mAssetIds);
-                            startActivityForResult(intent, Constant.PREVIEW_CODE);
-                        } else {
-                            ToastUtils.toastMessage(ScanActivity.this, R.string.permission_denied_tips);
+                if (resultString.length() == 24) {
+                    if (duplicate(resultString)) {
+                        mAssetIds.add(resultString);
+                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
+                    builder.setTitle(R.string.tips);
+                    builder.setText(R.string.already_inventory);
+                    builder.setNegativeButtonClickable(true);
+                    builder.setNeutralButton(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (RolePowerManager.getInstance().isInventoryPd()) {
+                                Intent intent = new Intent(ScanActivity.this, PreviewActivity.class);
+                                intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mDocId);
+                                intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mAssetIds);
+                                startActivityForResult(intent, Constant.PREVIEW_CODE);
+                            } else {
+                                ToastUtils.toastMessage(ScanActivity.this, R.string.permission_denied_tips);
+                            }
                         }
-                    }
-                }, getString(R.string.preview));
-                builder.setNegativeButton(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        handler.restartPreviewAndDecode();
-                    }
-                }, getString(R.string.continue_inventory));
-                builder.setPositiveButton(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent resultIntent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable(Constant.INTENT_EXTRA_KEY_QR_SCAN, mAssetIds);
-                        resultIntent.putExtras(bundle);
-                        setResult(RESULT_OK, resultIntent);
-                        finish();
-                    }
-                }, getString(R.string.complete));
-                builder.show();
+                    }, getString(R.string.preview));
+                    builder.setNegativeButton(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            handler.restartPreviewAndDecode();
+                        }
+                    }, getString(R.string.continue_inventory));
+                    builder.setPositiveButton(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent resultIntent = new Intent();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(Constant.INTENT_EXTRA_KEY_QR_SCAN, mAssetIds);
+                            resultIntent.putExtras(bundle);
+                            setResult(RESULT_OK, resultIntent);
+                            finish();
+                        }
+                    }, getString(R.string.complete));
+                    builder.show();
+                } else {
+                    ToastUtils.toastMessage(this, "非精臣固定资产有效二维码");
+                    handler.restartPreviewAndDecode();
+                }
+
             }
         }
 
