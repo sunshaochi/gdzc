@@ -21,9 +21,9 @@
     <!-- asset list-->
     <color name="asset_gray">#e4e5e7</color>
 
-    <color name="inventory_error">#ff445a</color>
+    <color name="inventory_not">#ff445a</color>
     <color name="inventory_normal">#28a86e</color>
-    <color name="inventory_not">#f37b1a</color>
+    <color name="inventory_error">#f37b1a</color>
 
     <color name="orange_red">#f37b1a</color>
 
