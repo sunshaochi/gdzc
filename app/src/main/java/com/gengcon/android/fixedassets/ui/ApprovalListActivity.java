@@ -3,95 +3,118 @@ package com.gengcon.android.fixedassets.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.adapter.ApprovalAdapter;
 import com.gengcon.android.fixedassets.base.BaseActivity;
-import com.gengcon.android.fixedassets.bean.result.ApprovalListBean;
-import com.gengcon.android.fixedassets.presenter.ApprovalPresenter;
-import com.gengcon.android.fixedassets.util.Constant;
-import com.gengcon.android.fixedassets.view.ApprovalView;
-import com.gengcon.android.fixedassets.widget.MyRecyclerView;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.gengcon.android.fixedassets.bean.result.ApprovalNum;
+import com.gengcon.android.fixedassets.presenter.ApprovalListPresenter;
+import com.gengcon.android.fixedassets.util.CustomViewPager;
+import com.gengcon.android.fixedassets.util.RolePowerManager;
+import com.gengcon.android.fixedassets.view.ApprovalNumView;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
-public class ApprovalListActivity extends BaseActivity implements View.OnClickListener, ApprovalView, ApprovalAdapter.ApprovalCallback {
 
-    private ApprovalAdapter approvalAdapter;
-    private ApprovalPresenter approvalPresenter;
-    private RefreshLayout mRefreshLayout;
-    private List<ApprovalListBean.ListBean> approvalList;
-    private MyRecyclerView recyclerView;
-    private LinearLayout noDataLayout;
-    private int pageCount;
-    private int mPage = 1;
+public class ApprovalListActivity extends BaseActivity implements View.OnClickListener, ApprovalNumView {
+
+    private CustomViewPager approvalPager;
+    private ApprovalPagerAdapter pagerAdapter;
+    private ApprovalListPresenter approvalListPresenter;
+    private TextView waitApprovalTitle, completeApprovalTitle;
+    private FrameLayout waitApprovalLayout, completeApprovalLayout;
+    private View waitApprovalView, completeApprovalView;
+    String waitTitle = "待审批";
+    String completeTitle = "已审批";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_approval);
-        approvalList = new ArrayList<>();
+        setContentView(R.layout.activity_approval_list_test);
         initView();
     }
 
     @Override
     protected void initView() {
         super.initView();
-        ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
-        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.approval);
+        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.approval_list);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_home);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
-        noDataLayout = findViewById(R.id.ll_no_data);
-        recyclerView = findViewById(R.id.recyclerview);
+        waitApprovalTitle = findViewById(R.id.waitApprovalTitle);
+        completeApprovalTitle = findViewById(R.id.completeApprovalTitle);
+        waitApprovalLayout = findViewById(R.id.waitApprovalLayout);
+        completeApprovalLayout = findViewById(R.id.completeApprovalLayout);
+        waitApprovalView = findViewById(R.id.waitApprovalView);
+        completeApprovalView = findViewById(R.id.completeApprovalView);
+        waitApprovalLayout.setOnClickListener(this);
+        completeApprovalLayout.setOnClickListener(this);
+        approvalPager = findViewById(R.id.approvalPager);
+        approvalPager.setScanScroll(false);
+        pagerAdapter = new ApprovalPagerAdapter(getSupportFragmentManager());
+        approvalPager.setAdapter(pagerAdapter);
+        waitApprovalTitle.setTextColor(getResources().getColor(R.color.blue));
+        completeApprovalTitle.setTextColor(getResources().getColor(R.color.black));
+        waitApprovalTitle.setText(waitTitle);
+        completeApprovalTitle.setText(completeTitle);
+        waitApprovalView.setVisibility(View.VISIBLE);
+        approvalPager.setCurrentItem(0);
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider1));
+        findViewById(R.id.tv_title_right).setVisibility(RolePowerManager.getInstance().isInventoryAdd() ? View.VISIBLE : View.GONE);
+    }
 
-        approvalPresenter = new ApprovalPresenter();
-//        homePresenter = new HomePresenter();
-        approvalPresenter.attachView(this);
+    public void initData() {
+        approvalListPresenter = new ApprovalListPresenter();
+        approvalListPresenter.attachView(this);
+        approvalListPresenter.getApprovalNum();
+    }
 
-        mRefreshLayout = findViewById(R.id.refreshLayout);
-        mRefreshLayout.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
-        mRefreshLayout.setEnableRefresh(false);
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                if (mPage <= pageCount) {
-                    approvalPresenter.getApprovalList(mPage);
-                } else {
-                    mRefreshLayout.setEnableLoadmore(false);
-                }
-                mRefreshLayout.finishLoadmore();
-            }
-        });
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        approvalAdapter = new ApprovalAdapter(this);
-        approvalAdapter.setItemTouchListener(this);
-        recyclerView.setAdapter(approvalAdapter);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        approvalPresenter.getApprovalList(1);
+        initData();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_title_left:
+                Intent intent1 = new Intent(ApprovalListActivity.this, MainActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.waitApprovalLayout:
+                waitApprovalTitle.setTextColor(getResources().getColor(R.color.blue));
+                completeApprovalTitle.setTextColor(getResources().getColor(R.color.black));
+                waitApprovalView.setVisibility(View.VISIBLE);
+                completeApprovalView.setVisibility(View.GONE);
+                approvalPager.setCurrentItem(0);
+                break;
+            case R.id.completeApprovalLayout:
+                completeApprovalTitle.setTextColor(getResources().getColor(R.color.blue));
+                waitApprovalTitle.setTextColor(getResources().getColor(R.color.black));
+                completeApprovalView.setVisibility(View.VISIBLE);
+                waitApprovalView.setVisibility(View.GONE);
+                approvalPager.setCurrentItem(1);
+                break;
+        }
+    }
+
 
     @Override
     public void showErrorMsg(int status, String msg) {
@@ -104,46 +127,47 @@ public class ApprovalListActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_title_left:
-                onBackPressed();
-                break;
-        }
+    public void showInvalidType(int invalid_type) {
+        super.showInvalidType(invalid_type);
     }
 
     @Override
-    public void showApproval(ApprovalListBean approval) {
-        if (approval.getList() != null && approval.getList().size() > 0) {
-            noDataLayout.setVisibility(View.GONE);
-            approvalList = approval.getList();
-            approvalAdapter.addDataSource(approvalList);
-            pageCount = approval.getPage_count();
-            if (mPage <= pageCount) {
-                mPage = ++mPage;
+    public void showApproval(final ApprovalNum approvalNum) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                StringBuilder taskTitleSB = new StringBuilder();
+                StringBuilder createTitleSB = new StringBuilder();
+                taskTitleSB.append(waitTitle);
+                createTitleSB.append(completeTitle);
+                final String newTaskTitle = taskTitleSB.append("(" + approvalNum.getPending_num() + ")").toString();
+                final String newCreateTitle = createTitleSB.append("(" + approvalNum.getProcessed_num() + ")").toString();
+                waitApprovalTitle.setText(newTaskTitle);
+                completeApprovalTitle.setText(newCreateTitle);
             }
-        } else {
-            noDataLayout.setVisibility(View.VISIBLE);
-        }
+        });
     }
 
-    @Override
-    public void showMoreApproval(ApprovalListBean approval) {
-        if (approval.getList() != null && approval.getList().size() > 0) {
-            noDataLayout.setVisibility(View.GONE);
-            approvalAdapter.addMoreDataSource(approval.getList());
-            pageCount = approval.getPage_count();
-            if (mPage <= pageCount) {
-                mPage = ++mPage;
+    public static class ApprovalPagerAdapter extends FragmentPagerAdapter {
+
+
+        public ApprovalPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return new WaitApprovalFragment();
+            } else {
+                return new CompleteApprovalFragment();
             }
         }
-    }
 
-    @Override
-    public void clickApproval(int approvalType, String approvalId) {
-        Intent intent = new Intent(ApprovalListActivity.this, ApprovalDetailActivity.class);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_APPROVAL_TYPE, approvalType);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_APPROVAL_ID, approvalId);
-        startActivity(intent);
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
     }
 }

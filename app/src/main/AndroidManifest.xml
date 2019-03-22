@@ -123,10 +123,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ApprovalListActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".ui.ApprovalDetailActivity"
             android:screenOrientation="portrait" />
 
@@ -201,6 +197,10 @@
 
         <activity
             android:name=".ui.AgreementActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ApprovalListActivity"
             android:screenOrientation="portrait" />
 
         <activity

@@ -19,18 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAdapter.ViewHolder> implements View.OnClickListener {
-
-    public static int NORMAL = 0x01;
-    public static int CHOICE = 0x02;
 
     public boolean mIsSetPadding = false;
 
     private Context mContext;
     private OnItemClickListener mItemClickListener;
     private List<AssetBean> mAssets;
-    private int mMode = NORMAL;
+
+    public static final int TYPE_HEADER = 0;
+    public static final int TYPE_NORMAL = 1;
+
+    private View mHeaderView;
 
     public ApprovalAssetAdapter(Context context) {
         mContext = context;
@@ -43,6 +45,15 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
             mAssets.addAll(assets);
         }
         notifyDataSetChanged();
+    }
+
+    public void setHeaderView(View headerView) {
+        mHeaderView = headerView;
+        notifyItemInserted(0);
+    }
+
+    public View getHeaderView() {
+        return mHeaderView;
     }
 
     public void addMoreDataSource(List<AssetBean> assets) {
@@ -59,7 +70,11 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_asset, parent, false);
+
+        if (mHeaderView != null && viewType == TYPE_HEADER) {
+            return new ViewHolder(mHeaderView);
+        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_asset_approval, parent, false);
         view.setOnClickListener(this);
         if (mIsSetPadding) {
             view.setPadding(DensityUtils.dp2px(mContext, 15), DensityUtils.dp2px(mContext, 10), DensityUtils.dp2px(mContext, 15), DensityUtils.dp2px(mContext, 10));
@@ -69,48 +84,49 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AssetBean asset = mAssets.get(position);
-        holder.tvStatus.setVisibility(View.GONE);
-        holder.tvName.setText(asset.getAsset_name());
-        holder.tvId.setText(asset.getAsset_code());
-        holder.tvStatus.setText(asset.getStatus_cn());
-        holder.itemView.setTag(position);
-        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
-//        switch (asset.getStatus()) {
-//            case AssetBean.IDEL:
-//                holder.tvStatus.setText(R.string.asset_status_idel);
-//                holder.tvStatus.setBackgroundResource(R.color.asset_status_idel);
-//                break;
-//            case AssetBean.PEPAIR:
-//                holder.tvStatus.setText(R.string.asset_status_perair);
-//                holder.tvStatus.setBackgroundResource(R.color.asset_status_perair);
-//                break;
-//            case AssetBean.IN_USE:
-//                holder.tvStatus.setText(R.string.asset_status_in_uer);
-//                holder.tvStatus.setBackgroundResource(R.color.asset_status_in_use);
-//                break;
-//            case AssetBean.SCRAP:
-//                holder.tvStatus.setText(R.string.asset_status_scrap);
-//                holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap);
-//                break;
-//            case AssetBean.LEND:
-//                holder.tvStatus.setText(R.string.asset_status_lend);
-//                holder.tvStatus.setBackgroundResource(R.color.asset_status_lend);
-//                break;
-//            case AssetBean.SCRAP_AUDITING:
-//                holder.tvStatus.setText(R.string.asset_status_scrap_auditing);
-//                holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap_auditing);
-//                break;
-//            case AssetBean.ALLOT_AUDITING:
-//                holder.tvStatus.setText(R.string.asset_status_allot_auditing);
-//                holder.tvStatus.setBackgroundResource(R.color.asset_status_allot_auditing);
-//                break;
-//        }
+        if (getItemViewType(position) == TYPE_HEADER) {
+            return;
+        }
+        final int pos = getRealPosition(holder);
+        if (holder instanceof ApprovalAssetAdapter.ViewHolder) {
+            AssetBean asset = mAssets.get(pos);
+            holder.tvStatus.setVisibility(View.GONE);
+            holder.tvName.setText(asset.getAsset_name());
+            holder.tvId.setText(asset.getAsset_code());
+            holder.tvStatus.setText(asset.getStatus_cn());
+            holder.itemView.setTag(position);
+            Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+//            ((ViewHolder) holder).text.setText(data);
+            if (mItemClickListener == null) return;
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemClickListener.onItemClick(pos);
+                }
+            });
+        }
+
+    }
+
+    public int getRealPosition(RecyclerView.ViewHolder holder) {
+        int position = holder.getLayoutPosition();
+        return mHeaderView == null ? position : position - 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mHeaderView == null) {
+            return TYPE_NORMAL;
+        }
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_NORMAL;
     }
 
     @Override
     public int getItemCount() {
-        return mAssets.size();
+        return mHeaderView == null ? mAssets.size() : mAssets.size() + 1;
     }
 
     @Override
@@ -123,7 +139,7 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
     class ViewHolder extends MyRecyclerView.ViewHolder {
 
         TextView tvName, tvId, tvStatus;
-        ImageView ivIcon, ivLeftChoice, ivArrow;
+        ImageView ivIcon, ivLeftChoice;
 
         public ViewHolder(View view) {
             super(view);

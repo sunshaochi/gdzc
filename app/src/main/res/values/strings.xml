@@ -49,7 +49,9 @@
     <string name="contact_us">联系我们</string>
     <string name="reject">驳回</string>
     <string name="approval">待审数据</string>
-    <string name="allocation_detail">调拨单详情</string>
+    <string name="approval_list">单据审批</string>
+    <string name="wait_detail">待审批单据详情</string>
+    <string name="complete_detail">已审批单据详情</string>
     <string name="scrap_detail">报废单详情</string>
     <string name="create_inventory">新建盘点单</string>
     <string name="rfid_connect">连接RFID</string>
@@ -61,6 +63,7 @@
     <string name="inventory_loss">盘亏</string>
     <string name="create_time">创建时间</string>
     <string name="create_user">创建人</string>
+    <string name="apply_user">申请人</string>
     <string name="do_user">执行人</string>
     <string name="actual_check_size">实际检测到的数量</string>
     <string name="actual_inventory_size">实际盘点到资产共</string>

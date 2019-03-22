@@ -10,8 +10,6 @@ import com.gengcon.android.fixedassets.model.ApprovalHeadModel;
 import com.gengcon.android.fixedassets.model.AuditSaveModel;
 import com.gengcon.android.fixedassets.view.ApprovalDetailView;
 
-import java.util.List;
-
 
 public class ApprovalDetailPresenter extends BasePresenter<ApprovalDetailView> {
 
@@ -73,10 +71,10 @@ public class ApprovalDetailPresenter extends BasePresenter<ApprovalDetailView> {
 
     public void getDetailHead(String doc_no) {
 
-        subscribe(headModel.getHeadDetail(doc_no), new ApiCallBack<Bean<List<ApprovalHeadDetail>>>() {
+        subscribe(headModel.getHeadDetail(doc_no), new ApiCallBack<Bean<ApprovalHeadDetail>>() {
 
             @Override
-            public void onSuccess(Bean<List<ApprovalHeadDetail>> modelBean) {
+            public void onSuccess(Bean<ApprovalHeadDetail> modelBean) {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         if (modelBean.getData() != null) {

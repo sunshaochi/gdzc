@@ -4,8 +4,6 @@ import com.gengcon.android.fixedassets.base.Iview;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
 import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
 
-import java.util.List;
-
 
 public interface ApprovalDetailView extends Iview {
 
@@ -13,7 +11,7 @@ public interface ApprovalDetailView extends Iview {
 
     void showApprovalMoreDetail(ApprovalDetailBean approvalDetail);
 
-    void showHeadDetail(List<ApprovalHeadDetail> headDetail);
+    void showHeadDetail(ApprovalHeadDetail headDetail);
 
     void agreeApproval();
 

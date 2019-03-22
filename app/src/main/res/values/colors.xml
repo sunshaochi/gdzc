@@ -25,6 +25,10 @@
     <color name="inventory_normal">#28a86e</color>
     <color name="inventory_error">#f37b1a</color>
 
+    <color name="approval_wait">#ff445a</color>
+    <color name="approval_agree">#28a86e</color>
+    <color name="approval_reject">#f37b1a</color>
+
     <color name="orange_red">#f37b1a</color>
 
     <color name="gray_bg">#f2f2f2</color>

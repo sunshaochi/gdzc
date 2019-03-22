@@ -104,9 +104,7 @@ public class RejectActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void rejectApproval() {
-        if (ApprovalDetailActivity.instance != null) {
-            ApprovalDetailActivity.instance.finish();
-        }
+        setResult(ApprovalDetailActivity.RESULT_OK);
         finish();
     }
 

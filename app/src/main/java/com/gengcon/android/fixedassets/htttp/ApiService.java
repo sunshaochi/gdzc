@@ -22,7 +22,7 @@ import com.gengcon.android.fixedassets.bean.request.UpdateInventoryRequest;
 import com.gengcon.android.fixedassets.bean.request.UploadInventoryRequest;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
 import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
-import com.gengcon.android.fixedassets.bean.result.ApprovalListBean;
+import com.gengcon.android.fixedassets.bean.result.ApprovalNum;
 import com.gengcon.android.fixedassets.bean.result.ContactUs;
 import com.gengcon.android.fixedassets.bean.result.ForgetPwd;
 import com.gengcon.android.fixedassets.bean.result.Industry;
@@ -34,6 +34,7 @@ import com.gengcon.android.fixedassets.bean.result.PersonalBean;
 import com.gengcon.android.fixedassets.bean.result.PreviewInfo;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.Home;
+import com.gengcon.android.fixedassets.bean.result.ResultApprovals;
 import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
 import com.gengcon.android.fixedassets.bean.result.ResultInventorysNum;
 import com.gengcon.android.fixedassets.bean.result.ResultRole;
@@ -210,12 +211,6 @@ public class ApiService {
         Observable<Bean> getPrintTag(@Body PrintTagRequest printTagRequest);
     }
 
-    //待审批列表
-    public interface GetApprovalList {
-        @GET("doc/appAuditList")
-        Observable<Bean<ApprovalListBean>> getApprovalList(@Query("page") int page);
-    }
-
     //待审批资产列表
     public interface GetApprovalAssetList {
         @POST("doc/getAssetList")
@@ -224,8 +219,8 @@ public class ApiService {
 
     //获取待审批头部基本信息
     public interface GetApprovalHeadDetail {
-        @GET("doc/baseDetail")
-        Observable<Bean<List<ApprovalHeadDetail>>> getApprovalHeadDetail(@Query("doc_no") String doc_no);
+        @GET("doc/appAuditDocDetail")
+        Observable<Bean<ApprovalHeadDetail>> getApprovalHeadDetail(@Query("doc_no") String doc_no);
     }
 
     //待审批审核
@@ -319,6 +314,24 @@ public class ApiService {
     public interface GetResetPwd {
         @POST("ucenter/resetpwd")
         Observable<Bean> getResetPwd(@Body ForgetPwdRequest request);
+    }
+
+    //获取待审批以及已审批头部数据
+    public interface GetApprovalNum {
+        @GET("doc/appAuditNum")
+        Observable<Bean<ApprovalNum>> getApprovalNum();
+    }
+
+    //待审批
+    public interface GetWaitApprovalList {
+        @GET("doc/appAuditList")
+        Observable<Bean<ResultApprovals>> getWaitApprovalList(@Query("page") int page, @Query("limit") int limit);
+    }
+
+    //已审批
+    public interface GetCompleteApprovalList {
+        @GET("doc/appAuditEndList")
+        Observable<Bean<ResultApprovals>> getCompleteApprovalList(@Query("page") int page, @Query("limit") int limit);
     }
 
 }
