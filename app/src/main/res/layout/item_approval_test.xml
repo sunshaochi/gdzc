@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:text="DB20150502135812000"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="12dp"
             android:singleLine="true"
             android:textColor="@color/gray_text"
             android:textSize="16dp" />
@@ -98,7 +98,7 @@
         android:id="@+id/tv_create_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="5dp"
         tools:text="申请人：哈哈哈"
         android:textColor="@color/gray_text"
         android:textSize="15dp" />
@@ -107,7 +107,7 @@
         android:id="@+id/tv_asset_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="5dp"
         tools:text="资产数量：6"
         android:textColor="@color/gray_text"
         android:textSize="15sp" />

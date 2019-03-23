@@ -7,7 +7,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -59,7 +62,6 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private TextView approvalName;
     private TextView approvalTime;
     private TextView statusView;
-    private TextView reasonView;
     private TextView tv_left;
     private LinearLayout applyLayout;
     private LinearLayout approvalLayout;
@@ -164,7 +166,6 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         applyName = header.findViewById(R.id.apply_name);
         applyTime = header.findViewById(R.id.apply_time);
         statusView = header.findViewById(R.id.statusView);
-        reasonView = header.findViewById(R.id.reasonView);
         approvalTime = header.findViewById(R.id.approval_time);
         approvalName = header.findViewById(R.id.approval_name);
         applyLayout = header.findViewById(R.id.applyLayout);
@@ -210,7 +211,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(this, ApprovalAssetDetailsActivity.class);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.APPROVALASSETDETAIL + mAssets.get(position).getAsset_id());
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.APPROVALASSETDETAIL + mAssets.get(position).getAsset_id() + "&doc_no=" + doc_no);
         startActivity(intent);
     }
 
@@ -273,6 +274,19 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 break;
             case 2:
             case 3:
+                String status = headDetail.getAudit_info().getStatus_cn();
+                String reason = "";
+                if (!TextUtils.isEmpty(headDetail.getAudit_info().getReason())) {
+                    reason = headDetail.getAudit_info().getReason();
+                }
+                SpannableString spannableString = new SpannableString(status + "  " + reason);
+                if (headDetail.getAudit_info().getStatus() == ApprovalHeadDetail.REJECT) {
+                    spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.approval_reject)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else if (headDetail.getAudit_info().getStatus() == ApprovalHeadDetail.AGREE) {
+                    spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.approval_agree)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.black_text)), 3, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                statusView.setText(spannableString);
                 mRecyclerView.setPadding(0, 0, 0, 0);
                 tv_left.setText(R.string.complete_detail);
                 approvalLayout.setVisibility(View.VISIBLE);
@@ -280,13 +294,6 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 resultLayout.setVisibility(View.VISIBLE);
                 approvalName.setText(headDetail.getAudit_info().getAuditor_name());
                 approvalTime.setText(headDetail.getAudit_info().getAuditor_at());
-                statusView.setText(headDetail.getAudit_info().getStatus_cn());
-                statusView.setTextColor(getResources().getColor(headDetail.getAudit_info().getStatus() == ApprovalHeadDetail.REJECT ? R.color.approval_reject : headDetail.getAudit_info().getStatus() == ApprovalHeadDetail.AGREE ? R.color.approval_agree : R.color.approval_wait));
-                if (!TextUtils.isEmpty(headDetail.getAudit_info().getReason())) {
-                    reasonView.setText(headDetail.getAudit_info().getReason());
-                } else {
-                    reasonView.setText("");
-                }
                 break;
         }
         if (headDetail.getBaseInfo().size() > 0) {
