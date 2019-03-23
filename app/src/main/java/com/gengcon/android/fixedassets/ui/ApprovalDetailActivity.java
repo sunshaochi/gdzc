@@ -24,6 +24,7 @@ import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
 import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.presenter.ApprovalDetailPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.DensityUtils;
 import com.gengcon.android.fixedassets.view.ApprovalDetailView;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
@@ -39,7 +40,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -199,6 +199,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE) {
+                mPage = 1;
+                mRefreshLayout.setEnableLoadmore(true);
                 presenter.getDetailHead(doc_no);
                 presenter.getApprovalDetail(doc_no, 1);
             }
@@ -231,7 +233,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     public void showApprovalDetail(ApprovalDetailBean approvalDetail) {
         mAssets.clear();
         List<AssetBean> assets = approvalDetail.getList();
-        assetSize = approvalDetail.getList().size();
+        assetSize = approvalDetail.getTotal();
         assetSizeView.setText("资产明细(" + assetSize + ")");
         mAdapter.addDataSource(assets);
         mAssets.addAll(assets);
@@ -263,6 +265,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         tvStatus.setBackgroundResource(headDetail.getAudit_info().getStatus() == ApprovalHeadDetail.REJECT ? R.drawable.approval_reject : headDetail.getAudit_info().getStatus() == ApprovalHeadDetail.AGREE ? R.drawable.approval_agree : R.drawable.approval_wait);
         switch (headDetail.getAudit_info().getStatus()) {
             case 1:
+                mRecyclerView.setPadding(0, 0, 0, DensityUtils.dp2px(this, 40));
                 rejectOrAgreeLayout.setVisibility(View.VISIBLE);
                 approvalLayout.setVisibility(View.GONE);
                 resultLayout.setVisibility(View.GONE);
@@ -270,6 +273,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 break;
             case 2:
             case 3:
+                mRecyclerView.setPadding(0, 0, 0, 0);
                 tv_left.setText(R.string.complete_detail);
                 approvalLayout.setVisibility(View.VISIBLE);
                 rejectOrAgreeLayout.setVisibility(View.GONE);
@@ -359,7 +363,9 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void agreeApproval() {
-        presenter.getApprovalDetail(doc_no, 1);
+        mRefreshLayout.setEnableLoadmore(true);
+        mPage = 1;
+        presenter.getApprovalDetail(doc_no, mPage);
         presenter.getDetailHead(doc_no);
     }
 

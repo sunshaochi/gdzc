@@ -109,6 +109,7 @@ public class WaitApprovalFragment extends BasePullRefreshFragment implements Vie
     @Override
     public void onResume() {
         super.onResume();
+        mRecyclerView.scrollToPosition(0);
     }
 
     @Override
