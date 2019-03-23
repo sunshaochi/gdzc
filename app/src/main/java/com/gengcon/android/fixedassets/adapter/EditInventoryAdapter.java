@@ -164,31 +164,24 @@ public class EditInventoryAdapter extends MyRecyclerView.Adapter<EditInventoryAd
         Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
         switch (asset.getStatus()) {
             case AssetBean.IDEL:
-                holder.tvStatus.setText(R.string.asset_status_idel);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_idel);
                 break;
             case AssetBean.PEPAIR:
-                holder.tvStatus.setText(R.string.asset_status_perair);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_perair);
                 break;
             case AssetBean.IN_USE:
-                holder.tvStatus.setText(R.string.asset_status_in_uer);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_in_use);
                 break;
             case AssetBean.SCRAP:
-                holder.tvStatus.setText(R.string.asset_status_scrap);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap);
                 break;
             case AssetBean.LEND:
-                holder.tvStatus.setText(R.string.asset_status_lend);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_lend);
                 break;
             case AssetBean.SCRAP_AUDITING:
-                holder.tvStatus.setText(R.string.asset_status_scrap_auditing);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap_auditing);
                 break;
             case AssetBean.ALLOT_AUDITING:
-                holder.tvStatus.setText(R.string.asset_status_allot_auditing);
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_allot_auditing);
                 break;
         }

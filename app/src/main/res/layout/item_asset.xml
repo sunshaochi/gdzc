@@ -32,15 +32,17 @@
 
         <TextView
             android:id="@+id/tv_status"
-            android:layout_width="26dp"
+            android:layout_width="wrap_content"
             android:layout_height="14dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:background="#2dae73"
             android:gravity="center"
             android:text="在用"
             android:textColor="@color/white"
-            android:textSize="10sp" />
+            android:textSize="10dp" />
     </RelativeLayout>
 
     <LinearLayout
