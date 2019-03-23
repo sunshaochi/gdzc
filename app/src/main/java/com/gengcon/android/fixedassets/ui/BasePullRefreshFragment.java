@@ -40,13 +40,18 @@ public class BasePullRefreshFragment extends BaseFragment {
     @Override
     public void showErrorMsg(int code, String msg) {
         super.showErrorMsg(code, msg);
-        initDefault(NO_NET);
+        if (!isNetworkConnected(getContext())){
+            initDefault(NO_NET);
+        }
+
     }
 
     @Override
     public void showCodeMsg(String code, String msg) {
         super.showCodeMsg(code, msg);
-        initDefault(NO_NET);
+        if (!isNetworkConnected(getContext())){
+            initDefault(NO_NET);
+        }
     }
 
     protected void initDefault(int status) {

@@ -11,15 +11,19 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.base.BaseActivity;
+import com.gengcon.android.fixedassets.presenter.PhoneCodePresenter;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
+import com.gengcon.android.fixedassets.view.PhoneCodeView;
 
 import androidx.annotation.Nullable;
 
-public class ChangePhoneThirdActivity extends BaseActivity implements View.OnClickListener {
+public class ChangePhoneThirdActivity extends BaseActivity implements View.OnClickListener, PhoneCodeView {
 
     private EditText newPhoneView;
     private Button nextButton;
     private String newPhone;
+    private PhoneCodePresenter phoneCodePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +38,9 @@ public class ChangePhoneThirdActivity extends BaseActivity implements View.OnCli
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
         ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.change_phone);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
+
+        phoneCodePresenter = new PhoneCodePresenter();
+        phoneCodePresenter.attachView(this);
         newPhoneView = findViewById(R.id.newPhoneView);
         nextButton = findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
@@ -52,13 +59,28 @@ public class ChangePhoneThirdActivity extends BaseActivity implements View.OnCli
                     return;
                 }
                 if (newPhone.length() == 11) {
-                    Intent intent = new Intent(this, ChangePhoneFourthActivity.class);
-                    intent.putExtra("newPhone", newPhone);
-                    startActivity(intent);
+                    long currentTime = System.currentTimeMillis();
+                    long time = (long) SharedPreferencesUtils.getInstance().getParam("newPhoneCodeTime", -1l);
+                    if (currentTime - time > 1000 * 60) {
+                        phoneCodePresenter.getPhoneCode(newPhone, "3");
+                    } else {
+                        Intent intent = new Intent(this, ChangePhoneFourthActivity.class);
+                        intent.putExtra("newPhone", newPhone);
+                        startActivity(intent);
+                    }
                 } else {
                     ToastUtils.toastMessage(this, "手机号格式不正确");
                 }
                 break;
         }
+    }
+
+    @Override
+    public void showPhoneCode() {
+        long currentTime = System.currentTimeMillis();
+        SharedPreferencesUtils.getInstance().setParam("newPhoneCodeTime", currentTime);
+        Intent intent = new Intent(this, ChangePhoneFourthActivity.class);
+        intent.putExtra("newPhone", newPhone);
+        startActivity(intent);
     }
 }

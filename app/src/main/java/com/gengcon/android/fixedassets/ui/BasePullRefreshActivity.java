@@ -28,13 +28,17 @@ public class BasePullRefreshActivity extends BaseActivity {
     @Override
     public void showErrorMsg(int status, String msg) {
         super.showErrorMsg(status, msg);
-        initDefault(NO_NET);
+        if (!isNetworkConnected(this)){
+            initDefault(NO_NET);
+        }
     }
 
     @Override
     public void showCodeMsg(String code, String msg) {
         super.showCodeMsg(code, msg);
-        initDefault(NO_NET);
+        if (!isNetworkConnected(this)){
+            initDefault(NO_NET);
+        }
     }
 
     protected void initDefault(int status) {
