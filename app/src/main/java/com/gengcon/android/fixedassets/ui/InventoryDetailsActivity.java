@@ -345,10 +345,11 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         @Override
         public void onReceive(Context context, Intent intent) {
             final String scanResult = intent.getStringExtra("value");
-            if (!TextUtils.isEmpty(scanResult)) {
-                if (scanResult.length() == 24) {
+            String result = scanResult.replaceAll(" ", "");
+            if (!TextUtils.isEmpty(result)) {
+                if (result.length() == 24) {
                     ToastUtils.toastMessage(InventoryDetailsActivity.this, R.string.infra_red_scan_tips);
-                    addAssetId(scanResult);
+                    addAssetId(result);
                 } else {
                     ToastUtils.toastMessage(InventoryDetailsActivity.this, "非精臣固定资产有效二维码");
                 }
@@ -358,13 +359,12 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     };
 
     private boolean addAssetId(String id) {
-        String newId = id.replaceAll(" ", "");
-        if (duplicate(newId)) {
-            if (newId.startsWith("\\000026")) {
-                newId = newId.substring(7);
+        if (duplicate(id)) {
+            if (id.startsWith("\\000026")) {
+                id = id.substring(7);
             }
-            mReadAssetsIds.add(newId);
-            checkId(newId);
+            mReadAssetsIds.add(id);
+            checkId(id);
             return true;
         }
         return false;

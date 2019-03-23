@@ -189,14 +189,15 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
     public void handleDecode(Result result, Bitmap barcode) {
         playBeepSoundAndVibrate();
         String resultString = result.getText();
-        if (TextUtils.isEmpty(resultString)) {
+        String scanResult = resultString.replaceAll(" ","");
+        if (TextUtils.isEmpty(scanResult)) {
             ToastUtils.toastMessage(this, "Scan failed!");
         } else {
             if (mMode == QR_SCAN_LOGIN_MODE) {
-                if (StringIsDigitUtil.isLetterDigit(resultString)) {
-                    if (resultString.length() == 24) {
+                if (StringIsDigitUtil.isLetterDigit(scanResult)) {
+                    if (scanResult.length() == 24) {
                         Intent intent = getIntent();
-                        intent.putExtra("resultString", resultString);
+                        intent.putExtra("resultString", scanResult);
                         setResult(Constant.RESULT_QR_CODE, intent);
                         finish();
                     } else {
@@ -204,25 +205,25 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                         finish();
                     }
                 } else {
-                    Log.e("ScanLoginActivity", "handleDecode:" + resultString);
-                    int i = resultString.indexOf("qr_string=");
+                    Log.e("ScanLoginActivity", "handleDecode:" + scanResult);
+                    int i = scanResult.indexOf("qr_string=");
                     if (i == -1) {
                         ToastUtils.toastMessage(this, "非精臣固定资产有效二维码");
                         finish();
                         return;
                     }
-                    int index = resultString.lastIndexOf("=");
+                    int index = scanResult.lastIndexOf("=");
                     Intent intent = new Intent(this, ScanLoginActivity.class);
-                    intent.putExtra("uuid", resultString.substring(index + 1, resultString.length()));
+                    intent.putExtra("uuid", scanResult.substring(index + 1, scanResult.length()));
                     startActivity(intent);
-                    Log.e("ScanLoginActivity", "handleDecode222:" + resultString.substring(index + 1, resultString.length()));
-                    mPresenter.scanLogin(resultString.substring(index + 1, resultString.length()), 1);
+                    Log.e("ScanLoginActivity", "handleDecode222:" + scanResult.substring(index + 1, scanResult.length()));
+                    mPresenter.scanLogin(scanResult.substring(index + 1, scanResult.length()), 1);
                     finish();
                 }
             } else {
-                if (resultString.length() == 24) {
-                    if (duplicate(resultString)) {
-                        mAssetIds.add(resultString);
+                if (scanResult.length() == 24) {
+                    if (duplicate(scanResult)) {
+                        mAssetIds.add(scanResult);
                     }
                     AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
                     builder.setTitle(R.string.tips);
