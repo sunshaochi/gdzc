@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.AssetBean;
-import com.gengcon.android.fixedassets.util.DensityUtils;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
@@ -22,8 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAdapter.ViewHolder> implements View.OnClickListener {
-
-    public boolean mIsSetPadding = false;
 
     private Context mContext;
     private OnItemClickListener mItemClickListener;
@@ -70,15 +67,11 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         if (mHeaderView != null && viewType == TYPE_HEADER) {
             return new ViewHolder(mHeaderView);
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_asset_approval, parent, false);
         view.setOnClickListener(this);
-        if (mIsSetPadding) {
-            view.setPadding(DensityUtils.dp2px(mContext, 15), DensityUtils.dp2px(mContext, 10), DensityUtils.dp2px(mContext, 15), DensityUtils.dp2px(mContext, 10));
-        }
         return new ViewHolder(view);
     }
 

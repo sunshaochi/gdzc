@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.gengcon.android.fixedassets.R;
@@ -206,7 +207,9 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
                             .execute();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ToastUtils.toastMessage(BaseActivity.this, "下载地址不正确!");
+                    if (!(e instanceof WindowManager.BadTokenException)){
+                        ToastUtils.toastMessage(BaseActivity.this, "下载地址不正确!");
+                    }
                 }
             } else if (permission.shouldShowRequestPermissionRationale) {
                 requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);

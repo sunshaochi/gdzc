@@ -101,9 +101,6 @@
             android:name=".ui.InventoryResultActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.RFIDConnectActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.MessageActivity"
             android:screenOrientation="portrait" />
         <activity

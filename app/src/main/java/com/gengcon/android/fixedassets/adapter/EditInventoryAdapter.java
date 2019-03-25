@@ -47,10 +47,6 @@ public class EditInventoryAdapter extends MyRecyclerView.Adapter<EditInventoryAd
         }
     }
 
-    public List<AssetBean> getAssets() {
-        return mAssets;
-    }
-
     public void changeDataSource(List<AssetBean> assets) {
         clear();
         if (assets != null && assets.size() > 0) {

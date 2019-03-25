@@ -39,12 +39,16 @@ public class ModifyPasswordPresenter extends BasePresenter<ModifyPasswordView> {
 
             @Override
             public void onFinished() {
-
+                if (isViewAttached()){
+                    mMvpView.hideLoading();
+                }
             }
 
             @Override
             public void onStart() {
-
+                if (isViewAttached()){
+                    mMvpView.showLoading();
+                }
             }
         });
     }

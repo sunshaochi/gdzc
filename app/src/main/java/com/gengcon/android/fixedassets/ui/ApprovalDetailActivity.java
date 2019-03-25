@@ -140,7 +140,6 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new ApprovalAssetAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         setHeader(mRecyclerView);

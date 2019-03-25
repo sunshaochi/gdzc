@@ -103,6 +103,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 onBackPressed();
                 break;
             case R.id.hidePwdBtn:
+                hidePwdBtn.setBackgroundResource(isHidePwd ? R.drawable.ic_hide_password : R.drawable.ic_display_password);
                 isHidePwd = !isHidePwd;
                 if (isHidePwd) {
                     passwordEdit.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -111,7 +112,6 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                     passwordEdit.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     passwordEdit.setSelection(passwordEdit.getText().length());
                 }
-                hidePwdBtn.setBackgroundResource(isHidePwd ? R.drawable.ic_hide_password : R.drawable.ic_display_password);
                 if (!TextUtils.isEmpty(passwordEdit.getText().toString())) {
                     nextButton.setEnabled(true);
                 } else {
