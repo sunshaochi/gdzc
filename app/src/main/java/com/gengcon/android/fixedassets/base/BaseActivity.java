@@ -247,19 +247,6 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         return false;
     }
 
-    public boolean isNetworkOnline() {
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process ipProcess = runtime.exec("ping -c 3 www.baidu.com");
-            int exitValue = ipProcess.waitFor();
-            Log.i("Avalible", "Process:" + exitValue);
-            return (exitValue == 0);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     @Override
     public void updateVersion(UpdateVersion version) {
         mVersion = version;

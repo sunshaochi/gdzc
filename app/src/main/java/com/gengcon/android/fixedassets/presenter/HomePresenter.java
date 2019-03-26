@@ -7,8 +7,6 @@ import com.gengcon.android.fixedassets.bean.result.Home;
 import com.gengcon.android.fixedassets.bean.result.ResultRole;
 import com.gengcon.android.fixedassets.bean.result.UserPopupNotice;
 import com.gengcon.android.fixedassets.model.HomeModel;
-import com.gengcon.android.fixedassets.model.ReadAddNoticeModel;
-import com.gengcon.android.fixedassets.model.ReadEditNoticeModel;
 import com.gengcon.android.fixedassets.model.RouteModel;
 import com.gengcon.android.fixedassets.model.UserPopupNoticeModel;
 import com.gengcon.android.fixedassets.view.HomeView;
@@ -19,15 +17,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private HomeModel model;
     private RouteModel routeModel;
     private UserPopupNoticeModel userPopupNoticeModel;
-//    private ReadAddNoticeModel addNoticeModel;
-//    private ReadEditNoticeModel editNoticeModel;
 
     public HomePresenter() {
         this.model = new HomeModel();
         this.routeModel = new RouteModel();
         this.userPopupNoticeModel = new UserPopupNoticeModel();
-//        this.addNoticeModel = new ReadAddNoticeModel();
-//        this.editNoticeModel = new ReadEditNoticeModel();
     }
 
     public void getHome() {

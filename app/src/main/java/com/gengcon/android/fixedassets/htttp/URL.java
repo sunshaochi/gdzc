@@ -55,7 +55,6 @@ public class URL {
     public static final String DEVICE_MANAGE = "index/setup";
     public static final String BECALL = "index/becall";
     public static final String BEDETAIL = "index/beDetail";
-    public static final String ABOUTUS = "index/aboutUs";
     public static final String HOME = "index/home";
 
     public static final String SCANDETAIL = "index/scanDetail";

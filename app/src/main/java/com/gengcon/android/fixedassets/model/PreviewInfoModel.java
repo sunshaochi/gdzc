@@ -16,14 +16,7 @@ public class PreviewInfoModel extends BaseModel {
     ApiService.PreviewInventoryInfo previewInventoryInfo = createService(ApiService.PreviewInventoryInfo.class);
 
     public Observable<Bean<PreviewInfo>> previewInventoryInfo(String inv_no, List<String> asset_ids, int status, int page) {
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("doc_id", docId);
-//        map.put("status", status);
-//        map.put("page", page);
-//        map.put("assets_ids", new Gson().toJson(assetIds));
-//        Log.e("PreviewInfoModel", "previewInventoryInfo: ");
         return previewInventoryInfo.previewInventoryInfo(new PreviewRequest(inv_no, (ArrayList) asset_ids, status, page, 30));
-//        return previewInventoryInfo.previewInventoryInfo(docId, status, page, new Gson().toJson(assetIds));
     }
 
 }

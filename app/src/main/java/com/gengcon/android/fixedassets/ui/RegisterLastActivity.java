@@ -23,6 +23,7 @@ import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.presenter.RegisterLastPresenter;
 import com.gengcon.android.fixedassets.util.CacheActivity;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.view.RegisterLastView;
 import com.gengcon.android.fixedassets.widget.IndustryPickerLinearLayout;
 import com.google.gson.Gson;
@@ -113,6 +114,17 @@ public class RegisterLastActivity extends BaseActivity implements View.OnClickLi
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     presenter.getCheckRename(userNameView.getText().toString());
+                }
+            }
+        });
+
+        companyNameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (companyNameView.getText().toString().length() < 2 || companyNameView.getText().toString().length() > 30) {
+                        ToastUtils.toastMessage(RegisterLastActivity.this, "组织名称格式错误(2-30位,可包含中文,数字,字母,-,_,括号)");
+                    }
                 }
             }
         });

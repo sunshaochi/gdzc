@@ -1,6 +1,5 @@
 package com.gengcon.android.fixedassets.bean.request;
 
-import com.gengcon.android.fixedassets.bean.AssetBean;
 
 import java.util.ArrayList;
 

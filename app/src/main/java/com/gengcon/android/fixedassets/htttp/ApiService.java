@@ -187,18 +187,6 @@ public class ApiService {
         Observable<Bean<UserPopupNotice>> getUserPopupNotice();
     }
 
-    //全体消息已读接口
-    public interface GetReadAddNotice {
-        @POST("noticeTag/add")
-        Observable<Bean> getReadAddNotice(@Query("notice_id") int notice_id);
-    }
-
-    //非全体消息已读接口
-    public interface GetReadEditNotice {
-        @POST("noticeTag/edit")
-        Observable<Bean> getReadEditNotice(@Query("notice_id") int notice_id);
-    }
-
     //消息列表页面
     public interface GetUserNotice {
         @GET("noticeTag/getUserNotice")

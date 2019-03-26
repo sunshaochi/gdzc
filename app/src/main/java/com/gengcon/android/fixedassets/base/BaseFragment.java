@@ -101,10 +101,6 @@ public class BaseFragment extends Fragment implements Iview {
         startActivity(intent);
     }
 
-    public void showPermissionDeniedTips() {
-        ToastUtils.toastMessage(getActivity(), R.string.permission_denied_tips);
-    }
-
     //Manifest.permission.CAMERA
     protected void requestPermission(Consumer<Permission> consumer, String... permission) {
         RxPermissions rxPermission = new RxPermissions(getActivity());

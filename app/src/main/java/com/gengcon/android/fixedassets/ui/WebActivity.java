@@ -1,7 +1,6 @@
 package com.gengcon.android.fixedassets.ui;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,7 +14,6 @@ import androidx.annotation.Nullable;
 
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -33,9 +31,7 @@ import com.gengcon.android.fixedassets.bean.AssetBean;
 import com.gengcon.android.fixedassets.bean.LoginUserBean;
 import com.gengcon.android.fixedassets.bean.UpdateImgRBean;
 import com.gengcon.android.fixedassets.bean.request.AddAssetRequest;
-import com.gengcon.android.fixedassets.bean.request.UpdateVersionRequest;
 import com.gengcon.android.fixedassets.bean.result.Print;
-import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
 import com.gengcon.android.fixedassets.htttp.URL;
 import com.gengcon.android.fixedassets.presenter.WebPresenter;
 import com.gengcon.android.fixedassets.util.CacheActivity;
@@ -44,13 +40,9 @@ import com.gengcon.android.fixedassets.util.ImageFactory;
 import com.gengcon.android.fixedassets.util.JCPrinter;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
-import com.gengcon.android.fixedassets.util.Utils;
-import com.gengcon.android.fixedassets.version.ApkDownLoad;
 import com.gengcon.android.fixedassets.widget.ActionSheetLayout;
-import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tbruyelle.rxpermissions2.Permission;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +62,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class WebActivity extends BasePullRefreshActivity {
@@ -90,9 +81,6 @@ public class WebActivity extends BasePullRefreshActivity {
     private int index;
     private int imgType;
     private int updateImg;
-    private String versionName;
-    private boolean isUpdate;
-    private UpdateVersion mVersion;
     private String rgsId;
     private WebPresenter webPresenter;
     String invalid_type;
@@ -169,9 +157,6 @@ public class WebActivity extends BasePullRefreshActivity {
                     intentType = getIntent().getStringExtra("intentType");
                     ArrayList<String> assetIds = (ArrayList<String>) getIntent().getSerializableExtra(Constant.INTENT_EXTRA_KEY_ASSETS);
                     mWebView.loadUrl("javascript:beCall(" + "'" + new Gson().toJson(new AddAssetRequest(assetIds)) + "'" + ")");
-                } else if (url.equals(URL.HTTP_HEAD + URL.ABOUTUS)) {
-                    String versionName = Utils.getVersionName(WebActivity.this);
-                    mWebView.loadUrl("javascript:checkVersion(" + "'" + new Gson().toJson(new UpdateVersionRequest(versionName, isUpdate)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.LOGIN)) {
                     backHome = true;
                     if (!TextUtils.isEmpty(invalid_type)) {
@@ -251,11 +236,6 @@ public class WebActivity extends BasePullRefreshActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @JavascriptInterface
-    public void go_out(String message) {
-        SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
     }
 
     @JavascriptInterface
@@ -373,16 +353,6 @@ public class WebActivity extends BasePullRefreshActivity {
     }
 
     @JavascriptInterface
-    public void updateVersion(String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showUpdateVersionDialog();
-            }
-        });
-    }
-
-    @JavascriptInterface
     public void loginRegister(String message) {
         if (!CacheActivity.activityList.contains(WebActivity.this)) {
             CacheActivity.activityList.add(WebActivity.this);
@@ -454,7 +424,6 @@ public class WebActivity extends BasePullRefreshActivity {
                             mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + bitmap + "'" + ")");
                         } else if (updateImg == 2) {
                             mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + imgType + "==========" + index + "==========" + bitmap + "'" + ")");
-//                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + new Gson().toJson(new UpdateImgRequest(bitmap, index)) + "'" + ")");
                         }
                     }
 
@@ -487,76 +456,6 @@ public class WebActivity extends BasePullRefreshActivity {
         super.onDestroy();
         mWebView.clearCache(true);
     }
-
-    @Override
-    public void updateVersion(UpdateVersion version) {
-        super.updateVersion(version);
-        mVersion = version;
-        versionName = Utils.getVersionName(this);
-        if (version.getVersion_number() > Utils.getVersionCode(this)) {
-            isUpdate = true;
-        } else {
-            isUpdate = false;
-        }
-    }
-
-    private void showUpdateVersionDialog() {
-        if (mVersion.getVersion_number() > Utils.getVersionCode(this)) {
-            if (mVersion.getUpdate_type() == 1) {
-                SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
-            }
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
-            builder.setUpDate(true);
-            builder.setTitle(getString(R.string.version_update));
-            StringBuilder updateContent = new StringBuilder();
-            updateContent.append("最新版本号:" + mVersion.getVersion_name());
-            updateContent.append("\r\n");
-            updateContent.append("当前版本号:" + Utils.getVersionName(this));
-            if (!TextUtils.isEmpty(mVersion.getUpdate_content())) {
-                updateContent.append("\r\n");
-                updateContent.append("更新内容:" + "\n");
-                String content = mVersion.getUpdate_content().replaceAll("\r\n", "");
-                Log.e(content, "content: " + content);
-                updateContent.append(content.replace(";", "\n"));
-            }
-            builder.setText(updateContent.toString());
-            //非强制更新
-            builder.setPositiveButton(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    requestPermission(permissionConsumer, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                }
-            }, getString(R.string.update));
-            builder.setNegativeButton(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            }, getString(R.string.cancel));
-            builder.show();
-        }
-    }
-
-    Consumer<Permission> permissionConsumer = new Consumer<Permission>() {
-        @Override
-        public void accept(Permission permission) throws Exception {
-            if (permission.granted) {
-                try {
-                    new ApkDownLoad(WebActivity.this, mVersion.getUrl(), mVersion.getVersion_name(), getString(R.string.version_update))
-                            .execute();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtils.toastMessage(WebActivity.this, "下载地址不正确!");
-                }
-            } else if (permission.shouldShowRequestPermissionRationale) {
-                requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                ToastUtils.toastMessage(WebActivity.this, R.string.permission_write_external_tips);
-            } else {
-                ToastUtils.toastMessage(WebActivity.this, R.string.permission_write_external_tips);
-                showUpdateVersionDialog();
-            }
-        }
-    };
 
     private String readPrintName() {
         SharedPreferences read = getSharedPreferences("Connect", MODE_PRIVATE);

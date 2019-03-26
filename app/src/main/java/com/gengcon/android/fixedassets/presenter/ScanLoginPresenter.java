@@ -10,36 +10,10 @@ import com.gengcon.android.fixedassets.view.ScanLoginView;
 public class ScanLoginPresenter extends BasePresenter<ScanLoginView> {
 
     private ScanLoginMode model;
-//    private ScanResultModel resultModel;
 
     public ScanLoginPresenter() {
         this.model = new ScanLoginMode();
-//        this.resultModel = new ScanResultModel();
     }
-
-//    public void scanResult(String uuid, String scanResult) {
-//        subscribe(resultModel.scanCodeResult(uuid, scanResult), new ApiCallBack() {
-//            @Override
-//            public void onSuccess(Object modelBean) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(int status, String errorMsg) {
-//
-//            }
-//
-//            @Override
-//            public void onFinished() {
-//
-//            }
-//
-//            @Override
-//            public void onStart() {
-//
-//            }
-//        });
-//    }
 
     public void scanLogin(String uuid, int login_status) {
 
