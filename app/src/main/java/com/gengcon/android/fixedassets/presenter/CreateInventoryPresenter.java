@@ -71,6 +71,8 @@ public class CreateInventoryPresenter extends BasePresenter<CreateInventoryView>
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.addInventoryResult(modelBean);
+                    } else if (modelBean.getCode().equals("CODE_402")) {
+                        mMvpView.contractExpire();
                     }
                 }
             }
