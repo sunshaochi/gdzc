@@ -25,6 +25,8 @@ public class PersonalPresenter extends BasePresenter<PersonalView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.showPersonalData(modelBean.getData());
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
