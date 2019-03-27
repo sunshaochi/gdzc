@@ -89,14 +89,14 @@ public class JCPrinter {
      */
     private static boolean printerLabel50301(Print.ListBean list) {
         mDzAPI.startJob(50, 30, 0);
-        mDzAPI.drawText(list.getTemplate_attr().get(0), 1, 4, 45, 6, 2.85);
-        mDzAPI.drawText(list.getTemplate_attr().get(1), 1, 10, 45, 6, 2.85);
+        mDzAPI.drawText(list.getTemplate_attr().get(0), 1, 4, 46, 6, 2.85);
+        mDzAPI.drawText(list.getTemplate_attr().get(1), 1, 10, 46, 6, 2.85);
         mDzAPI.drawText(list.getTemplate_attr().get(2), 1, 16, 32, 6, 2.85);
         mDzAPI.drawText(list.getTemplate_attr().get(3), 1, 23, 32, 6, 2.85);
         mDzAPI.draw2DQRCode(list.getId(), 33.7, 15.8, 11);
-        mDzAPI.drawRectangle(0, 2, 45.5, 26, 0.2);
-        mDzAPI.drawLine(0, 8.5, 45.3, 8.5, 0.2);
-        mDzAPI.drawLine(0, 15, 45.3, 15, 0.2);
+        mDzAPI.drawRectangle(0, 2, 46.5, 26, 0.2);
+        mDzAPI.drawLine(0, 8.5, 46.3, 8.5, 0.2);
+        mDzAPI.drawLine(0, 15, 46.3, 15, 0.2);
         mDzAPI.drawLine(0, 21.5, 33, 21.5, 0.2);
         mDzAPI.drawLine(33, 15, 33, 27.8, 0.2);
         return mDzAPI.commitJob();

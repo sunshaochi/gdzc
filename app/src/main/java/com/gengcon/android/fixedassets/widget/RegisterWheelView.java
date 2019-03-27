@@ -217,7 +217,7 @@ public class RegisterWheelView extends ScrollView {
                 return;
             }
             if (position == i) {
-                itemView.setTextColor(getResources().getColor(R.color.blue));
+                itemView.setTextColor(getResources().getColor(R.color.black_text));
             } else {
                 itemView.setTextColor(Color.parseColor("#bbbbbb"));
             }
