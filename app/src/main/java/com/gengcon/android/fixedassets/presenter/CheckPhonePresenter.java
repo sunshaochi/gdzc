@@ -1,14 +1,18 @@
 package com.gengcon.android.fixedassets.presenter;
 
+import android.util.Log;
+
 import com.gengcon.android.fixedassets.base.ApiCallBack;
 import com.gengcon.android.fixedassets.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.ForgetPwd;
+import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.model.CheckNewPhoneModel;
 import com.gengcon.android.fixedassets.model.CheckOldPhoneModel;
 import com.gengcon.android.fixedassets.model.ForgetPhoneModel;
 import com.gengcon.android.fixedassets.model.RegisterPhoneModel;
 import com.gengcon.android.fixedassets.view.CheckPhoneCodeView;
+import com.google.gson.Gson;
 
 public class CheckPhonePresenter extends BasePresenter<CheckPhoneCodeView> {
     private CheckOldPhoneModel checkOldPhoneModel;
@@ -31,6 +35,14 @@ public class CheckPhonePresenter extends BasePresenter<CheckPhoneCodeView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.checkPhoneCode();
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
+                    } else {
+                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }
@@ -62,6 +74,14 @@ public class CheckPhonePresenter extends BasePresenter<CheckPhoneCodeView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.checkPhoneCode();
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
+                    } else {
+                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
             }

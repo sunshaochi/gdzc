@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.presenter;
 import com.gengcon.android.fixedassets.base.ApiCallBack;
 import com.gengcon.android.fixedassets.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.User;
+import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryHeadDetail;
 import com.gengcon.android.fixedassets.bean.result.Bean;
@@ -12,6 +13,7 @@ import com.gengcon.android.fixedassets.model.InventoryHeadModel;
 import com.gengcon.android.fixedassets.model.UpdateInventoryModel;
 import com.gengcon.android.fixedassets.model.UsersModel;
 import com.gengcon.android.fixedassets.view.EditInventoryView;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -82,6 +84,12 @@ public class EditInventoryPresenter extends BasePresenter<EditInventoryView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.updateInventoryResult(modelBean);
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
                     }
                 }
             }

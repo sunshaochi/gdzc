@@ -4,9 +4,11 @@ import com.gengcon.android.fixedassets.base.ApiCallBack;
 import com.gengcon.android.fixedassets.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.User;
 import com.gengcon.android.fixedassets.bean.result.Bean;
+import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.model.CreateInventoryModel;
 import com.gengcon.android.fixedassets.model.UsersModel;
 import com.gengcon.android.fixedassets.view.CreateInventoryView;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -71,6 +73,12 @@ public class CreateInventoryPresenter extends BasePresenter<CreateInventoryView>
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.addInventoryResult(modelBean);
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
                     } else if (modelBean.getCode().equals("CODE_402")) {
                         mMvpView.contractExpire();
                     }

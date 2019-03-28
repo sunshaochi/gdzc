@@ -3,8 +3,10 @@ package com.gengcon.android.fixedassets.presenter;
 import com.gengcon.android.fixedassets.base.ApiCallBack;
 import com.gengcon.android.fixedassets.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;
+import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.model.AuditSaveModel;
 import com.gengcon.android.fixedassets.view.ApprovalRejectView;
+import com.google.gson.Gson;
 
 
 public class ApprovalRejectPresenter extends BasePresenter<ApprovalRejectView> {
@@ -24,6 +26,12 @@ public class ApprovalRejectPresenter extends BasePresenter<ApprovalRejectView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.rejectApproval();
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -35,7 +43,7 @@ public class ApprovalRejectPresenter extends BasePresenter<ApprovalRejectView> {
                 if (isViewAttached()) {
                     if (status == 402) {
                         mMvpView.contractExpire();
-                    }else {
+                    } else {
                         mMvpView.showErrorMsg(status, errorMsg);
                     }
                 }

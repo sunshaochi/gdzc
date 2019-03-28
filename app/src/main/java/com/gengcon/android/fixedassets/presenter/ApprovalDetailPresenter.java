@@ -5,10 +5,12 @@ import com.gengcon.android.fixedassets.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
 import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
 import com.gengcon.android.fixedassets.bean.result.Bean;
+import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.model.ApprovalAssetListModel;
 import com.gengcon.android.fixedassets.model.ApprovalHeadModel;
 import com.gengcon.android.fixedassets.model.AuditSaveModel;
 import com.gengcon.android.fixedassets.view.ApprovalDetailView;
+import com.google.gson.Gson;
 
 
 public class ApprovalDetailPresenter extends BasePresenter<ApprovalDetailView> {
@@ -114,7 +116,13 @@ public class ApprovalDetailPresenter extends BasePresenter<ApprovalDetailView> {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.agreeApproval();
-                    } else {
+                    }  else if (modelBean.getCode().equals("CODE_401")) {
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
+                    }else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
                 }
