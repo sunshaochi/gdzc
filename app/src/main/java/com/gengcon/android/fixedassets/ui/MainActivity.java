@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ScannerInerface mControll;
     private ImageView messageView;
     private UserPopupNotice userPopupNotice;
+    private int noticeId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -491,6 +492,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             messageView.setImageResource(R.drawable.ic_msg_unread);
         }
         if (userPopupNotice.getList() != null) {
+            noticeId = userPopupNotice.getList().getId();
             String photoUrl = userPopupNotice.getList().getPhotourl();
             int model = userPopupNotice.getList().getPush_model();
             if (!TextUtils.isEmpty(photoUrl)) {
@@ -516,9 +518,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent webIntent = new Intent(MainActivity.this, MessageDetailsActivity.class);
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + userPopupNotice.getList().getId());
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + noticeId);
                     startActivity(webIntent);
-//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
 
                 }
@@ -526,7 +527,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             builder.setNeutralButton(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
             }, "我知道了");
@@ -552,16 +552,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent webIntent = new Intent(MainActivity.this, MessageDetailsActivity.class);
-                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + userPopupNotice.getList().getId());
+                    webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.MESSAGEDETAIL + noticeId);
                     startActivity(webIntent);
-//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
             }, "查看详情");
             builder.setNeutralButton(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-//                    mPresenter.getReadEditNotice(userPopupNotice.getList().getId());
                     dialog.dismiss();
                 }
             }, "我知道了");
