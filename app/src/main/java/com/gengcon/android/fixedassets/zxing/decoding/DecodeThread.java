@@ -19,7 +19,7 @@ package com.gengcon.android.fixedassets.zxing.decoding;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.gengcon.android.fixedassets.ui.ScanActivity;
+import com.gengcon.android.fixedassets.common.module.scan.ScanActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.ResultPointCallback;

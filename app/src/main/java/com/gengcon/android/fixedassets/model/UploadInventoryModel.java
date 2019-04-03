@@ -1,9 +1,9 @@
 package com.gengcon.android.fixedassets.model;
 
-import com.gengcon.android.fixedassets.base.BaseModel;
+import com.gengcon.android.fixedassets.module.base.BaseModel;
 import com.gengcon.android.fixedassets.bean.request.UploadInventoryRequest;
 import com.gengcon.android.fixedassets.bean.result.Bean;
-import com.gengcon.android.fixedassets.htttp.ApiService;
+import com.gengcon.android.fixedassets.common.module.htttp.ApiService;
 
 import java.util.ArrayList;
 import java.util.List;

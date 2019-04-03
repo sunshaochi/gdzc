@@ -147,7 +147,7 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-    <com.gengcon.android.fixedassets.widget.IndustryPickerLinearLayout
+    <com.gengcon.android.fixedassets.module.login.widget.IndustryPickerLinearLayout
         android:id="@+id/pickerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

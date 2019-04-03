@@ -1,10 +1,10 @@
 package com.gengcon.android.fixedassets.model;
 
-import com.gengcon.android.fixedassets.base.BaseModel;
+import com.gengcon.android.fixedassets.module.base.BaseModel;
 import com.gengcon.android.fixedassets.bean.request.InventoryAssetRequest;
 import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
 import com.gengcon.android.fixedassets.bean.result.Bean;
-import com.gengcon.android.fixedassets.htttp.ApiService;
+import com.gengcon.android.fixedassets.common.module.htttp.ApiService;
 
 import io.reactivex.Observable;
 

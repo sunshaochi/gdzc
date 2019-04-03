@@ -8,14 +8,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.gengcon.android.fixedassets.ui.InventoryListActivity;
-import com.gengcon.android.fixedassets.ui.MainActivity;
-import com.google.gson.Gson;
+import com.gengcon.android.fixedassets.module.inventory.view.ui.InventoryListActivity;
+import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 

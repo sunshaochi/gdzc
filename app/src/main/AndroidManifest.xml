@@ -29,7 +29,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".ui.GApplication"
+        android:name=".module.base.GApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -40,7 +40,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".module.login.view.ui.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,138 +70,135 @@
         </receiver>
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".module.main.view.ui.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.InventoryListActivity"
+            android:name=".module.inventory.view.ui.InventoryListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.CreateInventoryActivity"
+            android:name=".module.inventory.view.ui.CreateInventoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.EditInventoryActivity"
+            android:name=".module.inventory.view.ui.EditInventoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.ScanActivity"
+            android:name=".common.module.scan.ScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.InventoryDetailsActivity"
+            android:name=".module.inventory.view.ui.InventoryDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.AssetListActivity"
+            android:name=".module.inventory.view.ui.PreviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.PreviewActivity"
+            android:name=".module.inventory.view.ui.InventoryResultActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.InventoryResultActivity"
+            android:name=".module.message.view.ui.MessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.MessageActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.MessageDetailsActivity"
+            android:name=".module.message.view.ui.MessageDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.WebActivity"
+            android:name=".module.web.view.WebActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.BluetoothDeviceListActivity"
+            android:name=".module.print.BluetoothDeviceListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.ScanLoginActivity"
+            android:name=".module.main.view.ui.ScanLoginActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ApprovalDetailActivity"
+            android:name=".module.approval.view.ui.ApprovalDetailActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ApprovalAssetDetailsActivity"
+            android:name=".module.approval.view.ui.ApprovalAssetDetailsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.RejectActivity"
+            android:name=".module.approval.view.ui.RejectActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.PersonalActivity"
+            android:name=".module.user.view.ui.PersonalActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.FeedbackActivity"
+            android:name=".module.user.view.ui.FeedbackActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.PersonalDataActivity"
+            android:name=".module.user.view.ui.PersonalDataActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ModifyPasswordActivity"
+            android:name=".module.user.view.ui.ModifyPasswordActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.AboutUsActivity"
+            android:name=".module.user.view.ui.AboutUsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ContactUsActivity"
+            android:name=".module.user.view.ui.ContactUsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ChangePhoneActivity"
+            android:name=".module.user.view.ui.ChangePhoneActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ChangePhoneSecondActivity"
+            android:name=".module.user.view.ui.ChangePhoneSecondActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".ui.ChangePhoneThirdActivity"
+            android:name=".module.user.view.ui.ChangePhoneThirdActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.RegisterFirstActivity"
+            android:name=".module.login.view.ui.RegisterFirstActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.RegisterSecondActivity"
+            android:name=".module.login.view.ui.RegisterSecondActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.SetPasswordActivity"
+            android:name=".module.login.view.ui.SetPasswordActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.RegisterLastActivity"
+            android:name=".module.login.view.ui.RegisterLastActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ForgetPwdFirstActivity"
+            android:name=".module.login.view.ui.ForgetPwdFirstActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ForgetSecondActivity"
+            android:name=".module.login.view.ui.ForgetSecondActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.AgreementActivity"
+            android:name=".module.login.view.ui.AgreementActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ApprovalListActivity"
+            android:name=".module.approval.view.ui.ApprovalListActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ChangePhoneFourthActivity"
+            android:name=".module.user.view.ui.ChangePhoneFourthActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 

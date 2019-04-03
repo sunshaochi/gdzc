@@ -10,12 +10,4 @@ public class AddAssetRequest {
     public AddAssetRequest(ArrayList<String> id_list){
         this.idList = id_list;
     }
-
-    public ArrayList<String> getIdList() {
-        return idList;
-    }
-
-    public void setIdList(ArrayList<String> id_list) {
-        this.idList = id_list;
-    }
 }

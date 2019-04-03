@@ -60,7 +60,7 @@
             android:layout_height="1dp"
             android:background="@color/item_divider" />
 
-        <com.gengcon.android.fixedassets.widget.RegisterWheelView
+        <com.gengcon.android.fixedassets.module.login.widget.RegisterWheelView
             android:id="@+id/main_wv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

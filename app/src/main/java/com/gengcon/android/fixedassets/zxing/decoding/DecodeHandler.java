@@ -23,7 +23,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.ui.ScanActivity;
+import com.gengcon.android.fixedassets.common.module.scan.ScanActivity;
 import com.gengcon.android.fixedassets.zxing.camera.CameraManager;
 import com.gengcon.android.fixedassets.zxing.camera.PlanarYUVLuminanceSource;
 import com.google.zxing.BinaryBitmap;

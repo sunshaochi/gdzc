@@ -17,7 +17,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-        <com.gengcon.android.fixedassets.version.CircleProgressView
+        <com.gengcon.android.fixedassets.common.module.update.CircleProgressView
             android:id="@+id/cpv_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

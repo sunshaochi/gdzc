@@ -1,7 +1,7 @@
 package com.gengcon.android.fixedassets.util;
 
 
-import com.gengcon.android.fixedassets.ui.GApplication;
+import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.pow.api.cls.RfidPower;
 import com.uhf.api.cls.Reader;
 
