@@ -1,8 +1,6 @@
 package com.gengcon.android.fixedassets.common.module.htttp;
 
 
-import com.gengcon.android.fixedassets.common.module.htttp.ResultException;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;

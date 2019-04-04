@@ -14,7 +14,9 @@ import com.gengcon.android.fixedassets.module.base.loader.GlidePauseOnScrollList
 import com.gengcon.android.fixedassets.util.EmshConstant;
 import com.gengcon.android.fixedassets.util.FontUtils;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 
+import androidx.multidex.MultiDex;
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -27,6 +29,8 @@ public class GApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
+        CrashReport.initCrashReport(getApplicationContext(), "fee0e191d8", true);
         SharedPreferencesUtils.getInstance().setContext(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());

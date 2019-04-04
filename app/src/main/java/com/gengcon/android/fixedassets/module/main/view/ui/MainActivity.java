@@ -45,6 +45,7 @@ import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.module.main.view.HomeView;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.tbruyelle.rxpermissions2.Permission;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;

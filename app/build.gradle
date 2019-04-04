@@ -43,6 +43,8 @@ android {
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
 
+            multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -66,6 +68,7 @@ android {
     }
     lintOptions {
         abortOnError false
+        disable 'GoogleAppIndexingWarning'
     }
 }
 
@@ -115,4 +118,8 @@ MtjCirclePluginConfig {
 
         implementation 'cn.jiguang.sdk:jpush:3.1.6'  // 此处以JPush 3.1.6 版本为例。
         implementation 'cn.jiguang.sdk:jcore:1.2.5'  // 此处以JCore 1.2.5 版本为例。
+
+        implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+        implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+        implementation 'com.android.support:multidex:1.0.3'
     }
