@@ -77,12 +77,15 @@ public class RegisterFirstActivity extends BaseActivity implements View.OnClickL
             @Override
             public void afterTextChanged(Editable s) {
                 int length = s.length();
+                if (length > 0) {
+                    clearButton.setVisibility(View.VISIBLE);
+                }else {
+                    clearButton.setVisibility(View.GONE);
+                }
                 if (isChoice && length > 0) {
                     nextButton.setEnabled(true);
-                    clearButton.setVisibility(View.VISIBLE);
                 } else {
                     nextButton.setEnabled(false);
-                    clearButton.setVisibility(View.GONE);
                 }
             }
         });
