@@ -11,6 +11,7 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.PersonalBean;
 import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.module.base.CustomerServiceActivity;
 import com.gengcon.android.fixedassets.module.user.view.PersonalView;
 import com.gengcon.android.fixedassets.module.user.presenter.PersonalPresenter;
 import com.gengcon.android.fixedassets.module.web.view.WebActivity;
