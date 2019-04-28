@@ -1,16 +1,10 @@
 package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.bean.WheelBean;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.EditInventoryAdapter;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
@@ -262,12 +257,6 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
         AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
         builder.setTitle(R.string.tips);
         builder.setText(R.string.inventoty_list_save_successed);
-//        builder.setNegativeButton(new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//            }
-//        }, getString(R.string.cancel));
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -294,9 +283,9 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void onConfirm(User user) {
+    public void onConfirm(WheelBean user) {
         user_id = user.getId();
-        mTvInputUser.setText(user.getUser_name());
+        mTvInputUser.setText(user.getName());
         mTvInputUser.setTextColor(getResources().getColor(R.color.black_text));
     }
 
@@ -372,8 +361,15 @@ public class EditInventoryActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void initUsers(List<User> users) {
+        List<WheelBean> data = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            WheelBean bean = new WheelBean();
+            bean.setId(users.get(i).getId());
+            bean.setName(users.get(i).getUser_name());
+            data.add(bean);
+        }
         mLlPicker.setVisibility(View.VISIBLE);
-        mLlPicker.setData(users);
+        mLlPicker.setData(data);
         mLlPicker.setOnSelectListener(this);
     }
 

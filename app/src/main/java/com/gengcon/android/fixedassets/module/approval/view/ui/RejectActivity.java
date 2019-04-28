@@ -1,11 +1,6 @@
 package com.gengcon.android.fixedassets.module.approval.view.ui;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -22,11 +17,8 @@ import com.gengcon.android.fixedassets.module.approval.presenter.ApprovalRejectP
 import com.gengcon.android.fixedassets.module.approval.view.ApprovalRejectView;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ToastUtils;
-import com.gengcon.android.fixedassets.widget.AlertDialog;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class RejectActivity extends BaseActivity implements View.OnClickListener, ApprovalRejectView {
 

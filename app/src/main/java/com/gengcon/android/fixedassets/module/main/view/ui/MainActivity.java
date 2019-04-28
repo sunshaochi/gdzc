@@ -20,6 +20,7 @@ import com.baidu.mobstat.StatService;
 import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.module.addasset.view.AddAssetActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.Home;
@@ -283,11 +284,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.asset_storage:
                 if (isNetworkConnected(this)) {
                     if (RolePowerManager.getInstance().isAddModule()) {
-                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
-                        webIntent.putExtra("webName", "资产入库");
-                        webIntent.putExtra("webTitle", "保存");
-                        webIntent.putExtra("webFrom", "MainActivity");
-                        startActivity(webIntent);
+                        Intent addAssetIntent = new Intent(MainActivity.this, AddAssetActivity.class);
+                        startActivity(addAssetIntent);
+//                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
+//                        webIntent.putExtra("webName", "资产入库");
+//                        webIntent.putExtra("webTitle", "保存");
+//                        webIntent.putExtra("webFrom", "MainActivity");
+//                        startActivity(webIntent);
                     } else {
                         ToastUtils.toastMessage(this, "当前您没有权限");
                     }

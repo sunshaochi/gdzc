@@ -1,6 +1,8 @@
 package com.gengcon.android.fixedassets.common.module.htttp;
 
 
+import com.google.gson.JsonSyntaxException;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;
@@ -62,11 +64,13 @@ public abstract class ApiCallBack<M> implements Observer<M> {
                 onFailure(400, ((ResultException) e).getMsg());
             } else if (((ResultException) e).getCode().equals("CODE_500")) {
                 onFailure(500, "系统繁忙，请稍后重试！");
-            }  else if (((ResultException) e).getCode().equals("CODE_402")) {
+            } else if (((ResultException) e).getCode().equals("CODE_402")) {
                 onFailure(402, "合同到期");
             } else {
                 onFailure(-1, ((ResultException) e).getMsg());
             }
+        } else if (e instanceof JsonSyntaxException) {
+            onFailure(2, "");
         }
         onFinished();
         dispose();

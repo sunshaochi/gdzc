@@ -1,4 +1,4 @@
-package com.gengcon.android.fixedassets.widget;
+package com.gengcon.android.fixedassets.module.addasset.widget;
 
 
 import android.app.Activity;
@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WheelView extends ScrollView {
-    public static final String TAG = WheelView.class.getSimpleName();
+public class AreaWheelView extends ScrollView {
+    public static final String TAG = AreaWheelView.class.getSimpleName();
     private List<WheelBean> mDataList;
     int selectedIndex = 1;
     public static final int OFF_SET_DEFAULT = 1;
@@ -46,17 +46,17 @@ public class WheelView extends ScrollView {
 
     private LinearLayout views;
 
-    public WheelView(Context context) {
+    public AreaWheelView(Context context) {
         super(context);
         init(context);
     }
 
-    public WheelView(Context context, AttributeSet attrs) {
+    public AreaWheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public WheelView(Context context, AttributeSet attrs, int defStyle) {
+    public AreaWheelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -105,19 +105,19 @@ public class WheelView extends ScrollView {
                         onSeletedCallBack();
                     } else {
                         if (remainder > itemHeight / 2) {
-                            WheelView.this.post(new Runnable() {
+                            AreaWheelView.this.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    WheelView.this.smoothScrollTo(0, initialY - remainder + itemHeight);
+                                    AreaWheelView.this.smoothScrollTo(0, initialY - remainder + itemHeight);
                                     selectedIndex = divided + offset + 1;
                                     onSeletedCallBack();
                                 }
                             });
                         } else {
-                            WheelView.this.post(new Runnable() {
+                            AreaWheelView.this.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    WheelView.this.smoothScrollTo(0, initialY - remainder);
+                                    AreaWheelView.this.smoothScrollTo(0, initialY - remainder);
                                     selectedIndex = divided + offset;
                                     onSeletedCallBack();
                                 }
@@ -130,7 +130,7 @@ public class WheelView extends ScrollView {
 
                 } else {
                     initialY = getScrollY();
-                    WheelView.this.postDelayed(scrollerTask, newCheck);
+                    AreaWheelView.this.postDelayed(scrollerTask, newCheck);
                 }
             }
         };
@@ -333,8 +333,8 @@ public class WheelView extends ScrollView {
     }
 
     private int getViewMeasuredHeight(View view) {
-        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
+        int width = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         view.measure(width, expandSpec);
         return view.getMeasuredHeight();
     }

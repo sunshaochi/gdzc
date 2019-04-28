@@ -29,5 +29,12 @@
   <item type="id" name="restart_preview"/>
   <item type="id" name="return_scan_result"/>
   <item type="id" name="search_book_contents_failed"/>
-  <item type="id" name="search_book_contents_succeeded"/>
+  <item type="id" name="asset_code"/>
+  <item type="id" name="asset_name"/>
+  <item type="id" name="asset_classification"/>
+  <item type="id" name="asset_affiliated_organization"/>
+  <item type="id" name="asset_administrators"/>
+  <item type="id" name="asset_use_organization"/>
+  <item type="id" name="asset_user"/>
+
 </resources>

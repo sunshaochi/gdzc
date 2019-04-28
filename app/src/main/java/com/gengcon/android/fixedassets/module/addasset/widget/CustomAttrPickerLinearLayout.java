@@ -1,43 +1,42 @@
-package com.gengcon.android.fixedassets.widget;
+package com.gengcon.android.fixedassets.module.addasset.widget;
 
 import android.content.Context;
-
-import androidx.annotation.Nullable;
-
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.bean.WheelBean;
+import com.gengcon.android.fixedassets.bean.CustomAttrWheelBean;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 
-public class PickerLinearLayout extends LinearLayout implements View.OnClickListener {
 
-    private WheelView wva;
-    private WheelBean select;
-    private OnPickerListener onSelectListener;
+public class CustomAttrPickerLinearLayout extends LinearLayout implements View.OnClickListener {
 
-    public PickerLinearLayout(Context context) {
+    private CustomAttrWheelView wva;
+    private CustomAttrWheelBean select;
+    private OnCustomAttrPickerListener onSelectListener;
+
+    public CustomAttrPickerLinearLayout(Context context) {
         super(context);
         init(context);
     }
 
-    public PickerLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public CustomAttrPickerLinearLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public PickerLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CustomAttrPickerLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     private void init(Context context) {
-        View contentView = LayoutInflater.from(context).inflate(R.layout.picker_linear_layout, null);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.custom_attr_picker_linear_layout, null);
         wva = contentView.findViewById(R.id.main_wv);
         wva.setOnWheelViewListener(onWheelViewListener);
 //        mPicker = contentView.findViewById(R.id.picker);
@@ -48,12 +47,12 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
         addView(contentView);
     }
 
-    public void setOnSelectListener(OnPickerListener listener) {
+    public void setOnSelectListener(OnCustomAttrPickerListener listener) {
         this.onSelectListener = listener;
     }
 
-    public void setData(List<WheelBean> users) {
-        wva.setData(users);
+    public void setData(List<CustomAttrWheelBean> customAttrWheelBeans) {
+        wva.setData(customAttrWheelBeans);
     }
 
     @Override
@@ -61,40 +60,31 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
         switch (view.getId()) {
             case R.id.btn_confirm:
                 if (onSelectListener != null) {
-                    onSelectListener.onConfirm(select);
+                    onSelectListener.onCustomAttrConfirm(select);
                 }
                 setVisibility(GONE);
                 break;
             case R.id.v_cancel:
             case R.id.btn_cancel:
                 if (onSelectListener != null) {
-                    onSelectListener.onCancel();
+                    onSelectListener.onCustomAttrCancel();
                 }
                 setVisibility(GONE);
                 break;
         }
     }
 
-//    // 滚动选择器选中事件
-//    PickerScrollView.OnSelectListener pickerListener = new PickerScrollView.OnSelectListener() {
-//
-//        @Override
-//        public void onSelect(User user) {
-//            select = user;
-//        }
-//    };
-//
-    WheelView.OnWheelViewListener onWheelViewListener = new WheelView.OnWheelViewListener() {
+    CustomAttrWheelView.OnWheelViewListener onWheelViewListener = new CustomAttrWheelView.OnWheelViewListener() {
         @Override
-        public void onSelected(WheelBean item) {
+        public void onSelected(CustomAttrWheelBean item) {
             select = item;
         }
     };
 
-    public interface OnPickerListener {
-        void onConfirm(WheelBean user);
+    public interface OnCustomAttrPickerListener {
+        void onCustomAttrConfirm(CustomAttrWheelBean customAttrWheelBean);
 
-        void onCancel();
+        void onCustomAttrCancel();
     }
 
 }

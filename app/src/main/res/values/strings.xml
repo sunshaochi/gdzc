@@ -82,6 +82,12 @@
     <string name="ont_antenna">一天线</string>
     <string name="total">共</string>
 
+    <string name="add_asset_home">资产入库</string>
+    <string name="add_asset_org">所属组织</string>
+    <string name="add_asset_use_org">使用组织</string>
+    <string name="add_asset_classification">资产分类</string>
+    <string name="choose_user">使用人</string>
+
     <string name="asset_status_idel">闲置</string>
     <string name="asset_status_perair">维修</string>
     <string name="asset_status_scrap">废弃</string>

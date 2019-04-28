@@ -19,8 +19,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:clickable="true">
+            android:clickable="true"
+            android:layout_height="46dp">
 
             <Button
                 android:id="@+id/btn_cancel"
@@ -32,14 +32,6 @@
                 android:text="@string/cancel"
                 android:textColor="@color/blue"
                 android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/distribution_user"
-                android:textColor="@color/blue"
-                android:textSize="17sp" />
 
             <Button
                 android:id="@+id/btn_confirm"
@@ -61,16 +53,17 @@
             android:layout_height="1dp"
             android:background="@color/item_divider" />
 
-        <com.gengcon.android.fixedassets.widget.WheelView
+        <com.gengcon.android.fixedassets.module.addasset.widget.AreaWheelView
             android:id="@+id/main_wv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
         <!--<com.gengcon.android.fixedassets.widget.PickerScrollView-->
-        <!--android:id="@+id/picker"-->
-        <!--android:layout_marginBottom="15dp"-->
-        <!--android:layout_marginTop="15dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="170dp" />-->
+            <!--android:id="@+id/picker"-->
+            <!--android:layout_marginBottom="15dp"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="170dp" />-->
     </LinearLayout>
 </LinearLayout>

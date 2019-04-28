@@ -1,4 +1,4 @@
-package com.gengcon.android.fixedassets.widget;
+package com.gengcon.android.fixedassets.module.addasset.widget;
 
 
 import android.app.Activity;
@@ -20,15 +20,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.bean.WheelBean;
+import com.gengcon.android.fixedassets.bean.CustomAttrWheelBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class WheelView extends ScrollView {
-    public static final String TAG = WheelView.class.getSimpleName();
-    private List<WheelBean> mDataList;
+public class CustomAttrWheelView extends ScrollView {
+    public static final String TAG = CustomAttrWheelView.class.getSimpleName();
+    private List<CustomAttrWheelBean> mDataList;
     int selectedIndex = 1;
     public static final int OFF_SET_DEFAULT = 1;
     int offset = OFF_SET_DEFAULT; // 偏移量（需要在最前面和最后面补全）
@@ -37,7 +37,7 @@ public class WheelView extends ScrollView {
     List<String> items;
 
     public interface OnWheelViewListener {
-        void onSelected(WheelBean item);
+        void onSelected(CustomAttrWheelBean item);
     }
 
 
@@ -46,22 +46,22 @@ public class WheelView extends ScrollView {
 
     private LinearLayout views;
 
-    public WheelView(Context context) {
+    public CustomAttrWheelView(Context context) {
         super(context);
         init(context);
     }
 
-    public WheelView(Context context, AttributeSet attrs) {
+    public CustomAttrWheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public WheelView(Context context, AttributeSet attrs, int defStyle) {
+    public CustomAttrWheelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
 
-    public void setData(List<WheelBean> datas) {
+    public void setData(List<CustomAttrWheelBean> datas) {
         if (mDataList == null) {
             mDataList = new ArrayList<>();
         }
@@ -105,19 +105,19 @@ public class WheelView extends ScrollView {
                         onSeletedCallBack();
                     } else {
                         if (remainder > itemHeight / 2) {
-                            WheelView.this.post(new Runnable() {
+                            CustomAttrWheelView.this.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    WheelView.this.smoothScrollTo(0, initialY - remainder + itemHeight);
+                                    CustomAttrWheelView.this.smoothScrollTo(0, initialY - remainder + itemHeight);
                                     selectedIndex = divided + offset + 1;
                                     onSeletedCallBack();
                                 }
                             });
                         } else {
-                            WheelView.this.post(new Runnable() {
+                            CustomAttrWheelView.this.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    WheelView.this.smoothScrollTo(0, initialY - remainder);
+                                    CustomAttrWheelView.this.smoothScrollTo(0, initialY - remainder);
                                     selectedIndex = divided + offset;
                                     onSeletedCallBack();
                                 }
@@ -130,7 +130,7 @@ public class WheelView extends ScrollView {
 
                 } else {
                     initialY = getScrollY();
-                    WheelView.this.postDelayed(scrollerTask, newCheck);
+                    CustomAttrWheelView.this.postDelayed(scrollerTask, newCheck);
                 }
             }
         };
@@ -333,8 +333,8 @@ public class WheelView extends ScrollView {
     }
 
     private int getViewMeasuredHeight(View view) {
-        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
+        int width = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         view.measure(width, expandSpec);
         return view.getMeasuredHeight();
     }

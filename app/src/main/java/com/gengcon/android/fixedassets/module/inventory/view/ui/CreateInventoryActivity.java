@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.bean.WheelBean;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.AssetAdapter;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
@@ -49,7 +50,7 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
     private MyRecyclerView mRecyclerView;
     private AssetAdapter mAdapter;
     private ImageView mIvChoice;
-    private User mUser;
+    private WheelBean mUser;
     private int mMode = AssetAdapter.NORMAL;
     private boolean mIsAllSelect = false;
     private ArrayList<AssetBean> mAssets;
@@ -256,9 +257,9 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-    public void onConfirm(User user) {
+    public void onConfirm(WheelBean user) {
         mUser = user;
-        mTvInputUser.setText(user.getUser_name());
+        mTvInputUser.setText(user.getName());
         mTvInputUser.setTextColor(getResources().getColor(R.color.black_text));
     }
 
@@ -303,8 +304,15 @@ public class CreateInventoryActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void initUsers(List<User> user) {
+        List<WheelBean> data = new ArrayList<>();
+        for (int i = 0; i < user.size(); i++) {
+            WheelBean bean = new WheelBean();
+            bean.setId(user.get(i).getId());
+            bean.setName(user.get(i).getUser_name());
+            data.add(bean);
+        }
         mLlPicker.setVisibility(View.VISIBLE);
-        mLlPicker.setData(user);
+        mLlPicker.setData(data);
         mLlPicker.setOnSelectListener(this);
     }
 
