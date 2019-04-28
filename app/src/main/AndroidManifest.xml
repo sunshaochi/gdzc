@@ -207,6 +207,9 @@
             android:name=".module.user.view.ui.ChangePhoneFourthActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".ui.CustomerServiceActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".module.addasset.view.AddAssetActivity"

@@ -31,14 +31,14 @@
                     android:textSize="25dp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="33dp"
-                    android:layout_marginTop="7dp"
-                    android:text="请务必填写企业的真实信息"
-                    android:textColor="@color/gray_text"
-                    android:textSize="12dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="7dp"
+            android:text="慎重填写,不可随意修改"
+            android:textColor="@color/gray_text"
+            android:textSize="12dp" />
 
 
                 <TextView
