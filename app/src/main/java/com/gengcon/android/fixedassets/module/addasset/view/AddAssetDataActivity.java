@@ -14,6 +14,7 @@ import com.gengcon.android.fixedassets.module.addasset.widget.adapter.AddAssetDa
 import com.gengcon.android.fixedassets.module.addasset.widget.adapter.AddAssetDataHeaderAdapter;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -37,12 +38,14 @@ public class AddAssetDataActivity extends BaseActivity implements View.OnClickLi
     private List<List<OrgBean>> orgDatas;
     private List<List<ClassificationBean>> classificationDatas;
     private int addAssetType;
+    private String companyName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_asset_org);
         addAssetType = getIntent().getIntExtra("addAssetType", -1);
+        companyName = (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.COMPANY_NAME, "");
         initView();
     }
 
@@ -115,7 +118,7 @@ public class AddAssetDataActivity extends BaseActivity implements View.OnClickLi
         headNames = new ArrayList<>();
         orgDatas.add(orgBeans);
         headNames.clear();
-        headNames.add("武汉精臣智慧科技有限公司");
+        headNames.add(companyName);
         addAssetDataAdapter.addOrgDataSource(orgBeans);
         headerAdapter.addDataSource(headNames);
     }

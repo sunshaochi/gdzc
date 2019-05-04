@@ -16,6 +16,7 @@ import com.gengcon.android.fixedassets.module.user.view.OrgSettingSecondView;
 import com.gengcon.android.fixedassets.module.user.widget.adapter.OrgHeaderAdapter;
 import com.gengcon.android.fixedassets.module.user.widget.adapter.MenuAdapter;
 import com.gengcon.android.fixedassets.module.user.widget.adapter.OrgSettingSecondAdapter;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.AlertEditDialog;
 import com.gengcon.android.fixedassets.widget.AlertTextDialog;
@@ -55,12 +56,14 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private boolean isFatherOrg;
     private List<OrgBean> orgDatas;
     private LinearLayout noDataLayout;
+    private String companyName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_org_setting_second);
         isFatherOrg = true;
+        companyName = (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.COMPANY_NAME, "");
         initView();
     }
 
@@ -107,7 +110,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         headNames = new ArrayList<>();
         pids = new ArrayList<>();
         menuNames = new ArrayList<>();
-        headNames.add("武汉精臣智慧科技有限公司");
+        headNames.add(companyName);
         menuNames.add("新增子公司");
         menuNames.add("新增子部门");
         pids.add(-1);

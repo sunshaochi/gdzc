@@ -9,6 +9,7 @@ public class SharedPreferencesUtils {
     private static final String FILE_NAME = "share_data";
     public static final String IMG_URL = "imgUrl";
     public static final String IS_SUPERADMIN = "is_superadmin";
+    public static final String COMPANY_NAME = "company_name";
 
     private static SharedPreferencesUtils mInstance;
     private Context mContext;

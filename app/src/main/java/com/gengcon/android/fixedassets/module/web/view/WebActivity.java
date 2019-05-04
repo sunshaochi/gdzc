@@ -238,6 +238,7 @@ public class WebActivity extends BasePullRefreshActivity {
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.TOKEN, userBean.getToken());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IMG_URL, userBean.getImgurl());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IS_SUPERADMIN, userBean.getIs_superadmin());
+        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.COMPANY_NAME, userBean.getCompany_name());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

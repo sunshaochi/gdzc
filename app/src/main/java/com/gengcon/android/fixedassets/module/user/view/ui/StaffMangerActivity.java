@@ -18,6 +18,7 @@ import com.gengcon.android.fixedassets.module.user.widget.adapter.MenuAdapter;
 import com.gengcon.android.fixedassets.module.user.widget.adapter.StaffHeaderAdapter;
 import com.gengcon.android.fixedassets.module.user.widget.adapter.StaffManagerOrgAdapter;
 import com.gengcon.android.fixedassets.module.user.widget.adapter.StaffManagerPersonAdapter;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class StaffMangerActivity extends BaseActivity implements View.OnClickLis
     private List<String> headNames;
     private List<Integer> pids;
     private List<String> menuNames;
+    private String companyName;
 
     public static int RESULT_OK = 11111;
     public static int REQUEST_CODE = 11110;
@@ -58,6 +60,7 @@ public class StaffMangerActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_manager);
+        companyName = (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.COMPANY_NAME, "");
         initView();
     }
 
@@ -112,7 +115,7 @@ public class StaffMangerActivity extends BaseActivity implements View.OnClickLis
         headNames = new ArrayList<>();
         pids = new ArrayList<>();
         menuNames = new ArrayList<>();
-        headNames.add("武汉精臣智慧科技有限公司");
+        headNames.add(companyName);
         pids.add(-1);
         menuNames.add("新增员工");
         headerAdapter.addDataSource(headNames, pids);
