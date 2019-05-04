@@ -13,6 +13,7 @@ import com.gengcon.android.fixedassets.module.addasset.presenter.AddAssetDataPre
 import com.gengcon.android.fixedassets.module.addasset.widget.adapter.AddAssetDataAdapter;
 import com.gengcon.android.fixedassets.module.addasset.widget.adapter.AddAssetDataHeaderAdapter;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
+import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -136,7 +137,7 @@ public class AddAssetDataActivity extends BaseActivity implements View.OnClickLi
         intent.putExtra("id", dataId);
         intent.putExtra("name", name);
         if (addAssetType == 1) {
-            setResult(AddAssetActivity.RESULT_OK_BEORG, intent);
+            setResult(Constant.RESULT_OK_BEORG, intent);
             finish();
         } else if (addAssetType == 2) {
             setResult(AddAssetActivity.RESULT_OK_CLASSIFICATION, intent);

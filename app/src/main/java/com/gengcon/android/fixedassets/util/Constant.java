@@ -15,6 +15,12 @@ public class Constant {
     public static final int REQUEST_CODE_CAMERA = 10000;
     public static final int REQUEST_CODE_GALLERY = 10001;
 
+    public static int RESULT_OK_BEORG = 11004;
+    public static int REQUEST_BEORG = 11005;
+
+    public static int RESULT_OK_EDIT_EMP = 11006;
+    public static int REQUEST_CODE_EDIT_EMP = 11007;
+
     public static final String INTENT_EXTRA_KEY_QR_SCAN = "qr_scan_result";
     public static final String INTENT_EXTRA_KEY_SCAN_MODE = "qr_scan_mode";
     public static final String INTENT_EXTRA_KEY_INVENTORY_ID = "inventory_id";

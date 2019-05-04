@@ -50,6 +50,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         personalPresenter = new PersonalPresenter();
         personalPresenter.attachView(this);
         personalPresenter.getUserData();
+        findViewById(R.id.orgLayout).setOnClickListener(this);
         findViewById(R.id.personalLayout).setOnClickListener(this);
         findViewById(R.id.changePhoneLayout).setOnClickListener(this);
         findViewById(R.id.modifyPasswordLayout).setOnClickListener(this);
@@ -77,6 +78,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.orgLayout:
+                Intent intent = new Intent(this, OrgSettingActivity.class);
+                startActivity(intent);
+                break;
             case R.id.iv_title_left:
                 onBackPressed();
                 break;

@@ -156,6 +156,13 @@
     <string name="version_update">版本升级</string>
     <string name="contract_expire_title">温馨提示</string>
 
+    <string name="org_setting">组织机构设置</string>
+    <string name="staff_manager">员工管理</string>
+    <string name="org_setting_second">组织设置</string>
+    <string name="staff_data">员工信息</string>
+    <string name="add_emp">新增员工</string>
+    <string name="edit_emp">编辑员工</string>
+
 
     <!-- galleryfinal -->
     <string name="photo_preview">图片预览</string>

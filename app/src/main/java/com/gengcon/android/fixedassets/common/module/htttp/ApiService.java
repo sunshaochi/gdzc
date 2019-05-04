@@ -7,6 +7,7 @@ import com.gengcon.android.fixedassets.bean.request.AuditSaveRequest;
 import com.gengcon.android.fixedassets.bean.request.CheckPhoneRequest;
 import com.gengcon.android.fixedassets.bean.request.CheckRenameRequest;
 import com.gengcon.android.fixedassets.bean.request.CreateInventoryRequest;
+import com.gengcon.android.fixedassets.bean.request.DelEmpRequest;
 import com.gengcon.android.fixedassets.bean.request.EditAssetRequest;
 import com.gengcon.android.fixedassets.bean.request.EditAssetListRequest;
 import com.gengcon.android.fixedassets.bean.request.FeedbackRequest;
@@ -44,6 +45,8 @@ import com.gengcon.android.fixedassets.bean.result.ResultApprovals;
 import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
 import com.gengcon.android.fixedassets.bean.result.ResultInventorysNum;
 import com.gengcon.android.fixedassets.bean.result.ResultRole;
+import com.gengcon.android.fixedassets.bean.result.StaffDetailBean;
+import com.gengcon.android.fixedassets.bean.result.StaffManagerBean;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
 import com.gengcon.android.fixedassets.bean.result.UserData;
 import com.gengcon.android.fixedassets.bean.result.UserPopupNotice;
@@ -364,5 +367,71 @@ public class ApiService {
     public interface GetArea {
         @GET("common/getArea")
         Observable<Bean<List<Area>>> getArea();
+    }
+
+    //组织列表
+    public interface GetOrgSettingList {
+        @GET("common/getOrg")
+        Observable<Bean<List<OrgBean>>> getOrgSettingList();
+    }
+
+    //组织下级列表
+    public interface GetOrgChildrenList {
+        @GET("common/getOrg")
+        Observable<Bean<List<OrgBean>>> getOrgChildrenList(@Query("pid") int pid);
+    }
+
+    //新增组织
+    public interface GetAddOrg {
+        @POST("org/add")
+        Observable<Bean> getAddOrg(@Body RequestBody request);
+    }
+
+    //编辑组织
+    public interface GetEditOrg {
+        @POST("org/edit")
+        Observable<Bean> getEditOrg(@Body RequestBody request);
+    }
+
+    //删除组织
+    public interface GetDelOrg {
+        @POST("org/del")
+        Observable<Bean> getDelOrg(@Body RequestBody request);
+    }
+
+    //员工列表
+    public interface GetStaffManagerList {
+        @GET("app/emp/listApp")
+        Observable<Bean<StaffManagerBean>> getStaffManagerList();
+    }
+
+    //组织下级列表
+    public interface GetStaffChildrenList {
+        @GET("app/emp/listApp")
+        Observable<Bean<StaffManagerBean>> getStaffChildrenList(@Query("org_id") int org_id);
+    }
+
+    //员工信息
+    public interface GetStaffDetail {
+        @GET("emp/detail")
+        Observable<Bean<StaffDetailBean>> getStaffDetail(@Query("emp_id") int emp_id);
+    }
+
+    //删除员工
+    public interface GetDelEmp {
+        @POST("emp/del")
+        Observable<Bean> getDelEmp(@Body DelEmpRequest request);
+    }
+
+    //新增员工
+    public interface GetAddEmp {
+        @POST("emp/add")
+        Observable<Bean> getAddEmp(@Body RequestBody request);
+    }
+
+    //编辑员工
+    public interface GetEditEmp {
+        @POST("emp/edit")
+        Observable<Bean> getEditEmp(@Body RequestBody request);
     }
 }

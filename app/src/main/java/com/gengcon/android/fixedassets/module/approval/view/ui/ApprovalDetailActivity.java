@@ -1,11 +1,6 @@
 package com.gengcon.android.fixedassets.module.approval.view.ui;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -29,7 +24,6 @@ import com.gengcon.android.fixedassets.common.module.htttp.URL;
 import com.gengcon.android.fixedassets.module.approval.presenter.ApprovalDetailPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.DensityUtils;
-import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -40,8 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

@@ -222,6 +222,33 @@
             android:name=".module.addasset.view.ChooseUserActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".module.user.view.ui.OrgSettingActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.user.view.ui.OrgSettingSecondActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.user.view.ui.StaffMangerActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.base.ContactServiceActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.user.view.ui.StaffDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".module.user.view.ui.AddEmpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.user.view.ui.EditEmpActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.gengcon.android.fixedassets.fileProvider"

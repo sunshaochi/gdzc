@@ -92,6 +92,38 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/orgLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:background="@drawable/ic_service" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:layout_weight="1"
+                    android:text="组织机构设置"
+                    android:textColor="@color/black_text"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/ic_right_arrow" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/changePhoneLayout"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
@@ -211,9 +243,41 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/serviceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:background="@drawable/ic_service" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:layout_weight="1"
+                    android:text="联系客服"
+                    android:textColor="@color/black_text"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/ic_right_arrow" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/aboutUsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -229,7 +293,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
                     android:layout_weight="1"
-                    android:text="关于我们"
+                    android:text="关于精臣固定资产"
                     android:textColor="@color/black_text"
                     android:textSize="16dp" />
 
@@ -241,56 +305,14 @@
 
             </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/white">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="55dp"
-            android:background="#eeeeee"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/serviceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_service"
-            android:layout_marginLeft="18dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="联系客服"
-            android:textColor="@color/black_text"
-            android:layout_weight="1"
-            android:layout_marginLeft="18dp"
-            android:textSize="16dp"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_right_arrow"
-            android:layout_marginRight="15dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/loginOutLayout"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/white"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/loginOutLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"

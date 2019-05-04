@@ -23,6 +23,7 @@ public class OrgBean extends InvalidBean implements Serializable {
     private int type;
     private String paths;
     private boolean disabled;
+    private int employee_num;
     private List<OrgBean> children;
 
     public int getId() {
@@ -79,6 +80,14 @@ public class OrgBean extends InvalidBean implements Serializable {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public int getEmployee_num() {
+        return employee_num;
+    }
+
+    public void setEmployee_num(int employee_num) {
+        this.employee_num = employee_num;
     }
 
     public List<OrgBean> getChildren() {

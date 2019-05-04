@@ -29,6 +29,7 @@ import com.gengcon.android.fixedassets.module.addasset.presenter.AddAssetPresent
 import com.gengcon.android.fixedassets.module.addasset.widget.AreaPickerLinearLayout;
 import com.gengcon.android.fixedassets.module.addasset.widget.CustomAttrPickerLinearLayout;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
+import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ImageFactory;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.ActionSheetLayout;
@@ -81,10 +82,8 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private ImageView classificationArrowView, beOrgArrowView, useOrgArrowView, userNameArrowView, areaNameArrowView, adminArrowView;
 
     public static int RESULT_OK_CLASSIFICATION = 1113;
-    public static int RESULT_OK_BEORG = 1115;
     public static int RESULT_OK_USEORG = 1117;
     public static int REQUEST_CLASSIFICATION = 1114;
-    public static int REQUEST_BEORG = 1116;
     public static int REQUEST_USEORG = 1118;
 
     public static int RESULT_OK_CHOOSE_USER = 1119;
@@ -173,7 +172,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else if (resultCode == RESULT_OK_BEORG && requestCode == REQUEST_BEORG) {
+        } else if (resultCode == Constant.RESULT_OK_BEORG && requestCode == Constant.REQUEST_BEORG) {
             int id = data.getIntExtra("id", -1);
             String name = data.getStringExtra("name");
             if (beOrgView != null) {
@@ -364,7 +363,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                             beOrgArrowView = arrowImg;
                             Intent intent = new Intent(AddAssetActivity.this, AddAssetDataActivity.class);
                             intent.putExtra("addAssetType", 1);
-                            startActivityForResult(intent, REQUEST_BEORG);
+                            startActivityForResult(intent, Constant.REQUEST_BEORG);
                         } else if (asset.getAttr_id().equals("custom_type_id")) {
                             assetClassification = asset;
                             classificationView = textName;
