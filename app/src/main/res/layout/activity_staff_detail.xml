@@ -231,15 +231,15 @@
 
     <LinearLayout
         android:id="@+id/editEmpLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="right"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/ic_add_default" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_add_emp" />
     </LinearLayout>
 
 
@@ -249,7 +249,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="31dp"
-        android:layout_marginRight="1dp"
+        android:layout_marginRight="2.5dp"
         android:background="@drawable/ic_popu"
         android:gravity="center_horizontal"
         android:orientation="vertical"
