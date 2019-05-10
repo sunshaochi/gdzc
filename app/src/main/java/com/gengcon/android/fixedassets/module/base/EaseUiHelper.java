@@ -97,7 +97,7 @@ public class EaseUiHelper {
 //                            }
 //                        }
 //                        userAvatarView.setImageResource(com.hyphenate.helpdesk.R.drawable.hd_default_avatar);
-                        userAvatarView.setImageResource(R.drawable.hd_default_avatar);
+                        userAvatarView.setImageResource(R.drawable.kfphoto);
                     }
                 } else {
                     //此处设置当前登录用户的头像，
