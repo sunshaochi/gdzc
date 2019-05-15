@@ -1,30 +1,30 @@
 package com.gengcon.android.fixedassets.module.inventory.presenter;
 
+import com.gengcon.android.fixedassets.bean.result.ResultInventory;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.model.OffnetListModel;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;
-import com.gengcon.android.fixedassets.bean.result.ResultInventorysNum;
-import com.gengcon.android.fixedassets.model.InventoryNumModel;
-import com.gengcon.android.fixedassets.module.inventory.view.InventoryNumView;
+import com.gengcon.android.fixedassets.module.inventory.view.InventoryListView;
 
-public class InventoryListPresenter extends BasePresenter<InventoryNumView> {
+public class InventoryListPresenter extends BasePresenter<InventoryListView> {
 
-    private InventoryNumModel model;
+    private OffnetListModel offnetListModel;
 
     public InventoryListPresenter() {
-        this.model = new InventoryNumModel();
+        this.offnetListModel = new OffnetListModel();
     }
 
-    public void getInventorysNum() {
+    public void getOffnetList() {
 
-        subscribe(model.getInventorysNum(), new ApiCallBack<Bean<ResultInventorysNum>>() {
+        subscribe(offnetListModel.getOffnetList(), new ApiCallBack<Bean<ResultInventory>>() {
 
             @Override
-            public void onSuccess(Bean<ResultInventorysNum> modelBean) {
+            public void onSuccess(Bean<ResultInventory> modelBean) {
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         if (modelBean.getData() != null) {
-                            mMvpView.showInventorys(modelBean.getData());
+                            mMvpView.showOffnetList(modelBean.getData());
                         }
                     }
                 }

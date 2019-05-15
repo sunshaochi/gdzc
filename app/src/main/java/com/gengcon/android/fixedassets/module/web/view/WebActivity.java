@@ -27,7 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.bean.AssetBean;
+import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.bean.LoginUserBean;
 import com.gengcon.android.fixedassets.bean.UpdateImgRBean;
 import com.gengcon.android.fixedassets.bean.request.AddAssetRequest;
@@ -236,6 +236,7 @@ public class WebActivity extends BasePullRefreshActivity {
     public void login(String token) {
         LoginUserBean userBean = new Gson().fromJson(token, LoginUserBean.class);
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.TOKEN, userBean.getToken());
+        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.USER_ID, userBean.getUser_id());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IMG_URL, userBean.getImgurl());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IS_SUPERADMIN, userBean.getIs_superadmin());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.COMPANY_NAME, userBean.getCompany_name());
@@ -266,7 +267,7 @@ public class WebActivity extends BasePullRefreshActivity {
             @Override
             public void run() {
                 if (intentType.equals("edit")) {
-                    ArrayList<AssetBean> assets = new Gson().fromJson(message, new TypeToken<ArrayList<AssetBean>>() {
+                    ArrayList<Asset> assets = new Gson().fromJson(message, new TypeToken<ArrayList<Asset>>() {
                     }.getType());
                     ArrayList<String> assets_ids = new ArrayList<>();
                     for (int i = 0; i < assets.size(); i++) {
@@ -277,7 +278,7 @@ public class WebActivity extends BasePullRefreshActivity {
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 } else {
-                    ArrayList<AssetBean> assets = new Gson().fromJson(message, new TypeToken<ArrayList<AssetBean>>() {
+                    ArrayList<Asset> assets = new Gson().fromJson(message, new TypeToken<ArrayList<Asset>>() {
                     }.getType());
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra(Constant.INTENT_EXTRA_KEY_ASSETS, assets);

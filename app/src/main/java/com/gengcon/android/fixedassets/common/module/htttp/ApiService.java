@@ -3,24 +3,18 @@ package com.gengcon.android.fixedassets.common.module.htttp;
 import com.gengcon.android.fixedassets.bean.Area;
 import com.gengcon.android.fixedassets.bean.User;
 import com.gengcon.android.fixedassets.bean.request.ApprovalAssetRequest;
+import com.gengcon.android.fixedassets.bean.request.AssetOffNetRequest;
+import com.gengcon.android.fixedassets.bean.request.AssetSyncDataRequest;
 import com.gengcon.android.fixedassets.bean.request.AuditSaveRequest;
 import com.gengcon.android.fixedassets.bean.request.CheckPhoneRequest;
 import com.gengcon.android.fixedassets.bean.request.CheckRenameRequest;
-import com.gengcon.android.fixedassets.bean.request.CreateInventoryRequest;
 import com.gengcon.android.fixedassets.bean.request.DelEmpRequest;
-import com.gengcon.android.fixedassets.bean.request.EditAssetRequest;
-import com.gengcon.android.fixedassets.bean.request.EditAssetListRequest;
 import com.gengcon.android.fixedassets.bean.request.FeedbackRequest;
 import com.gengcon.android.fixedassets.bean.request.ForgetPwdRequest;
-import com.gengcon.android.fixedassets.bean.request.InventoryAssetRequest;
-import com.gengcon.android.fixedassets.bean.request.InventoryRRequest;
 import com.gengcon.android.fixedassets.bean.request.ModifyPasswordRequest;
 import com.gengcon.android.fixedassets.bean.request.PhoneCodeRequest;
-import com.gengcon.android.fixedassets.bean.request.PreviewRequest;
 import com.gengcon.android.fixedassets.bean.request.PrintTagRequest;
 import com.gengcon.android.fixedassets.bean.request.RegisterRequest;
-import com.gengcon.android.fixedassets.bean.request.UpdateInventoryRequest;
-import com.gengcon.android.fixedassets.bean.request.UploadInventoryRequest;
 import com.gengcon.android.fixedassets.bean.result.AddAssetCustom;
 import com.gengcon.android.fixedassets.bean.result.AddAssetList;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
@@ -32,18 +26,14 @@ import com.gengcon.android.fixedassets.bean.result.ClassificationBean;
 import com.gengcon.android.fixedassets.bean.result.ContactUs;
 import com.gengcon.android.fixedassets.bean.result.ForgetPwd;
 import com.gengcon.android.fixedassets.bean.result.Industry;
-import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
-import com.gengcon.android.fixedassets.bean.result.InventoryHeadDetail;
-import com.gengcon.android.fixedassets.bean.result.InventoryR;
 import com.gengcon.android.fixedassets.bean.result.MessageBean;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
 import com.gengcon.android.fixedassets.bean.result.PersonalBean;
-import com.gengcon.android.fixedassets.bean.result.PreviewInfo;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.Home;
 import com.gengcon.android.fixedassets.bean.result.ResultApprovals;
-import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
-import com.gengcon.android.fixedassets.bean.result.ResultInventorysNum;
+import com.gengcon.android.fixedassets.bean.result.ResultAsset;
+import com.gengcon.android.fixedassets.bean.result.ResultInventory;
 import com.gengcon.android.fixedassets.bean.result.ResultRole;
 import com.gengcon.android.fixedassets.bean.result.StaffDetailBean;
 import com.gengcon.android.fixedassets.bean.result.StaffManagerBean;
@@ -74,92 +64,14 @@ public class ApiService {
 
     //首页数据
     public interface GetHome {
-        @GET("reports/appAssetStatus")
+        @GET("app/reports/assetStatus")
         Observable<Bean<Home>> getHome();
-    }
-
-    //获取盘点单页面我的任务与我创建的数量
-    public interface GetInventorysNum {
-        @GET("inventory/myNum")
-        Observable<Bean<ResultInventorysNum>> getInventorysNum();
-    }
-
-    //我的任务
-    public interface GetMyTaskInventory {
-        @POST("inventory/myTaskList")
-        Observable<Bean<ResultInventorys>> getMyTaskInventory(@Query("page") int page);
-    }
-
-    //我创建的
-    public interface GetMyCreateInventory {
-        @POST("inventory/myCreateList")
-        Observable<Bean<ResultInventorys>> getMyCreateInventory(@Query("page") int page);
-    }
-
-    //保存新建盘点单
-    public interface AddInventory {
-        @POST("inventory/add")
-        Observable<Bean> addInventory(@Body CreateInventoryRequest request);
-    }
-
-    //保存编辑盘点单
-    public interface UpdateInventory {
-        @POST("inventory/edit")
-        Observable<Bean> updateInventory(@Body UpdateInventoryRequest request);
     }
 
     //获取管理员信息
     public interface GetUsers {
         @GET("common/getUser")
         Observable<Bean<List<User>>> getUsers();
-    }
-
-    //获取盘点单头部基本信息
-    public interface GetHeadDetail {
-        @GET("inventory/getDetail")
-        Observable<Bean<InventoryHeadDetail>> getHeadDetail(@Query("inv_no") String inv_no);
-    }
-
-    //获取盘点单详情资产列表
-    public interface GetAssetListDetail {
-        @POST("inventory/getAssetList")
-        Observable<Bean<InventoryDetail>> getInventoryDetail(@Body InventoryAssetRequest request);
-    }
-
-    //盘点单编辑入口
-    public interface GetEditDetail {
-        @POST("inventory/editAssetList")
-        Observable<Bean<InventoryDetail>> getEditDetail(@Body EditAssetRequest request);
-    }
-
-    //盘点单编辑资产
-    public interface GetEditAssetListDetail {
-        @POST("inventory/editAssetList")
-        Observable<Bean<InventoryDetail>> getEditAssetListDetail(@Body EditAssetListRequest request);
-    }
-
-    //删除盘点单
-    public interface DeleteInventory {
-        @POST("inventory/del")
-        Observable<Bean> deleteInventory(@Query("inv_no") String inv_no);
-    }
-
-    //上传盘点结果
-    public interface UploadInventoryResult {
-        @POST("inventory/uploadResult")
-        Observable<Bean> uploadInventoryResult(@Body UploadInventoryRequest request);
-    }
-
-    //盘点预览
-    public interface PreviewInventoryInfo {
-        @POST("inventory/preview")
-        Observable<Bean<PreviewInfo>> previewInventoryInfo(@Body PreviewRequest request);
-    }
-
-    //盘点结果
-    public interface ShowInventoryResult {
-        @POST("inventory/getResultDetail")
-        Observable<Bean<InventoryR>> showInventoryResult(@Body InventoryRRequest request);
     }
 
     //扫码登录
@@ -433,5 +345,23 @@ public class ApiService {
     public interface GetEditEmp {
         @POST("emp/edit")
         Observable<Bean> getEditEmp(@Body RequestBody request);
+    }
+
+    //离线盘点列表
+    public interface GetOffnetList {
+        @GET("app/pd/offnetList")
+        Observable<Bean<ResultInventory>> getOffnetList();
+    }
+
+    //离线盘点详情列表
+    public interface GetAssetOffNetList {
+        @POST("app/pd/assetOffNetList")
+        Observable<Bean<ResultAsset>> getAssetOffNetList(@Body AssetOffNetRequest request);
+    }
+
+    //上传离线盘点数据
+    public interface GetAssetSyncData {
+        @POST("app/pd/syncUploadPdData")
+        Observable<Bean> getAssetSyncData(@Body AssetSyncDataRequest request);
     }
 }

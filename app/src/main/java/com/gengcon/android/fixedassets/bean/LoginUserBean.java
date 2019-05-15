@@ -8,13 +8,7 @@ public class LoginUserBean implements Serializable {
     String imgurl;
     int is_superadmin;
     String company_name;
-
-    public LoginUserBean(String token, String imgurl, int is_superadmin, String company_name) {
-        this.token = token;
-        this.imgurl = imgurl;
-        this.is_superadmin = is_superadmin;
-        this.company_name = company_name;
-    }
+    String user_id;
 
     public String getToken() {
         return token;
@@ -46,5 +40,13 @@ public class LoginUserBean implements Serializable {
 
     public void setCompany_name(String company_name) {
         this.company_name = company_name;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

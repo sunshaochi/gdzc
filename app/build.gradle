@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'mtj-circle-plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     signingConfigs {
@@ -72,6 +73,12 @@ android {
     }
 }
 
+greendao {
+    schemaVersion 1 //数据库版本号，后期需要升级数据库，这里版本号必须增加
+    daoPackage 'com.gengcon.android.fixedassets.module.greendao'  //Dao代码生成在这个包中
+    targetGenDir 'src/main/java' //包位于这个路径下
+}
+
 MtjCirclePluginConfig {
     // 设置appkey，必须设置，否则插件使用无效
     appkey = 'bb991b6f58'
@@ -123,4 +130,7 @@ MtjCirclePluginConfig {
         implementation 'com.tencent.bugly:nativecrashreport:latest.release'
         implementation 'com.android.support:multidex:1.0.3'
         implementation 'com.contrarywind:Android-PickerView:3.2.4'
+        implementation 'org.greenrobot:greendao:3.2.0'
+
+        implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha02'
     }

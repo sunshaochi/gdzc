@@ -21,6 +21,15 @@ public class Constant {
     public static int RESULT_OK_EDIT_EMP = 11006;
     public static int REQUEST_CODE_EDIT_EMP = 11007;
 
+    public static int RESULT_OK_INVENTORY_SCAN = 11008;
+    public static int REQUEST_CODE_INVENTORY_SCAN = 11009;
+
+    public static int RESULT_OK_INVENTORY_MANUAL = 11010;
+    public static int REQUEST_CODE_INVENTORY_MANUAL = 11011;
+
+    public static int RESULT_OK_INVENTORY_PD_NUM = 11012;
+    public static int REQUEST_CODE_INVENTORY_PD_NUM = 11013;
+
     public static final String INTENT_EXTRA_KEY_QR_SCAN = "qr_scan_result";
     public static final String INTENT_EXTRA_KEY_SCAN_MODE = "qr_scan_mode";
     public static final String INTENT_EXTRA_KEY_INVENTORY_ID = "inventory_id";

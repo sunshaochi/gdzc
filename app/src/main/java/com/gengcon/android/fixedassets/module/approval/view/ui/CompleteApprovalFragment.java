@@ -151,16 +151,6 @@ public class CompleteApprovalFragment extends BasePullRefreshFragment implements
     }
 
     @Override
-    public void onEditMenuClick(String inv_no) {
-
-    }
-
-    @Override
-    public void onDeleteMenuClick(String inv_no, int position) {
-
-    }
-
-    @Override
     public void showErrorMsg(int status, String msg) {
         super.showErrorMsg(status, msg);
         mRefreshLayout.finishRefresh();

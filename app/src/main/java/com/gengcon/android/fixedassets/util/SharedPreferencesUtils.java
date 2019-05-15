@@ -10,6 +10,7 @@ public class SharedPreferencesUtils {
     public static final String IMG_URL = "imgUrl";
     public static final String IS_SUPERADMIN = "is_superadmin";
     public static final String COMPANY_NAME = "company_name";
+    public static final String USER_ID = "user_id";
 
     private static SharedPreferencesUtils mInstance;
     private Context mContext;

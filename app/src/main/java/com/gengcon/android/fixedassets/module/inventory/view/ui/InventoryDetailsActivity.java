@@ -27,25 +27,22 @@ import android.widget.TextView;
 
 import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.AssetAdapter;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
-import com.gengcon.android.fixedassets.bean.AssetBean;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.InventoryDetail;
 import com.gengcon.android.fixedassets.bean.result.InventoryHeadDetail;
 import com.gengcon.android.fixedassets.common.module.htttp.URL;
 import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.inventory.view.InventoryDetailView;
-import com.gengcon.android.fixedassets.module.inventory.presenter.InventoryDetailPresenter;
-import com.gengcon.android.fixedassets.module.inventory.presenter.UploadInventoryPresenter;
 import com.gengcon.android.fixedassets.common.module.scan.ScanActivity;
 import com.gengcon.android.fixedassets.module.web.view.WebActivity;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.RFIDUtils;
 import com.gengcon.android.fixedassets.util.RolePowerManager;
 import com.gengcon.android.fixedassets.util.ToastUtils;
-import com.gengcon.android.fixedassets.module.inventory.view.UploadInventoryView;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -62,18 +59,16 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class InventoryDetailsActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener, InventoryDetailView, UploadInventoryView {
+public class InventoryDetailsActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener, InventoryDetailView {
 
     private final long INVENTORY_DELAY = 10;
     private RefreshLayout mRefreshLayout;
     private MyRecyclerView mRecyclerView;
     private AssetAdapter mAdapter;
     private TextView mTvSize, mTvRemarks, mTvUser, mTvInventoryName, mTvNotInventotySize;
-    private InventoryDetailPresenter mDetailPresenter;
-    private UploadInventoryPresenter mUploadPresenter;
     private int mPage = 1;
     private String mInventoryId;
-    private List<AssetBean> mResultInventoryList;
+    private List<Asset> mResultInventoryList;
     private InventoryDetail inventoryDetail;
     private ArrayList<String> mReadAssetsIds;
     private int mInventorySize = 0;
@@ -98,12 +93,6 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         }
         mReadAssetsIds = new ArrayList<>();
         mResultInventoryList = new ArrayList<>();
-        mDetailPresenter = new InventoryDetailPresenter();
-        mUploadPresenter = new UploadInventoryPresenter();
-        mDetailPresenter.attachView(this);
-        mUploadPresenter.attachView(this);
-        mDetailPresenter.getInventoryDetail(mInventoryId, mPage);
-        mDetailPresenter.getInventoryHead(mInventoryId);
 //        mRolePresenter.getRole("pd_page");
 
         mControll = new ScannerInerface(this);
@@ -128,8 +117,8 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         mTvSize = findViewById(R.id.tv_size);
         mTvRemarks = findViewById(R.id.tv_remarks);
         mTvUser = findViewById(R.id.tv_user);
-        mTvInventoryName = findViewById(R.id.tv_inventory_name);
-        mTvNotInventotySize = findViewById(R.id.tv_not_inventory_size);
+//        mTvInventoryName = findViewById(R.id.tv_inventory_name);
+//        mTvNotInventotySize = findViewById(R.id.tv_not_inventory_size);
 
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -147,34 +136,33 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                mDetailPresenter.getInventoryDetail(mInventoryId, ++mPage);
             }
         });
 
         findViewById(R.id.iv_title_left).setOnClickListener(this);
         findViewById(R.id.iv_title_right).setOnClickListener(this);
-        findViewById(R.id.btn_single_inventory).setOnClickListener(this);
-        findViewById(R.id.btn_start_inventory).setOnClickListener(this);
-        findViewById(R.id.btn_preview).setOnClickListener(this);
-        findViewById(R.id.btn_upload).setOnClickListener(this);
+//        findViewById(R.id.btn_single_inventory).setOnClickListener(this);
+//        findViewById(R.id.btn_start_inventory).setOnClickListener(this);
+//        findViewById(R.id.btn_preview).setOnClickListener(this);
+//        findViewById(R.id.btn_upload).setOnClickListener(this);
 
         //TODO 单条盘点权限
         if (RolePowerManager.getInstance().isInventoryPd()) {
-            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
-            findViewById(R.id.btn_single_inventory).setVisibility(View.VISIBLE);
+//            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
+//            findViewById(R.id.btn_single_inventory).setVisibility(View.VISIBLE);
         }
         //TODO PDA盘点权限
         if (RolePowerManager.getInstance().isInventoryPd()) {
-            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
-            findViewById(R.id.btn_start_inventory).setVisibility(View.VISIBLE);
+//            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
+//            findViewById(R.id.btn_start_inventory).setVisibility(View.VISIBLE);
         }
         if (RolePowerManager.getInstance().isInventoryPd()) {
-            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
-            findViewById(R.id.btn_preview).setVisibility(View.VISIBLE);
+//            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
+//            findViewById(R.id.btn_preview).setVisibility(View.VISIBLE);
         }
         if (RolePowerManager.getInstance().isInventoryPd()) {
-            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
-            findViewById(R.id.btn_upload).setVisibility(View.VISIBLE);
+//            findViewById(R.id.ll_bottom).setVisibility(View.VISIBLE);
+//            findViewById(R.id.btn_upload).setVisibility(View.VISIBLE);
         }
         mHandler = new Handler();
     }
@@ -207,8 +195,6 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mScanReceiver);
-        mDetailPresenter.detachView();
-        mUploadPresenter.detachView();
         mHandler.removeCallbacks(mInventoryRunnable);
     }
 
@@ -233,34 +219,34 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
 //                Intent intent = new Intent(this, RFIDConnectActivity.class);
 //                startActivity(intent);
                 break;
-            case R.id.btn_single_inventory:
-                requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
-                break;
-            case R.id.btn_start_inventory:
-                if (!mIsOpenRFID) {
-                    showRfidErrorDialog();
-                } else {
-                    showRfidInventoryingDialog();
-                    readRFID();
-                }
-                break;
-            case R.id.btn_preview:
-                if (mReadAssetsIds.size() > 0) {
-                    Intent intentPreview = new Intent(this, PreviewActivity.class);
-                    intentPreview.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
-                    intentPreview.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mReadAssetsIds);
-                    startActivity(intentPreview);
-                } else {
-                    ToastUtils.toastMessage(this, R.string.plase_inventory);
-                }
-                break;
-            case R.id.btn_upload:
-                if (mReadAssetsIds.size() > 0) {
-                    showUploadDialog();
-                } else {
-                    ToastUtils.toastMessage(this, R.string.plase_inventory);
-                }
-                break;
+//            case R.id.btn_single_inventory:
+//                requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
+//                break;
+//            case R.id.btn_start_inventory:
+//                if (!mIsOpenRFID) {
+//                    showRfidErrorDialog();
+//                } else {
+//                    showRfidInventoryingDialog();
+//                    readRFID();
+//                }
+//                break;
+//            case R.id.btn_preview:
+//                if (mReadAssetsIds.size() > 0) {
+//                    Intent intentPreview = new Intent(this, PreviewActivity.class);
+//                    intentPreview.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
+//                    intentPreview.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mReadAssetsIds);
+//                    startActivity(intentPreview);
+//                } else {
+//                    ToastUtils.toastMessage(this, R.string.plase_inventory);
+//                }
+//                break;
+//            case R.id.btn_upload:
+//                if (mReadAssetsIds.size() > 0) {
+//                    showUploadDialog();
+//                } else {
+//                    ToastUtils.toastMessage(this, R.string.plase_inventory);
+//                }
+//                break;
         }
     }
 
@@ -410,10 +396,6 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (mRfidBuilder.getNegativeText().equals(getString(R.string.continu))) {
 //                    if (RolePowerManager.getInstance().checkInventoryPower(getString(R.string.preview))) {
-                    Intent intent = new Intent(InventoryDetailsActivity.this, PreviewActivity.class);
-                    intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
-                    intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mReadAssetsIds);
-                    startActivity(intent);
 //                    } else {
 //                        showPermissionDeniedTips();
 //                    }
@@ -479,7 +461,6 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mUploadPresenter.uploadInventoryResult(mInventoryId, mReadAssetsIds);
             }
         }, getString(R.string.confirm));
         builder.show();
@@ -518,17 +499,4 @@ public class InventoryDetailsActivity extends BaseActivity implements View.OnCli
         mTvRemarks.setText(headDetail.getRemark());
     }
 
-    @Override
-    public void uploadResult(Bean resultBean) {
-        ToastUtils.toastMessage(this, resultBean.getMsg());
-        Intent intent = new Intent(this, InventoryListActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-
-    @Override
-    public void contractExpire() {
-        showContractExpireDialog();
-    }
 }

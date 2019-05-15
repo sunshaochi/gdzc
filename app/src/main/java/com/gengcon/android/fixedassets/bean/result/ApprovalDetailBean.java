@@ -1,6 +1,6 @@
 package com.gengcon.android.fixedassets.bean.result;
 
-import com.gengcon.android.fixedassets.bean.AssetBean;
+import com.gengcon.android.fixedassets.bean.Asset;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ApprovalDetailBean extends InvalidBean implements Serializable {
     private int page_size;
     private int page_count;
     private int current_page;
-    private List<AssetBean> list;
+    private List<Asset> list;
 
     public int getTotal() {
         return total;
@@ -55,11 +55,11 @@ public class ApprovalDetailBean extends InvalidBean implements Serializable {
         this.current_page = current_page;
     }
 
-    public List<AssetBean> getList() {
+    public List<Asset> getList() {
         return list;
     }
 
-    public void setList(List<AssetBean> list) {
+    public void setList(List<Asset> list) {
         this.list = list;
     }
 

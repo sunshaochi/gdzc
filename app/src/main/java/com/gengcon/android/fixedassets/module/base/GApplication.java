@@ -2,15 +2,20 @@ package com.gengcon.android.fixedassets.module.base;
 
 import android.app.Application;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.StrictMode;
+
 import androidx.annotation.RequiresApi;
+
 import android.util.Log;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.loader.GlideImageLoader;
 import com.gengcon.android.fixedassets.module.base.loader.GlidePauseOnScrollListener;
+import com.gengcon.android.fixedassets.module.greendao.DaoMaster;
+import com.gengcon.android.fixedassets.module.greendao.DaoSession;
 import com.gengcon.android.fixedassets.util.EmshConstant;
 import com.gengcon.android.fixedassets.util.FontUtils;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
@@ -25,10 +30,13 @@ import cn.jpush.android.api.JPushInterface;
 
 public class GApplication extends Application {
 
+    private static DaoSession daoSession;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onCreate() {
         super.onCreate();
+        setUpDatabase();
         MultiDex.install(this);
         CrashReport.initCrashReport(getApplicationContext(), "fee0e191d8", true);
         SharedPreferencesUtils.getInstance().setContext(this);
@@ -75,6 +83,17 @@ public class GApplication extends Application {
     public void PowerUp() {
         setPowerState_UHF(true);
         enableUartComm_UHF(true);
+    }
+
+    private void setUpDatabase() {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "inventory.db", null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
+
+    public static DaoSession getDaoSession() {
+        return daoSession;
     }
 
     /**

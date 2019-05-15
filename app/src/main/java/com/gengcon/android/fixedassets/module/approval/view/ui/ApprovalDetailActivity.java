@@ -13,11 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.module.approval.view.ApprovalDetailView;
 import com.gengcon.android.fixedassets.module.approval.widget.adapter.ApprovalAssetAdapter;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
-import com.gengcon.android.fixedassets.bean.AssetBean;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
 import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
 import com.gengcon.android.fixedassets.common.module.htttp.URL;
@@ -60,7 +60,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private RefreshLayout mRefreshLayout;
     private MyRecyclerView mRecyclerView;
     private ApprovalAssetAdapter mAdapter;
-    private ArrayList<AssetBean> mAssets;
+    private ArrayList<Asset> mAssets;
     private View header;
     private int mPage = 1;
 
@@ -221,7 +221,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     @Override
     public void showApprovalDetail(ApprovalDetailBean approvalDetail) {
         mAssets.clear();
-        List<AssetBean> assets = approvalDetail.getList();
+        List<Asset> assets = approvalDetail.getList();
         assetSize = approvalDetail.getTotal();
         assetSizeView.setText("资产明细(" + assetSize + ")");
         mAdapter.addDataSource(assets);
@@ -234,7 +234,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void showApprovalMoreDetail(ApprovalDetailBean approvalDetail) {
-        List<AssetBean> assets = approvalDetail.getList();
+        List<Asset> assets = approvalDetail.getList();
         mAdapter.addMoreDataSource(assets);
         mAssets.addAll(assets);
         totalPage = approvalDetail.getPage_count();

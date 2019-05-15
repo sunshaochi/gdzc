@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
-import com.gengcon.android.fixedassets.bean.AssetBean;
 import com.gengcon.android.fixedassets.util.DensityUtils;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
@@ -31,8 +31,8 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
 
     private Context mContext;
     private OnItemClickListener mItemClickListener;
-    private List<AssetBean> mAssets;
-    private List<AssetBean> mSelectList;
+    private List<Asset> mAssets;
+    private List<Asset> mSelectList;
     private int mMode = NORMAL;
 
     public AssetAdapter(Context context) {
@@ -40,18 +40,18 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
         mAssets = new ArrayList<>();
     }
 
-    public void addDataSource(List<AssetBean> assets) {
+    public void addDataSource(List<Asset> assets) {
         if (assets != null && assets.size() > 0) {
             mAssets.addAll(assets);
             notifyDataSetChanged();
         }
     }
 
-    public List<AssetBean> getAssets() {
+    public List<Asset> getAssets() {
         return mAssets;
     }
 
-    public void changeDataSource(List<AssetBean> assets) {
+    public void changeDataSource(List<Asset> assets) {
         clear();
         if (assets != null && assets.size() > 0) {
             mAssets.addAll(assets);
@@ -136,7 +136,7 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AssetBean asset = mAssets.get(position);
+        Asset asset = mAssets.get(position);
         if (mMode == CHOICE) {
             if (mSelectList.contains(asset)) {
                 holder.ivLeftChoice.setImageResource(R.drawable.ic_select);
@@ -155,25 +155,25 @@ public class AssetAdapter extends MyRecyclerView.Adapter<AssetAdapter.ViewHolder
         holder.itemView.setTag(position);
         Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
         switch (asset.getStatus()) {
-            case AssetBean.IDEL:
+            case Asset.IDEL:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_idel);
                 break;
-            case AssetBean.PEPAIR:
+            case Asset.PEPAIR:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_perair);
                 break;
-            case AssetBean.IN_USE:
+            case Asset.IN_USE:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_in_use);
                 break;
-            case AssetBean.SCRAP:
+            case Asset.SCRAP:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap);
                 break;
-            case AssetBean.LEND:
+            case Asset.LEND:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_lend);
                 break;
-            case AssetBean.SCRAP_AUDITING:
+            case Asset.SCRAP_AUDITING:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap_auditing);
                 break;
-            case AssetBean.ALLOT_AUDITING:
+            case Asset.ALLOT_AUDITING:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_allot_auditing);
                 break;
         }

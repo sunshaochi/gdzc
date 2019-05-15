@@ -4,59 +4,64 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.module.inventory.widget.adapter.AssetAdapter;
-import com.gengcon.android.fixedassets.common.OnItemClickListener;
-import com.gengcon.android.fixedassets.bean.AssetBean;
-import com.gengcon.android.fixedassets.bean.result.InventoryR;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.bean.result.ResultAsset;
+import com.gengcon.android.fixedassets.common.module.scan.ScanInventoryActivity;
+import com.gengcon.android.fixedassets.module.base.GApplication;
+import com.gengcon.android.fixedassets.module.greendao.AssetBean;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshActivity;
+import com.gengcon.android.fixedassets.module.greendao.AssetBeanDao;
 import com.gengcon.android.fixedassets.module.inventory.view.InventoryResultView;
 import com.gengcon.android.fixedassets.module.inventory.presenter.InventoryResultPresenter;
-import com.gengcon.android.fixedassets.module.web.view.WebActivity;
 import com.gengcon.android.fixedassets.util.Constant;
-import com.gengcon.android.fixedassets.widget.MyRecyclerView;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryResultActivity extends BasePullRefreshActivity implements View.OnClickListener, OnItemClickListener, InventoryResultView {
+public class InventoryResultActivity extends BasePullRefreshActivity implements View.OnClickListener, InventoryResultView {
 
-    private RefreshLayout mRefreshLayout;
-    private MyRecyclerView mRecyclerView;
-    private AssetAdapter mAdapter;
-    private TextView mTvNormal, mTvEarn, mTvLoss;
-    private View mVNormal, mVEarn, mVLoss;
-    private int mSelect = AssetBean.INVENTORY_NORMAL;
 
-    private InventoryR mResultInventoryR;
     private List<AssetBean> mResultList;
     private InventoryResultPresenter mPresenter;
-    private String mInventoryId;
+    private String pd_no;
+    private String pd_name;
+    private int pd_status;
     private int mPage = 1;
+    private TextView tv_title_text, tv_title_status, tv_title_right;
+    private ImageView pdView;
+    private AssetBeanDao assetBeanDao;
+    private List<AssetBean> assets;
+    private FrameLayout noFinishLayout;
+    private List<String> asset_ids;
+    private String user_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_result);
-        mInventoryId = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID);
-        if (mInventoryId == null) {
+        pd_no = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID);
+        pd_name = getIntent().getStringExtra("pd_name");
+        pd_status = getIntent().getIntExtra("pd_status", -1);
+        user_id = (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.USER_ID, "");
+        if (pd_no == null) {
             finish();
             return;
         }
+        asset_ids = new ArrayList<>();
+        assetBeanDao = GApplication.getDaoSession().getAssetBeanDao();
+        assets = assetBeanDao.queryBuilder()
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no)).where(
+                        AssetBeanDao.Properties.User_id.eq(user_id)).list();
         mResultList = new ArrayList<>();
         mPresenter = new InventoryResultPresenter();
         mPresenter.attachView(this);
@@ -66,65 +71,51 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     @Override
     protected void initView() {
         super.initView();
-        ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
-        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.inventory_result);
-
-        mTvNormal = findViewById(R.id.tv_normal);
-        mTvEarn = findViewById(R.id.tv_earn);
-        mTvLoss = findViewById(R.id.tv_loss);
-        mVNormal = findViewById(R.id.v_normal);
-        mVEarn = findViewById(R.id.v_earn);
-        mVLoss = findViewById(R.id.v_loss);
-
-        mRecyclerView = findViewById(R.id.recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new AssetAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setItemClickListener(this);
-        mAdapter.setPadding(true);
-        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider1));
-        mRecyclerView.addItemDecoration(divider);
-
-        mRefreshLayout = findViewById(R.id.refreshLayout);
-        mRefreshLayout.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
-        mRefreshLayout.setEnableRefresh(false);
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                mPresenter.showInventoryResult(mInventoryId, mSelect, ++mPage);
-                refreshlayout.finishLoadmore();
-            }
-        });
-
         findViewById(R.id.iv_title_left).setOnClickListener(this);
-        mTvNormal.setOnClickListener(this);
-        mTvEarn.setOnClickListener(this);
-        mTvLoss.setOnClickListener(this);
-        initSelect();
+        tv_title_text = findViewById(R.id.tv_title_text);
+        tv_title_status = findViewById(R.id.tv_title_status);
+        tv_title_right = findViewById(R.id.tv_title_right);
+        noFinishLayout = findViewById(R.id.noFinishLayout);
+        pdView = findViewById(R.id.pdView);
+        pdView.setOnClickListener(this);
+        tv_title_text.setText(pd_name);
+        tv_title_right.setOnClickListener(this);
+        findViewById(R.id.syncDataView).setOnClickListener(this);
+        findViewById(R.id.auditView).setOnClickListener(this);
+        initPdStatus();
+        if (assets.size() == 0) {
+            mPresenter.showInventoryResult(pd_no, mPage);
+        } else {
+            if (pd_status == 4 || pd_status == 2) {
+                mPresenter.showInventoryResult(pd_no, mPage);
+            } else {
+                getNoFinishFragment(assets);
+            }
+        }
     }
 
-    private void initSelect() {
-        mRefreshLayout.finishLoadmore();
-        mTvNormal.setTextColor(getResources().getColor(R.color.black_text));
-        mVNormal.setBackgroundColor(getResources().getColor(R.color.white));
-        mTvEarn.setTextColor(getResources().getColor(R.color.black_text));
-        mVEarn.setBackgroundColor(getResources().getColor(R.color.white));
-        mTvLoss.setTextColor(getResources().getColor(R.color.black_text));
-        mVLoss.setBackgroundColor(getResources().getColor(R.color.white));
-        if (mSelect == AssetBean.INVENTORY_NORMAL) {
-            mTvNormal.setTextColor(getResources().getColor(R.color.blue));
-            mVNormal.setBackgroundColor(getResources().getColor(R.color.blue));
-        } else if (mSelect == AssetBean.INVENTORY_EARN) {
-            mTvEarn.setTextColor(getResources().getColor(R.color.blue));
-            mVEarn.setBackgroundColor(getResources().getColor(R.color.blue));
-        } else if (mSelect == AssetBean.INVENTORY_LOSS) {
-            mTvLoss.setTextColor(getResources().getColor(R.color.blue));
-            mVLoss.setBackgroundColor(getResources().getColor(R.color.blue));
+    private void initPdStatus() {
+        if (pd_status == 1 || pd_status == 3) {
+            tv_title_status.setText(R.string.inventory_doing);
+            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_doing);
+            tv_title_right.setVisibility(View.VISIBLE);
+            noFinishLayout.setVisibility(View.VISIBLE);
+            pdView.setVisibility(View.VISIBLE);
+        } else if (pd_status == 2) {
+            tv_title_status.setText(R.string.inventory_wait);
+            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_wait);
+            tv_title_right.setVisibility(View.GONE);
+            noFinishLayout.setVisibility(View.GONE);
+            pdView.setVisibility(View.GONE);
+        } else {
+            tv_title_status.setText(R.string.inventory_finished);
+            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_finished);
+            tv_title_right.setVisibility(View.GONE);
+            noFinishLayout.setVisibility(View.GONE);
+            pdView.setVisibility(View.GONE);
         }
-        mPage = 1;
-        mPresenter.showInventoryResult(mInventoryId, mSelect, mPage);
+
+
     }
 
     @Override
@@ -152,60 +143,127 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_title_left:
-                onBackPressed();
+                long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                        .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
+                long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                        .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
+                Intent intent = new Intent();
+                intent.putExtra("wpCount", wpCount);
+                intent.putExtra("ypCount", ypCount);
+                setResult(Constant.RESULT_OK_INVENTORY_PD_NUM, intent);
+                finish();
                 break;
-            case R.id.tv_normal:
-                if (mSelect != AssetBean.INVENTORY_NORMAL) {
-                    mSelect = AssetBean.INVENTORY_NORMAL;
-                    initSelect();
+            case R.id.tv_title_right:
+
+                break;
+            case R.id.syncDataView:
+                List<AssetBean> hasScanAsset = assetBeanDao.queryBuilder().where(assetBeanDao.queryBuilder().and(AssetBeanDao.Properties.Pd_no.eq(pd_no), AssetBeanDao.Properties.IsScanAsset.eq(1))).list();
+                if (hasScanAsset.size() > 0) {
+                    for (int i = 0; i < hasScanAsset.size(); i++) {
+                        if (!asset_ids.contains(hasScanAsset.get(i).getAsset_id())) {
+                            asset_ids.add(hasScanAsset.get(i).getAsset_id());
+                        }
+                    }
+                }
+                if (asset_ids.size() == 0) {
+                    mPage = 1;
+                    mPresenter.showInventoryResult(pd_no, mPage);
+                } else {
+                    mPresenter.showSyncAssetData(pd_no, asset_ids);
                 }
                 break;
-            case R.id.tv_earn:
-                if (mSelect != AssetBean.INVENTORY_EARN) {
-                    mSelect = AssetBean.INVENTORY_EARN;
-                    initSelect();
-                }
+            case R.id.auditView:
                 break;
-            case R.id.tv_loss:
-                if (mSelect != AssetBean.INVENTORY_LOSS) {
-                    mSelect = AssetBean.INVENTORY_LOSS;
-                    initSelect();
-                }
+            case R.id.pdView:
+                Intent intentScan = new Intent(this, ScanInventoryActivity.class);
+                intentScan.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
+                intentScan.putExtra("user_id", user_id);
+                startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
                 break;
         }
     }
 
     @Override
-    public void onItemClick(int position) {
-        Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.BEDETAIL);
-        intent.putExtra("webName", "资产详情");
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSER_ID, mResultList.get(position).getAsset_id());
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mInventoryId);
-        intent.putExtra(Constant.INTENT_IS_HISTORY_ASSER_ID, "1");
-        startActivity(intent);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Constant.REQUEST_CODE_INVENTORY_SCAN && resultCode == Constant.RESULT_OK_INVENTORY_SCAN) {
+            assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                    .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
+            getNoFinishFragment(assets);
+        }
+    }
+
+    private void getNoFinishFragment(List<AssetBean> assetBeans) {
+        FragmentManager fm = this.getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans);
+        ft.replace(R.id.fl, noFinishFragment);
+        ft.commitAllowingStateLoss();
+    }
+
+    private void getFinishedFragment(List<AssetBean> assetBeans) {
+        FragmentManager fm = this.getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans);
+        ft.replace(R.id.fl, finishedFragment);
+        ft.commitAllowingStateLoss();
     }
 
     @Override
-    public void showInventoryResult(InventoryR inventoryR) {
-        mRefreshLayout.finishLoadmore();
-        mResultInventoryR = inventoryR;
-        mTvNormal.setText(getString(R.string.normal) + "(" + inventoryR.getBase_data().getNormal_num() + ")");
-        mTvLoss.setText(getString(R.string.inventory_loss) + "(" + inventoryR.getBase_data().getLoss_num() + ")");
-        mTvEarn.setText(getString(R.string.inventory_earn) + "(" + inventoryR.getBase_data().getSurplus_num() + ")");
-        if (mPage != 1) {
-            mAdapter.addDataSource(inventoryR.getAsset_data().getList());
-            mResultList.addAll(inventoryR.getAsset_data().getList());
-        } else {
-            mAdapter.changeDataSource(inventoryR.getAsset_data().getList());
+    public void showInventoryResult(ResultAsset resultAsset) {
+        if (mPage == 1) {
             mResultList.clear();
-            mResultList.addAll(inventoryR.getAsset_data().getList());
-        }
-        if (inventoryR.getAsset_data().getPage_count() <= mPage) {
-            mRefreshLayout.setEnableLoadmore(false);
+            mResultList.addAll(resultAsset.getList());
         } else {
-            mRefreshLayout.setEnableLoadmore(true);
+            mResultList.addAll(resultAsset.getList());
         }
-        initDefault(mPage == 1 ? (mResultInventoryR.getAsset_data().getList() != null && mResultInventoryR.getAsset_data().getList().size() != 0) ? NORMAL : NO_DATA : NORMAL);
+        if (mPage < resultAsset.getPage_count()) {
+            mPage++;
+            mPresenter.showInventoryResult(pd_no, mPage);
+        }
+        if (resultAsset.getCurrent_page() == resultAsset.getPage_count()) {
+            for (int i = 0; i < mResultList.size(); i++) {
+                mResultList.get(i).setPd_no(pd_no);
+                mResultList.get(i).setUser_id(user_id);
+            }
+            assetBeanDao.deleteInTx(assetBeanDao.queryBuilder()
+                    .where(assetBeanDao.queryBuilder()
+                            .and(AssetBeanDao.Properties.Pd_no.eq(pd_no),
+                                    AssetBeanDao.Properties.User_id.eq(user_id))).list());
+            assetBeanDao.insertInTx(mResultList);
+            if (pd_status == 4) {
+                getFinishedFragment(mResultList);
+            } else if (pd_status == 1 || pd_status == 2 || pd_status == 3) {
+                getNoFinishFragment(mResultList);
+            }
+        }
+    }
+
+    @Override
+    public void syncAssetSuccess() {
+        asset_ids.clear();
+        ToastUtils.toastMessage(this, "同步数据成功");
+        mPage = 1;
+        mPresenter.showInventoryResult(pd_no, mPage);
+    }
+
+    @Override
+    public void syncAssetFailed(int type) {
+        if (type == 1) {
+            List<AssetBean> isDeleteAsset = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no)).list();
+            assetBeanDao.deleteInTx(isDeleteAsset);
+            finish();
+        } else if (type == 2) {
+            pd_status = 2;
+            initPdStatus();
+            mPage = 1;
+            mPresenter.showInventoryResult(pd_no, mPage);
+        } else if (type == 3) {
+            pd_status = 4;
+            initPdStatus();
+            mPage = 1;
+            mPresenter.showInventoryResult(pd_no, 1);
+        }
     }
 }

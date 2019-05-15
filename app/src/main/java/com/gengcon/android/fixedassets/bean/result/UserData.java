@@ -17,6 +17,7 @@ public class UserData {
     private int is_superadmin;
     private String root_org_id;
     private String file_domain;
+    private String user_id;
 
     public String getToken() {
         return token;
@@ -64,5 +65,13 @@ public class UserData {
 
     public void setFile_domain(String file_domain) {
         this.file_domain = file_domain;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

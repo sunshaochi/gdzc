@@ -1,18 +1,20 @@
 package com.gengcon.android.fixedassets.module.inventory.widget.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aitsuki.swipe.SwipeItemLayout;
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.bean.Inventory;
-import com.gengcon.android.fixedassets.bean.result.ResultInventorys;
+import com.gengcon.android.fixedassets.bean.result.ResultInventory;
 import com.gengcon.android.fixedassets.common.ItemTouchListener;
+import com.gengcon.android.fixedassets.module.greendao.InventoryBean;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -22,17 +24,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     private Context mContext;
     private ItemTouchListener mItemTouchListener;
-    private List<Inventory> mInventorys;
-    private int type;
-    private boolean can_edit;
-    private boolean can_del;
-    private boolean noData;
+    private List<InventoryBean> mInventorys;
+    private long wpCount, ypCount;
 
-    public InventoryAdapter(Context context, int type, boolean can_edit, boolean can_del) {
+    public InventoryAdapter(Context context) {
         mContext = context;
-        this.type = type;
-        this.can_edit = can_edit;
-        this.can_del = can_del;
         mInventorys = new ArrayList<>();
     }
 
@@ -40,37 +36,15 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         this.mItemTouchListener = mItemTouchListener;
     }
 
-    public void addDataSource(ResultInventorys resultInventorys) {
-        if (resultInventorys.getList() != null && resultInventorys.getList().size() > 0) {
-            if (resultInventorys.getPage_count() == 0) {
-                mInventorys.clear();
-            }
-            mInventorys.addAll(resultInventorys.getList());
-            notifyDataSetChanged();
-        }
-    }
-
-    public void removeAsset(int position) {
-        if (position == RecyclerView.NO_POSITION) {
-            return;
-        } else if (position >= 0 && position < mInventorys.size()) {
-            mInventorys.remove(position);
-            if (mInventorys.size() == 0) {
-                noData = true;
-            } else {
-                noData = false;
-            }
-            notifyItemRemoved(position);
+    public void addDataSource(List<InventoryBean> list) {
+        if (list != null && list.size() > 0) {
+            mInventorys.clear();
+            mInventorys.addAll(list);
         }
         notifyDataSetChanged();
-
     }
 
-    public boolean isNoData() {
-        return noData;
-    }
-
-    public void changeDataSource(ResultInventorys resultInventorys) {
+    public void changeDataSource(ResultInventory resultInventorys) {
         if (resultInventorys.getList() != null && resultInventorys.getList().size() > 0) {
             mInventorys.clear();
             mInventorys.addAll(resultInventorys.getList());
@@ -82,87 +56,50 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (type == 1) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_inventory, parent, false);
-        } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_create_menu, parent, false);
-        }
+        view = LayoutInflater.from(mContext).inflate(R.layout.item_inventory, parent, false);
         view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final Inventory inventory = mInventorys.get(position);
-        boolean canEdit = inventory.getCan_edit() == 1 ? true : false;
-        if (holder.swipeItemLayout != null) {
-            holder.swipeItemLayout.setSwipeEnable(canEdit);
-            if (can_edit) {
-                holder.editTextView.setVisibility(View.VISIBLE);
-            } else {
-                holder.editTextView.setVisibility(View.GONE);
-            }
-            if (can_del) {
-                holder.deleteTextView.setVisibility(View.VISIBLE);
-            } else {
-                holder.deleteTextView.setVisibility(View.GONE);
-            }
-        }
-        if (type == 1) {
-            holder.tvCreateName.setText(mContext.getString(R.string.create_user) + "：" + inventory.getCreator_name());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mItemTouchListener.onItemClick(position);
-                }
-            });
+        final InventoryBean inventory = mInventorys.get(position);
+        String date = inventory.getCreated_at();
+        String useDate = date.substring(0, 10);
+        holder.inventory_name.setText(inventory.getPd_name());
+        holder.inventory_create_name.setText("创建人：" + inventory.getCreated_username());
+        if (inventory.getStatus() != 3) {
+            holder.py_layout.setVisibility(View.GONE);
+            holder.zc_text.setText("已盘 ");
+            holder.pk_text.setText("未盘 ");
         } else {
-            holder.tvCreateName.setText(mContext.getString(R.string.do_user) + "：" + inventory.getAllot_username());
-            if (canEdit) {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (inventory.getAllot_username().equals(inventory.getCreator_name())) {
-                            mItemTouchListener.onItemClick(position);
-                        } else {
-                            mItemTouchListener.onEditMenuClick(inventory.getInv_no());
-                        }
-                    }
-                });
-                if (holder.editTextView != null) {
-                    holder.editTextView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mItemTouchListener.onEditMenuClick(inventory.getInv_no());
-                            holder.swipeItemLayout.close();
-                        }
-                    });
-                }
-                if (holder.deleteTextView != null) {
-                    holder.deleteTextView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mItemTouchListener.onDeleteMenuClick(inventory.getInv_no(), position);
-                            holder.swipeItemLayout.close();
-                        }
-                    });
-                }
-            } else {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mItemTouchListener.onItemClick(position);
-                    }
-                });
-            }
+            holder.py_layout.setVisibility(View.VISIBLE);
+            holder.zc_text.setText("正常 ");
+            holder.pk_text.setText("盘亏 ");
+            holder.py_num.setText(inventory.getPy_num() + "");
         }
-
-        holder.tvCreateTime.setText(mContext.getString(R.string.create_time) + "：" + inventory.getCreated_at());
-        holder.tvName.setText(inventory.getInv_name());
-        holder.tvStatus.setText(inventory.getStatus_cn());
-        holder.tvStatus.setTextColor(mContext.getResources().getColor(inventory.getStatus() == Inventory.ERROR ? R.color.inventory_error : inventory.getStatus() == Inventory.NORMAL ? R.color.inventory_normal : R.color.inventory_not));
-        holder.tvStatus.setBackgroundResource(inventory.getStatus() == Inventory.ERROR ? R.drawable.inventory_error : inventory.getStatus() == Inventory.NORMAL ? R.drawable.inventory_normal : R.drawable.inventory_not);
-        holder.itemView.setTag(position);
+        holder.pk_num.setText(inventory.getWp_num() + "");
+        holder.zc_num.setText(inventory.getYp_num() + "");
+        holder.inventory_create_time.setText(useDate);
+        if (inventory.getStatus() == 1) {
+            holder.inventory_status.setText(inventory.getStatus_cn());
+            holder.inventory_status.setTextColor(mContext.getResources().getColor(R.color.blue));
+            holder.inventory_status.setBackgroundResource(R.drawable.inventory_doing);
+        } else if (inventory.getStatus() == 2) {
+            holder.inventory_status.setText(inventory.getStatus_cn());
+            holder.inventory_status.setTextColor(mContext.getResources().getColor(R.color.approval_reject));
+            holder.inventory_status.setBackgroundResource(R.drawable.inventory_wait);
+        } else if (inventory.getStatus() == 3) {
+            holder.inventory_status.setText(inventory.getStatus_cn());
+            holder.inventory_status.setTextColor(mContext.getResources().getColor(R.color.inventory_normal));
+            holder.inventory_status.setBackgroundResource(R.drawable.inventory_finished);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemTouchListener.onItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -172,29 +109,31 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onClick(View view) {
-        if (mItemTouchListener != null) {
-            mItemTouchListener.onItemClick((Integer) view.getTag());
-        }
+
     }
 
-    public Inventory getItem(int i) {
+    public InventoryBean getItem(int i) {
         return mInventorys.get(i);
     }
 
     class ViewHolder extends MyRecyclerView.ViewHolder {
 
-        TextView tvName, tvStatus, tvCreateTime, tvCreateName, editTextView, deleteTextView;
-        SwipeItemLayout swipeItemLayout;
+        TextView inventory_name, inventory_status, inventory_create_time, inventory_create_name, py_num, pk_num, zc_num;
+        LinearLayout py_layout;
+        TextView zc_text, pk_text;
 
         public ViewHolder(View view) {
             super(view);
-            tvName = view.findViewById(R.id.tv_name);
-            tvStatus = view.findViewById(R.id.tv_status);
-            tvCreateTime = view.findViewById(R.id.tv_create_time);
-            tvCreateName = view.findViewById(R.id.tv_create_name);
-            editTextView = view.findViewById(R.id.edit_menu);
-            deleteTextView = view.findViewById(R.id.delete_menu);
-            swipeItemLayout = view.findViewById(R.id.swipe_layout);
+            inventory_name = view.findViewById(R.id.inventory_name);
+            inventory_status = view.findViewById(R.id.inventory_status);
+            inventory_create_time = view.findViewById(R.id.inventory_create_time);
+            inventory_create_name = view.findViewById(R.id.inventory_create_name);
+            py_num = view.findViewById(R.id.py_num);
+            pk_num = view.findViewById(R.id.pk_num);
+            zc_num = view.findViewById(R.id.zc_num);
+            zc_text = view.findViewById(R.id.zc_text);
+            pk_text = view.findViewById(R.id.pk_text);
+            py_layout = view.findViewById(R.id.py_layout);
         }
     }
 }
