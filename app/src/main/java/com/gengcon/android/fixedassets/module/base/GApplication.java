@@ -40,6 +40,7 @@ public class GApplication extends Application {
         MultiDex.install(this);
         CrashReport.initCrashReport(getApplicationContext(), "fee0e191d8", true);
         SharedPreferencesUtils.getInstance().setContext(this);
+        EaseUiHelper.getInstance().init(this);//初始化环信
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
@@ -47,6 +48,7 @@ public class GApplication extends Application {
         JPushInterface.init(this);
         FontUtils.getInstance().replaceSystemDefaultFontFromAsset(this, "fonts/PingFangRegular.ttf");
         initGallery();
+
     }
 
     private void initGallery() {

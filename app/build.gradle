@@ -130,6 +130,11 @@ MtjCirclePluginConfig {
         implementation 'com.tencent.bugly:nativecrashreport:latest.release'
         implementation 'com.android.support:multidex:1.0.3'
         implementation 'com.contrarywind:Android-PickerView:3.2.4'
+
+        api fileTree(dir: 'libs', include: ['*.jar'])
+        //环信客服SDK
+        // api 'com.hyphenate:kefu-easeui-android:latest.release' //或者 compile 'com.hyphenate:kefu-easeui-android:1.1.9'
+        api 'com.hyphenate:kefu-easeui-android:1.1.9'
         implementation 'org.greenrobot:greendao:3.2.0'
 
         implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha02'

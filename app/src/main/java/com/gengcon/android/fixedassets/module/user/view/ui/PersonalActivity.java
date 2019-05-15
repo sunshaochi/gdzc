@@ -12,6 +12,7 @@ import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.PersonalBean;
 import com.gengcon.android.fixedassets.common.module.htttp.URL;
 import com.gengcon.android.fixedassets.module.base.CustomerServiceActivity;
+import com.gengcon.android.fixedassets.module.base.EaseUiHelper;
 import com.gengcon.android.fixedassets.module.user.view.PersonalView;
 import com.gengcon.android.fixedassets.module.user.presenter.PersonalPresenter;
 import com.gengcon.android.fixedassets.module.web.view.WebActivity;
@@ -114,14 +115,21 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 loginOut();
                 break;
             case R.id.serviceLayout:
-                Intent serviceIntent = new Intent(this, CustomerServiceActivity.class);
-                startActivity(serviceIntent);
+//                Intent serviceIntent = new Intent(this, CustomerServiceActivity.class);
+//                startActivity(serviceIntent);
+                //注册环信为保证用户唯一性，这里用用户的user_id作为唯一的标识，注册环信username用fixed+user_id 密码用user_id
+                String user_id= (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.USER_ID,"");
+                if(!TextUtils.isEmpty(user_id)) {
+                    EaseUiHelper.getInstance().RegistEasemo("fixed"+user_id,user_id);
+                }
                 break;
         }
     }
 
     private void loginOut() {
         SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+        SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.USER_ID);
+        EaseUiHelper.getInstance().LoginOutEase();
         Intent intent = new Intent(this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
         startActivity(intent);

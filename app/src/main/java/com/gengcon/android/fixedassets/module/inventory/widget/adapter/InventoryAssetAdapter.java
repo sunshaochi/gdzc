@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
@@ -59,7 +60,9 @@ public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAsset
         holder.tvId.setText(asset.getAsset_code());
 //        holder.tvStatus.setText(asset.getStatus());
         holder.itemView.setTag(position);
-        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+//        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).apply(new RequestOptions().error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img)).into(holder.ivIcon);
+
         switch (asset.getStatus()) {
             case Asset.IDEL:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_idel);

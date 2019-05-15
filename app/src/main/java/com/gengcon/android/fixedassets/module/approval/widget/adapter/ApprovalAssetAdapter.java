@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
@@ -89,7 +90,9 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
             holder.tvId.setText(asset.getAsset_code());
             holder.tvStatus.setText(asset.getStatus_cn());
             holder.itemView.setTag(position);
-            Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+//            Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+            Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).apply(new RequestOptions().error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img)).into(holder.ivIcon);
+
 //            ((ViewHolder) holder).text.setText(data);
             if (mItemClickListener == null) return;
             holder.itemView.setOnClickListener(new View.OnClickListener() {

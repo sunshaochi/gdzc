@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -240,6 +241,12 @@ public class WebActivity extends BasePullRefreshActivity {
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IMG_URL, userBean.getImgurl());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IS_SUPERADMIN, userBean.getIs_superadmin());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.COMPANY_NAME, userBean.getCompany_name());
+
+        if(userBean.getIs_demo().equals("true")){
+            SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.USER_ID, "demo");
+        }else {
+            SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.USER_ID, userBean.getUser_id());
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
