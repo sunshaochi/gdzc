@@ -118,9 +118,9 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
 //                Intent serviceIntent = new Intent(this, CustomerServiceActivity.class);
 //                startActivity(serviceIntent);
                 //注册环信为保证用户唯一性，这里用用户的user_id作为唯一的标识，注册环信username用fixed+user_id 密码用user_id
-                String user_id= (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.USER_ID,"");
-                if(!TextUtils.isEmpty(user_id)) {
-                    EaseUiHelper.getInstance().RegistEasemo("fixed"+user_id,user_id);
+                String user_id = (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.USER_ID, "");
+                if (!TextUtils.isEmpty(user_id)) {
+                    EaseUiHelper.getInstance().RegistEasemo("fixed" + user_id, user_id);
                 }
                 break;
         }
