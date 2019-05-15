@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
@@ -68,7 +69,17 @@ public class SearchAssetAdapter extends RecyclerView.Adapter<SearchAssetAdapter.
         holder.tvId.setText(assetBean.getAsset_code());
 //        holder.tvStatus.setText(asset.getStatus());
         holder.itemView.setTag(position);
-        Glide.with(mContext).load(TextUtils.isEmpty(assetBean.getPhotourl()) ? assetBean.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + assetBean.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
+//        Glide.with(mContext).
+//                load(TextUtils.isEmpty(assetBean.getPhotourl()) ? assetBean.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + assetBean.getPhotourl())
+//                .error(R.drawable.ic_default_img)
+//                .placeholder(R.drawable.ic_default_img)
+//                .fallback(R.drawable.ic_default_img)
+//                .into(holder.ivIcon);
+        Glide.with(mContext).load(TextUtils.isEmpty(assetBean.getPhotourl()) ? assetBean.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + assetBean.getPhotourl())
+                .apply(new RequestOptions()
+                        .error(R.drawable.ic_default_img)
+                        .placeholder(R.drawable.ic_default_img)
+                        .fallback(R.drawable.ic_default_img)).into(holder.ivIcon);
         switch (assetBean.getStatus()) {
             case Asset.IDEL:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_idel);
