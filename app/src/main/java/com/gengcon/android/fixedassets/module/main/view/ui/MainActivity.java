@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.baidu.mobstat.StatService;
 import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.bean.Inventory;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
 import com.gengcon.android.fixedassets.module.addasset.view.AddAssetActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
@@ -37,6 +38,7 @@ import com.gengcon.android.fixedassets.module.main.presenter.HomePresenter;
 import com.gengcon.android.fixedassets.module.message.view.ui.MessageActivity;
 import com.gengcon.android.fixedassets.module.message.view.ui.MessageDetailsActivity;
 import com.gengcon.android.fixedassets.common.module.scan.ScanActivity;
+import com.gengcon.android.fixedassets.rfid.InventoryAct;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.RFIDUtils;
 import com.gengcon.android.fixedassets.util.RolePowerManager;
@@ -319,19 +321,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 break;
             case R.id.totalLayout:
-                if (isNetworkConnected(this)) {
-                    if (RolePowerManager.getInstance().isAssetModule()) {
-                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
-                        webIntent.putExtra("webName", "资产列表");
-                        webIntent.putExtra("webTitle", "选择");
-                        webIntent.putExtra("webFrom", "MainActivity");
-                        startActivity(webIntent);
-                    } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
-                    }
-                } else {
-                    ToastUtils.toastMessage(this, msg);
-                }
+//                if (isNetworkConnected(this)) {
+//                    if (RolePowerManager.getInstance().isAssetModule()) {
+//                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
+//                        webIntent.putExtra("webName", "资产列表");
+//                        webIntent.putExtra("webTitle", "选择");
+//                        webIntent.putExtra("webFrom", "MainActivity");
+//                        startActivity(webIntent);
+//                    } else {
+//                        ToastUtils.toastMessage(this, "当前您没有权限");
+//                    }
+//                } else {
+//                    ToastUtils.toastMessage(this, msg);
+//                }
+                Intent intent1 = new Intent(MainActivity.this, InventoryAct.class);
+                startActivity(intent1);
                 break;
             case R.id.freeLayout:
                 if (isNetworkConnected(this)) {

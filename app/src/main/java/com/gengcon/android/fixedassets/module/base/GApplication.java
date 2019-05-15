@@ -22,17 +22,22 @@ import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.jpush.android.api.JPushInterface;
+import realid.rfidlib.MyLib;
 
 public class GApplication extends Application {
+    private static GApplication instance;
+    private MyLib idataLib;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onCreate() {
         super.onCreate();
+        instance=this;
         MultiDex.install(this);
         CrashReport.initCrashReport(getApplicationContext(), "fee0e191d8", true);
         SharedPreferencesUtils.getInstance().setContext(this);
         EaseUiHelper.getInstance().init(this);//初始化环信
+        idataLib = new MyLib(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
@@ -42,6 +47,16 @@ public class GApplication extends Application {
         initGallery();
 
     }
+
+    public static GApplication getInstance() {
+        return instance;
+    }
+
+    public MyLib getIdataLib() {
+        return idataLib;
+    }
+
+
 
     private void initGallery() {
         ThemeConfig theme = new ThemeConfig.Builder()
