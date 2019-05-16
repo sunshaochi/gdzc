@@ -79,6 +79,10 @@
             android:name=".module.main.view.ui.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".rfid.InventoryAct"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".module.inventory.view.ui.InventoryListActivity"
             android:launchMode="singleTask"

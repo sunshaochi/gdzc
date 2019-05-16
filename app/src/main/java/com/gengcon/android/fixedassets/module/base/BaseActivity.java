@@ -1,6 +1,8 @@
 package com.gengcon.android.fixedassets.module.base;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,9 +41,11 @@ import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import io.reactivex.functions.Consumer;
 
 public class BaseActivity extends AppCompatActivity implements Iview, UpdateVersionView {
@@ -51,6 +55,8 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
     protected UpdateVersionPresenter mUpdateVersionPresenter;
     private UpdateVersion mVersion;
 
+    public boolean wasBackground = false;    //声明一个布尔变量,记录当前的活动背景
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +64,47 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
 //        mRolePresenter.attachView(this);
         mUpdateVersionPresenter = new UpdateVersionPresenter();
         mUpdateVersionPresenter.attachView(this);
-        mUpdateVersionPresenter.getVersion();
+//        mUpdateVersionPresenter.getVersion();
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
     }
 
     protected void initView() {
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (wasBackground) {
+//            Log.e("aa", "从后台回到前台");
+            mUpdateVersionPresenter.getVersion();
+        }
+        wasBackground = false;//不在后台
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isApplicationBroughtToBackground())
+            wasBackground = true;//在后台
+    }
+
+    /**
+     * 判断前台还是在后台
+     * @return
+     *
+     */
+    private boolean isApplicationBroughtToBackground() {
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(getPackageName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -128,7 +168,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
 
     @Override
     public void showInvalidType(int invalid_type) {
-        if (invalid_type == 2){
+        if (invalid_type == 2) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
             Intent intent = new Intent(BaseActivity.this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
@@ -139,7 +179,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
 
     public void hideSoftInput() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (BaseActivity.this.getCurrentFocus() != null){
+        if (BaseActivity.this.getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(BaseActivity.this.getCurrentFocus().getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
@@ -213,7 +253,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
                             .execute();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (!(e instanceof WindowManager.BadTokenException)){
+                    if (!(e instanceof WindowManager.BadTokenException)) {
                         ToastUtils.toastMessage(BaseActivity.this, "下载地址不正确!");
                     }
                 }
