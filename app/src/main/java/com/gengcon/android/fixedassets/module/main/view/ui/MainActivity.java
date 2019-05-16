@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.baidu.mobstat.StatService;
 import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.bean.Inventory;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
 import com.gengcon.android.fixedassets.common.module.update.UpdateVersionView;
 import com.gengcon.android.fixedassets.module.addasset.view.AddAssetActivity;
