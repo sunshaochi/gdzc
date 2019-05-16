@@ -23,7 +23,9 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
     public T convert(ResponseBody value) throws IOException {
         String response = value.string();
         Bean httpResult = gson.fromJson(response, Bean.class);
-        if (httpResult.getCode().equals("CODE_200") || httpResult.getCode().equals("CODE_401")) {
+        if (httpResult.getCode().equals("CODE_200")
+                || httpResult.getCode().equals("CODE_401")
+                || httpResult.getCode().equals("CODE_400")) {
             return gson.fromJson(response, type);
         } else {
             ErrorBean errorResponse = gson.fromJson(response, ErrorBean.class);

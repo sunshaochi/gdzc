@@ -20,7 +20,6 @@ import com.baidu.mobstat.StatService;
 import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
-import com.gengcon.android.fixedassets.common.module.update.UpdateVersionView;
 import com.gengcon.android.fixedassets.module.addasset.view.AddAssetActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.Bean;
@@ -67,6 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView messageView;
     private UserPopupNotice userPopupNotice;
     private int noticeId = 0;
+    private int useAssetCount, idleAssetCount, totalAssetCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +124,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.usingLayout).setOnClickListener(this);
         findViewById(R.id.freeLayout).setOnClickListener(this);
         messageView.setOnClickListener(this);
+        initAssetCount();
+    }
+
+    private void initAssetCount() {
+        useAssetCount = (int) SharedPreferencesUtils.getInstance().getParam(Constant.HOME_ASSET_USE, -1);
+        idleAssetCount = (int) SharedPreferencesUtils.getInstance().getParam(Constant.HOME_ASSET_IDLE, -1);
+        totalAssetCount = (int) SharedPreferencesUtils.getInstance().getParam(Constant.HOME_ASSET_TOTAL, -1);
+        if (useAssetCount != -1) {
+            inUseSize.setText(useAssetCount + "");
+        }
+        if (totalAssetCount != -1) {
+            mTvSize.setText(totalAssetCount + "");
+        }
+        if (idleAssetCount != -1) {
+            idleSize.setText(idleAssetCount + "");
+        }
     }
 
     @Override
@@ -284,11 +300,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (RolePowerManager.getInstance().isAddModule()) {
                         Intent addAssetIntent = new Intent(MainActivity.this, AddAssetActivity.class);
                         startActivity(addAssetIntent);
-//                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_STORAGE);
-//                        webIntent.putExtra("webName", "资产入库");
-//                        webIntent.putExtra("webTitle", "保存");
-//                        webIntent.putExtra("webFrom", "MainActivity");
-//                        startActivity(webIntent);
                     } else {
                         ToastUtils.toastMessage(this, "当前您没有权限");
                     }
@@ -484,6 +495,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void showHome(Home resultHome) {
+        SharedPreferencesUtils.getInstance().setParam(Constant.HOME_ASSET_TOTAL, resultHome.getTotal());
+        SharedPreferencesUtils.getInstance().setParam(Constant.HOME_ASSET_IDLE, resultHome.getFree_num());
+        SharedPreferencesUtils.getInstance().setParam(Constant.HOME_ASSET_USE, resultHome.getUseing_num());
         mTvSize.setText(resultHome.getTotal() + "");
         inUseSize.setText(resultHome.getUseing_num() + "");
         idleSize.setText(resultHome.getFree_num() + "");

@@ -37,8 +37,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     }
 
     public void addDataSource(List<InventoryBean> list) {
+        mInventorys.clear();
         if (list != null && list.size() > 0) {
-            mInventorys.clear();
             mInventorys.addAll(list);
         }
         notifyDataSetChanged();

@@ -35,6 +35,7 @@ public class InventoryBean {
     private Integer audit_userid;
     private Integer created_userid;
     private String created_at;
+    private String remarks;
     private Integer wp_num;
     private Integer yp_num;
     private Integer py_num;
@@ -43,13 +44,14 @@ public class InventoryBean {
     private String audit_username;
     private String status_cn;
     private Integer son_status;
+    private Integer isUpdate;
     private String user_id;
 
-    @Generated(hash = 1550479186)
+    @Generated(hash = 1749395510)
     public InventoryBean(Long id, String tag, String pd_no, String pd_name, Integer status, Integer audit_userid,
-            Integer created_userid, String created_at, Integer wp_num, Integer yp_num, Integer py_num,
+            Integer created_userid, String created_at, String remarks, Integer wp_num, Integer yp_num, Integer py_num,
             String asset_updated_at, String created_username, String audit_username, String status_cn, Integer son_status,
-            String user_id) {
+            Integer isUpdate, String user_id) {
         this.id = id;
         this.tag = tag;
         this.pd_no = pd_no;
@@ -58,6 +60,7 @@ public class InventoryBean {
         this.audit_userid = audit_userid;
         this.created_userid = created_userid;
         this.created_at = created_at;
+        this.remarks = remarks;
         this.wp_num = wp_num;
         this.yp_num = yp_num;
         this.py_num = py_num;
@@ -66,6 +69,7 @@ public class InventoryBean {
         this.audit_username = audit_username;
         this.status_cn = status_cn;
         this.son_status = son_status;
+        this.isUpdate = isUpdate;
         this.user_id = user_id;
     }
 
@@ -207,5 +211,21 @@ public class InventoryBean {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getRemarks() {
+        return this.remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Integer getIsUpdate() {
+        return this.isUpdate;
+    }
+
+    public void setIsUpdate(Integer isUpdate) {
+        this.isUpdate = isUpdate;
     }
 }

@@ -6,6 +6,12 @@ import com.gengcon.android.fixedassets.module.base.Iview;
 public interface InventoryResultView extends Iview {
 
     void showInventoryResult(ResultAsset resultAsset);
+
     void syncAssetSuccess();
-    void syncAssetFailed(int type);
+
+    void syncAssetFailed(int type, String msg);
+
+    void keepSonAuditSuccess();
+
+    void keepSonAuditFailed(int type, String msg);
 }

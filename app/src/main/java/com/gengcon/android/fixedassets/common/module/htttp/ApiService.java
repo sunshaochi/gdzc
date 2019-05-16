@@ -15,6 +15,7 @@ import com.gengcon.android.fixedassets.bean.request.ModifyPasswordRequest;
 import com.gengcon.android.fixedassets.bean.request.PhoneCodeRequest;
 import com.gengcon.android.fixedassets.bean.request.PrintTagRequest;
 import com.gengcon.android.fixedassets.bean.request.RegisterRequest;
+import com.gengcon.android.fixedassets.bean.request.SonAuditRequest;
 import com.gengcon.android.fixedassets.bean.result.AddAssetCustom;
 import com.gengcon.android.fixedassets.bean.result.AddAssetList;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
@@ -364,4 +365,11 @@ public class ApiService {
         @POST("app/pd/syncUploadPdData")
         Observable<Bean> getAssetSyncData(@Body AssetSyncDataRequest request);
     }
+
+    //子任务-提交审核
+    public interface GetSonAudit {
+        @POST("app/pd/submitSonAudit")
+        Observable<Bean> getSonAudit(@Body SonAuditRequest request);
+    }
+
 }

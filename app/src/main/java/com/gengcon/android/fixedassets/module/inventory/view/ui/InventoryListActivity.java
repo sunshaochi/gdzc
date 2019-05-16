@@ -27,7 +27,6 @@ import com.gengcon.android.fixedassets.module.inventory.widget.adapter.Inventory
 import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
 import com.gengcon.android.fixedassets.rfid.CheckTypeUtils;
 import com.gengcon.android.fixedassets.util.Constant;
-import com.gengcon.android.fixedassets.util.RolePowerManager;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
@@ -68,7 +67,6 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         super.initView();
         ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.inventory_list);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_home);
-        findViewById(R.id.tv_title_right).setOnClickListener(this);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
         noFinishText = findViewById(R.id.noFinishText);
         finishedText = findViewById(R.id.finishedText);
@@ -90,8 +88,6 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         noFinishText.setTextColor(getResources().getColor(R.color.blue));
         finishedText.setTextColor(getResources().getColor(R.color.black));
         noFinishView.setVisibility(View.VISIBLE);
-        findViewById(R.id.tv_title_right).setVisibility(RolePowerManager.getInstance().isInventoryAdd() ? View.VISIBLE : View.GONE);
-        initData();
     }
 
     public void initData() {
@@ -149,6 +145,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        initData();
     }
 
     @Override
@@ -203,6 +200,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         List<InventoryBean> deleteList = new ArrayList<>();
         for (int i = 0; i < inventoryBeanList.size(); i++) {
             inventoryBeanList.get(i).setUser_id(user_id);
+            inventoryBeanList.get(i).setIsUpdate(2);
             inventoryBeanList.get(i).setTag(user_id + inventoryBeanList.get(i).getPd_no());
         }
         if (dbInventories.size() == 0) {
@@ -218,6 +216,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
             List<String> pd_no_db = new ArrayList<>();
             List<String> pd_no_all = new ArrayList<>();
             List<InventoryBean> inventoriesFinishedOrWait = new ArrayList<>();
+            List<InventoryBean> inventoriesRejectList = new ArrayList<>();
             for (int i = 0; i < dbInventories.size(); i++) {
                 pd_no_db.add(dbInventories.get(i).getPd_no());
             }
@@ -237,11 +236,36 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
             }
             inventoryBeanDao.deleteInTx(deleteList);
             for (int i = 0; i < inventoryBeanList.size(); i++) {
-                if (inventoryBeanList.get(i).getSon_status() != 1) {
+                if (inventoryBeanList.get(i).getSon_status() == 2
+                        || inventoryBeanList.get(i).getSon_status() == 4) {
                     inventoriesFinishedOrWait.add(inventoryBeanList.get(i));
+                } else if (inventoryBeanList.get(i).getSon_status() == 3) {
+                    inventoriesRejectList.add(inventoryBeanList.get(i));
+                }
+            }
+            for (int i = 0; i < inventoriesFinishedOrWait.size(); i++) {
+                String pd_no_update = inventoriesFinishedOrWait.get(i).getPd_no();
+                InventoryBean updateInventory = inventoryBeanDao.queryBuilder()
+                        .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                        .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no_update)).unique();
+                if (updateInventory != null) {
+                    if (updateInventory.getAsset_updated_at().equals(inventoriesFinishedOrWait.get(i).getAsset_updated_at())) {
+                        inventoriesFinishedOrWait.get(i).setIsUpdate(1);
+                    }
                 }
             }
             inventoryBeanDao.insertOrReplaceInTx(inventoriesFinishedOrWait);
+            for (int i = 0; i < inventoriesRejectList.size(); i++) {
+                String pd_no_Reject = inventoriesRejectList.get(i).getPd_no();
+                InventoryBean rejectInventory = inventoryBeanDao.queryBuilder()
+                        .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                        .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no_Reject)).unique();
+                if (rejectInventory != null) {
+                    inventoriesRejectList.get(i).setYp_num(rejectInventory.getYp_num());
+                    inventoriesRejectList.get(i).setWp_num(rejectInventory.getWp_num());
+                }
+            }
+            inventoryBeanDao.insertOrReplaceInTx(inventoriesRejectList);
             List<InventoryBean> userInventoryList = inventoryBeanDao.queryBuilder().where(InventoryBeanDao.Properties.User_id.eq(user_id))
                     .orderDesc(InventoryBeanDao.Properties.Created_at).list();
             for (int i = 0; i < userInventoryList.size(); i++) {
@@ -270,7 +294,8 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, inventory.getPd_no());
         intent.putExtra("pd_name", inventory.getPd_name());
         intent.putExtra("pd_status", inventory.getSon_status());
-        startActivityForResult(intent, Constant.REQUEST_CODE_INVENTORY_PD_NUM);
+        intent.putExtra("is_update", inventory.getIsUpdate());
+        startActivity(intent);
     }
 
 }
