@@ -2,6 +2,7 @@ package com.gengcon.android.fixedassets.rfid;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -91,8 +92,12 @@ public class RfidDialog {
      * @param num
      * @return
      */
-    public RfidDialog setNum(int num) {
-        tv_num.setText(num+"");
+    public RfidDialog setNum(String num) {
+        if(!TextUtils.isEmpty(num)) {
+            tv_num.setText(num);
+        }else {
+            tv_num.setText(0+"");
+        }
         return this;
     }
 

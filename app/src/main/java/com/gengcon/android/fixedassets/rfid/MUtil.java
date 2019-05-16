@@ -6,13 +6,14 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.gengcon.android.fixedassets.module.base.GApplication;
+import com.gengcon.android.fixedassets.util.Logger;
 
 /**
  * author CYD
  * date 2018/11/26
  * email chengyd@idatachina.com
  */
-public final class MUtil {
+public class MUtil {
 
     public static void show(String text) {
         Toast.makeText(GApplication.getInstance(), text, Toast.LENGTH_SHORT).show();
@@ -45,7 +46,7 @@ public final class MUtil {
     private static AlertDialog atdialog;
 
     public static void warningDialog(Context con) {
-        if (atdialog == null) {
+
             atdialog = new AlertDialog.Builder(con).create();
             atdialog.setTitle("电源无法开启");
             atdialog.setMessage(
@@ -55,7 +56,6 @@ public final class MUtil {
                             "3.如还有问题，请截取EMSH设置-〉EMSH状态的截图，发送给相关技术支持"
             );
              atdialog.setCancelable(true);
-        }
              atdialog.show();
     }
 

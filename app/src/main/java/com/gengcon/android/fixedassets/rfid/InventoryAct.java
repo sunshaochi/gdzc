@@ -5,17 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.bean.Inventory;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
-import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
 import com.gengcon.android.fixedassets.util.Logger;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
@@ -42,11 +39,17 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_invernroydemo);
         initView();
-        rfidThread.start();
-        rfidThread.setBackResult(this);
+//        rfidThread.start();
+//        rfidThread.setBackResult(this);
+//        myRunable=new MyRunable();
+//        myRunable.setBackResult(this);
+        new Thread(rfidThread).start();
         monitorEmsh();
+        GetRFIDThread.getInstance().setBackResult(this);
+
 
     }
+
 
     private void monitorEmsh() {
 
@@ -104,7 +107,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
      * 开始
      */
     private void startRFID() {
-        boolean flag =GetRFIDThread.getInstance().isIfPostMsg();
+        boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
         if(!flag){//没扫描
             GApplication.getInstance().getIdataLib().startInventoryTag();
             showRfidInventoryingDialog();
@@ -118,7 +121,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
      * 结束
      */
     private void stpoRFID() {
-        boolean flag =GetRFIDThread.getInstance().isIfPostMsg();
+        boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
         if(flag){//再扫描
             GApplication.getInstance().getIdataLib().stopInventory();
             GetRFIDThread.getInstance().setIfPostMsg(false);
@@ -131,7 +134,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
         if(dialog==null) {
             dialog = new RfidDialog(InventoryAct.this).builder();
             dialog.setTotle(100);
-            dialog.setNum(realDataMap.size());
+            dialog.setNum(realDataMap.size()+"");
             dialog.setLeft("暂停");
             dialog.setStopClick(new RfidDialog.StopListener() {
                 @Override
@@ -206,8 +209,8 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
             mTimerTask = null;
             mTimer = null;
         }
-        rfidThread.destoryThread();
-        Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
+//        rfidThread.destoryThread();
+//        Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
     }
 
     private long rNumber = 0;//读取次数
@@ -249,7 +252,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
                 tv_num.setText(realDataMap.size()+"");
-                dialog.setNum(realDataMap.size());
+                dialog.setNum(realDataMap.size()+"");
             }
         });
     }
@@ -294,5 +297,6 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                 }
             }
         }
-    }
+
+}
 

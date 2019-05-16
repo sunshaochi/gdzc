@@ -9,7 +9,7 @@ import com.gengcon.android.fixedassets.util.Logger;
  * date 2018/11/19
  * email chengyd@idatachina.com
  */
-public class GetRFIDThread extends Thread {
+public class GetRFIDThread implements Runnable {
 
     private GetRFIDThread() {
     }
