@@ -30,15 +30,17 @@ public class InventoryBeanDao extends AbstractDao<InventoryBean, Long> {
         public final static Property Audit_userid = new Property(5, Integer.class, "audit_userid", false, "AUDIT_USERID");
         public final static Property Created_userid = new Property(6, Integer.class, "created_userid", false, "CREATED_USERID");
         public final static Property Created_at = new Property(7, String.class, "created_at", false, "CREATED_AT");
-        public final static Property Wp_num = new Property(8, Integer.class, "wp_num", false, "WP_NUM");
-        public final static Property Yp_num = new Property(9, Integer.class, "yp_num", false, "YP_NUM");
-        public final static Property Py_num = new Property(10, Integer.class, "py_num", false, "PY_NUM");
-        public final static Property Asset_updated_at = new Property(11, String.class, "asset_updated_at", false, "ASSET_UPDATED_AT");
-        public final static Property Created_username = new Property(12, String.class, "created_username", false, "CREATED_USERNAME");
-        public final static Property Audit_username = new Property(13, String.class, "audit_username", false, "AUDIT_USERNAME");
-        public final static Property Status_cn = new Property(14, String.class, "status_cn", false, "STATUS_CN");
-        public final static Property Son_status = new Property(15, Integer.class, "son_status", false, "SON_STATUS");
-        public final static Property User_id = new Property(16, String.class, "user_id", false, "USER_ID");
+        public final static Property Remarks = new Property(8, String.class, "remarks", false, "REMARKS");
+        public final static Property Wp_num = new Property(9, Integer.class, "wp_num", false, "WP_NUM");
+        public final static Property Yp_num = new Property(10, Integer.class, "yp_num", false, "YP_NUM");
+        public final static Property Py_num = new Property(11, Integer.class, "py_num", false, "PY_NUM");
+        public final static Property Asset_updated_at = new Property(12, String.class, "asset_updated_at", false, "ASSET_UPDATED_AT");
+        public final static Property Created_username = new Property(13, String.class, "created_username", false, "CREATED_USERNAME");
+        public final static Property Audit_username = new Property(14, String.class, "audit_username", false, "AUDIT_USERNAME");
+        public final static Property Status_cn = new Property(15, String.class, "status_cn", false, "STATUS_CN");
+        public final static Property Son_status = new Property(16, Integer.class, "son_status", false, "SON_STATUS");
+        public final static Property IsUpdate = new Property(17, Integer.class, "isUpdate", false, "IS_UPDATE");
+        public final static Property User_id = new Property(18, String.class, "user_id", false, "USER_ID");
     }
 
 
@@ -62,15 +64,17 @@ public class InventoryBeanDao extends AbstractDao<InventoryBean, Long> {
                 "\"AUDIT_USERID\" INTEGER," + // 5: audit_userid
                 "\"CREATED_USERID\" INTEGER," + // 6: created_userid
                 "\"CREATED_AT\" TEXT," + // 7: created_at
-                "\"WP_NUM\" INTEGER," + // 8: wp_num
-                "\"YP_NUM\" INTEGER," + // 9: yp_num
-                "\"PY_NUM\" INTEGER," + // 10: py_num
-                "\"ASSET_UPDATED_AT\" TEXT," + // 11: asset_updated_at
-                "\"CREATED_USERNAME\" TEXT," + // 12: created_username
-                "\"AUDIT_USERNAME\" TEXT," + // 13: audit_username
-                "\"STATUS_CN\" TEXT," + // 14: status_cn
-                "\"SON_STATUS\" INTEGER," + // 15: son_status
-                "\"USER_ID\" TEXT);"); // 16: user_id
+                "\"REMARKS\" TEXT," + // 8: remarks
+                "\"WP_NUM\" INTEGER," + // 9: wp_num
+                "\"YP_NUM\" INTEGER," + // 10: yp_num
+                "\"PY_NUM\" INTEGER," + // 11: py_num
+                "\"ASSET_UPDATED_AT\" TEXT," + // 12: asset_updated_at
+                "\"CREATED_USERNAME\" TEXT," + // 13: created_username
+                "\"AUDIT_USERNAME\" TEXT," + // 14: audit_username
+                "\"STATUS_CN\" TEXT," + // 15: status_cn
+                "\"SON_STATUS\" INTEGER," + // 16: son_status
+                "\"IS_UPDATE\" INTEGER," + // 17: isUpdate
+                "\"USER_ID\" TEXT);"); // 18: user_id
     }
 
     /** Drops the underlying database table. */
@@ -123,49 +127,59 @@ public class InventoryBeanDao extends AbstractDao<InventoryBean, Long> {
             stmt.bindString(8, created_at);
         }
  
+        String remarks = entity.getRemarks();
+        if (remarks != null) {
+            stmt.bindString(9, remarks);
+        }
+ 
         Integer wp_num = entity.getWp_num();
         if (wp_num != null) {
-            stmt.bindLong(9, wp_num);
+            stmt.bindLong(10, wp_num);
         }
  
         Integer yp_num = entity.getYp_num();
         if (yp_num != null) {
-            stmt.bindLong(10, yp_num);
+            stmt.bindLong(11, yp_num);
         }
  
         Integer py_num = entity.getPy_num();
         if (py_num != null) {
-            stmt.bindLong(11, py_num);
+            stmt.bindLong(12, py_num);
         }
  
         String asset_updated_at = entity.getAsset_updated_at();
         if (asset_updated_at != null) {
-            stmt.bindString(12, asset_updated_at);
+            stmt.bindString(13, asset_updated_at);
         }
  
         String created_username = entity.getCreated_username();
         if (created_username != null) {
-            stmt.bindString(13, created_username);
+            stmt.bindString(14, created_username);
         }
  
         String audit_username = entity.getAudit_username();
         if (audit_username != null) {
-            stmt.bindString(14, audit_username);
+            stmt.bindString(15, audit_username);
         }
  
         String status_cn = entity.getStatus_cn();
         if (status_cn != null) {
-            stmt.bindString(15, status_cn);
+            stmt.bindString(16, status_cn);
         }
  
         Integer son_status = entity.getSon_status();
         if (son_status != null) {
-            stmt.bindLong(16, son_status);
+            stmt.bindLong(17, son_status);
+        }
+ 
+        Integer isUpdate = entity.getIsUpdate();
+        if (isUpdate != null) {
+            stmt.bindLong(18, isUpdate);
         }
  
         String user_id = entity.getUser_id();
         if (user_id != null) {
-            stmt.bindString(17, user_id);
+            stmt.bindString(19, user_id);
         }
     }
 
@@ -213,49 +227,59 @@ public class InventoryBeanDao extends AbstractDao<InventoryBean, Long> {
             stmt.bindString(8, created_at);
         }
  
+        String remarks = entity.getRemarks();
+        if (remarks != null) {
+            stmt.bindString(9, remarks);
+        }
+ 
         Integer wp_num = entity.getWp_num();
         if (wp_num != null) {
-            stmt.bindLong(9, wp_num);
+            stmt.bindLong(10, wp_num);
         }
  
         Integer yp_num = entity.getYp_num();
         if (yp_num != null) {
-            stmt.bindLong(10, yp_num);
+            stmt.bindLong(11, yp_num);
         }
  
         Integer py_num = entity.getPy_num();
         if (py_num != null) {
-            stmt.bindLong(11, py_num);
+            stmt.bindLong(12, py_num);
         }
  
         String asset_updated_at = entity.getAsset_updated_at();
         if (asset_updated_at != null) {
-            stmt.bindString(12, asset_updated_at);
+            stmt.bindString(13, asset_updated_at);
         }
  
         String created_username = entity.getCreated_username();
         if (created_username != null) {
-            stmt.bindString(13, created_username);
+            stmt.bindString(14, created_username);
         }
  
         String audit_username = entity.getAudit_username();
         if (audit_username != null) {
-            stmt.bindString(14, audit_username);
+            stmt.bindString(15, audit_username);
         }
  
         String status_cn = entity.getStatus_cn();
         if (status_cn != null) {
-            stmt.bindString(15, status_cn);
+            stmt.bindString(16, status_cn);
         }
  
         Integer son_status = entity.getSon_status();
         if (son_status != null) {
-            stmt.bindLong(16, son_status);
+            stmt.bindLong(17, son_status);
+        }
+ 
+        Integer isUpdate = entity.getIsUpdate();
+        if (isUpdate != null) {
+            stmt.bindLong(18, isUpdate);
         }
  
         String user_id = entity.getUser_id();
         if (user_id != null) {
-            stmt.bindString(17, user_id);
+            stmt.bindString(19, user_id);
         }
     }
 
@@ -275,15 +299,17 @@ public class InventoryBeanDao extends AbstractDao<InventoryBean, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // audit_userid
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // created_userid
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // created_at
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // wp_num
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // yp_num
-            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // py_num
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // asset_updated_at
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // created_username
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // audit_username
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // status_cn
-            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // son_status
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16) // user_id
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // remarks
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // wp_num
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // yp_num
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // py_num
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // asset_updated_at
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // created_username
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // audit_username
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // status_cn
+            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // son_status
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // isUpdate
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // user_id
         );
         return entity;
     }
@@ -298,15 +324,17 @@ public class InventoryBeanDao extends AbstractDao<InventoryBean, Long> {
         entity.setAudit_userid(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
         entity.setCreated_userid(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setCreated_at(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setWp_num(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setYp_num(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setPy_num(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setAsset_updated_at(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setCreated_username(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setAudit_username(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setStatus_cn(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setSon_status(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
-        entity.setUser_id(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setRemarks(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setWp_num(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setYp_num(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setPy_num(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setAsset_updated_at(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setCreated_username(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setAudit_username(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setStatus_cn(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setSon_status(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
+        entity.setIsUpdate(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
+        entity.setUser_id(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
      }
     
     @Override
