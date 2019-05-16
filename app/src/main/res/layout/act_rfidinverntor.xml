@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asset_gray"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/blue"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_title_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tv_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxWidth="230dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            tools:text="2019年二季度资产盘点季度" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="9dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_title_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_inventory_doing"
+                android:paddingLeft="9dp"
+                android:paddingTop="5dp"
+                android:paddingRight="9dp"
+                android:paddingBottom="5dp"
+                android:text="进行中"
+                android:textColor="@color/white"
+                android:textSize="11dp" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="21dp"
+            android:layout_height="19dp"
+            android:gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:background="@color/rfid_grey">
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="同步数据"
+                android:textColor="@color/black_text"
+                android:textSize="15sp" />
+            
+            <View
+                android:background="@color/line_color"
+                android:layout_gravity="center"
+                android:layout_width="1sp"
+                android:layout_height="24sp"></View>
+
+            <TextView
+                android:id="@+id/tv_inventory"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="RFID盘点"
+                android:textColor="@color/black_text"
+                android:textSize="15sp" />
+            <View
+                android:background="@color/line_color"
+                android:layout_gravity="center"
+                android:layout_width="1sp"
+                android:layout_height="24sp"></View>
+
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="提交审核"
+                android:textColor="@color/black_text"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

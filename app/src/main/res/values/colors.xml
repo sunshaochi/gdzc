@@ -49,6 +49,7 @@
     <color name="inventory_finished">#2dae73</color>
     <color name="inventory_wait">#f37b1a</color>
     <color name="inventory_doing">#83A9FF</color>
+    <color name="rfid_grey">#f7f7f7</color>
 
 
     <!--zxing-->

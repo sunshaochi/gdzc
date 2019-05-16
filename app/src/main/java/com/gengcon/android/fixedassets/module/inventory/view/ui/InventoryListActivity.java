@@ -25,6 +25,7 @@ import com.gengcon.android.fixedassets.module.inventory.view.InventoryListView;
 import com.gengcon.android.fixedassets.module.inventory.presenter.InventoryListPresenter;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.InventoryAdapter;
 import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
+import com.gengcon.android.fixedassets.rfid.CheckTypeUtils;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.RolePowerManager;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
@@ -259,7 +260,13 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onItemClick(int position) {
         InventoryBean inventory = mAdapter.getItem(position);
-        Intent intent = new Intent(this, InventoryResultActivity.class);
+        Intent intent = new Intent();
+        if(CheckTypeUtils.isPhoneOrEquipment()){
+            intent.setClass(this, RfidInventoryResultActivity.class);
+        }else {
+//            Intent intent = new Intent(this, InventoryResultActivity.class);
+            intent.setClass(this, InventoryResultActivity.class);
+        }
         intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, inventory.getPd_no());
         intent.putExtra("pd_name", inventory.getPd_name());
         intent.putExtra("pd_status", inventory.getSon_status());
