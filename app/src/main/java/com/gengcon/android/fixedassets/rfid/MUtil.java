@@ -46,17 +46,18 @@ public class MUtil {
     private static AlertDialog atdialog;
 
     public static void warningDialog(Context con) {
-
-            atdialog = new AlertDialog.Builder(con).create();
-            atdialog.setTitle("电源无法开启");
-            atdialog.setMessage(
-                    "1.请确认设置-〉用户自定义-〉EMSH设置-〉开启EMSH服务已勾选\n" +
-                            "2.请确认PDA右上角有两个电池图标，且都显示有电；\n" +
-                            "如果只有一个电池图标，请确认把枪和PDA连接是否可靠；\n如果左侧电池图标没电，请使用专用三合一座充充电\n" +
-                            "3.如还有问题，请截取EMSH设置-〉EMSH状态的截图，发送给相关技术支持"
-            );
-             atdialog.setCancelable(true);
-             atdialog.show();
+            if(atdialog==null) {
+                atdialog = new AlertDialog.Builder(con).create();
+                atdialog.setTitle("电源无法开启");
+                atdialog.setMessage(
+                        "1.请确认设置-〉用户自定义-〉EMSH设置-〉开启EMSH服务已勾选\n" +
+                                "2.请确认PDA右上角有两个电池图标，且都显示有电；\n" +
+                                "如果只有一个电池图标，请确认把枪和PDA连接是否可靠；\n如果左侧电池图标没电，请使用专用三合一座充充电\n" +
+                                "3.如还有问题，请截取EMSH设置-〉EMSH状态的截图，发送给相关技术支持"
+                );
+                atdialog.setCancelable(true);
+            }
+            atdialog.show();
     }
 
     public static void cancelWaringDialog() {

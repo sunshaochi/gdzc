@@ -31,7 +31,6 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
     private GetRFIDThread rfidThread = GetRFIDThread.getInstance();//RFID标签信息获取线程
     private Timer mTimer = null;
     private TimerTask mTimerTask = null;
-    private AlertDialog.Builder mRfidBuilder;
     private RfidDialog dialog;
 
     @Override
@@ -209,6 +208,8 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
             mTimerTask = null;
             mTimer = null;
         }
+          MUtil.cancelWaringDialog();
+          Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
 //        rfidThread.destoryThread();
 //        Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
     }
@@ -268,7 +269,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
 //                Logger.e("监控把枪状态","action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode);
 //                ToastUtils.toastMessage(InventoryAct.this,"监控把枪状态"+" action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode+"");
                     if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
-//                    isconnet=true;
+                    isconnet=true;
                         // 把枪电池当前状态
                         if (batteryPowerMode == currentStatue) { //相同状态不处理
                             return;
@@ -278,10 +279,9 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                             case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_STANDBY://0
                                 MUtil.cancelWaringDialog();
                                 GApplication.getInstance().getIdataLib().powerOn();
-                                GApplication.getInstance().getIdataLib().powerSet(30);
+//                                GApplication.getInstance().getIdataLib().powerSet(30);
                                 break;
                             case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_DSG_UHF://2
-                                isconnet = true;
                                 MUtil.show("上电成功...");
                                 break;
                         }
@@ -292,7 +292,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                             dialog.dissMiss();
                             dialog=null;
                         }
-//                     MUtil.warningDialog(MainActivity.this);
+//                     MUtil.warningDialog(InventoryAct.this);
                     }
                 }
             }

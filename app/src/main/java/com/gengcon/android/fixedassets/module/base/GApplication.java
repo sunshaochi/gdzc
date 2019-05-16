@@ -1,11 +1,15 @@
 package com.gengcon.android.fixedassets.module.base;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
+
 import androidx.annotation.RequiresApi;
+
 import android.util.Log;
 
 import com.gengcon.android.fixedassets.R;
@@ -17,6 +21,7 @@ import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import androidx.multidex.MultiDex;
+
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -27,12 +32,14 @@ import realid.rfidlib.MyLib;
 public class GApplication extends Application {
     private static GApplication instance;
     private MyLib idataLib;
+    private int activityCount;//activity的count数
+    private boolean isForeground;//是否在前台
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onCreate() {
         super.onCreate();
-        instance=this;
+        instance = this;
         MultiDex.install(this);
         CrashReport.initCrashReport(getApplicationContext(), "fee0e191d8", true);
         SharedPreferencesUtils.getInstance().setContext(this);
@@ -45,8 +52,47 @@ public class GApplication extends Application {
         JPushInterface.init(this);
         FontUtils.getInstance().replaceSystemDefaultFontFromAsset(this, "fonts/PingFangRegular.ttf");
         initGallery();
-
+        registerActivityLifecycle();//监控app从前后台互相转化用来更新
     }
+
+    private void registerActivityLifecycle() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                activityCount++;
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                activityCount--;
+                if (0 == activityCount) {
+                    isForeground = false;
+                }
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+            }
+        });
+    }
+
+
 
     public static GApplication getInstance() {
         return instance;
@@ -55,7 +101,6 @@ public class GApplication extends Application {
     public MyLib getIdataLib() {
         return idataLib;
     }
-
 
 
     private void initGallery() {

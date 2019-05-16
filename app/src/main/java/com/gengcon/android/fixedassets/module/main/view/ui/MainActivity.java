@@ -21,6 +21,7 @@ import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Inventory;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.update.UpdateVersionView;
 import com.gengcon.android.fixedassets.module.addasset.view.AddAssetActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.Bean;
@@ -73,6 +74,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+
+        mUpdateVersionPresenter.getVersion();//首页检测更新
 
         mControll = new ScannerInerface(this);
         mControll.setOutputMode(1);
