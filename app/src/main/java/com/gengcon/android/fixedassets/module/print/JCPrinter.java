@@ -57,14 +57,20 @@ public class JCPrinter {
 
     public static boolean printLabel(Print.LableBean label, Print.ListBean printList) {
         boolean flag = false;
-        if (label.getSize_id() == 1) {
+        /**
+         * 2 5 6 50X70  1 4 50x30
+         */
+        if (label.getSize_id() == 1
+                || label.getSize_id() == 4) {
 //            PrinterSubString.substring5030(printList.getTemplate_attr());
-            if (label.getQrcode_position() == 1){
+            if (label.getQrcode_position() == 1) {
                 flag = printerLabel50301(printList);
-            }else if (label.getQrcode_position() == 2){
+            } else if (label.getQrcode_position() == 2) {
                 flag = printerLabel50302(printList);
             }
-        } else if (label.getSize_id() == 2) {
+        } else if (label.getSize_id() == 2
+                || label.getSize_id() == 5
+                || label.getSize_id() == 6) {
 //            PrinterSubString.substring7050(printList.getTemplate_attr());
             if (label.getQrcode_position() == 1) {
                 flag = printerLabel70501(printList);
