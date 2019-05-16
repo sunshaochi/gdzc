@@ -142,3 +142,10 @@
 # can be remapped
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+
+-keep class org.greenrobot.greendao.**{*;}
+-keep class com.gengcon.android.fixedassets.module.greendao.**{*;}
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties

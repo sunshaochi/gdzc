@@ -6,25 +6,19 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="6dp"
+        android:layout_height="10dp"
         android:background="@color/asset_gray" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/refreshLayout"
+        <com.aitsuki.swipe.SwipeMenuRecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.aitsuki.swipe.SwipeMenuRecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/asset_gray"
-                android:overScrollMode="never" />
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            android:layout_height="match_parent"
+            android:background="@color/asset_gray"
+            android:overScrollMode="never" />
 
         <include layout="@layout/layout_default" />
 

@@ -46,6 +46,10 @@
     <color name="asset_status_scrap_auditing">#dc4bc2</color>
     <color name="asset_status_allot_auditing">#9b3bcc</color>
 
+    <color name="inventory_finished">#2dae73</color>
+    <color name="inventory_wait">#f37b1a</color>
+    <color name="inventory_doing">#83A9FF</color>
+
 
     <!--zxing-->
     <color name="bg_color">#EDEDED</color>

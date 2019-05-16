@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.module.inventory.view.ui.PreviewActivity;
 import com.gengcon.android.fixedassets.module.main.view.ui.ScanLoginActivity;
 import com.gengcon.android.fixedassets.module.main.presenter.ScanLoginPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
@@ -235,10 +234,7 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             if (RolePowerManager.getInstance().isInventoryPd()) {
-                                Intent intent = new Intent(ScanActivity.this, PreviewActivity.class);
-                                intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, mDocId);
-                                intent.putExtra(Constant.INTENT_EXTRA_KEY_ASSET_IDS, mAssetIds);
-                                startActivityForResult(intent, Constant.PREVIEW_CODE);
+
                             } else {
                                 ToastUtils.toastMessage(ScanActivity.this, R.string.permission_denied_tips);
                             }

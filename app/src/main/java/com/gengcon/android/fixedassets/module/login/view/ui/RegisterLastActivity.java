@@ -237,6 +237,7 @@ public class RegisterLastActivity extends BaseActivity implements View.OnClickLi
     @JavascriptInterface
     public void userSuccess(String message) {
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.TOKEN, user.getToken());
+        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.USER_ID, user.getUser_id());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IMG_URL, user.getFile_domain());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IS_SUPERADMIN, user.getIs_superadmin());
         Intent intent = new Intent(this, MainActivity.class);

@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
-import com.gengcon.android.fixedassets.bean.AssetBean;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
@@ -26,7 +26,7 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
 
     private Context mContext;
     private OnItemClickListener mItemClickListener;
-    private List<AssetBean> mAssets;
+    private List<Asset> mAssets;
 
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
@@ -38,7 +38,7 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
         mAssets = new ArrayList<>();
     }
 
-    public void addDataSource(List<AssetBean> assets) {
+    public void addDataSource(List<Asset> assets) {
         mAssets.clear();
         if (assets != null && assets.size() > 0) {
             mAssets.addAll(assets);
@@ -55,7 +55,7 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
         return mHeaderView;
     }
 
-    public void addMoreDataSource(List<AssetBean> assets) {
+    public void addMoreDataSource(List<Asset> assets) {
         if (assets != null && assets.size() > 0) {
             mAssets.addAll(assets);
         }
@@ -84,7 +84,7 @@ public class ApprovalAssetAdapter extends MyRecyclerView.Adapter<ApprovalAssetAd
         }
         final int pos = getRealPosition(holder);
         if (holder instanceof ApprovalAssetAdapter.ViewHolder) {
-            AssetBean asset = mAssets.get(pos);
+            Asset asset = mAssets.get(pos);
             holder.tvStatus.setVisibility(View.GONE);
             holder.tvName.setText(asset.getAsset_name());
             holder.tvId.setText(asset.getAsset_code());

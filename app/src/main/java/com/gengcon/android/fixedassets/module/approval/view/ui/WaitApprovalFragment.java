@@ -185,16 +185,6 @@ public class WaitApprovalFragment extends BasePullRefreshFragment implements Vie
     }
 
     @Override
-    public void onEditMenuClick(String inv_no) {
-
-    }
-
-    @Override
-    public void onDeleteMenuClick(String inv_no, int position) {
-
-    }
-
-    @Override
     public void showApprovalList(ResultApprovals resultApprovals) {
         mRefreshLayout.finishRefresh();
         mRefreshLayout.finishLoadmore();

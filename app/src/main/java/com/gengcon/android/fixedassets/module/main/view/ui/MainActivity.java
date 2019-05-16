@@ -108,7 +108,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ((ImageView) findViewById(R.id.iv_title_right)).setImageResource(R.drawable.ic_qr);
         ((ImageView) findViewById(R.id.iv_title_msg)).setImageResource(R.drawable.ic_msg);
 
-
         mTvSize = findViewById(R.id.tv_size);
         inUseSize = findViewById(R.id.asset_inUse);
         idleSize = findViewById(R.id.asset_idle);
@@ -175,7 +174,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (networkInfo != null && networkInfo.isAvailable()) {
                     int type2 = networkInfo.getType();
                     String typeName = networkInfo.getTypeName();
-
                     switch (type2) {
                         case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
                             mPresenter.getRoute();
@@ -256,15 +254,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 return;
             case R.id.inventory_management:
-                if (isNetworkConnected(this)) {
-                    if (RolePowerManager.getInstance().isInventoryModule()) {
-                        Intent intent = new Intent(MainActivity.this, InventoryListActivity.class);
-                        startActivity(intent);
-                    } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
-                    }
+                if (RolePowerManager.getInstance().isInventoryModule()) {
+                    Intent intent = new Intent(MainActivity.this, InventoryListActivity.class);
+                    startActivity(intent);
                 } else {
-                    ToastUtils.toastMessage(this, msg);
+                    ToastUtils.toastMessage(this, "当前您没有权限");
                 }
                 return;
             case R.id.iv_title_msg:

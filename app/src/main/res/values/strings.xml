@@ -59,8 +59,13 @@
     <string name="back_list">返回列表</string>
     <string name="inventorying">盘点中...</string>
     <string name="normal">正常</string>
+    <string name="inventory_zc">正常</string>
+    <string name="inventory_wp">未盘</string>
+    <string name="inventory_yp">已盘</string>
+    <string name="inventory_py">盘盈</string>
     <string name="inventory_earn">盘盈</string>
     <string name="inventory_loss">盘亏</string>
+    <string name="inventory_pk">盘亏</string>
     <string name="create_time">创建时间</string>
     <string name="create_user">创建人</string>
     <string name="apply_user">申请人</string>
@@ -111,7 +116,7 @@
     <string name="confirm_login">确认登录</string>
 
     <string name="qr_lable1">将取景框对准二维码</string>
-    <string name="qr_lable2">即可进行扫描</string>
+    <string name="qr_lable2">即可自动扫描</string>
 
     <string name="bluetooth_connect">蓝牙连接</string>
     <string name="bluetooth">蓝牙</string>
@@ -163,7 +168,12 @@
     <string name="add_emp">新增员工</string>
     <string name="edit_emp">编辑员工</string>
 
-
+    <string name="inventory_finished">已完成</string>
+    <string name="inventory_doing">进行中</string>
+    <string name="inventory_wait">待审核</string>
     <!-- galleryfinal -->
     <string name="photo_preview">图片预览</string>
+
+    <string name="inventory_scan">扫码盘点</string>
+    <string name="search_asset">手动输入查询</string>
 </resources>

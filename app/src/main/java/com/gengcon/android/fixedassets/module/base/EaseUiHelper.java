@@ -24,7 +24,7 @@ public class EaseUiHelper {
     //必填项，tenantId获取地址：kefu.easemob.com，“管理员模式 > 设置 > 企业信息”页面的“租户ID”
     public static final String TENANTID = "66683";
     //获取地址：kefu.easemob.com，“管理员模式 > 渠道管理 > 手机APP”页面的关联的“IM服务号”
-    public static final String SERVICEIMNUMBER="kefuchannelimid_372284";
+    public static final String SERVICEIMNUMBER = "kefuchannelimid_372284";
 
     private UIProvider _uiProvider;
     private Context appContext;
@@ -114,20 +114,20 @@ public class EaseUiHelper {
     /**
      * 注册环信聊天
      */
-    public void RegistEasemo(final String user, final String password){
+    public void RegistEasemo(final String user, final String password) {
         ChatClient.getInstance().register(user, password, new Callback() {
             @Override
             public void onSuccess() {
                 Log.i("环信注册成功", "onSuccess: ");
-                LoginEasemo(user,password);
+                LoginEasemo(user, password);
             }
 
             @Override
             public void onError(int code, String error) {
                 //203表示用户已经存在
-                if(code==203){
-                    LoginEasemo(user,password);
-                }else {
+                if (code == 203) {
+                    LoginEasemo(user, password);
+                } else {
                     Log.e("环信注册失败", "onError: " + code + "," + error);
                 }
             }
@@ -141,10 +141,11 @@ public class EaseUiHelper {
 
     /**
      * 环信登录成功
+     *
      * @param user
      * @param password
      */
-    public  void LoginEasemo(String user,String password) {
+    public void LoginEasemo(String user, String password) {
         if (!isLogin()) {//如果没有登录就走登录
             ChatClient.getInstance().login(user, password, new Callback() {
                 @Override
@@ -163,8 +164,8 @@ public class EaseUiHelper {
                     Log.i("环信登录中", "Login..: ");
                 }
             });
-        }else {
-               goTalk();
+        } else {
+            goTalk();
         }
 
     }
@@ -173,19 +174,20 @@ public class EaseUiHelper {
     /**
      * 跳转到聊天界面
      */
-    public void goTalk(){
-            Intent intent = new IntentBuilder(appContext).setServiceIMNumber(SERVICEIMNUMBER)
-                    .setTitleName("武汉精臣智慧标识科技有限公司")
-                    .build();
-            appContext.startActivity(intent);
+    public void goTalk() {
+        Intent intent = new IntentBuilder(appContext).setServiceIMNumber(SERVICEIMNUMBER)
+                .setTitleName("武汉精臣智慧标识科技有限公司")
+                .build();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        appContext.startActivity(intent);
 
     }
 
     /**
      * 退出环信
      */
-    public void LoginOutEase(){
-        if(isLogin()){//如果是登录的
+    public void LoginOutEase() {
+        if (isLogin()) {//如果是登录的
             //已经登录，可以直接进入会话界面
             ChatClient.getInstance().logout(true, new Callback() {
                 @Override
@@ -195,7 +197,7 @@ public class EaseUiHelper {
 
                 @Override
                 public void onError(int code, String error) {
-                    Log.e("环信退出失败", "onError: "+code+","+error);
+                    Log.e("环信退出失败", "onError: " + code + "," + error);
                 }
 
                 @Override
@@ -207,17 +209,15 @@ public class EaseUiHelper {
     }
 
 
-
-
-
     /**
      * 是否是登录状态码
+     *
      * @return
      */
-    public boolean isLogin(){
-        if(ChatClient.getInstance().isLoggedInBefore()){
+    public boolean isLogin() {
+        if (ChatClient.getInstance().isLoggedInBefore()) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
