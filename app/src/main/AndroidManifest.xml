@@ -251,6 +251,9 @@
         <activity
             android:name=".module.inventory.view.ui.InventoryRemarksActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.inventory.view.ui.RfidInventoryResultActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

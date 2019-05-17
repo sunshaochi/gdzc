@@ -16,7 +16,6 @@ import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.inventory.view.RfidInventoryView;
 import com.gengcon.android.fixedassets.rfid.BackResult;
 import com.gengcon.android.fixedassets.rfid.GetRFIDThread;
-import com.gengcon.android.fixedassets.rfid.InventoryAct;
 import com.gengcon.android.fixedassets.rfid.MUtil;
 import com.gengcon.android.fixedassets.rfid.RfidDialog;
 import com.gengcon.android.fixedassets.util.Logger;
@@ -46,7 +45,7 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_rfidinverntor);
         initView();
-        rfidThread=GetRFIDThread.getInstance();
+        rfidThread = GetRFIDThread.getInstance();
         new Thread(rfidThread).start();
         monitorEmsh();
         GetRFIDThread.getInstance().setBackResult(this);
@@ -72,7 +71,7 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
     @Override
     protected void initView() {
         super.initView();
-        tv_inventory=findViewById(R.id.tv_inventory);
+        tv_inventory = findViewById(R.id.tv_inventory);
         tv_inventory.setOnClickListener(this);
     }
 
@@ -87,7 +86,7 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
 //                Logger.e("监控把枪状态","action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode);
 //                ToastUtils.toastMessage(InventoryAct.this,"监控把枪状态"+" action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode+"");
                 if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
-                    isconnet=true;
+                    isconnet = true;
                     // 把枪电池当前状态
                     if (batteryPowerMode == currentStatue) { //相同状态不处理
                         return;
@@ -105,29 +104,24 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
                     }
                 } else {//未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
                     isconnet = false;
-                    stpoRFID();
+                    stopRFID();
                     if (dialog != null && dialog.isShowing()) {
-                        dialog.dissMiss();
-                        dialog=null;
+                        dialog.dismiss();
+                        dialog = null;
                     }
                 }
             }
         }
     }
 
-    
-
-
-
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_inventory:
-                if(isconnet){
+                if (isconnet) {
                     startRFID();
-                }else {
-                    ToastUtils.show(RfidInventoryResultActivity.this,"电源无法开启");
+                } else {
+                    ToastUtils.show(RfidInventoryResultActivity.this, "电源无法开启");
                 }
 
                 break;
@@ -140,11 +134,11 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
      */
     private void startRFID() {
         boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if(!flag){//没扫描
+        if (!flag) {//没扫描
             GApplication.getInstance().getIdataLib().startInventoryTag();
             showRfidInventoryingDialog();
             GetRFIDThread.getInstance().setIfPostMsg(true);
-            com.gengcon.android.fixedassets.util.ToastUtils.toastMessage(RfidInventoryResultActivity.this,"开始扫描");
+            com.gengcon.android.fixedassets.util.ToastUtils.toastMessage(RfidInventoryResultActivity.this, "开始扫描");
         }
 
     }
@@ -152,27 +146,27 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
     /**
      * 结束
      */
-    private void stpoRFID() {
+    private void stopRFID() {
         boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if(flag){//再扫描
+        if (flag) {//再扫描
             GApplication.getInstance().getIdataLib().stopInventory();
             GetRFIDThread.getInstance().setIfPostMsg(false);
-            com.gengcon.android.fixedassets.util.ToastUtils.toastMessage(RfidInventoryResultActivity.this,"开始扫描");
+            com.gengcon.android.fixedassets.util.ToastUtils.toastMessage(RfidInventoryResultActivity.this, "开始扫描");
         }
 
     }
 
     private void showRfidInventoryingDialog() {
-        if(dialog==null) {
+        if (dialog == null) {
             dialog = new RfidDialog(RfidInventoryResultActivity.this).builder();
-            dialog.setTotle(100);
-            dialog.setNum(realDataMap.size()+"");
+            dialog.setTotal(100);
+            dialog.setNum(realDataMap.size() + "");
             dialog.setLeft("暂停");
             dialog.setStopClick(new RfidDialog.StopListener() {
                 @Override
                 public void onClick() {
                     if (dialog.getLeft().equals("暂停")) {
-                        stpoRFID();
+                        stopRFID();
                         dialog.setLeft("开始");
 
                     } else {
@@ -185,28 +179,29 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
             dialog.setQuxiaoClick(new RfidDialog.QuxiaoListener() {
                 @Override
                 public void onClick() {
-                    stpoRFID();
+                    stopRFID();
                     realDataMap.clear();
                     realKeyList.clear();
-                    dialog.dissMiss();
-                    dialog=null;
+                    dialog.dismiss();
+                    dialog = null;
                 }
             });
 
-            dialog.setCompileClick(new RfidDialog.CompileListener() {
+            dialog.setCompleteClick(new RfidDialog.CompileListener() {
                 @Override
                 public void onClick() {
-                    stpoRFID();
+                    stopRFID();
                     realDataMap.clear();
                     realKeyList.clear();
-                    dialog.dissMiss();
-                    dialog=null;
+                    dialog.dismiss();
+                    dialog = null;
                 }
             });
         }
 
         dialog.show();
     }
+
     private long rNumber = 0;//读取次数
     private Map<String, Integer> dataMap = new HashMap<>(); //数据
     private Map<String, Integer> realDataMap = new HashMap<>(); //数据
@@ -245,7 +240,7 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
                     realKeyList.add(epc);
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
-                dialog.setNum(realDataMap.size()+"");
+                dialog.setNum(realDataMap.size() + "");
             }
         });
     }

@@ -18,7 +18,7 @@ public class RfidDialog {
     private Context context;
     private Dialog dialog;
     private Display display;
-    private TextView tv_totlenum,tv_num,tv_zt,tv_qx,tv_wc;
+    private TextView tv_totlenum, tv_num, tv_zt, tv_qx, tv_wc;
 
     public RfidDialog(Context context) {
         this.context = context;
@@ -26,28 +26,28 @@ public class RfidDialog {
         display = windowManager.getDefaultDisplay();
     }
 
-    public boolean isShowing(){
+    public boolean isShowing() {
         return dialog.isShowing();
     }
 
-    public RfidDialog builder(){
+    public RfidDialog builder() {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_rfid, null);
-        tv_totlenum=view.findViewById(R.id.tv_totlenum);
-        tv_num=view.findViewById(R.id.tv_num);
-        tv_zt=view.findViewById(R.id.tv_zt);
-        tv_qx=view.findViewById(R.id.tv_qx);
-        tv_wc=view.findViewById(R.id.tv_wc);
+        tv_totlenum = view.findViewById(R.id.tv_totlenum);
+        tv_num = view.findViewById(R.id.tv_num);
+        tv_zt = view.findViewById(R.id.tv_zt);
+        tv_qx = view.findViewById(R.id.tv_qx);
+        tv_wc = view.findViewById(R.id.tv_wc);
         // 定义Dialog布局和参数
-        dialog = new Dialog(context,R.style.Dialog_General);
+        dialog = new Dialog(context, R.style.Dialog_General);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         Window dialogWindow = dialog.getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         dialogWindow.setGravity(Gravity.CENTER);
-        WindowManager manager=dialogWindow.getWindowManager();
-        Display d=manager.getDefaultDisplay();
-        lp.width=d.getWidth();
+        WindowManager manager = dialogWindow.getWindowManager();
+        Display d = manager.getDefaultDisplay();
+        lp.width = d.getWidth();
 
 //        lp.x = 0;
 //        lp.y = 0;
@@ -70,8 +70,8 @@ public class RfidDialog {
      * @param num
      * @return
      */
-    public RfidDialog setTotle(int num) {
-        tv_totlenum.setText(num+"");
+    public RfidDialog setTotal(int num) {
+        tv_totlenum.setText(num + "");
         return this;
     }
 
@@ -79,12 +79,12 @@ public class RfidDialog {
      * @param
      * @return
      */
-    public RfidDialog setLeft(String  text) {
-        tv_zt.setText(text+"");
+    public RfidDialog setLeft(String text) {
+        tv_zt.setText(text + "");
         return this;
     }
 
-    public String getLeft(){
+    public String getLeft() {
         return tv_zt.getText().toString();
     }
 
@@ -93,10 +93,10 @@ public class RfidDialog {
      * @return
      */
     public RfidDialog setNum(String num) {
-        if(!TextUtils.isEmpty(num)) {
+        if (!TextUtils.isEmpty(num)) {
             tv_num.setText(num);
-        }else {
-            tv_num.setText(0+"");
+        } else {
+            tv_num.setText(0 + "");
         }
         return this;
     }
@@ -106,20 +106,20 @@ public class RfidDialog {
     }
 
 
-    public void dissMiss(){
+    public void dismiss() {
         dialog.dismiss();
     }
 
-    public void setStopClick(final StopListener listener){
-      tv_zt.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              listener.onClick();
-          }
-      });
+    public void setStopClick(final StopListener listener) {
+        tv_zt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick();
+            }
+        });
     }
 
-    public void setQuxiaoClick(final QuxiaoListener listener){
+    public void setQuxiaoClick(final QuxiaoListener listener) {
         tv_qx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +128,7 @@ public class RfidDialog {
         });
     }
 
-    public void setCompileClick(final CompileListener listener){
+    public void setCompleteClick(final CompileListener listener) {
         tv_wc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,23 +138,17 @@ public class RfidDialog {
     }
 
 
-    public interface StopListener{
+    public interface StopListener {
         public void onClick();
     }
 
-    public interface QuxiaoListener{
+    public interface QuxiaoListener {
         public void onClick();
     }
 
-    public interface CompileListener{
+    public interface CompileListener {
         public void onClick();
     }
-
-
-
-
-
-
 
 
 }
