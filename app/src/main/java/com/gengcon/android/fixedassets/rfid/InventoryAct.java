@@ -25,8 +25,8 @@ import java.util.TimerTask;
 
 import realid.rfidlib.EmshConstant;
 
-public class InventoryAct extends BaseActivity implements View.OnClickListener,BackResult {
-    private TextView tv_pd, tv_zt,tv_num;
+public class InventoryAct extends BaseActivity implements View.OnClickListener, BackResult {
+    private TextView tv_pd, tv_zt, tv_num;
     private GetRFIDThread rfidThread;//RFID标签信息获取线程
     private Timer mTimer = null;
     private TimerTask mTimerTask = null;
@@ -37,7 +37,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_invernroydemo);
         initView();
-        rfidThread=GetRFIDThread.getInstance();
+        rfidThread = GetRFIDThread.getInstance();
         new Thread(rfidThread).start();
         monitorEmsh();
         GetRFIDThread.getInstance().setBackResult(this);
@@ -71,7 +71,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
         tv_pd.setOnClickListener(this);
         tv_zt = findViewById(R.id.tv_zt);
         tv_zt.setOnClickListener(this);
-        tv_num=findViewById(R.id.tv_num);
+        tv_num = findViewById(R.id.tv_num);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                 if (isconnet) {
                     startRFID();
                 } else {
-                   ToastUtils.toastMessage(InventoryAct.this,"电源无法开启");
+                    ToastUtils.toastMessage(InventoryAct.this, "电源无法开启");
                 }
 
                 break;
@@ -96,18 +96,16 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
     }
 
 
-
-
     /**
      * 开始
      */
     private void startRFID() {
         boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if(!flag){//没扫描
+        if (!flag) {//没扫描
             GApplication.getInstance().getIdataLib().startInventoryTag();
             showRfidInventoryingDialog();
             GetRFIDThread.getInstance().setIfPostMsg(true);
-            ToastUtils.toastMessage(InventoryAct.this,"开始扫描");
+            ToastUtils.toastMessage(InventoryAct.this, "开始扫描");
         }
 
     }
@@ -117,19 +115,19 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
      */
     private void stpoRFID() {
         boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if(flag){//再扫描
+        if (flag) {//再扫描
             GApplication.getInstance().getIdataLib().stopInventory();
             GetRFIDThread.getInstance().setIfPostMsg(false);
-            ToastUtils.toastMessage(InventoryAct.this,"停止扫描");
+            ToastUtils.toastMessage(InventoryAct.this, "停止扫描");
         }
 
     }
 
     private void showRfidInventoryingDialog() {
-        if(dialog==null) {
+        if (dialog == null) {
             dialog = new RfidDialog(InventoryAct.this).builder();
             dialog.setTotal(100);
-            dialog.setNum(realDataMap.size()+"");
+            dialog.setNum(realDataMap.size() + "");
             dialog.setLeft("暂停");
             dialog.setStopClick(new RfidDialog.StopListener() {
                 @Override
@@ -152,7 +150,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                     realDataMap.clear();
                     realKeyList.clear();
                     dialog.dismiss();
-                    dialog=null;
+                    dialog = null;
                 }
             });
 
@@ -163,16 +161,13 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                     realDataMap.clear();
                     realKeyList.clear();
                     dialog.dismiss();
-                    dialog=null;
+                    dialog = null;
                 }
             });
         }
 
         dialog.show();
     }
-
-
-
 
 
     private EmshStatusBroadcastReceiver mEmshStatusReceiver;
@@ -198,7 +193,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
             mTimer = null;
         }
 //          MUtil.cancelWaringDialog();
-          Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
+        Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
     }
 
     private long rNumber = 0;//读取次数
@@ -239,51 +234,51 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                     realKeyList.add(epc);
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
-                tv_num.setText(realDataMap.size()+"");
-                dialog.setNum(realDataMap.size()+"");
+                tv_num.setText(realDataMap.size() + "");
+                dialog.setNum(realDataMap.size() + "");
             }
         });
     }
 
-        public class EmshStatusBroadcastReceiver extends BroadcastReceiver {
+    public class EmshStatusBroadcastReceiver extends BroadcastReceiver {
 
-            @Override
-            public void onReceive(Context context, Intent intent) {
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
-                if (EmshConstant.Action.INTENT_EMSH_BROADCAST.equalsIgnoreCase(intent.getAction())) {
-                    int sessionStatus = intent.getIntExtra("SessionStatus", 0);
-                    int batteryPowerMode = intent.getIntExtra("BatteryPowerMode", -1);
+            if (EmshConstant.Action.INTENT_EMSH_BROADCAST.equalsIgnoreCase(intent.getAction())) {
+                int sessionStatus = intent.getIntExtra("SessionStatus", 0);
+                int batteryPowerMode = intent.getIntExtra("BatteryPowerMode", -1);
 //                Logger.e("监控把枪状态","action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode);
 //                ToastUtils.toastMessage(InventoryAct.this,"监控把枪状态"+" action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode+"");
-                    if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
-                    isconnet=true;
-                        // 把枪电池当前状态
-                        if (batteryPowerMode == currentStatue) { //相同状态不处理
-                            return;
-                        }
-                        currentStatue = batteryPowerMode;
-                        switch (batteryPowerMode) {
-                            case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_STANDBY://0
-//                                MUtil.cancelWaringDialog();
-                                GApplication.getInstance().getIdataLib().powerOn();
-//                                GApplication.getInstance().getIdataLib().powerSet(30);
-                                break;
-                            case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_DSG_UHF://2
-                                MUtil.show("上电成功...");
-                                break;
-                        }
-                    } else {//未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
-                        isconnet = false;
-                        stpoRFID();
-                        if (dialog != null && dialog.isShowing()) {
-                            dialog.dismiss();
-                            dialog=null;
-                        }
-//                     MUtil.warningDialog(InventoryAct.this);
+                if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
+                    isconnet = true;
+                    // 把枪电池当前状态
+                    if (batteryPowerMode == currentStatue) { //相同状态不处理
+                        return;
                     }
+                    currentStatue = batteryPowerMode;
+                    switch (batteryPowerMode) {
+                        case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_STANDBY://0
+//                                MUtil.cancelWaringDialog();
+                            GApplication.getInstance().getIdataLib().powerOn();
+//                                GApplication.getInstance().getIdataLib().powerSet(30);
+                            break;
+                        case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_DSG_UHF://2
+                            MUtil.show("上电成功...");
+                            break;
+                    }
+                } else {//未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
+                    isconnet = false;
+                    stpoRFID();
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                        dialog = null;
+                    }
+//                     MUtil.warningDialog(InventoryAct.this);
                 }
             }
         }
+    }
 
 }
 
