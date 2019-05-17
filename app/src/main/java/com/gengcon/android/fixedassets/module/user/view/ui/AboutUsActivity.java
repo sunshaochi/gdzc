@@ -12,9 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.common.module.htttp.URL;
 import com.gengcon.android.fixedassets.common.module.update.ApkDownLoad;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
+import com.gengcon.android.fixedassets.module.login.view.ui.AgreementActivity;
+import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.util.Utils;
@@ -45,6 +48,9 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_back);
         ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.about_us);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
+        findViewById(R.id.permitLayout).setOnClickListener(this);
+        findViewById(R.id.protectLayout).setOnClickListener(this);
+        findViewById(R.id.iv_title_left).setOnClickListener(this);
         versionName = Utils.getVersionName(this);
         versionLayout = findViewById(R.id.versionLayout);
         hasNewVersionLayout = findViewById(R.id.hasNewVersionLayout);
@@ -62,6 +68,16 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.versionLayout:
                 updateVersion();
+                break;
+            case R.id.permitLayout:
+                Intent webIntent = new Intent(AboutUsActivity.this, AgreementActivity.class);
+                webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.REGISTER_AGREEMENT);
+                startActivity(webIntent);
+                break;
+            case R.id.protectLayout:
+                Intent protectIntent = new Intent(AboutUsActivity.this, AgreementActivity.class);
+                protectIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.SECRET);
+                startActivity(protectIntent);
                 break;
             case R.id.contactLayout:
                 Intent intent = new Intent(this, ContactUsActivity.class);
