@@ -248,10 +248,10 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
     @Override
     protected void onPause() {
         super.onPause();
-        recyleResoure();
+        recyclerResources();
     }
 
-    private void recyleResoure() {
+    private void recyclerResources() {
         if (mEmshStatusReceiver != null) {
             unregisterReceiver(mEmshStatusReceiver);
             mEmshStatusReceiver = null;
