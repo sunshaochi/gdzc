@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
+import com.gengcon.android.fixedassets.module.base.BasePullRefreshActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.util.Logger;
 import com.gengcon.android.fixedassets.util.ToastUtils;
@@ -25,25 +27,49 @@ import java.util.TimerTask;
 
 import realid.rfidlib.EmshConstant;
 
-public class InventoryAct extends BaseActivity implements View.OnClickListener, BackResult {
+public class InventoryAct extends BasePullRefreshActivity implements View.OnClickListener, BackResult {
     private TextView tv_pd, tv_zt, tv_num;
     private GetRFIDThread rfidThread;//RFID标签信息获取线程
     private Timer mTimer = null;
     private TimerTask mTimerTask = null;
     private RfidDialog dialog;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_invernroydemo);
         initView();
-        rfidThread = GetRFIDThread.getInstance();
-        new Thread(rfidThread).start();
+        rfidThread =new GetRFIDThread("MyHandlerThread");
+       rfidThread.start();
+       mHandler=new Handler(rfidThread.getLooper());
+        mHandler.post(mBackgroundRunnable);
         monitorEmsh();
-        GetRFIDThread.getInstance().setBackResult(this);
-
+        rfidThread.setBackResult(this);
 
     }
+
+    //实现耗时操作的线程
+    Runnable mBackgroundRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            while (rfidThread.getFlag()) {
+                if (rfidThread.isIfPostMsg()) {
+                    String[] tagData = GApplication.getInstance().getIdataLib().readTagFromBuffer();
+                    if (tagData != null) {
+                        postResult(tagData[1]);
+                        StringBuilder rssiStr = new StringBuilder((short) Integer.parseInt(tagData[2], 16) + "");
+                        String rssi = rssiStr.insert(rssiStr.length() - 1, ".").toString();
+                        Logger.e("rfid盘点","tid_user = " + tagData[0] + " epc = " + tagData[1] + " rssi = " + rssi);
+                    }
+                }
+            }
+
+        }
+    };
+
+
 
 
     private void monitorEmsh() {
@@ -100,11 +126,11 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener, 
      * 开始
      */
     private void startRFID() {
-        boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if (!flag) {//没扫描
+        boolean ifPostMsg = rfidThread.isIfPostMsg();
+        if (!ifPostMsg) {//没扫描
             GApplication.getInstance().getIdataLib().startInventoryTag();
             showRfidInventoryingDialog();
-            GetRFIDThread.getInstance().setIfPostMsg(true);
+            rfidThread.setIfPostMsg(true);
             ToastUtils.toastMessage(InventoryAct.this, "开始扫描");
         }
 
@@ -114,10 +140,10 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener, 
      * 结束
      */
     private void stpoRFID() {
-        boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if (flag) {//再扫描
+        boolean ifPostMsg = rfidThread.isIfPostMsg();
+        if (ifPostMsg) {//再扫描
             GApplication.getInstance().getIdataLib().stopInventory();
-            GetRFIDThread.getInstance().setIfPostMsg(false);
+            rfidThread.setIfPostMsg(false);
             ToastUtils.toastMessage(InventoryAct.this, "停止扫描");
         }
 
@@ -280,5 +306,10 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(mBackgroundRunnable);
+    }
 }
 

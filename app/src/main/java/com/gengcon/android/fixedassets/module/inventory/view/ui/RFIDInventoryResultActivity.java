@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private List<String> audit_asset_ids;
     private String user_id;
     private int isUpdate;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,12 +94,16 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         mResultList = new ArrayList<>();
         mPresenter = new InventoryResultPresenter();
         mPresenter.attachView(this);
-        rfidThread = GetRFIDThread.getInstance();
-        new Thread(rfidThread).start();
+        rfidThread = new GetRFIDThread("MyHandlerThread");
+        rfidThread.start();
+        mHandler = new Handler(rfidThread.getLooper());//使用HandlerThread的looper对象创建Handler，如果使用默认的构造方法，很有可能阻塞UI线程
+        mHandler.post(mBackgroundRunnable);
         monitorEmsh();
-        GetRFIDThread.getInstance().setBackResult(this);
+        rfidThread.setBackResult(this);
         initView();
     }
+
+
 
     private void monitorEmsh() {
         mEmshStatusReceiver = new EmshStatusBroadcastReceiver();
@@ -115,6 +121,26 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         };
         mTimer.schedule(mTimerTask, 0, 1000);
     }
+
+    //实现耗时操作的线程
+      Runnable mBackgroundRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            while (rfidThread.getFlag()) {
+                if (rfidThread.isIfPostMsg()) {
+                    String[] tagData = GApplication.getInstance().getIdataLib().readTagFromBuffer();
+                    if (tagData != null) {
+                        postResult(tagData[1]);
+                        StringBuilder rssiStr = new StringBuilder((short) Integer.parseInt(tagData[2], 16) + "");
+                        String rssi = rssiStr.insert(rssiStr.length() - 1, ".").toString();
+                        Logger.e("rfid盘点","tid_user = " + tagData[0] + " epc = " + tagData[1] + " rssi = " + rssi);
+                    }
+                }
+            }
+
+        }
+    };
 
     @Override
     protected void initView() {
@@ -387,11 +413,11 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
      * 开始
      */
     private void startRFID() {
-        boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if (!flag) {//没扫描
+        boolean ifPostMsg = rfidThread.isIfPostMsg();
+        if (!ifPostMsg) {//没扫描
             GApplication.getInstance().getIdataLib().startInventoryTag();
             showRfidInventoryingDialog();
-            GetRFIDThread.getInstance().setIfPostMsg(true);
+            rfidThread.setIfPostMsg(true);
         }
 
     }
@@ -400,10 +426,10 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
      * 结束
      */
     private void stopRFID() {
-        boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
-        if (flag) {//再扫描
+        boolean ifPostMsg = rfidThread.isIfPostMsg();
+        if (ifPostMsg) {//再扫描
             GApplication.getInstance().getIdataLib().stopInventory();
-            GetRFIDThread.getInstance().setIfPostMsg(false);
+            rfidThread.setIfPostMsg(false);
         }
 
     }
@@ -535,7 +561,10 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             mTimer = null;
         }
 //        MUtil.cancelWaringDialog();
+        rfidThread.destoryThread();
         Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
     }
+
+
 
 }
