@@ -16,7 +16,6 @@ import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.inventory.view.RfidInventoryView;
 import com.gengcon.android.fixedassets.rfid.BackResult;
 import com.gengcon.android.fixedassets.rfid.GetRFIDThread;
-import com.gengcon.android.fixedassets.rfid.InventoryAct;
 import com.gengcon.android.fixedassets.rfid.MUtil;
 import com.gengcon.android.fixedassets.rfid.RfidDialog;
 import com.gengcon.android.fixedassets.util.Logger;
@@ -105,9 +104,9 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
                     }
                 } else {//未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
                     isconnet = false;
-                    stpoRFID();
+                    stopRFID();
                     if (dialog != null && dialog.isShowing()) {
-                        dialog.dissMiss();
+                        dialog.dismiss();
                         dialog=null;
                     }
                 }
@@ -152,7 +151,7 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
     /**
      * 结束
      */
-    private void stpoRFID() {
+    private void stopRFID() {
         boolean flag = GetRFIDThread.getInstance().isIfPostMsg();
         if(flag){//再扫描
             GApplication.getInstance().getIdataLib().stopInventory();
@@ -165,14 +164,14 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
     private void showRfidInventoryingDialog() {
         if(dialog==null) {
             dialog = new RfidDialog(RfidInventoryResultActivity.this).builder();
-            dialog.setTotle(100);
+            dialog.setTotal(100);
             dialog.setNum(realDataMap.size()+"");
             dialog.setLeft("暂停");
             dialog.setStopClick(new RfidDialog.StopListener() {
                 @Override
                 public void onClick() {
                     if (dialog.getLeft().equals("暂停")) {
-                        stpoRFID();
+                        stopRFID();
                         dialog.setLeft("开始");
 
                     } else {
@@ -185,21 +184,21 @@ public class RfidInventoryResultActivity extends BasePullRefreshActivity impleme
             dialog.setQuxiaoClick(new RfidDialog.QuxiaoListener() {
                 @Override
                 public void onClick() {
-                    stpoRFID();
+                    stopRFID();
                     realDataMap.clear();
                     realKeyList.clear();
-                    dialog.dissMiss();
+                    dialog.dismiss();
                     dialog=null;
                 }
             });
 
-            dialog.setCompileClick(new RfidDialog.CompileListener() {
+            dialog.setCompleteClick(new RfidDialog.CompileListener() {
                 @Override
                 public void onClick() {
-                    stpoRFID();
+                    stopRFID();
                     realDataMap.clear();
                     realKeyList.clear();
-                    dialog.dissMiss();
+                    dialog.dismiss();
                     dialog=null;
                 }
             });

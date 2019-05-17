@@ -70,7 +70,7 @@ public class RfidDialog {
      * @param num
      * @return
      */
-    public RfidDialog setTotle(int num) {
+    public RfidDialog setTotal(int num) {
         tv_totlenum.setText(num+"");
         return this;
     }
@@ -106,7 +106,7 @@ public class RfidDialog {
     }
 
 
-    public void dissMiss(){
+    public void dismiss(){
         dialog.dismiss();
     }
 
@@ -128,7 +128,7 @@ public class RfidDialog {
         });
     }
 
-    public void setCompileClick(final CompileListener listener){
+    public void setCompleteClick(final CompileListener listener){
         tv_wc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

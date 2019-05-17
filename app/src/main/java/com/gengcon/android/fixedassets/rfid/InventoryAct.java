@@ -13,10 +13,8 @@ import androidx.annotation.Nullable;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
-import com.gengcon.android.fixedassets.module.inventory.view.ui.RfidInventoryResultActivity;
 import com.gengcon.android.fixedassets.util.Logger;
 import com.gengcon.android.fixedassets.util.ToastUtils;
-import com.gengcon.android.fixedassets.widget.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,7 +128,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
     private void showRfidInventoryingDialog() {
         if(dialog==null) {
             dialog = new RfidDialog(InventoryAct.this).builder();
-            dialog.setTotle(100);
+            dialog.setTotal(100);
             dialog.setNum(realDataMap.size()+"");
             dialog.setLeft("暂停");
             dialog.setStopClick(new RfidDialog.StopListener() {
@@ -153,18 +151,18 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                     stpoRFID();
                     realDataMap.clear();
                     realKeyList.clear();
-                    dialog.dissMiss();
+                    dialog.dismiss();
                     dialog=null;
                 }
             });
 
-            dialog.setCompileClick(new RfidDialog.CompileListener() {
+            dialog.setCompleteClick(new RfidDialog.CompileListener() {
                 @Override
                 public void onClick() {
                     stpoRFID();
                     realDataMap.clear();
                     realKeyList.clear();
-                    dialog.dissMiss();
+                    dialog.dismiss();
                     dialog=null;
                 }
             });
@@ -278,7 +276,7 @@ public class InventoryAct extends BaseActivity implements View.OnClickListener,B
                         isconnet = false;
                         stpoRFID();
                         if (dialog != null && dialog.isShowing()) {
-                            dialog.dissMiss();
+                            dialog.dismiss();
                             dialog=null;
                         }
 //                     MUtil.warningDialog(InventoryAct.this);
