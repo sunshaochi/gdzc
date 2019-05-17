@@ -286,7 +286,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         InventoryBean inventory = mAdapter.getItem(position);
         Intent intent = new Intent();
         if(CheckTypeUtils.isPhoneOrEquipment()){
-            intent.setClass(this, RfidInventoryResultActivity.class);
+            intent.setClass(this, RFIDInventoryResultActivity.class);
         }else {
 //            Intent intent = new Intent(this, InventoryResultActivity.class);
             intent.setClass(this, InventoryResultActivity.class);

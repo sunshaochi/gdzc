@@ -132,8 +132,6 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
             noFinishLayout.setVisibility(View.GONE);
             pdView.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override

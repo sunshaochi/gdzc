@@ -328,21 +328,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 break;
             case R.id.totalLayout:
-//                if (isNetworkConnected(this)) {
-//                    if (RolePowerManager.getInstance().isAssetModule()) {
-//                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
-//                        webIntent.putExtra("webName", "资产列表");
-//                        webIntent.putExtra("webTitle", "选择");
-//                        webIntent.putExtra("webFrom", "MainActivity");
-//                        startActivity(webIntent);
-//                    } else {
-//                        ToastUtils.toastMessage(this, "当前您没有权限");
-//                    }
-//                } else {
-//                    ToastUtils.toastMessage(this, msg);
-//                }
-                Intent intent1 = new Intent(MainActivity.this, InventoryAct.class);
-                startActivity(intent1);
+                if (isNetworkConnected(this)) {
+                    if (RolePowerManager.getInstance().isAssetModule()) {
+                        webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.ASSET_MANAGE + URL.ASSET_STATUS + "0");
+                        webIntent.putExtra("webName", "资产列表");
+                        webIntent.putExtra("webTitle", "选择");
+                        webIntent.putExtra("webFrom", "MainActivity");
+                        startActivity(webIntent);
+                    } else {
+                        ToastUtils.toastMessage(this, "当前您没有权限");
+                    }
+                } else {
+                    ToastUtils.toastMessage(this, msg);
+                }
                 break;
             case R.id.freeLayout:
                 if (isNetworkConnected(this)) {

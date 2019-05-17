@@ -252,7 +252,7 @@
             android:name=".module.inventory.view.ui.InventoryRemarksActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".module.inventory.view.ui.RfidInventoryResultActivity"
+            android:name=".module.inventory.view.ui.RFIDInventoryResultActivity"
             android:screenOrientation="portrait" />
 
         <provider
