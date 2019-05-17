@@ -27,6 +27,7 @@ public class PersonalBean extends InvalidBean implements Serializable {
     private int grade_id;
     private String version_name;
     private String grade_name;
+    private String due_at;
     private int asset_max_num;
 
     public String getUser_name() {
@@ -99,6 +100,14 @@ public class PersonalBean extends InvalidBean implements Serializable {
 
     public void setGrade_name(String grade_name) {
         this.grade_name = grade_name;
+    }
+
+    public String getDue_at() {
+        return due_at;
+    }
+
+    public void setDue_at(String due_at) {
+        this.due_at = due_at;
     }
 
     public int getAsset_max_num() {

@@ -57,7 +57,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.modifyPasswordLayout).setOnClickListener(this);
         findViewById(R.id.feedbackLayout).setOnClickListener(this);
         findViewById(R.id.aboutUsLayout).setOnClickListener(this);
-        findViewById(R.id.loginOutLayout).setOnClickListener(this);
         findViewById(R.id.serviceLayout).setOnClickListener(this);
     }
 
@@ -111,9 +110,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 Intent aboutUsIntent = new Intent(this, AboutUsActivity.class);
                 startActivity(aboutUsIntent);
                 break;
-            case R.id.loginOutLayout:
-                loginOut();
-                break;
             case R.id.serviceLayout:
 //                Intent serviceIntent = new Intent(this, CustomerServiceActivity.class);
 //                startActivity(serviceIntent);
@@ -124,15 +120,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
         }
-    }
-
-    private void loginOut() {
-        SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
-        SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.USER_ID);
-        EaseUiHelper.getInstance().LoginOutEase();
-        Intent intent = new Intent(this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
-        startActivity(intent);
     }
 
     @Override

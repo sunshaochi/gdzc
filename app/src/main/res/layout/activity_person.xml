@@ -305,32 +305,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/loginOutLayout"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
-                    android:background="@drawable/ic_login_out" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
-                    android:layout_weight="1"
-                    android:text="退出登录"
-                    android:textColor="@color/black_text"
-                    android:textSize="16dp" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
     </ScrollView>
