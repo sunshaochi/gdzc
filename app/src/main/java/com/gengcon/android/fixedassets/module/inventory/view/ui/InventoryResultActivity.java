@@ -1,17 +1,23 @@
 package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.ResultAsset;
 import com.gengcon.android.fixedassets.common.module.scan.ScanInventoryActivity;
@@ -26,6 +32,7 @@ import com.gengcon.android.fixedassets.module.inventory.presenter.InventoryResul
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
+import com.gengcon.android.fixedassets.widget.InfraredDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +57,10 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private String user_id;
     private int isUpdate;
 
+    private InfraredDialog infraredDialog;
+    private ScannerInerface mControll;
+    private SoundPool mSoundPool;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +84,10 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         mResultList = new ArrayList<>();
         mPresenter = new InventoryResultPresenter();
         mPresenter.attachView(this);
+
+        mControll = new ScannerInerface(this);
+        mControll.setOutputMode(1);
+        registerReceiver(mScanReceiver, new IntentFilter("android.intent.action.SCANRESULT"));
         initView();
     }
 
@@ -112,6 +127,12 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mControll.open();
+    }
+
     private void initPdStatus() {
         if (pd_status == 1 || pd_status == 3) {
             tv_title_status.setText(R.string.inventory_doing);
@@ -135,8 +156,15 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mControll.close();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(mScanReceiver);
         mPresenter.detachView();
     }
 
@@ -214,6 +242,78 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
                 intentScan.putExtra("user_id", user_id);
                 startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
                 break;
+        }
+    }
+
+    BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String scanResult = intent.getStringExtra("value");
+            String result = scanResult.replaceAll(" ", "");
+            if (!TextUtils.isEmpty(result)) {
+                if (pd_status == 1 || pd_status == 3) {
+                    if (result.length() == 24) {
+                        AssetBean asset = assetBeanDao.queryBuilder()
+                                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                                .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                                .where(AssetBeanDao.Properties.Asset_id.eq(result))
+                                .unique();
+                        if (asset != null) {
+                            if (asset.getPd_status() == 1) {
+                                asset.setPd_status(2);
+                                assetBeanDao.update(asset);
+                                ToastUtils.toastMessage(InventoryResultActivity.this, "盘点成功");
+                                showInfraredDialog();
+                            } else {
+                                ToastUtils.toastMessage(InventoryResultActivity.this, "该资产已盘点");
+                            }
+                        } else {
+                            ToastUtils.toastMessage(InventoryResultActivity.this, "未查询到此资产");
+                        }
+                    } else {
+                        ToastUtils.toastMessage(InventoryResultActivity.this, "非精臣固定资产有效二维码");
+                    }
+                } else {
+                    ToastUtils.toastMessage(InventoryResultActivity.this, "该盘点单已提交");
+
+                }
+            }
+        }
+    };
+
+    private void showInfraredDialog() {
+        long noFinishAssetCount = assetBeanDao.queryBuilder()
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
+        long finishAssetCount = assetBeanDao.queryBuilder()
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
+        if (infraredDialog == null) {
+            infraredDialog = new InfraredDialog(InventoryResultActivity.this).builder();
+        }
+        infraredDialog.setWpNum((int) noFinishAssetCount);
+        infraredDialog.setYpNum(finishAssetCount + "");
+        infraredDialog.setManualClick(new InfraredDialog.ManualListener() {
+            @Override
+            public void onClick() {
+
+            }
+        });
+
+        infraredDialog.setCompleteClick(new InfraredDialog.CompleteListener() {
+            @Override
+            public void onClick() {
+                assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                        .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
+                getNoFinishFragment(assets);
+                infraredDialog.dismiss();
+                infraredDialog = null;
+            }
+        });
+        if (!infraredDialog.isShowing()) {
+            infraredDialog.show();
         }
     }
 
