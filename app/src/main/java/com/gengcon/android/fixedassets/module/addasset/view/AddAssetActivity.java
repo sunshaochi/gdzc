@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,7 @@ import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.ActionSheetLayout;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
+import com.gengcon.android.fixedassets.widget.LookDialog;
 import com.gengcon.android.fixedassets.widget.PickerLinearLayout;
 
 import org.json.JSONException;
@@ -110,6 +112,8 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private JSONObject object;
     private JSONObject jsonObject;
     private String tpl_id = "";
+    private String uploadurl="";//上传到服务器返回来的path
+    private LookDialog lookDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,6 +149,30 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         mActionSheet = findViewById(R.id.actionsheet);
         deleteImageView = mActionSheet.getDeleteImageView();
         checkImageView = mActionSheet.getCheckImageView();
+        deleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(assetImgView!=null){
+                    assetImgView.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_default));
+                }
+                uploadurl="";
+                mActionSheet.hide();
+            }
+        });
+        checkImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActionSheet.hide();
+                if(!TextUtils.isEmpty(uploadurl)) {
+                    lookDialog = new LookDialog(AddAssetActivity.this).build();
+                    lookDialog.setLookImage(uploadurl);
+                    lookDialog.show();
+                }else {
+                    ToastUtils.toastMessage(AddAssetActivity.this,"请先上传图片");
+                }
+
+            }
+        });
         mActionSheet.setHanlderResultCallback(mOnHandlerResultCallback);
 
         otherClickLayout = findViewById(R.id.otherClickLayout);
@@ -164,6 +192,10 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(lookDialog!=null){
+            lookDialog.dissmiss();
+            lookDialog=null;
+        }
     }
 
     @Override
@@ -1039,7 +1071,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
         builder.show();
     }
-    Bitmap bit = null;
+    Bitmap bit=null;
     private GalleryFinal.OnHanlderResultCallback mOnHandlerResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int requestCode, final List<PhotoInfo> resultList) {
@@ -1083,7 +1115,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 //                });
 
                 Uri imageUri = MyBitmapUtils.pathToUri(AddAssetActivity.this, resultList.get(0).getPhotoPath());
-
                 try {
                     bit = MyBitmapUtils.getBitmapFormUri(AddAssetActivity.this,imageUri);//压缩
                     File file = MyBitmapUtils.saveBitmap(bit, "addasset");//把mitmap转成file文件保存在本地
@@ -1106,6 +1137,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
     @Override
     public void upLoadingSuc(String path) {
+          uploadurl=path;
 //        Glide.with(AddAssetActivity.this).load(TextUtils.isEmpty(path) ? path : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + path)
 //                .apply(new RequestOptions()
 //                        .error(R.drawable.ic_add_default)

@@ -73,9 +73,11 @@ public class ActionSheetLayout extends LinearLayout implements View.OnClickListe
                 hide();
                 break;
             case R.id.tv_cancel:
-            case R.id.v_cancel:
                 hide();
                 break;
+//            case R.id.v_cancel:
+//                hide();
+//                break;
         }
     }
 

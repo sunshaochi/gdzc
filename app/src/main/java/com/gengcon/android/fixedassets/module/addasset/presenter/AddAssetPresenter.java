@@ -200,6 +200,7 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
             @Override
             public void onSuccess(Bean modelBean) {
                 if (isViewAttached()) {
+                    mMvpView.hideLoading();
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.addAsset();
                     } else if (modelBean.getCode().equals("CODE_401")) {
@@ -217,6 +218,7 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
             @Override
             public void onFailure(int status, String errorMsg) {
                 if (isViewAttached()) {
+                    mMvpView.hideLoading();
                     if (status == 402) {
                         mMvpView.contractExpire();
                     } else {
@@ -227,12 +229,16 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 
             @Override
             public void onFinished() {
-//                mMvpView.hideLoading();
+                if (isViewAttached()) {
+                    mMvpView.hideLoading();
+                }
             }
 
             @Override
             public void onStart() {
-//                mMvpView.showLoading();
+                if (isViewAttached()) {
+                    mMvpView.showLoading();
+                }
             }
         });
     }
