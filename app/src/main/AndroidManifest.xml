@@ -91,9 +91,6 @@
             android:name=".common.module.scan.ScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".module.inventory.view.ui.InventoryDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".module.inventory.view.ui.InventoryResultActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -4,14 +4,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.ResultAsset;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshActivity;
@@ -30,6 +34,7 @@ import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.Logger;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
+import com.gengcon.android.fixedassets.widget.InfraredDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,9 +52,10 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private Timer mTimer = null;
     private TimerTask mTimerTask = null;
     private RfidDialog dialog;
+    private InfraredDialog infraredDialog;
     private EmshStatusBroadcastReceiver mEmshStatusReceiver;
     private int currentStatue = -1;
-    private boolean isconnet;
+    private boolean isConnect;
 
     private List<AssetBean> mResultList;
     private String pd_no;
@@ -70,6 +76,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private String user_id;
     private int isUpdate;
     private Handler mHandler;
+
+    private ScannerInerface mControll;
+    private SoundPool mSoundPool;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,10 +109,15 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         mHandler.post(mBackgroundRunnable);
         monitorEmsh();
         rfidThread.setBackResult(this);
+
+        mControll = new ScannerInerface(this);
+        mControll.setOutputMode(1);
+        registerReceiver(mScanReceiver, new IntentFilter("android.intent.action.SCANRESULT"));
+
+        mSoundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
+        mSoundPool.load(this, R.raw.beep51, 1);
         initView();
     }
-
-
 
     private void monitorEmsh() {
         mEmshStatusReceiver = new EmshStatusBroadcastReceiver();
@@ -123,7 +137,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     }
 
     //实现耗时操作的线程
-      Runnable mBackgroundRunnable = new Runnable() {
+    Runnable mBackgroundRunnable = new Runnable() {
 
         @Override
         public void run() {
@@ -134,7 +148,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                         postResult(tagData[1]);
                         StringBuilder rssiStr = new StringBuilder((short) Integer.parseInt(tagData[2], 16) + "");
                         String rssi = rssiStr.insert(rssiStr.length() - 1, ".").toString();
-                        Logger.e("rfid盘点","tid_user = " + tagData[0] + " epc = " + tagData[1] + " rssi = " + rssi);
+                        Logger.e("rfid盘点", "tid_user = " + tagData[0] + " epc = " + tagData[1] + " rssi = " + rssi);
                     }
                 }
             }
@@ -175,6 +189,12 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 getNoFinishFragment(assets);
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mControll.open();
     }
 
     private void initPdStatus() {
@@ -241,6 +261,44 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             }
         }
     }
+
+    BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String scanResult = intent.getStringExtra("value");
+            String result = scanResult.replaceAll(" ", "");
+            if (!TextUtils.isEmpty(result)) {
+                if (pd_status == 1 || pd_status == 3) {
+                    if (result.length() == 24) {
+                        AssetBean asset = assetBeanDao.queryBuilder()
+                                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                                .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                                .where(AssetBeanDao.Properties.Asset_id.eq(result))
+                                .unique();
+                        if (asset != null) {
+                            if (asset.getPd_status() == 1) {
+                                asset.setPd_status(2);
+                                asset.setIsScanAsset(1);
+                                assetBeanDao.update(asset);
+                                ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "盘点成功");
+                                showInfraredDialog();
+                            } else {
+                                ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "该资产已盘点");
+                            }
+                        } else {
+                            ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "未查询到此资产");
+                        }
+                    } else {
+                        ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "非精臣固定资产有效二维码");
+                    }
+                } else {
+                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "该盘点单已提交");
+
+                }
+            }
+        }
+
+    };
 
     @Override
     public void syncAssetSuccess() {
@@ -311,7 +369,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 //                Logger.e("监控把枪状态","action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode);
 //                ToastUtils.toastMessage(InventoryAct.this,"监控把枪状态"+" action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode+"");
                 if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
-                    isconnet = true;
+                    isConnect = true;
                     // 把枪电池当前状态
                     if (batteryPowerMode == currentStatue) { //相同状态不处理
                         return;
@@ -329,7 +387,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                             break;
                     }
                 } else {//未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
-                    isconnet = false;
+                    isConnect = false;
                     stopRFID();
                     if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
@@ -394,19 +452,34 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
                 break;
             case R.id.pdView:
-                if (isconnet) {
+                if (isConnect) {
                     startRFID();
                 } else {
                     ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "电源无法开启");
                 }
                 break;
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Constant.PREVIEW_CODE && resultCode == RESULT_OK) {
+            onBackPressed();
+        } else if (requestCode == Constant.REQUEST_CODE_INVENTORY_MANUAL && resultCode == Constant.RESULT_OK_INVENTORY_MANUAL) {
+            showInfraredDialog();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mControll.close();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(mScanReceiver);
         mPresenter.detachView();
     }
 
@@ -482,8 +555,11 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                                     .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i)))
                                     .unique();
                             if (asset != null) {
-                                asset.setPd_status(2);
-                                assetBeanDao.update(asset);
+                                if (asset.getPd_status() != 2) {
+                                    asset.setPd_status(2);
+                                    asset.setIsScanAsset(1);
+                                    assetBeanDao.update(asset);
+                                }
                             }
                         }
                     }
@@ -499,6 +575,44 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         }
 
         dialog.show();
+    }
+
+    private void showInfraredDialog() {
+        long noFinishAssetCount = assetBeanDao.queryBuilder()
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
+        long finishAssetCount = assetBeanDao.queryBuilder()
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
+        if (infraredDialog == null) {
+            infraredDialog = new InfraredDialog(RFIDInventoryResultActivity.this).builder();
+        }
+        infraredDialog.setWpNum((int) noFinishAssetCount);
+        infraredDialog.setYpNum(finishAssetCount + "");
+        infraredDialog.setManualClick(new InfraredDialog.ManualListener() {
+            @Override
+            public void onClick() {
+                Intent intent = new Intent(RFIDInventoryResultActivity.this, SearchAssetActivity.class);
+                intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
+                startActivityForResult(intent, Constant.REQUEST_CODE_INVENTORY_MANUAL);
+            }
+        });
+
+        infraredDialog.setCompleteClick(new InfraredDialog.CompleteListener() {
+            @Override
+            public void onClick() {
+                assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                        .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
+                getNoFinishFragment(assets);
+                infraredDialog.dismiss();
+                infraredDialog = null;
+            }
+        });
+        if (!infraredDialog.isShowing()) {
+            infraredDialog.show();
+        }
     }
 
     private long rNumber = 0;//读取次数
@@ -565,7 +679,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         rfidThread.destoryThread();
         Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
     }
-
 
 
 }

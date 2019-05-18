@@ -112,7 +112,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private JSONObject object;
     private JSONObject jsonObject;
     private String tpl_id = "";
-    private String uploadurl="";//上传到服务器返回来的path
+    private String uploadurl = "";//上传到服务器返回来的path
     private LookDialog lookDialog;
 
     @Override
@@ -152,10 +152,10 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         deleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(assetImgView!=null){
+                if (assetImgView != null) {
                     assetImgView.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_default));
                 }
-                uploadurl="";
+                uploadurl = "";
                 mActionSheet.hide();
             }
         });
@@ -163,12 +163,12 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             @Override
             public void onClick(View v) {
                 mActionSheet.hide();
-                if(!TextUtils.isEmpty(uploadurl)) {
+                if (!TextUtils.isEmpty(uploadurl)) {
                     lookDialog = new LookDialog(AddAssetActivity.this).build();
                     lookDialog.setLookImage(uploadurl);
                     lookDialog.show();
-                }else {
-                    ToastUtils.toastMessage(AddAssetActivity.this,"请先上传图片");
+                } else {
+                    ToastUtils.toastMessage(AddAssetActivity.this, "请先上传图片");
                 }
 
             }
@@ -192,9 +192,9 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(lookDialog!=null){
+        if (lookDialog != null) {
             lookDialog.dissmiss();
-            lookDialog=null;
+            lookDialog = null;
         }
     }
 
@@ -345,7 +345,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 assetImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        assetImgView=assetImg;
+                        assetImgView = assetImg;
                         mActionSheet.show();
                     }
                 });
@@ -500,7 +500,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 assetImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        assetImgView=assetImg;
+                        assetImgView = assetImg;
                         mActionSheet.show();
                     }
                 });
@@ -613,7 +613,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             assetImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    assetImgView=assetImg;
+                    assetImgView = assetImg;
                     mActionSheet.show();
                 }
             });
@@ -740,8 +740,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         }
         areaPickerLinearLayout.setOnSelectListener(this);
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -1074,12 +1072,13 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
         builder.show();
     }
-    Bitmap bit=null;
+
+    Bitmap bit = null;
     private GalleryFinal.OnHanlderResultCallback mOnHandlerResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int requestCode, final List<PhotoInfo> resultList) {
             if (resultList != null) {
-                Logger.i("图片",resultList.get(0).getPhotoPath());
+                Logger.i("图片", resultList.get(0).getPhotoPath());
 //                Observable.create(new ObservableOnSubscribe<String>() {
 //                    @Override
 //                    public void subscribe(@NonNull ObservableEmitter<String> emitter) throws IOException {
@@ -1119,7 +1118,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
                 Uri imageUri = MyBitmapUtils.pathToUri(AddAssetActivity.this, resultList.get(0).getPhotoPath());
                 try {
-                    bit = MyBitmapUtils.getBitmapFormUri(AddAssetActivity.this,imageUri);//压缩
+                    bit = MyBitmapUtils.getBitmapFormUri(AddAssetActivity.this, imageUri);//压缩
                     File file = MyBitmapUtils.saveBitmap(bit, "addasset");//把mitmap转成file文件保存在本地
 //                    assetImgView.setImageBitmap(bit);
                     assetPresenter.upLoad(file);
@@ -1140,7 +1139,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
     @Override
     public void upLoadingSuc(String path) {
-          uploadurl=path;
+        uploadurl = path;
 //        Glide.with(AddAssetActivity.this).load(TextUtils.isEmpty(path) ? path : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + path)
 //                .apply(new RequestOptions()
 //                        .error(R.drawable.ic_add_default)

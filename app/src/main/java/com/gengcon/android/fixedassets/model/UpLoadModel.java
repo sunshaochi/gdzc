@@ -1,6 +1,5 @@
 package com.gengcon.android.fixedassets.model;
 
-import com.gengcon.android.fixedassets.bean.request.SonAuditRequest;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.UpLoadBean;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiService;
