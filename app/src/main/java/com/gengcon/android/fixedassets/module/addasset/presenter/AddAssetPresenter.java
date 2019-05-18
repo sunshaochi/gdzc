@@ -7,18 +7,24 @@ import com.gengcon.android.fixedassets.bean.result.AddAssetList;
 import com.gengcon.android.fixedassets.bean.result.AssetCode;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.InvalidBean;
+import com.gengcon.android.fixedassets.bean.result.UpLoadBean;
 import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
 import com.gengcon.android.fixedassets.model.AddAsseCustomModel;
 import com.gengcon.android.fixedassets.model.AddAssetListModel;
 import com.gengcon.android.fixedassets.model.AreaModel;
 import com.gengcon.android.fixedassets.model.AssetAddModel;
 import com.gengcon.android.fixedassets.model.AssetCodeModel;
+import com.gengcon.android.fixedassets.model.UpLoadModel;
 import com.gengcon.android.fixedassets.model.UsersModel;
 import com.gengcon.android.fixedassets.module.addasset.view.AddAssetListView;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;
+import com.gengcon.android.fixedassets.util.Logger;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.List;
+
+import io.reactivex.observers.SerializedObserver;
 
 public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 
@@ -28,6 +34,7 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
     private AssetCodeModel assetCodeModel;
     private AssetAddModel assetAddModel;
     private AreaModel areaModel;
+    private UpLoadModel upLoadModel;
 
 
     public AddAssetPresenter() {
@@ -37,6 +44,7 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
         this.assetCodeModel = new AssetCodeModel();
         this.assetAddModel = new AssetAddModel();
         this.areaModel = new AreaModel();
+        this.upLoadModel = new UpLoadModel();
     }
 
     public void getUsers() {
@@ -175,12 +183,12 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 
             @Override
             public void onFinished() {
-//                mMvpView.hideLoading();
+                mMvpView.hideLoading();
             }
 
             @Override
             public void onStart() {
-//                mMvpView.showLoading();
+                mMvpView.showLoading();
             }
         });
     }
@@ -267,6 +275,53 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 //                if (isViewAttached()) {
 //                    mMvpView.showLoading();
 //                }
+            }
+        });
+    }
+
+    public void upLoad(File file) {
+        Logger.i("请求参数", file.toString());
+        subscribe(upLoadModel.upLoadPhoto(file), new ApiCallBack<Bean<UpLoadBean>>() {
+            @Override
+            public void onSuccess(Bean<UpLoadBean> modelBean) {
+                mMvpView.hideLoading();
+//                Logger.i("结果",modelBean.toString());
+                if (modelBean.getCode().equals("CODE_200")) {
+                    if (modelBean.getData() != null) {
+                        mMvpView.upLoadingSuc(modelBean.getData().getPath());
+                    }
+                } else {
+                    mMvpView.upLoadingFai();
+                    if (modelBean.getCode().equals("CODE_401")) {
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidBean = gson.fromJson(json, InvalidBean.class);
+                        mMvpView.showInvalidType(invalidBean.getInvalid_type());
+                    } else {
+                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int status, String errorMsg) {
+                if (isViewAttached()) {
+                    mMvpView.hideLoading();
+                    mMvpView.showErrorMsg(status, errorMsg);
+                }
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+
+            @Override
+            public void onStart() {
+                if (isViewAttached()) {
+                    mMvpView.showLoading();
+                }
             }
         });
     }

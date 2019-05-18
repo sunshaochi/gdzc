@@ -23,4 +23,8 @@ public interface AddAssetListView extends Iview {
     void contractExpire();
 
     void initArea(List<Area> areas);
+
+    void upLoadingSuc(String path);
+
+    void upLoadingFai();
 }
