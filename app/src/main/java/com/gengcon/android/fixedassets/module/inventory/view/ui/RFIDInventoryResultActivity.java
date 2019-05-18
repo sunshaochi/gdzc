@@ -321,6 +321,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                         case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_STANDBY://0
 //                            MUtil.cancelWaringDialog();
                             GApplication.getInstance().getIdataLib().powerOn();
+                            GApplication.getInstance().getIdataLib().powerSet(30);
 //                                GApplication.getInstance().getIdataLib().powerSet(30);
                             break;
                         case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_DSG_UHF://2
