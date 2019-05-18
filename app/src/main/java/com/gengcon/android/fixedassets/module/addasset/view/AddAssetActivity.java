@@ -2,11 +2,14 @@ package com.gengcon.android.fixedassets.module.addasset.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Area;
 import com.gengcon.android.fixedassets.bean.CustomAttrWheelBean;
@@ -31,14 +36,19 @@ import com.gengcon.android.fixedassets.module.addasset.widget.CustomAttrPickerLi
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ImageFactory;
+import com.gengcon.android.fixedassets.util.Logger;
+import com.gengcon.android.fixedassets.util.MyBitmapUtils;
+import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.ActionSheetLayout;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
+import com.gengcon.android.fixedassets.widget.LookDialog;
 import com.gengcon.android.fixedassets.widget.PickerLinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,9 +87,11 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private TextView deleteImageView;
     private TextView checkImageView;
 
+
     private TextView classificationView, beOrgView, useOrgView, userNameView, areaNameView, adminView;
     private ImageView classificationClearView, beOrgClearView, useOrgClearView, userNameClearView, areaNameClearView, adminClearView;
     private ImageView classificationArrowView, beOrgArrowView, useOrgArrowView, userNameArrowView, areaNameArrowView, adminArrowView;
+    private ImageView assetImgView;
 
     public static int RESULT_OK_CLASSIFICATION = 1113;
     public static int RESULT_OK_USEORG = 1117;
@@ -100,6 +112,8 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private JSONObject object;
     private JSONObject jsonObject;
     private String tpl_id = "";
+    private String uploadurl="";//上传到服务器返回来的path
+    private LookDialog lookDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,6 +149,30 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         mActionSheet = findViewById(R.id.actionsheet);
         deleteImageView = mActionSheet.getDeleteImageView();
         checkImageView = mActionSheet.getCheckImageView();
+        deleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(assetImgView!=null){
+                    assetImgView.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_default));
+                }
+                uploadurl="";
+                mActionSheet.hide();
+            }
+        });
+        checkImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActionSheet.hide();
+                if(!TextUtils.isEmpty(uploadurl)) {
+                    lookDialog = new LookDialog(AddAssetActivity.this).build();
+                    lookDialog.setLookImage(uploadurl);
+                    lookDialog.show();
+                }else {
+                    ToastUtils.toastMessage(AddAssetActivity.this,"请先上传图片");
+                }
+
+            }
+        });
         mActionSheet.setHanlderResultCallback(mOnHandlerResultCallback);
 
         otherClickLayout = findViewById(R.id.otherClickLayout);
@@ -154,6 +192,10 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(lookDialog!=null){
+            lookDialog.dissmiss();
+            lookDialog=null;
+        }
     }
 
     @Override
@@ -243,7 +285,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         final ImageView clearImg = textLayout.findViewById(R.id.clearImageView);
         final ImageView arrowImg = textLayout.findViewById(R.id.arrowImageView);
         TextView typeImg = imgLayout.findViewById(R.id.typeText);
-        ImageView assetImg = imgLayout.findViewById(R.id.assetImg);
+        final ImageView assetImg = imgLayout.findViewById(R.id.assetImg);
         ImageView textIsRequiredImg = textLayout.findViewById(R.id.isRequiredImg);
         ImageView editIsRequiredImg = editLayoutType1.findViewById(R.id.isRequiredImg);
         ImageView edit2IsRequiredImg = editLayoutType2.findViewById(R.id.isRequiredImg);
@@ -303,6 +345,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 assetImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        assetImgView=assetImg;
                         mActionSheet.show();
                     }
                 });
@@ -457,6 +500,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 assetImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        assetImgView=assetImg;
                         mActionSheet.show();
                     }
                 });
@@ -509,7 +553,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         TextView typeEdit2 = editLayoutType2.findViewById(R.id.typeText);
         final EditText editText2 = editLayoutType2.findViewById(R.id.assetEdit);
         TextView typeImg = imgLayout.findViewById(R.id.typeText);
-        ImageView assetImg = imgLayout.findViewById(R.id.assetImg);
+        final ImageView assetImg = imgLayout.findViewById(R.id.assetImg);
         final Button editClearButton1 = editLayoutType1.findViewById(R.id.clearButton);
         final Button editClearButton2 = editLayoutType2.findViewById(R.id.clearButton);
         final ImageView clearImg = textLayout.findViewById(R.id.clearImageView);
@@ -569,6 +613,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             assetImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    assetImgView=assetImg;
                     mActionSheet.show();
                 }
             });
@@ -695,6 +740,8 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         }
         areaPickerLinearLayout.setOnSelectListener(this);
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -1024,47 +1071,61 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
         builder.show();
     }
-
+    Bitmap bit=null;
     private GalleryFinal.OnHanlderResultCallback mOnHandlerResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int requestCode, final List<PhotoInfo> resultList) {
             if (resultList != null) {
-                Observable.create(new ObservableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<String> emitter) throws IOException {
-//                        String bitmap = imageFactory.compressAndGenImage(imageFactory.getBitmap(resultList.get(0).getPhotoPath()), 1024);
-//                        emitter.onNext(bitmap);
-//                        emitter.onComplete();
-                    }
-                }).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
+                Logger.i("图片",resultList.get(0).getPhotoPath());
+//                Observable.create(new ObservableOnSubscribe<String>() {
+//                    @Override
+//                    public void subscribe(@NonNull ObservableEmitter<String> emitter) throws IOException {
+////                        String bitmap = imageFactory.compressAndGenImage(imageFactory.getBitmap(resultList.get(0).getPhotoPath()), 1024);
+//                          emitter.onNext(bitmap);
+////                        emitter.onComplete();
+//                    }
+//                }).subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
+//
+//                    Disposable disposable;
+//
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        disposable = d;
+//                    }
+//
+//                    @Override
+//                    public void onNext(String bitmap) {
+////                        if (updateImg == 1) {
+////                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + bitmap + "'" + ")");
+////                        } else if (updateImg == 2) {
+////                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + imgType + "==========" + index + "==========" + bitmap + "'" + ")");
+////                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        disposable.dispose();
+//                    }
+//                });
 
-                    Disposable disposable;
+                Uri imageUri = MyBitmapUtils.pathToUri(AddAssetActivity.this, resultList.get(0).getPhotoPath());
+                try {
+                    bit = MyBitmapUtils.getBitmapFormUri(AddAssetActivity.this,imageUri);//压缩
+                    File file = MyBitmapUtils.saveBitmap(bit, "addasset");//把mitmap转成file文件保存在本地
+//                    assetImgView.setImageBitmap(bit);
+                    assetPresenter.upLoad(file);
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                    @Override
-                    public void onNext(String bitmap) {
-//                        if (updateImg == 1) {
-//                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + bitmap + "'" + ")");
-//                        } else if (updateImg == 2) {
-//                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + imgType + "==========" + index + "==========" + bitmap + "'" + ")");
-//                        }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        disposable.dispose();
-                    }
-                });
             }
         }
 
@@ -1073,4 +1134,21 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             ToastUtils.toastMessage(AddAssetActivity.this, errorMsg);
         }
     };
+
+    @Override
+    public void upLoadingSuc(String path) {
+          uploadurl=path;
+//        Glide.with(AddAssetActivity.this).load(TextUtils.isEmpty(path) ? path : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + path)
+//                .apply(new RequestOptions()
+//                        .error(R.drawable.ic_add_default)
+//                        .placeholder(R.drawable.ic_add_default)
+//                        .fallback(R.drawable.ic_add_default)).into(assetImgView);
+        assetImgView.setImageBitmap(bit);
+
+    }
+
+    @Override
+    public void upLoadingFai() {
+        assetImgView.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_default));
+    }
 }

@@ -38,18 +38,27 @@ import com.gengcon.android.fixedassets.bean.result.ResultInventory;
 import com.gengcon.android.fixedassets.bean.result.ResultRole;
 import com.gengcon.android.fixedassets.bean.result.StaffDetailBean;
 import com.gengcon.android.fixedassets.bean.result.StaffManagerBean;
+import com.gengcon.android.fixedassets.bean.result.UpLoadBean;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
 import com.gengcon.android.fixedassets.bean.result.UserData;
 import com.gengcon.android.fixedassets.bean.result.UserPopupNotice;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public class ApiService {
 
@@ -370,6 +379,12 @@ public class ApiService {
     public interface GetSonAudit {
         @POST("app/pd/submitSonAudit")
         Observable<Bean> getSonAudit(@Body SonAuditRequest request);
+    }
+
+    public interface upLoad {
+        @Multipart
+        @POST("asset/upload")
+        Observable<Bean<UpLoadBean>> upLoadPhoto(@Part MultipartBody.Part file);
     }
 
 }
