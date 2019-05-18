@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     private Context mContext;
     private ItemTouchListener mItemTouchListener;
     private List<InventoryBean> mInventorys;
-    private long wpCount, ypCount;
 
     public InventoryAdapter(Context context) {
         mContext = context;
@@ -72,11 +72,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             holder.py_layout.setVisibility(View.GONE);
             holder.zc_text.setText("已盘 ");
             holder.pk_text.setText("未盘 ");
+            holder.pk_layout.setGravity(Gravity.NO_GRAVITY);
         } else {
             holder.py_layout.setVisibility(View.VISIBLE);
             holder.zc_text.setText("正常 ");
             holder.pk_text.setText("盘亏 ");
             holder.py_num.setText(inventory.getPy_num() + "");
+            holder.pk_layout.setGravity(Gravity.RIGHT);
         }
         holder.pk_num.setText(inventory.getWp_num() + "");
         holder.zc_num.setText(inventory.getYp_num() + "");
@@ -119,7 +121,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     class ViewHolder extends MyRecyclerView.ViewHolder {
 
         TextView inventory_name, inventory_status, inventory_create_time, inventory_create_name, py_num, pk_num, zc_num;
-        LinearLayout py_layout;
+        LinearLayout py_layout, pk_layout;
         TextView zc_text, pk_text;
 
         public ViewHolder(View view) {
@@ -134,6 +136,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             zc_text = view.findViewById(R.id.zc_text);
             pk_text = view.findViewById(R.id.pk_text);
             py_layout = view.findViewById(R.id.py_layout);
+            pk_layout = view.findViewById(R.id.pk_layout);
         }
     }
 }

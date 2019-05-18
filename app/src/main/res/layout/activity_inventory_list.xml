@@ -67,7 +67,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/asset_gray" />
+        android:background="@color/inventory_11" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/asset_gray"
+            android:background="@color/inventory_11"
             android:overScrollMode="never" />
 
         <include layout="@layout/layout_default" />

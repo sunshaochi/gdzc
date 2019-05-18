@@ -83,7 +83,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         mAdapter.setItemTouchListener(this);
         recyclerView.setAdapter(mAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider3));
+        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider4));
         recyclerView.addItemDecoration(divider);
         noFinishText.setTextColor(getResources().getColor(R.color.blue));
         finishedText.setTextColor(getResources().getColor(R.color.black));
