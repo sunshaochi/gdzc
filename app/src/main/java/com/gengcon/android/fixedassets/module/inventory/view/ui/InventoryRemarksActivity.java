@@ -56,9 +56,12 @@ public class InventoryRemarksActivity extends BaseActivity implements View.OnCli
         remarksEdit = findViewById(R.id.remarksEdit);
         sureButton = findViewById(R.id.sureButton);
         sureButton.setOnClickListener(this);
-        textCount.setText(0 + "/" + MAX_COUNT);
         if (!TextUtils.isEmpty(remarks)) {
             remarksEdit.setText(remarks);
+            remarksEdit.setSelection(remarks.length());
+            textCount.setText(remarks.length() + "/" + MAX_COUNT);
+        } else {
+            textCount.setText(0 + "/" + MAX_COUNT);
         }
         showCharNumber(MAX_COUNT);
     }
