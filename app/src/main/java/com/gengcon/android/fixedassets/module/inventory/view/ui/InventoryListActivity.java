@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +45,9 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     private InventoryListPresenter inventoryListPresenter;
     private TextView noFinishText, finishedText;
     private FrameLayout noFinishLayout, finishedLayout;
+    private ImageView searchView;
+    private EditText searchEdit;
+    private TextView cancelView;
     private View noFinishView, finishedView;
     String noFinishTitle = "未完成";
     String finishedTitle = "已完成";
@@ -65,9 +71,13 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void initView() {
         super.initView();
-        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.inventory_list);
         ((ImageView) findViewById(R.id.iv_title_left)).setImageResource(R.drawable.ic_home);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
+        searchView = findViewById(R.id.searchImgView);
+        searchView.setOnClickListener(this);
+        searchEdit = findViewById(R.id.searchEdit);
+        cancelView = findViewById(R.id.cancelTextView);
+        cancelView.setOnClickListener(this);
         noFinishText = findViewById(R.id.noFinishText);
         finishedText = findViewById(R.id.finishedText);
         noFinishLayout = findViewById(R.id.noFinishLayout);
@@ -88,6 +98,44 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         noFinishText.setTextColor(getResources().getColor(R.color.blue));
         finishedText.setTextColor(getResources().getColor(R.color.black));
         noFinishView.setVisibility(View.VISIBLE);
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isFinish == 1) {
+                    if (s.toString().length() > 0) {
+                        List<InventoryBean> searchList = inventoryBeanDao.queryBuilder()
+                                .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                                .where(InventoryBeanDao.Properties.Pd_name.like("%" + s.toString() + "%"))
+                                .where(InventoryBeanDao.Properties.Status.eq(3))
+                                .orderDesc(InventoryBeanDao.Properties.Created_at).list();
+                        mAdapter.addDataSource(searchList);
+                    } else {
+                        mAdapter.addDataSource(finishedList);
+                    }
+                } else if (isFinish == 2) {
+                    if (s.toString().length() > 0) {
+                        List<InventoryBean> searchList = inventoryBeanDao.queryBuilder()
+                                .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                                .where(InventoryBeanDao.Properties.Pd_name.like("%" + s.toString() + "%"))
+                                .whereOr(InventoryBeanDao.Properties.Status.eq(1), InventoryBeanDao.Properties.Status.eq(2))
+                                .orderDesc(InventoryBeanDao.Properties.Created_at).list();
+                        mAdapter.addDataSource(searchList);
+                    } else {
+                        mAdapter.addDataSource(noFinishList);
+                    }
+                }
+            }
+        });
     }
 
     public void initData() {
@@ -165,14 +213,49 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                     isFinish = 2;
                     initSelect();
                 }
+                if (searchEdit != null){
+                    searchEdit.setText("");
+                    searchEdit.setVisibility(View.GONE);
+                    searchView.setVisibility(View.VISIBLE);
+                    cancelView.setVisibility(View.GONE);
+                }
                 recyclerView.scrollToPosition(0);
+                noFinishLayout.setEnabled(false);
+                finishedLayout.setEnabled(true);
+                hideSoftInput();
                 break;
             case R.id.finishedLayout:
                 if (isFinish != 1) {
                     isFinish = 1;
                     initSelect();
                 }
+                if (searchEdit != null){
+                    searchEdit.setText("");
+                    searchEdit.setVisibility(View.GONE);
+                    searchView.setVisibility(View.VISIBLE);
+                    cancelView.setVisibility(View.GONE);
+                }
                 recyclerView.scrollToPosition(0);
+                noFinishLayout.setEnabled(true);
+                finishedLayout.setEnabled(false);
+                hideSoftInput();
+                break;
+            case R.id.searchImgView:
+                searchEdit.setVisibility(View.VISIBLE);
+                searchView.setVisibility(View.GONE);
+                cancelView.setVisibility(View.VISIBLE);
+                break;
+            case R.id.cancelTextView:
+                hideSoftInput();
+                searchEdit.setText("");
+                searchEdit.setVisibility(View.GONE);
+                searchView.setVisibility(View.VISIBLE);
+                cancelView.setVisibility(View.GONE);
+                if (isFinish == 1) {
+                    mAdapter.addDataSource(finishedList);
+                } else {
+                    mAdapter.addDataSource(noFinishList);
+                }
                 break;
         }
     }
@@ -285,9 +368,9 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     public void onItemClick(int position) {
         InventoryBean inventory = mAdapter.getItem(position);
         Intent intent = new Intent();
-        if(CheckTypeUtils.isPhoneOrEquipment()){
+        if (CheckTypeUtils.isPhoneOrEquipment()) {
             intent.setClass(this, RFIDInventoryResultActivity.class);
-        }else {
+        } else {
 //            Intent intent = new Intent(this, InventoryResultActivity.class);
             intent.setClass(this, InventoryResultActivity.class);
         }

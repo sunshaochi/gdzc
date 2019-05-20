@@ -83,16 +83,17 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.pk_num.setText(inventory.getWp_num() + "");
         holder.zc_num.setText(inventory.getYp_num() + "");
         holder.inventory_create_time.setText(useDate);
-        if (inventory.getStatus() == 1) {
-            holder.inventory_status.setText(inventory.getStatus_cn());
+        if (inventory.getSon_status() == 1
+                || inventory.getSon_status() == 3) {
+            holder.inventory_status.setText("进行中");
             holder.inventory_status.setTextColor(mContext.getResources().getColor(R.color.blue));
             holder.inventory_status.setBackgroundResource(R.drawable.inventory_doing);
-        } else if (inventory.getStatus() == 2) {
-            holder.inventory_status.setText(inventory.getStatus_cn());
+        } else if (inventory.getSon_status() == 2) {
+            holder.inventory_status.setText("待审核");
             holder.inventory_status.setTextColor(mContext.getResources().getColor(R.color.approval_reject));
             holder.inventory_status.setBackgroundResource(R.drawable.inventory_wait);
-        } else if (inventory.getStatus() == 3) {
-            holder.inventory_status.setText(inventory.getStatus_cn());
+        } else if (inventory.getSon_status() == 4) {
+            holder.inventory_status.setText("已完成");
             holder.inventory_status.setTextColor(mContext.getResources().getColor(R.color.inventory_normal));
             holder.inventory_status.setBackgroundResource(R.drawable.inventory_finished);
         }
