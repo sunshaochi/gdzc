@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -79,6 +80,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 
     private ScannerInerface mControll;
     private SoundPool mSoundPool;
+    private TextView pdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,6 +162,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     protected void initView() {
         super.initView();
         findViewById(R.id.iv_title_left).setOnClickListener(this);
+        pdView=findViewById(R.id.pdView);
+        pdView.setTextColor(Color.parseColor("#666666"));
+        pdView.setEnabled(false);
         tv_title_text = findViewById(R.id.tv_title_text);
         tv_title_status = findViewById(R.id.tv_title_status);
         tv_title_right = findViewById(R.id.tv_title_right);
@@ -362,6 +367,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 
         @Override
         public void onReceive(Context context, Intent intent) {
+             isConnect = false;
+            pdView.setTextColor(Color.parseColor("#666666"));
+            pdView.setEnabled(false);
 
             if (EmshConstant.Action.INTENT_EMSH_BROADCAST.equalsIgnoreCase(intent.getAction())) {
                 int sessionStatus = intent.getIntExtra("SessionStatus", 0);
@@ -370,6 +378,8 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 //                ToastUtils.toastMessage(InventoryAct.this,"监控把枪状态"+" action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode+"");
                 if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
                     isConnect = true;
+                    pdView.setTextColor(Color.parseColor("#333333"));
+                    pdView.setEnabled(true);
                     // 把枪电池当前状态
                     if (batteryPowerMode == currentStatue) { //相同状态不处理
                         return;
@@ -387,12 +397,14 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                             break;
                     }
                 } else {//未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
-                    isConnect = false;
+//                    isConnect = false;
                     stopRFID();
                     if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
                         dialog = null;
                     }
+//                    pdView.setTextColor(Color.parseColor("#666666"));
+//                    pdView.setEnabled(false);
                 }
             }
         }
@@ -452,11 +464,12 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
                 break;
             case R.id.pdView:
-                if (isConnect) {
-                    startRFID();
-                } else {
-                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "电源无法开启");
-                }
+//                if (isConnect) {
+//                    startRFID();
+//                } else {
+//                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "电源无法开启");
+//                }
+                startRFID();
                 break;
         }
     }
