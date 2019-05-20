@@ -749,9 +749,13 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 break;
             case R.id.tv_title_right:
                 try {
-                    if (!TextUtils.isEmpty(uploadurl)) {
-                        object.put("photourl", uploadurl);
+                    if(!object.isNull("photourl")){
+                        object.remove("photourl");
                     }
+                    if(!TextUtils.isEmpty(uploadurl)){
+                        object.put("photourl",uploadurl);
+                    }
+
                     jsonObject.put("asset_data", object);
                 } catch (JSONException e) {
                     e.printStackTrace();

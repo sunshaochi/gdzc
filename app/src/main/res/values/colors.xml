@@ -90,5 +90,6 @@
     <color name="color_80000000">#80000000</color>
 
     <color name="gray_2">#999999</color>
+    <color name="gray_no">#aaaaaa</color>
 
 </resources>
