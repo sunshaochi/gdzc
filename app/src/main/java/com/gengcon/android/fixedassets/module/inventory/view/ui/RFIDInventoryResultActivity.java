@@ -162,7 +162,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     protected void initView() {
         super.initView();
         findViewById(R.id.iv_title_left).setOnClickListener(this);
-        pdView=findViewById(R.id.pdView);
+        pdView = findViewById(R.id.pdView);
         pdView.setTextColor(Color.parseColor("#666666"));
         pdView.setEnabled(false);
         tv_title_text = findViewById(R.id.tv_title_text);
@@ -367,7 +367,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 
         @Override
         public void onReceive(Context context, Intent intent) {
-             isConnect = false;
+            isConnect = false;
             pdView.setTextColor(Color.parseColor("#666666"));
             pdView.setEnabled(false);
 
