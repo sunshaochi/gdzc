@@ -27,6 +27,7 @@
             android:drawablePadding="10dp"
             android:hint="请输入资产编码或资产名称"
             android:paddingLeft="10dp"
+            android:textCursorDrawable="@drawable/phone_blue"
             android:textSize="14dp" />
 
         <TextView
@@ -45,15 +46,21 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="#eeeeee" />
+        android:background="@color/inventory_11" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="9dp"
-        android:overScrollMode="never"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="9dp"
+            android:overScrollMode="never" />
+
+        <include layout="@layout/layout_default" />
+
+    </RelativeLayout>
 
 </LinearLayout>

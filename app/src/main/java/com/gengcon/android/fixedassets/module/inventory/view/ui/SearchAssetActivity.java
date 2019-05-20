@@ -65,7 +65,7 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider3));
+        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider4));
         recyclerView.addItemDecoration(divider);
         searchAssetAdapter = new SearchAssetAdapter(this);
         searchAssetAdapter.setCallBack(this);
@@ -73,22 +73,6 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
         searchLayout = findViewById(R.id.searchLayout);
         searchLayout.setOnClickListener(this);
         searchEdit = findViewById(R.id.searchEdit);
-        searchEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
@@ -123,14 +107,25 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
                 searchEdit.setFocusable(true);
                 break;
             case R.id.sureButton:
+                initDefault(NORMAL);
                 assetBeans.clear();
-                if (!TextUtils.isEmpty(searchEdit.getText().toString())) {
+                hideSoftInput();
+                if (TextUtils.isEmpty(searchEdit.getText().toString())) {
+                    assetBeans = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                            .where(AssetBeanDao.Properties.Pd_no.eq(pd_no)).list();
+                    if (assetBeans.size() == 0) {
+                        initDefault(NO_DATA);
+                    }
+                } else {
                     assetBeans = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
                             .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
                             .whereOr(AssetBeanDao.Properties.Asset_code.like("%" + searchEdit.getText().toString() + "%")
                                     , AssetBeanDao.Properties.Asset_name.like("%" + searchEdit.getText().toString() + "%")).list();
-                    searchAssetAdapter.addDataSource(assetBeans);
+                    if (assetBeans.size() == 0) {
+                        initDefault(NO_DATA);
+                    }
                 }
+                searchAssetAdapter.addDataSource(assetBeans);
                 break;
         }
     }

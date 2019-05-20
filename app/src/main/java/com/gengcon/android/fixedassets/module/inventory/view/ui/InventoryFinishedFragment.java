@@ -58,6 +58,7 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initSelect();
     }
 
     @Override
@@ -93,11 +94,11 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
         inventory_zc.setOnClickListener(this);
         inventory_py.setOnClickListener(this);
         inventory_pk.setOnClickListener(this);
-        initSelect();
         return view;
     }
 
     private void initSelect() {
+        initDefault(NORMAL);
         inventory_zc.setTextColor(getResources().getColor(R.color.black_text));
         v_zc.setBackgroundColor(getResources().getColor(R.color.white));
         inventory_py.setTextColor(getResources().getColor(R.color.black_text));
@@ -110,14 +111,35 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
         if (status == 1) {
             inventory_pk.setTextColor(getResources().getColor(R.color.blue));
             v_pk.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (pk_assets.size() == 0){
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(pk_assets);
         } else if (status == 2) {
             inventory_zc.setTextColor(getResources().getColor(R.color.blue));
             v_zc.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (zc_assets.size() == 0){
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(zc_assets);
         } else if (status == 3) {
             inventory_py.setTextColor(getResources().getColor(R.color.blue));
             v_py.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (py_assets.size() == 0){
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(py_assets);
         }
     }

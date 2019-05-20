@@ -59,7 +59,6 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
 
     private InfraredDialog infraredDialog;
     private ScannerInerface mControll;
-    private SoundPool mSoundPool;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,17 +106,33 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         findViewById(R.id.auditView).setOnClickListener(this);
         initPdStatus();
         if (assets.size() == 0) {
-            mPresenter.showInventoryResult(pd_no, mPage);
+            if (!isNetworkConnected(this)) {
+                if (pd_status == 4) {
+                    getFinishedFragment(assets);
+                } else {
+                    getNoFinishFragment(assets);
+                }
+            } else {
+                mPresenter.showInventoryResult(pd_no, mPage);
+            }
         } else {
             if (pd_status == 4) {
                 if (isUpdate != 1) {
-                    mPresenter.showInventoryResult(pd_no, mPage);
+                    if (!isNetworkConnected(this)) {
+                        getFinishedFragment(assets);
+                    } else {
+                        mPresenter.showInventoryResult(pd_no, mPage);
+                    }
                 } else {
                     getFinishedFragment(assets);
                 }
             } else if (pd_status == 2) {
                 if (isUpdate != 1) {
-                    mPresenter.showInventoryResult(pd_no, mPage);
+                    if (!isNetworkConnected(this)) {
+                        getNoFinishFragment(assets);
+                    } else {
+                        mPresenter.showInventoryResult(pd_no, mPage);
+                    }
                 } else {
                     getNoFinishFragment(assets);
                 }

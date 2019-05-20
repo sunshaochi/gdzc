@@ -70,7 +70,6 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
         mRecyclerView.addItemDecoration(divider);
         inventory_wp.setOnClickListener(this);
         inventory_yp.setOnClickListener(this);
-        initSelect();
         return view;
     }
 
@@ -80,6 +79,7 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     }
 
     private void initSelect() {
+        initDefault(NORMAL);
         inventory_wp.setTextColor(getResources().getColor(R.color.black_text));
         v_wp.setBackgroundColor(getResources().getColor(R.color.white));
         inventory_yp.setTextColor(getResources().getColor(R.color.black_text));
@@ -89,10 +89,24 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
         if (status == 1) {
             inventory_wp.setTextColor(getResources().getColor(R.color.blue));
             v_wp.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (wp_assets.size() == 0) {
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(wp_assets);
         } else if (status == 2) {
             inventory_yp.setTextColor(getResources().getColor(R.color.blue));
             v_yp.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (yp_assets.size() == 0) {
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(yp_assets);
         }
     }
@@ -106,6 +120,7 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initSelect();
     }
 
     @Override
