@@ -163,7 +163,8 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         super.initView();
         findViewById(R.id.iv_title_left).setOnClickListener(this);
         pdView=findViewById(R.id.pdView);
-        pdView.setTextColor(Color.parseColor("#666666"));
+//        pdView.setTextColor(Color.parseColor("#666666"));
+        pdView.setTextColor(getResources().getColor(R.color.gray_no));
         pdView.setEnabled(false);
         tv_title_text = findViewById(R.id.tv_title_text);
         tv_title_status = findViewById(R.id.tv_title_status);
@@ -368,7 +369,8 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         @Override
         public void onReceive(Context context, Intent intent) {
              isConnect = false;
-            pdView.setTextColor(Color.parseColor("#666666"));
+//            pdView.setTextColor(Color.parseColor("#666666"));
+            pdView.setTextColor(getResources().getColor(R.color.gray_no));
             pdView.setEnabled(false);
 
             if (EmshConstant.Action.INTENT_EMSH_BROADCAST.equalsIgnoreCase(intent.getAction())) {
@@ -666,7 +668,11 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     realKeyList.add(epc);
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
-                dialog.setNum(realDataMap.size() + "");
+                if(realDataMap!=null&&realDataMap.size()>0) {
+                    dialog.setNum(realDataMap.size() + "");
+                }else {
+                    dialog.setNum("0");
+                }
             }
         });
     }
