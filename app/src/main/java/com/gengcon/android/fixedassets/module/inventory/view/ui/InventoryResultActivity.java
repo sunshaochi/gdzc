@@ -344,7 +344,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private void getNoFinishFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans);
+        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, noFinishFragment);
         ft.commitAllowingStateLoss();
     }
@@ -352,7 +352,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private void getFinishedFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans);
+        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, finishedFragment);
         ft.commitAllowingStateLoss();
     }

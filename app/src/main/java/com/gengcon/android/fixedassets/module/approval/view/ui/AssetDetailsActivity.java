@@ -13,7 +13,7 @@ import com.gengcon.android.fixedassets.util.Constant;
 
 import androidx.annotation.Nullable;
 
-public class ApprovalAssetDetailsActivity extends BaseActivity implements View.OnClickListener {
+public class AssetDetailsActivity extends BaseActivity implements View.OnClickListener {
 
     private WebView mWebView;
     private String url;

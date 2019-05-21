@@ -117,7 +117,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".module.approval.view.ui.ApprovalAssetDetailsActivity"
+            android:name=".module.approval.view.ui.AssetDetailsActivity"
             android:screenOrientation="portrait" />
 
         <activity

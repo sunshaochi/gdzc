@@ -14,6 +14,7 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Asset;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
+import com.gengcon.android.fixedassets.module.inventory.view.OnItemClick;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
@@ -22,10 +23,10 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAssetAdapter.ViewHolder> implements View.OnClickListener {
+public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAssetAdapter.ViewHolder> {
 
     private Context mContext;
-    private OnItemClickListener mItemClickListener;
+    private OnItemClick mItemClickListener;
     private List<AssetBean> mAssets;
 
     public InventoryAssetAdapter(Context context) {
@@ -41,7 +42,7 @@ public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAsset
         notifyDataSetChanged();
     }
 
-    public void setItemClickListener(OnItemClickListener itemClickListener) {
+    public void setItemClickListener(OnItemClick itemClickListener) {
         mItemClickListener = itemClickListener;
     }
 
@@ -49,20 +50,23 @@ public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAsset
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_inventory_asset, parent, false);
-        view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AssetBean asset = mAssets.get(position);
+        final AssetBean asset = mAssets.get(position);
         holder.tvName.setText(asset.getAsset_name());
         holder.tvId.setText(asset.getAsset_code());
 //        holder.tvStatus.setText(asset.getStatus());
-        holder.itemView.setTag(position);
 //        Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img).into(holder.ivIcon);
         Glide.with(mContext).load(TextUtils.isEmpty(asset.getPhotourl()) ? asset.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + asset.getPhotourl()).apply(new RequestOptions().error(R.drawable.ic_default_img).placeholder(R.drawable.ic_default_img).fallback(R.drawable.ic_default_img)).into(holder.ivIcon);
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemClickListener.onItemClick(asset.getAsset_id());
+            }
+        });
         switch (asset.getStatus()) {
             case Asset.IDEL:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_idel);
@@ -91,13 +95,6 @@ public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAsset
     @Override
     public int getItemCount() {
         return mAssets.size();
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (mItemClickListener != null) {
-            mItemClickListener.onItemClick((Integer) view.getTag());
-        }
     }
 
     class ViewHolder extends MyRecyclerView.ViewHolder {

@@ -198,7 +198,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(this, ApprovalAssetDetailsActivity.class);
+        Intent intent = new Intent(this, AssetDetailsActivity.class);
         intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.APPROVALASSETDETAIL + mAssets.get(position).getAsset_id() + "&doc_no=" + doc_no);
         startActivity(intent);
     }

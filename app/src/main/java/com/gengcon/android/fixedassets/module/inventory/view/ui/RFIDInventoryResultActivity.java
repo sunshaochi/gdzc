@@ -162,7 +162,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     protected void initView() {
         super.initView();
         findViewById(R.id.iv_title_left).setOnClickListener(this);
-        pdView=findViewById(R.id.pdView);
+        pdView = findViewById(R.id.pdView);
 //        pdView.setTextColor(Color.parseColor("#666666"));
         pdView.setTextColor(getResources().getColor(R.color.gray_no));
         pdView.setEnabled(false);
@@ -225,7 +225,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private void getNoFinishFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans);
+        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, noFinishFragment);
         ft.commitAllowingStateLoss();
     }
@@ -233,7 +233,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private void getFinishedFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans);
+        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, finishedFragment);
         ft.commitAllowingStateLoss();
     }
@@ -368,7 +368,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 
         @Override
         public void onReceive(Context context, Intent intent) {
-             isConnect = false;
+            isConnect = false;
 //            pdView.setTextColor(Color.parseColor("#666666"));
             pdView.setTextColor(getResources().getColor(R.color.gray_no));
             pdView.setEnabled(false);
@@ -668,9 +668,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     realKeyList.add(epc);
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
-                if(realDataMap!=null&&realDataMap.size()>0) {
+                if (realDataMap != null && realDataMap.size() > 0) {
                     dialog.setNum(realDataMap.size() + "");
-                }else {
+                } else {
                     dialog.setNum("0");
                 }
             }

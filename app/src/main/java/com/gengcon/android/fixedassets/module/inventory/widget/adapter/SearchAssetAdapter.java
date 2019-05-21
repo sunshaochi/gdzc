@@ -103,6 +103,12 @@ public class SearchAssetAdapter extends RecyclerView.Adapter<SearchAssetAdapter.
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_allot_auditing);
                 break;
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchAssetCallback.clickItem(assetBean.getAsset_id());
+            }
+        });
         holder.inventoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +145,7 @@ public class SearchAssetAdapter extends RecyclerView.Adapter<SearchAssetAdapter.
     }
 
     public interface SearchAssetCallback {
-        void clickItem();
+        void clickItem(String asset_id);
 
         void clickInventoryButton(String asset_id);
     }

@@ -2,9 +2,7 @@ package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.module.approval.view.ui.AssetDetailsActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
@@ -131,8 +131,10 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void clickItem() {
-
+    public void clickItem(String asset_id) {
+        Intent intent = new Intent(this, AssetDetailsActivity.class);
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.INVENTORY_ASSET_DETAIL + asset_id + "&doc_no=" + pd_no);
+        startActivity(intent);
     }
 
     @Override
