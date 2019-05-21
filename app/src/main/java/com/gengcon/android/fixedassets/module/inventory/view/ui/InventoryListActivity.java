@@ -226,6 +226,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         initData();
+        searchEdit.setText("");
     }
 
     @Override
