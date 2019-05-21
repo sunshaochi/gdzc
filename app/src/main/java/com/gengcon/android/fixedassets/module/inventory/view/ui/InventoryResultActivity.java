@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.iscandemo.ScannerInerface;
@@ -49,6 +50,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private int pd_status;
     private int mPage = 1;
     private TextView tv_title_text, tv_title_status, tv_title_right;
+    private LinearLayout statusLayout;
     private ImageView pdView;
     private AssetBeanDao assetBeanDao;
     private InventoryBeanDao inventoryBeanDao;
@@ -100,6 +102,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         tv_title_status = findViewById(R.id.tv_title_status);
         tv_title_right = findViewById(R.id.tv_title_right);
         noFinishLayout = findViewById(R.id.noFinishLayout);
+        statusLayout = findViewById(R.id.statusLayout);
         pdView = findViewById(R.id.pdView);
         pdView.setOnClickListener(this);
         tv_title_text.setText(pd_name);
@@ -153,19 +156,19 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private void initPdStatus() {
         if (pd_status == 1 || pd_status == 3) {
             tv_title_status.setText(R.string.inventory_doing);
-            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_doing);
+            statusLayout.setBackgroundResource(R.drawable.bg_inventory_doing);
             tv_title_right.setVisibility(View.VISIBLE);
             noFinishLayout.setVisibility(View.VISIBLE);
             pdView.setVisibility(View.VISIBLE);
         } else if (pd_status == 2) {
             tv_title_status.setText(R.string.inventory_wait);
-            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_wait);
+            statusLayout.setBackgroundResource(R.drawable.bg_inventory_wait);
             tv_title_right.setVisibility(View.GONE);
             noFinishLayout.setVisibility(View.GONE);
             pdView.setVisibility(View.GONE);
         } else {
             tv_title_status.setText(R.string.inventory_finished);
-            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_finished);
+            statusLayout.setBackgroundResource(R.drawable.bg_inventory_finished);
             tv_title_right.setVisibility(View.GONE);
             noFinishLayout.setVisibility(View.GONE);
             pdView.setVisibility(View.GONE);
