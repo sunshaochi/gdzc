@@ -289,6 +289,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="请选择员工当前状态"
+                android:text="在职"
                 android:singleLine="true"
                 android:textColor="@color/black_text"
                 android:textSize="16dp" />
