@@ -120,9 +120,8 @@ public class ActionSheetLayout extends LinearLayout implements View.OnClickListe
                     @Override
                     public void accept(Permission permission) {
                         if (permission.granted) {
-                            list.clear();
-                            list.add(permission.name);
                             Log.i("同意",permission.name);
+                            list.add(permission.name);
                             // 用户已经同意该权限
 //                            if (permission.name.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 //                                GalleryFinal.openCamera(Constant.REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
