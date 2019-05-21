@@ -16,19 +16,42 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/searchEdit"
+        <LinearLayout
+            android:id="@+id/searchEditLayout"
             android:layout_width="match_parent"
             android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:background="@drawable/bg_choose_edit"
-            android:drawableLeft="@drawable/ic_search"
-            android:drawablePadding="10dp"
-            android:hint="请输入资产编码或资产名称"
-            android:paddingLeft="10dp"
-            android:textCursorDrawable="@drawable/phone_blue"
-            android:textSize="14dp" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/searchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableLeft="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:hint="请输入资产编码或资产名称"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@drawable/phone_blue"
+                android:textSize="14dp" />
+
+
+            <Button
+                android:id="@+id/clearButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                android:background="@drawable/ic_clear_button" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/sureButton"

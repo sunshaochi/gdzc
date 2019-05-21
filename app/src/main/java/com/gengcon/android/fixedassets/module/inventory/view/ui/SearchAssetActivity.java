@@ -2,8 +2,11 @@ package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +38,7 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
     private SearchAssetAdapter searchAssetAdapter;
     private RecyclerView recyclerView;
     private EditText searchEdit;
-    private LinearLayout searchLayout;
+    private Button clearButton;
     private String pd_no;
     private String user_id;
     private AssetBeanDao assetBeanDao;
@@ -70,9 +73,29 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
         searchAssetAdapter = new SearchAssetAdapter(this);
         searchAssetAdapter.setCallBack(this);
         recyclerView.setAdapter(searchAssetAdapter);
-        searchLayout = findViewById(R.id.searchLayout);
-        searchLayout.setOnClickListener(this);
         searchEdit = findViewById(R.id.searchEdit);
+        clearButton = findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(this);
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 0) {
+                    clearButton.setVisibility(View.VISIBLE);
+                } else {
+                    clearButton.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -96,8 +119,8 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
             case R.id.iv_title_left:
                 onBackPressed();
                 break;
-            case R.id.searchLayout:
-                searchEdit.setFocusable(true);
+            case R.id.clearButton:
+                searchEdit.setText("");
                 break;
             case R.id.sureButton:
                 initDefault(NORMAL);
