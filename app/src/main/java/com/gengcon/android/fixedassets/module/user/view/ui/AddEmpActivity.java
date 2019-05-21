@@ -99,6 +99,7 @@ public class AddEmpActivity extends BaseActivity implements View.OnClickListener
         }
         addEmpPresenter = new AddEmpPresenter();
         addEmpPresenter.attachView(this);
+        addEmpPresenter.getEmpNo();
         setAddChangeListener();
     }
 
@@ -317,6 +318,14 @@ public class AddEmpActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void addEmpFail(String msg) {
         ToastUtils.toastMessage(this, msg);
+    }
+
+    @Override
+    public void showEmpNo(String empNo) {
+        if (!TextUtils.isEmpty(empNo)) {
+            empNoEdit.setText(empNo);
+            empNoEdit.setSelection(empNo.length());
+        }
     }
 
     @Override

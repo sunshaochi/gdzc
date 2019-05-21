@@ -6,4 +6,6 @@ public interface AddEmpView extends Iview {
     void addEmpSuccess();
 
     void addEmpFail(String msg);
+
+    void showEmpNo(String empNo);
 }
