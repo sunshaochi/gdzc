@@ -1,15 +1,16 @@
 package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.SoundPool;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import io.reactivex.functions.Consumer;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.InfraredDialog;
+import com.tbruyelle.rxpermissions2.Permission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,6 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
 
     private InfraredDialog infraredDialog;
     private ScannerInerface mControll;
-    private SoundPool mSoundPool;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,17 +108,33 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         findViewById(R.id.auditView).setOnClickListener(this);
         initPdStatus();
         if (assets.size() == 0) {
-            mPresenter.showInventoryResult(pd_no, mPage);
+            if (!isNetworkConnected(this)) {
+                if (pd_status == 4) {
+                    getFinishedFragment(assets);
+                } else {
+                    getNoFinishFragment(assets);
+                }
+            } else {
+                mPresenter.showInventoryResult(pd_no, mPage);
+            }
         } else {
             if (pd_status == 4) {
                 if (isUpdate != 1) {
-                    mPresenter.showInventoryResult(pd_no, mPage);
+                    if (!isNetworkConnected(this)) {
+                        getFinishedFragment(assets);
+                    } else {
+                        mPresenter.showInventoryResult(pd_no, mPage);
+                    }
                 } else {
                     getFinishedFragment(assets);
                 }
             } else if (pd_status == 2) {
                 if (isUpdate != 1) {
-                    mPresenter.showInventoryResult(pd_no, mPage);
+                    if (!isNetworkConnected(this)) {
+                        getNoFinishFragment(assets);
+                    } else {
+                        mPresenter.showInventoryResult(pd_no, mPage);
+                    }
                 } else {
                     getNoFinishFragment(assets);
                 }
@@ -187,19 +204,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_title_left:
-                InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
-                        .where(InventoryBeanDao.Properties.User_id.eq(user_id))
-                        .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
-                long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
-                long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
-                inventoryUpdate.setWp_num((int) wpCount);
-                inventoryUpdate.setYp_num((int) ypCount);
-                inventoryBeanDao.update(inventoryUpdate);
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_title_right:
                 Intent intentRemarks = new Intent(this, InventoryRemarksActivity.class);
@@ -237,10 +242,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
                 mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
                 break;
             case R.id.pdView:
-                Intent intentScan = new Intent(this, ScanInventoryActivity.class);
-                intentScan.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
-                intentScan.putExtra("user_id", user_id);
-                startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
+                requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
                 break;
         }
     }
@@ -280,6 +282,24 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
+                .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
+        long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
+        long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
+        inventoryUpdate.setWp_num((int) wpCount);
+        inventoryUpdate.setYp_num((int) ypCount);
+        inventoryBeanDao.update(inventoryUpdate);
+        finish();
+        super.onBackPressed();
+    }
 
     private void showInfraredDialog() {
         long noFinishAssetCount = assetBeanDao.queryBuilder()
@@ -329,7 +349,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private void getNoFinishFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans);
+        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, noFinishFragment);
         ft.commitAllowingStateLoss();
     }
@@ -337,7 +357,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private void getFinishedFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans);
+        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, finishedFragment);
         ft.commitAllowingStateLoss();
     }
@@ -409,6 +429,23 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         mPage = 1;
         mPresenter.showInventoryResult(pd_no, mPage);
     }
+
+    private Consumer<Permission> mCamearConsumer = new Consumer<Permission>() {
+        @Override
+        public void accept(Permission permission) throws Exception {
+            if (permission.granted) {
+                Intent intentScan = new Intent(InventoryResultActivity.this, ScanInventoryActivity.class);
+                intentScan.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
+                intentScan.putExtra("user_id", user_id);
+                startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
+            } else if (permission.shouldShowRequestPermissionRationale) {
+                ToastUtils.toastMessage(InventoryResultActivity.this, R.string.permission_camera_tips);
+                requestPermission(this, Manifest.permission.CAMERA);
+            } else {
+                ToastUtils.toastMessage(InventoryResultActivity.this, R.string.permission_camera_tips);
+            }
+        }
+    };
 
     @Override
     public void keepSonAuditFailed(int type, String msg) {

@@ -1,6 +1,7 @@
 package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,13 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.common.OnItemClickListener;
+import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.module.approval.view.ui.AssetDetailsActivity;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshFragment;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
+import com.gengcon.android.fixedassets.module.inventory.view.OnItemClick;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.InventoryAssetAdapter;
+import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -25,7 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressLint("ValidFragment")
-public class InventoryFinishedFragment extends BasePullRefreshFragment implements View.OnClickListener, OnItemClickListener {
+public class InventoryFinishedFragment extends BasePullRefreshFragment implements View.OnClickListener, OnItemClick {
 
     //    private RefreshLayout mRefreshLayout;
     private MyRecyclerView mRecyclerView;
@@ -34,16 +39,18 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
     private TextView inventory_zc, inventory_py, inventory_pk;
     private View v_zc, v_py, v_pk;
     private int status = 2;
+    private String pd_no;
 
     private List<AssetBean> zc_assets;
     private List<AssetBean> py_assets;
     private List<AssetBean> pk_assets;
 
     @SuppressLint("ValidFragment")
-    public InventoryFinishedFragment(List<AssetBean> assetBeans) {
+    public InventoryFinishedFragment(List<AssetBean> assetBeans, String pd_no) {
         zc_assets = new ArrayList<>();
         py_assets = new ArrayList<>();
         pk_assets = new ArrayList<>();
+        this.pd_no = pd_no;
         for (int i = 0; i < assetBeans.size(); i++) {
             if (assetBeans.get(i).getPd_status() == 1) {
                 pk_assets.add(assetBeans.get(i));
@@ -58,6 +65,7 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initSelect();
     }
 
     @Override
@@ -93,11 +101,11 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
         inventory_zc.setOnClickListener(this);
         inventory_py.setOnClickListener(this);
         inventory_pk.setOnClickListener(this);
-        initSelect();
         return view;
     }
 
     private void initSelect() {
+        initDefault(NORMAL);
         inventory_zc.setTextColor(getResources().getColor(R.color.black_text));
         v_zc.setBackgroundColor(getResources().getColor(R.color.white));
         inventory_py.setTextColor(getResources().getColor(R.color.black_text));
@@ -110,14 +118,35 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
         if (status == 1) {
             inventory_pk.setTextColor(getResources().getColor(R.color.blue));
             v_pk.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (pk_assets.size() == 0) {
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(pk_assets);
         } else if (status == 2) {
             inventory_zc.setTextColor(getResources().getColor(R.color.blue));
             v_zc.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (zc_assets.size() == 0) {
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(zc_assets);
         } else if (status == 3) {
             inventory_py.setTextColor(getResources().getColor(R.color.blue));
             v_py.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (py_assets.size() == 0) {
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(py_assets);
         }
     }
@@ -136,11 +165,6 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    @Override
-    public void onItemClick(int position) {
-
     }
 
     @Override
@@ -189,5 +213,12 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(String assetId) {
+        Intent intent = new Intent(getActivity(), AssetDetailsActivity.class);
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.INVENTORY_ASSET_DETAIL + assetId + "&doc_no=" + pd_no);
+        startActivity(intent);
     }
 }

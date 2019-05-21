@@ -118,9 +118,12 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                                 .where(InventoryBeanDao.Properties.Pd_name.like("%" + s.toString() + "%"))
                                 .where(InventoryBeanDao.Properties.Status.eq(3))
                                 .orderDesc(InventoryBeanDao.Properties.Created_at).list();
+                        if (searchList.size() == 0){
+                            initDefault(NO_DATA);
+                        }
                         mAdapter.addDataSource(searchList);
                     } else {
-                        mAdapter.addDataSource(finishedList);
+                        initSelect();
                     }
                 } else if (isFinish == 2) {
                     if (s.toString().length() > 0) {
@@ -129,9 +132,12 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                                 .where(InventoryBeanDao.Properties.Pd_name.like("%" + s.toString() + "%"))
                                 .whereOr(InventoryBeanDao.Properties.Status.eq(1), InventoryBeanDao.Properties.Status.eq(2))
                                 .orderDesc(InventoryBeanDao.Properties.Created_at).list();
+                        if (searchList.size() == 0){
+                            initDefault(NO_DATA);
+                        }
                         mAdapter.addDataSource(searchList);
                     } else {
-                        mAdapter.addDataSource(noFinishList);
+                        initSelect();
                     }
                 }
             }
@@ -168,6 +174,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initSelect() {
+        initDefault(NORMAL);
         noFinishText.setTextColor(getResources().getColor(R.color.black_text));
         noFinishView.setBackgroundColor(getResources().getColor(R.color.white));
         finishedText.setTextColor(getResources().getColor(R.color.black_text));
@@ -177,8 +184,22 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         if (isFinish == 1) {
             finishedText.setTextColor(getResources().getColor(R.color.blue));
             finishedView.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (finishedList.size() == 0) {
+                if (!isNetworkConnected(this)) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(finishedList);
         } else if (isFinish == 2) {
+            if (noFinishList.size() == 0) {
+                if (!isNetworkConnected(this)) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             noFinishText.setTextColor(getResources().getColor(R.color.blue));
             noFinishView.setBackgroundColor(getResources().getColor(R.color.blue));
             mAdapter.addDataSource(noFinishList);
@@ -213,7 +234,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                     isFinish = 2;
                     initSelect();
                 }
-                if (searchEdit != null){
+                if (searchEdit != null) {
                     searchEdit.setText("");
                     searchEdit.setVisibility(View.GONE);
                     searchView.setVisibility(View.VISIBLE);
@@ -229,7 +250,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                     isFinish = 1;
                     initSelect();
                 }
-                if (searchEdit != null){
+                if (searchEdit != null) {
                     searchEdit.setText("");
                     searchEdit.setVisibility(View.GONE);
                     searchView.setVisibility(View.VISIBLE);

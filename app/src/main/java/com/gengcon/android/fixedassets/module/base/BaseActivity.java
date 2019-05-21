@@ -22,6 +22,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
@@ -57,6 +59,14 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
 
     public boolean wasBackground = false;    //声明一个布尔变量,记录当前的活动背景
 
+    protected final int NO_SEARCH = 0x01;
+    protected final int NO_DATA = 0x02;
+    protected final int NO_NET = 0x03;
+    protected final int NORMAL = 0x04;
+
+    protected LinearLayout mLlNoData, mLlNoSearch, mLlNoNet;
+    protected Button reloadButton;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +81,23 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
     }
 
     protected void initView() {
+        mLlNoData = findViewById(R.id.ll_no_data);
+        mLlNoSearch = findViewById(R.id.ll_no_search);
+        mLlNoNet = findViewById(R.id.ll_no_net);
+        reloadButton = findViewById(R.id.reloadButton);
+    }
+
+    protected void initDefault(int status) {
+        mLlNoData.setVisibility(View.GONE);
+        mLlNoSearch.setVisibility(View.GONE);
+        mLlNoNet.setVisibility(View.GONE);
+        if (status == NO_DATA) {
+            mLlNoData.setVisibility(View.VISIBLE);
+        } else if (status == NO_NET) {
+            mLlNoNet.setVisibility(View.VISIBLE);
+        } else if (status == NO_SEARCH) {
+            mLlNoSearch.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -137,8 +164,6 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
     public void showErrorMsg(int status, String msg) {
         if (!isNetworkConnected(this)) {
             ToastUtils.toastMessage(BaseActivity.this, "网络连接不可用");
-        } else {
-//            ToastUtils.toastMessage(BaseActivity.this, msg);
         }
         if (status == 301) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
@@ -156,7 +181,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         if (!isNetworkConnected(this)) {
             ToastUtils.toastMessage(BaseActivity.this, "网络连接不可用");
         } else {
-//            ToastUtils.toastMessage(BaseActivity.this, msg);
+            ToastUtils.toastMessage(BaseActivity.this, msg);
         }
         if (code.equals("CODE_301")) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);

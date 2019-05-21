@@ -162,7 +162,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     protected void initView() {
         super.initView();
         findViewById(R.id.iv_title_left).setOnClickListener(this);
-        pdView=findViewById(R.id.pdView);
+        pdView = findViewById(R.id.pdView);
 //        pdView.setTextColor(Color.parseColor("#666666"));
         pdView.setTextColor(getResources().getColor(R.color.gray_no));
         pdView.setEnabled(false);
@@ -225,7 +225,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private void getNoFinishFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans);
+        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, noFinishFragment);
         ft.commitAllowingStateLoss();
     }
@@ -233,7 +233,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private void getFinishedFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans);
+        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans, pd_no);
         ft.replace(R.id.fl, finishedFragment);
         ft.commitAllowingStateLoss();
     }
@@ -368,7 +368,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 
         @Override
         public void onReceive(Context context, Intent intent) {
-             isConnect = false;
+            isConnect = false;
 //            pdView.setTextColor(Color.parseColor("#666666"));
             pdView.setTextColor(getResources().getColor(R.color.gray_no));
             pdView.setEnabled(false);
@@ -416,19 +416,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_title_left:
-                InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
-                        .where(InventoryBeanDao.Properties.User_id.eq(user_id))
-                        .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
-                long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
-                long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
-                inventoryUpdate.setWp_num((int) wpCount);
-                inventoryUpdate.setYp_num((int) ypCount);
-                inventoryBeanDao.update(inventoryUpdate);
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_title_right:
                 Intent intentRemarks = new Intent(this, InventoryRemarksActivity.class);
@@ -474,6 +462,24 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 startRFID();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
+                .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
+        long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
+        long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
+        inventoryUpdate.setWp_num((int) wpCount);
+        inventoryUpdate.setYp_num((int) ypCount);
+        inventoryBeanDao.update(inventoryUpdate);
+        finish();
+        super.onBackPressed();
     }
 
     @Override
@@ -668,9 +674,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     realKeyList.add(epc);
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
-                if(realDataMap!=null&&realDataMap.size()>0) {
+                if (realDataMap != null && realDataMap.size() > 0) {
                     dialog.setNum(realDataMap.size() + "");
-                }else {
+                } else {
                     dialog.setNum("0");
                 }
             }

@@ -1,6 +1,7 @@
 package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.common.OnItemClickListener;
+import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.module.approval.view.ui.AssetDetailsActivity;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshFragment;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
+import com.gengcon.android.fixedassets.module.inventory.view.OnItemClick;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.InventoryAssetAdapter;
+import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressLint("ValidFragment")
-public class InventoryNoFinishFragment extends BasePullRefreshFragment implements View.OnClickListener, OnItemClickListener {
+public class InventoryNoFinishFragment extends BasePullRefreshFragment implements View.OnClickListener, OnItemClick {
 
     //    private SmartRefreshLayout mRefreshLayout;
     private MyRecyclerView mRecyclerView;
@@ -33,15 +37,17 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     private TextView inventory_wp, inventory_yp;
     private View v_wp, v_yp;
     private int status = 1;
+    private String pd_no;
 
 
     private List<AssetBean> wp_assets;
     private List<AssetBean> yp_assets;
 
     @SuppressLint("ValidFragment")
-    public InventoryNoFinishFragment(List<AssetBean> assetBeans) {
+    public InventoryNoFinishFragment(List<AssetBean> assetBeans, String pd_no) {
         wp_assets = new ArrayList<>();
         yp_assets = new ArrayList<>();
+        this.pd_no = pd_no;
         for (int i = 0; i < assetBeans.size(); i++) {
             if (assetBeans.get(i).getPd_status() == 1) {
                 wp_assets.add(assetBeans.get(i));
@@ -70,7 +76,6 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
         mRecyclerView.addItemDecoration(divider);
         inventory_wp.setOnClickListener(this);
         inventory_yp.setOnClickListener(this);
-        initSelect();
         return view;
     }
 
@@ -80,6 +85,7 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     }
 
     private void initSelect() {
+        initDefault(NORMAL);
         inventory_wp.setTextColor(getResources().getColor(R.color.black_text));
         v_wp.setBackgroundColor(getResources().getColor(R.color.white));
         inventory_yp.setTextColor(getResources().getColor(R.color.black_text));
@@ -89,10 +95,24 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
         if (status == 1) {
             inventory_wp.setTextColor(getResources().getColor(R.color.blue));
             v_wp.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (wp_assets.size() == 0) {
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(wp_assets);
         } else if (status == 2) {
             inventory_yp.setTextColor(getResources().getColor(R.color.blue));
             v_yp.setBackgroundColor(getResources().getColor(R.color.blue));
+            if (yp_assets.size() == 0) {
+                if (!isNetworkConnected(getActivity())) {
+                    initDefault(NO_NET);
+                } else {
+                    initDefault(NO_DATA);
+                }
+            }
             mAdapter.addDataSource(yp_assets);
         }
     }
@@ -106,6 +126,7 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initSelect();
     }
 
     @Override
@@ -176,8 +197,9 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     }
 
     @Override
-    public void onItemClick(int position) {
-
+    public void onItemClick(String assetId) {
+        Intent intent = new Intent(getActivity(), AssetDetailsActivity.class);
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.INVENTORY_ASSET_DETAIL + assetId + "&doc_no=" + pd_no);
+        startActivity(intent);
     }
-
 }

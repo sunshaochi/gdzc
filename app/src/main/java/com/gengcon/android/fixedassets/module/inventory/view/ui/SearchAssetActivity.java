@@ -2,9 +2,7 @@ package com.gengcon.android.fixedassets.module.inventory.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
+import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.module.approval.view.ui.AssetDetailsActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
@@ -65,7 +65,7 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider3));
+        divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider4));
         recyclerView.addItemDecoration(divider);
         searchAssetAdapter = new SearchAssetAdapter(this);
         searchAssetAdapter.setCallBack(this);
@@ -73,22 +73,6 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
         searchLayout = findViewById(R.id.searchLayout);
         searchLayout.setOnClickListener(this);
         searchEdit = findViewById(R.id.searchEdit);
-        searchEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
@@ -110,34 +94,53 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_title_left:
-                if (assets_ids.size() > 0) {
-                    Intent intent = new Intent();
-                    intent.putExtra("assets_ids", assets_ids);
-                    setResult(Constant.RESULT_OK_INVENTORY_MANUAL, intent);
-                    finish();
-                } else {
-                    onBackPressed();
-                }
+                onBackPressed();
                 break;
             case R.id.searchLayout:
                 searchEdit.setFocusable(true);
                 break;
             case R.id.sureButton:
+                initDefault(NORMAL);
                 assetBeans.clear();
-                if (!TextUtils.isEmpty(searchEdit.getText().toString())) {
+                hideSoftInput();
+                if (TextUtils.isEmpty(searchEdit.getText().toString())) {
+                    assetBeans = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                            .where(AssetBeanDao.Properties.Pd_no.eq(pd_no)).list();
+                    if (assetBeans.size() == 0) {
+                        initDefault(NO_DATA);
+                    }
+                } else {
                     assetBeans = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
                             .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
                             .whereOr(AssetBeanDao.Properties.Asset_code.like("%" + searchEdit.getText().toString() + "%")
                                     , AssetBeanDao.Properties.Asset_name.like("%" + searchEdit.getText().toString() + "%")).list();
-                    searchAssetAdapter.addDataSource(assetBeans);
+                    if (assetBeans.size() == 0) {
+                        initDefault(NO_DATA);
+                    }
                 }
+                searchAssetAdapter.addDataSource(assetBeans);
                 break;
         }
     }
 
     @Override
-    public void clickItem() {
+    public void clickItem(String asset_id) {
+        Intent intent = new Intent(this, AssetDetailsActivity.class);
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.INVENTORY_ASSET_DETAIL + asset_id + "&doc_no=" + pd_no);
+        startActivity(intent);
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (assets_ids.size() > 0) {
+            Intent intent = new Intent();
+            intent.putExtra("assets_ids", assets_ids);
+            setResult(Constant.RESULT_OK_INVENTORY_MANUAL, intent);
+            finish();
+        } else {
+            finish();
+        }
+        super.onBackPressed();
     }
 
     @Override
