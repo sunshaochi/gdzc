@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.SoundPool;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -205,19 +204,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_title_left:
-                InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
-                        .where(InventoryBeanDao.Properties.User_id.eq(user_id))
-                        .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
-                long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
-                long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
-                inventoryUpdate.setWp_num((int) wpCount);
-                inventoryUpdate.setYp_num((int) ypCount);
-                inventoryBeanDao.update(inventoryUpdate);
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_title_right:
                 Intent intentRemarks = new Intent(this, InventoryRemarksActivity.class);
@@ -295,6 +282,24 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
+                .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
+        long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
+        long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
+        inventoryUpdate.setWp_num((int) wpCount);
+        inventoryUpdate.setYp_num((int) ypCount);
+        inventoryBeanDao.update(inventoryUpdate);
+        finish();
+        super.onBackPressed();
+    }
 
     private void showInfraredDialog() {
         long noFinishAssetCount = assetBeanDao.queryBuilder()

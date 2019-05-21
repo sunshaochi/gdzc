@@ -94,14 +94,7 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_title_left:
-                if (assets_ids.size() > 0) {
-                    Intent intent = new Intent();
-                    intent.putExtra("assets_ids", assets_ids);
-                    setResult(Constant.RESULT_OK_INVENTORY_MANUAL, intent);
-                    finish();
-                } else {
-                    onBackPressed();
-                }
+                onBackPressed();
                 break;
             case R.id.searchLayout:
                 searchEdit.setFocusable(true);
@@ -135,6 +128,19 @@ public class SearchAssetActivity extends BaseActivity implements View.OnClickLis
         Intent intent = new Intent(this, AssetDetailsActivity.class);
         intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.INVENTORY_ASSET_DETAIL + asset_id + "&doc_no=" + pd_no);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (assets_ids.size() > 0) {
+            Intent intent = new Intent();
+            intent.putExtra("assets_ids", assets_ids);
+            setResult(Constant.RESULT_OK_INVENTORY_MANUAL, intent);
+            finish();
+        } else {
+            finish();
+        }
+        super.onBackPressed();
     }
 
     @Override

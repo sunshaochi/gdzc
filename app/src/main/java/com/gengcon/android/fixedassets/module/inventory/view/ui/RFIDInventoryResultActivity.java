@@ -416,19 +416,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_title_left:
-                InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
-                        .where(InventoryBeanDao.Properties.User_id.eq(user_id))
-                        .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
-                long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
-                long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
-                        .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
-                inventoryUpdate.setWp_num((int) wpCount);
-                inventoryUpdate.setYp_num((int) ypCount);
-                inventoryBeanDao.update(inventoryUpdate);
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_title_right:
                 Intent intentRemarks = new Intent(this, InventoryRemarksActivity.class);
@@ -474,6 +462,24 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 startRFID();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        InventoryBean inventoryUpdate = inventoryBeanDao.queryBuilder()
+                .where(InventoryBeanDao.Properties.User_id.eq(user_id))
+                .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
+        long wpCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
+        long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
+        inventoryUpdate.setWp_num((int) wpCount);
+        inventoryUpdate.setYp_num((int) ypCount);
+        inventoryBeanDao.update(inventoryUpdate);
+        finish();
+        super.onBackPressed();
     }
 
     @Override

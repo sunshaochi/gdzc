@@ -154,18 +154,15 @@ public class ScanInventoryActivity extends Activity implements Callback, Capture
                 startActivityForResult(intent, Constant.REQUEST_CODE_INVENTORY_MANUAL);
                 break;
             case R.id.iv_title_left:
-                setResult(Constant.RESULT_OK_INVENTORY_SCAN);
-                finish();
+                onBackPressed();
                 break;
         }
     }
 
     @Override
     public void onBackPressed() {
-        Intent resultIntent = new Intent();
-        Bundle bundle = new Bundle();
-        resultIntent.putExtras(bundle);
-        setResult(RESULT_OK, resultIntent);
+        setResult(Constant.RESULT_OK_INVENTORY_SCAN);
+        finish();
         super.onBackPressed();
     }
 
