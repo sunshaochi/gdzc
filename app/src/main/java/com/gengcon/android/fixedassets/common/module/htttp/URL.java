@@ -46,13 +46,10 @@ public class URL {
 //    public static final String HTTP_HEAD = "http://10.10.11.99:9999/#/";
 
     public static final String LOGIN = "login";
-    public static final String USER = "index/user";
     public static final String ASSET_MANAGE = "index/assetsList";
     public static final String ASSET_STATUS = "?status=";
-    public static final String ASSET_STORAGE = "index/addAssets";
     public static final String RECODE = "index/recode";
     public static final String ANALYSE = "index/analyse";
-    public static final String DEVICE_MANAGE = "index/setup";
     public static final String BECALL = "index/becall";
     public static final String BEDETAIL = "index/beDetail";
     public static final String HOME = "index/home";
@@ -60,6 +57,7 @@ public class URL {
     public static final String SCANDETAIL = "index/scanDetail";
     public static final String MESSAGEDETAIL = "index/notice?id=";
     public static final String APPROVALASSETDETAIL = "index/approval_detail?id=";
+    public static final String INVENTORY_ASSET_DETAIL = "index/inventory_detail?id=";
     public static final String REGISTER_AGREEMENT = "agreement";
     public static final String SECRET = "secret";
 

@@ -164,8 +164,6 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
     public void showErrorMsg(int status, String msg) {
         if (!isNetworkConnected(this)) {
             ToastUtils.toastMessage(BaseActivity.this, "网络连接不可用");
-        } else {
-//            ToastUtils.toastMessage(BaseActivity.this, msg);
         }
         if (status == 301) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
@@ -183,7 +181,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         if (!isNetworkConnected(this)) {
             ToastUtils.toastMessage(BaseActivity.this, "网络连接不可用");
         } else {
-//            ToastUtils.toastMessage(BaseActivity.this, msg);
+            ToastUtils.toastMessage(BaseActivity.this, msg);
         }
         if (code.equals("CODE_301")) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
