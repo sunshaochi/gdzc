@@ -346,6 +346,12 @@ public class ApiService {
         Observable<Bean> getAddEmp(@Body RequestBody request);
     }
 
+    //获取员工工号
+    public interface GetEmpNo {
+        @GET("emp/getEmpNo")
+        Observable<Bean> getEmpNo();
+    }
+
     //编辑员工
     public interface GetEditEmp {
         @POST("emp/edit")
