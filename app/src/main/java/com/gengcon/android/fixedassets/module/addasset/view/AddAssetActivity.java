@@ -776,7 +776,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                     customAttrPicker.setVisibility(View.VISIBLE);
                     customAttrPicker.setOnSelectListener(this);
                 }
-
                 break;
             case R.id.otherClickLayout:
                 isHideLayout = !isHideLayout;
@@ -1083,43 +1082,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         public void onHanlderSuccess(int requestCode, final List<PhotoInfo> resultList) {
             if (resultList != null) {
                 Logger.i("图片", resultList.get(0).getPhotoPath());
-//                Observable.create(new ObservableOnSubscribe<String>() {
-//                    @Override
-//                    public void subscribe(@NonNull ObservableEmitter<String> emitter) throws IOException {
-////                        String bitmap = imageFactory.compressAndGenImage(imageFactory.getBitmap(resultList.get(0).getPhotoPath()), 1024);
-//                          emitter.onNext(bitmap);
-////                        emitter.onComplete();
-//                    }
-//                }).subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
-//
-//                    Disposable disposable;
-//
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        disposable = d;
-//                    }
-//
-//                    @Override
-//                    public void onNext(String bitmap) {
-////                        if (updateImg == 1) {
-////                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + bitmap + "'" + ")");
-////                        } else if (updateImg == 2) {
-////                            mWebView.loadUrl("javascript:uploadImgBase64(" + "'" + imgType + "==========" + index + "==========" + bitmap + "'" + ")");
-////                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        disposable.dispose();
-//                    }
-//                });
-
                 Uri imageUri = MyBitmapUtils.pathToUri(AddAssetActivity.this, resultList.get(0).getPhotoPath());
                 try {
                     bit = MyBitmapUtils.getBitmapFormUri(AddAssetActivity.this, imageUri);//压缩
@@ -1144,11 +1106,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     @Override
     public void upLoadingSuc(String path) {
         uploadurl = path;
-//        Glide.with(AddAssetActivity.this).load(TextUtils.isEmpty(path) ? path : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + path)
-//                .apply(new RequestOptions()
-//                        .error(R.drawable.ic_add_default)
-//                        .placeholder(R.drawable.ic_add_default)
-//                        .fallback(R.drawable.ic_add_default)).into(assetImgView);
         assetImgView.setImageBitmap(bit);
 
     }

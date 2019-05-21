@@ -119,8 +119,8 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
 
     /**
      * 判断前台还是在后台
-     * @return
      *
+     * @return
      */
     private boolean isApplicationBroughtToBackground() {
         ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -149,6 +149,8 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
                     .setLoadingColor(Color.BLACK)//颜色
                     .setHintText(getString(R.string.loading))
                     .setHintTextSize(16)
+                    .setCanceledOnTouchOutside(false)
+                    .setCancelable(false)
                     .create();
         }
         mLoadingDialog.show();
