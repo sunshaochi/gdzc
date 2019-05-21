@@ -3,9 +3,7 @@ package com.gengcon.android.fixedassets.widget;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-
 import androidx.annotation.Nullable;
-
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,6 +112,7 @@ public class ActionSheetLayout extends LinearLayout implements View.OnClickListe
     private List<String> list = new ArrayList<>();
 
     private void requestPermission() {
+        list.clear();
         RxPermissions rxPermission = new RxPermissions((Activity) getContext());
         rxPermission
                 .requestEach(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -121,18 +120,17 @@ public class ActionSheetLayout extends LinearLayout implements View.OnClickListe
                     @Override
                     public void accept(Permission permission) {
                         if (permission.granted) {
-                            list.clear();
+                            Log.i("同意",permission.name);
                             list.add(permission.name);
-                            Log.i("同意", permission.name);
                             // 用户已经同意该权限
 //                            if (permission.name.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 //                                GalleryFinal.openCamera(Constant.REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
 //                            }
-                            if (list.size() == 2) {//两个都要同意
+                            if(list.size()==2){//两个都要同意
                                 GalleryFinal.openCamera(Constant.REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
                             }
                         } else if (permission.shouldShowRequestPermissionRationale) {
-                            Log.i("拒绝", permission.name);
+                            Log.i("拒绝",permission.name);
                             // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时。还会提示请求权限的对话框
                             if (permission.name.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                                 ToastUtils.toastMessage(getContext(), R.string.permission_write_tips);
@@ -141,7 +139,7 @@ public class ActionSheetLayout extends LinearLayout implements View.OnClickListe
                             }
                             requestPermission();
                         } else {
-                            Log.i("静止", permission.name);
+                            Log.i("静止",permission.name);
                             // 用户拒绝了该权限，而且选中『不再询问』
                             if (permission.name.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                                 ToastUtils.toastMessage(getContext(), R.string.permission_write_tips);
