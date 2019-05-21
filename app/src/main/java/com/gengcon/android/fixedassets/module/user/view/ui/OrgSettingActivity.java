@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
+import com.gengcon.android.fixedassets.util.RolePowerManager;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 
 import androidx.annotation.Nullable;
 
@@ -37,12 +39,20 @@ public class OrgSettingActivity extends BaseActivity implements View.OnClickList
                 onBackPressed();
                 break;
             case R.id.orgLayout:
-                Intent intent = new Intent(this, OrgSettingSecondActivity.class);
-                startActivity(intent);
+                if (RolePowerManager.getInstance().isOrgModule()) {
+                    Intent intent = new Intent(this, OrgSettingSecondActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
                 break;
             case R.id.staffManagerLayout:
-                Intent staffIntent = new Intent(this, StaffMangerActivity.class);
-                startActivity(staffIntent);
+                if (RolePowerManager.getInstance().isEmpModule()) {
+                    Intent staffIntent = new Intent(this, StaffMangerActivity.class);
+                    startActivity(staffIntent);
+                } else {
+                    ToastUtils.toastMessage(this, "当前您没有权限");
+                }
                 break;
         }
     }

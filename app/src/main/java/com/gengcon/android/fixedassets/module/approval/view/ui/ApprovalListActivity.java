@@ -14,7 +14,6 @@ import com.gengcon.android.fixedassets.module.approval.presenter.ApprovalListPre
 import com.gengcon.android.fixedassets.module.approval.view.ApprovalNumView;
 import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
 import com.gengcon.android.fixedassets.util.CustomViewPager;
-import com.gengcon.android.fixedassets.util.RolePowerManager;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -67,7 +66,6 @@ public class ApprovalListActivity extends BaseActivity implements View.OnClickLi
         approvalPager.setCurrentItem(0);
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider1));
-        findViewById(R.id.tv_title_right).setVisibility(RolePowerManager.getInstance().isInventoryAdd() ? View.VISIBLE : View.GONE);
     }
 
     public void initData() {
