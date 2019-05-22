@@ -15,14 +15,12 @@ public class BasePullRefreshActivity extends BaseActivity {
     protected final int NORMAL = 0x04;
 
     protected LinearLayout mLlNoData, mLlNoSearch, mLlNoNet;
-    protected Button reloadButton;
 
     @Override
     protected void initView() {
         mLlNoData = findViewById(R.id.ll_no_data);
         mLlNoSearch = findViewById(R.id.ll_no_search);
         mLlNoNet = findViewById(R.id.ll_no_net);
-        reloadButton = findViewById(R.id.reloadButton);
     }
 
     @Override

@@ -55,17 +55,6 @@ public class CompleteApprovalFragment extends BasePullRefreshFragment implements
                 mPresenter.getApprovalList(++mPage, 2);
             }
         });
-        reloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkConnected(getActivity())) {
-                    initDefault(NORMAL);
-                    mRefreshLayout.autoRefresh();
-                } else {
-                    ToastUtils.toastMessage(getActivity(), "网络连接不给力,请检查您的网络");
-                }
-            }
-        });
     }
 
     @Override
