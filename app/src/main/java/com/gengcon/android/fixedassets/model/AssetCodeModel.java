@@ -1,7 +1,7 @@
 package com.gengcon.android.fixedassets.model;
 
 import com.gengcon.android.fixedassets.bean.result.AssetCode;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiService;
+import com.gengcon.android.fixedassets.common.module.http.ApiService;
 import com.gengcon.android.fixedassets.module.base.BaseModel;
 
 import io.reactivex.Observable;

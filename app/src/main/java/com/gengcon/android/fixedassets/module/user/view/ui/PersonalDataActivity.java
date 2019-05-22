@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.PersonalBean;
 import com.gengcon.android.fixedassets.module.base.EaseUiHelper;

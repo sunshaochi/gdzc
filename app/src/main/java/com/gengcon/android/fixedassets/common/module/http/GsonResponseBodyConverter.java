@@ -1,4 +1,4 @@
-package com.gengcon.android.fixedassets.common.module.htttp;
+package com.gengcon.android.fixedassets.common.module.http;
 
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.ErrorBean;

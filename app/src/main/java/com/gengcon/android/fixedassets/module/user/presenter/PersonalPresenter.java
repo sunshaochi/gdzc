@@ -1,6 +1,6 @@
 package com.gengcon.android.fixedassets.module.user.presenter;
 
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.PersonalBean;

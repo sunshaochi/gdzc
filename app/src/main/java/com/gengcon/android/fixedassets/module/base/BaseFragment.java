@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.view.View;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.web.view.WebActivity;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;

@@ -2,7 +2,7 @@ package com.gengcon.android.fixedassets.module.user.presenter;
 
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.AddOrgModel;
 import com.gengcon.android.fixedassets.model.DelOrgModel;
 import com.gengcon.android.fixedassets.model.EditOrgModel;

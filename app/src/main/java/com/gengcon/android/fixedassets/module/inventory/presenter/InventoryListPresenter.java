@@ -1,7 +1,7 @@
 package com.gengcon.android.fixedassets.module.inventory.presenter;
 
 import com.gengcon.android.fixedassets.bean.result.ResultInventory;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.OffnetListModel;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;

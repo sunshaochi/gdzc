@@ -3,7 +3,7 @@ package com.gengcon.android.fixedassets.module.inventory.presenter;
 import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.bean.result.ResultAsset;
 import com.gengcon.android.fixedassets.bean.result.SyncDataFailBean;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.AssetOffNetListModel;
 import com.gengcon.android.fixedassets.model.AssetSyncDataModel;
 import com.gengcon.android.fixedassets.model.SonAuditModel;

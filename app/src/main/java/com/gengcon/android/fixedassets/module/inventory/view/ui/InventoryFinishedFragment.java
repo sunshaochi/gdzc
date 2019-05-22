@@ -9,8 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.common.OnItemClickListener;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.approval.view.ui.AssetDetailsActivity;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshFragment;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;

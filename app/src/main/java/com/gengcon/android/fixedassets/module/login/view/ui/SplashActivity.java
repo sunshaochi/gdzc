@@ -11,7 +11,7 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
 import com.gengcon.android.fixedassets.module.web.view.WebActivity;
 import com.gengcon.android.fixedassets.util.Constant;

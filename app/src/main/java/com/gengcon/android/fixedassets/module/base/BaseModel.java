@@ -2,7 +2,7 @@ package com.gengcon.android.fixedassets.module.base;
 
 
 
-import com.gengcon.android.fixedassets.common.module.htttp.RxService;
+import com.gengcon.android.fixedassets.common.module.http.RxService;
 
 public abstract class BaseModel implements Imodel {
 

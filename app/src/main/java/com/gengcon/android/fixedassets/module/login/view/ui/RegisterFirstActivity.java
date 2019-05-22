@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.common.module.checkphone.PhoneCodePresenter;
 import com.gengcon.android.fixedassets.util.CacheActivity;
 import com.gengcon.android.fixedassets.util.Constant;

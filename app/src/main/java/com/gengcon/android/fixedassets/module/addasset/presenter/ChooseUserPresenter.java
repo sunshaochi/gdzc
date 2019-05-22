@@ -2,7 +2,7 @@ package com.gengcon.android.fixedassets.module.addasset.presenter;
 
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.ChooseUserBean;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.ChooseUserModel;
 import com.gengcon.android.fixedassets.module.addasset.view.ChooseUserView;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;

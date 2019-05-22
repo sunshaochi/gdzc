@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.login.presenter.ForgetPwdPresenter;
 import com.gengcon.android.fixedassets.module.web.view.WebActivity;
 import com.gengcon.android.fixedassets.util.CacheActivity;

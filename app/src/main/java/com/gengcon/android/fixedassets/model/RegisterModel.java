@@ -4,7 +4,7 @@ import com.gengcon.android.fixedassets.module.base.BaseModel;
 import com.gengcon.android.fixedassets.bean.request.RegisterRequest;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.UserData;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiService;
+import com.gengcon.android.fixedassets.common.module.http.ApiService;
 
 import io.reactivex.Observable;
 

@@ -8,7 +8,7 @@ import com.gengcon.android.fixedassets.bean.result.AssetCode;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.bean.result.UpLoadBean;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.AddAsseCustomModel;
 import com.gengcon.android.fixedassets.model.AddAssetListModel;
 import com.gengcon.android.fixedassets.model.AreaModel;
@@ -23,8 +23,6 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.List;
-
-import io.reactivex.observers.SerializedObserver;
 
 public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 

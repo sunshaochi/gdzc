@@ -19,7 +19,7 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.Industry;
 import com.gengcon.android.fixedassets.bean.result.UserData;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.login.presenter.RegisterLastPresenter;
 import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
 import com.gengcon.android.fixedassets.util.CacheActivity;

@@ -32,7 +32,7 @@ import com.gengcon.android.fixedassets.bean.LoginUserBean;
 import com.gengcon.android.fixedassets.bean.UpdateImgRBean;
 import com.gengcon.android.fixedassets.bean.request.AddAssetRequest;
 import com.gengcon.android.fixedassets.bean.result.Print;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshActivity;
 import com.gengcon.android.fixedassets.module.login.view.ui.ForgetPwdFirstActivity;
 import com.gengcon.android.fixedassets.module.login.view.ui.RegisterFirstActivity;

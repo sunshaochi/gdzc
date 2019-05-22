@@ -1,4 +1,4 @@
-package com.gengcon.android.fixedassets.common.module.htttp;
+package com.gengcon.android.fixedassets.common.module.http;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

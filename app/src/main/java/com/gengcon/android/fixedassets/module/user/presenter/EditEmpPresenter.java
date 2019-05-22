@@ -3,7 +3,7 @@ package com.gengcon.android.fixedassets.module.user.presenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.bean.result.StaffDetailBean;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.EditEmpModel;
 import com.gengcon.android.fixedassets.model.StaffDetailModel;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;

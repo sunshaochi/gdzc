@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.user.view.ModifyPasswordView;
 import com.gengcon.android.fixedassets.module.user.presenter.ModifyPasswordPresenter;
 import com.gengcon.android.fixedassets.module.web.view.WebActivity;

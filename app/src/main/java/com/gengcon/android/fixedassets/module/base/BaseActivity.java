@@ -22,12 +22,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.common.module.update.ApkDownLoad;
 import com.gengcon.android.fixedassets.common.module.update.UpdateVersionPresenter;
 import com.gengcon.android.fixedassets.common.module.update.UpdateVersionView;

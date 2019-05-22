@@ -20,7 +20,7 @@ import com.gengcon.android.fixedassets.common.OnItemClickListener;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.ApprovalDetailBean;
 import com.gengcon.android.fixedassets.bean.result.ApprovalHeadDetail;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.approval.presenter.ApprovalDetailPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.DensityUtils;

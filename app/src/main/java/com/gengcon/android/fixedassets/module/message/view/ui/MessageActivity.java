@@ -11,7 +11,7 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.message.widget.adapter.MessageAdapter;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.MessageBean;
-import com.gengcon.android.fixedassets.common.module.htttp.URL;
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.message.presenter.MessagePresenter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.module.message.view.MessageView;

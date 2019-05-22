@@ -3,7 +3,7 @@ package com.gengcon.android.fixedassets.module.addasset.presenter;
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.ClassificationBean;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
-import com.gengcon.android.fixedassets.common.module.htttp.ApiCallBack;
+import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.AddAssetClassificationModel;
 import com.gengcon.android.fixedassets.model.AddAssetOrgModel;
 import com.gengcon.android.fixedassets.module.addasset.view.AddAssetDataView;

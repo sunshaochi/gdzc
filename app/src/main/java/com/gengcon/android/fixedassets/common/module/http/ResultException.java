@@ -1,4 +1,4 @@
-package com.gengcon.android.fixedassets.common.module.htttp;
+package com.gengcon.android.fixedassets.common.module.http;
 
 import java.io.IOException;
 
