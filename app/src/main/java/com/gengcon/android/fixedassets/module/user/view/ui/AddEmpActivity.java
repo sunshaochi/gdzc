@@ -94,6 +94,7 @@ public class AddEmpActivity extends BaseActivity implements View.OnClickListener
         jsonObject = new JSONObject();
         try {
             jsonObject.put("org_id", orgId);
+            jsonObject.put("status", 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }

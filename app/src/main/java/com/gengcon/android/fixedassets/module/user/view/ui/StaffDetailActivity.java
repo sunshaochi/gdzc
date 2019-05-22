@@ -33,6 +33,7 @@ public class StaffDetailActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout menuLayout;
     private View menuGoneView;
     private String empName;
+    private boolean hasUpdate;
 
     private StaffDetailPresenter staffDetailPresenter;
 
@@ -77,6 +78,7 @@ public class StaffDetailActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constant.REQUEST_CODE_EDIT_EMP && resultCode == Constant.RESULT_OK_EDIT_EMP) {
             staffDetailPresenter.getStaffDetail(empId);
+            hasUpdate = true;
         }
     }
 
@@ -157,6 +159,15 @@ public class StaffDetailActivity extends BaseActivity implements View.OnClickLis
         ToastUtils.toastMessage(this, "员工删除成功");
         setResult(StaffMangerActivity.RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (hasUpdate) {
+            setResult(StaffMangerActivity.RESULT_OK);
+            finish();
+        }
+        super.onBackPressed();
     }
 
     private void showDelDialog() {

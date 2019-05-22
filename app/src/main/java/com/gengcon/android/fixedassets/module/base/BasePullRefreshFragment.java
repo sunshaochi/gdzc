@@ -20,7 +20,6 @@ public class BasePullRefreshFragment extends BaseFragment {
     protected final int NORMAL = 0x04;
 
     protected LinearLayout mLlNoData, mLlNoSearch, mLlNoNet;
-    protected Button reloadButton;
 
     @Nullable
     @Override
@@ -34,7 +33,6 @@ public class BasePullRefreshFragment extends BaseFragment {
         mLlNoData = view.findViewById(R.id.ll_no_data);
         mLlNoSearch = view.findViewById(R.id.ll_no_search);
         mLlNoNet = view.findViewById(R.id.ll_no_net);
-        reloadButton = view.findViewById(R.id.reloadButton);
     }
 
     @Override

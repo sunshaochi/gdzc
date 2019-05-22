@@ -572,7 +572,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                             AssetBean asset = assetBeanDao.queryBuilder()
                                     .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
                                     .where(AssetBeanDao.Properties.User_id.eq(user_id))
-                                    .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i)))
+                                    .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i).toLowerCase()))
                                     .unique();
                             if (asset != null) {
                                 if (asset.getPd_status() != 2) {

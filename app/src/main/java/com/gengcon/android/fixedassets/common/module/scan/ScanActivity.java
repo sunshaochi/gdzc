@@ -1,7 +1,6 @@
 package com.gengcon.android.fixedassets.common.module.scan;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
@@ -23,10 +22,8 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.main.view.ui.ScanLoginActivity;
 import com.gengcon.android.fixedassets.module.main.presenter.ScanLoginPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
-import com.gengcon.android.fixedassets.util.RolePowerManager;
 import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
-import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.gengcon.android.fixedassets.zxing.camera.CameraManager;
 import com.gengcon.android.fixedassets.zxing.decoding.CaptureActivityHandler;
 import com.gengcon.android.fixedassets.zxing.view.ViewfinderView;
@@ -221,48 +218,6 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
                     mPresenter.scanLogin(scanResult.substring(index + 1, scanResult.length()), 1);
                     finish();
                 }
-            } else {
-                if (scanResult.length() == 24) {
-                    if (duplicate(scanResult)) {
-                        mAssetIds.add(scanResult);
-                    }
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
-                    builder.setTitle(R.string.tips);
-                    builder.setText(R.string.already_inventory);
-                    builder.setNegativeButtonClickable(true);
-                    builder.setNeutralButton(new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if (RolePowerManager.getInstance().isInventoryPd()) {
-
-                            } else {
-                                ToastUtils.toastMessage(ScanActivity.this, R.string.permission_denied_tips);
-                            }
-                        }
-                    }, getString(R.string.preview));
-                    builder.setNegativeButton(new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            handler.restartPreviewAndDecode();
-                        }
-                    }, getString(R.string.continue_inventory));
-                    builder.setPositiveButton(new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent resultIntent = new Intent();
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable(Constant.INTENT_EXTRA_KEY_QR_SCAN, mAssetIds);
-                            resultIntent.putExtras(bundle);
-                            setResult(RESULT_OK, resultIntent);
-                            finish();
-                        }
-                    }, getString(R.string.complete));
-                    builder.show();
-                } else {
-                    ToastUtils.toastMessage(this, "非精臣固定资产有效二维码");
-                    handler.restartPreviewAndDecode();
-                }
-
             }
         }
 

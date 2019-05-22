@@ -65,7 +65,6 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
     protected final int NORMAL = 0x04;
 
     protected LinearLayout mLlNoData, mLlNoSearch, mLlNoNet;
-    protected Button reloadButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +83,6 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         mLlNoData = findViewById(R.id.ll_no_data);
         mLlNoSearch = findViewById(R.id.ll_no_search);
         mLlNoNet = findViewById(R.id.ll_no_net);
-        reloadButton = findViewById(R.id.reloadButton);
     }
 
     protected void initDefault(int status) {

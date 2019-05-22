@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -68,6 +69,12 @@ public class AddAssetDataAdapter extends RecyclerView.Adapter<AddAssetDataAdapte
         if (addAssetType == 1 || addAssetType == 3) {
             final OrgBean orgBean = orgBeans.get(position);
             holder.dataNameView.setText(orgBean.getOrg_name());
+            holder.dataImg.setVisibility(View.VISIBLE);
+            if (orgBean.getType() == 1) {
+                holder.dataImg.setBackgroundResource(R.drawable.ic_company);
+            } else {
+                holder.dataImg.setBackgroundResource(R.drawable.ic_bumen);
+            }
             final boolean hasChildren = orgBean.getChildren() != null && orgBean.getChildren().size() > 0;
             if (hasChildren) {
                 holder.childrenLayout.setVisibility(View.VISIBLE);
@@ -89,6 +96,7 @@ public class AddAssetDataAdapter extends RecyclerView.Adapter<AddAssetDataAdapte
         } else if (addAssetType == 2) {
             final ClassificationBean classificationBean = classificationBeans.get(position);
             holder.dataNameView.setText(classificationBean.getCustom_type_name());
+            holder.dataImg.setVisibility(View.GONE);
             final boolean hasChildren = classificationBean.getChildren() != null && classificationBean.getChildren().size() > 0;
             if (hasChildren) {
                 holder.childrenLayout.setVisibility(View.VISIBLE);
@@ -127,11 +135,13 @@ public class AddAssetDataAdapter extends RecyclerView.Adapter<AddAssetDataAdapte
         TextView dataNameView;
         //        ImageView isReadImg;
         LinearLayout childrenLayout;
+        ImageView dataImg;
 
         public ViewHolder(View view) {
             super(view);
             dataNameView = view.findViewById(R.id.dataNameView);
             childrenLayout = view.findViewById(R.id.childrenLayout);
+            dataImg = view.findViewById(R.id.dataImg);
         }
     }
 

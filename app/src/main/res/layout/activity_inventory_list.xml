@@ -33,25 +33,47 @@
                 android:layout_gravity="center"
                 android:maxWidth="230dp"
                 android:singleLine="true"
+                android:text="盘点管理"
                 android:textColor="@color/white"
-                android:textSize="18dp"
-                android:text="盘点管理" />
+                android:textSize="18dp" />
 
-            <EditText
-                android:id="@+id/searchEdit"
+            <LinearLayout
+                android:id="@+id/searchEditLayout"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/bg_search_edit"
-                android:drawableLeft="@drawable/ic_search_blue"
-                android:textCursorDrawable="@drawable/search_white"
-                android:drawablePadding="10dp"
-                android:visibility="gone"
-                android:hint="搜索盘点单名称"
-                android:paddingLeft="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="#91a8e6"
-                android:textSize="14dp" />
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/searchEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/ic_search_blue"
+                    android:drawablePadding="10dp"
+                    android:hint="搜索盘点单名称"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#91a8e6"
+                    android:textCursorDrawable="@drawable/search_white"
+                    android:textSize="14dp" />
+
+
+                <Button
+                    android:id="@+id/clearButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_clear_blue" />
+
+            </LinearLayout>
         </FrameLayout>
 
         <FrameLayout
@@ -74,10 +96,10 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:visibility="gone"
                 android:text="取消"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:visibility="gone" />
         </FrameLayout>
 
     </LinearLayout>
@@ -101,7 +123,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textSize="16dp"
-                tools:text="未完成" />
+                android:text="未完成(0)" />
 
             <View
                 android:id="@+id/noFinishView"
@@ -126,14 +148,14 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textSize="16dp"
-                tools:text="已完成" />
+                android:text="已完成(0)" />
 
             <View
                 android:id="@+id/finishedView"
                 android:layout_width="90dp"
                 android:layout_height="3dp"
                 android:layout_gravity="bottom|center"
-                android:background="@color/blue" />
+                android:background="@color/white" />
         </FrameLayout>
 
     </LinearLayout>

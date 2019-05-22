@@ -18,6 +18,7 @@ public class PersonalBean extends InvalidBean implements Serializable {
      * asset_max_num : 2000
      */
 
+    private int is_unlimit;
     private String user_name;
     private String phone;
     private String role_name;
@@ -29,6 +30,14 @@ public class PersonalBean extends InvalidBean implements Serializable {
     private String grade_name;
     private String due_at;
     private int asset_max_num;
+
+    public int getIs_unlimit() {
+        return is_unlimit;
+    }
+
+    public void setIs_unlimit(int is_unlimit) {
+        this.is_unlimit = is_unlimit;
+    }
 
     public String getUser_name() {
         return user_name;

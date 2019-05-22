@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="武汉精臣智慧"
-        android:textColor="@color/black_text"
+        android:textColor="@color/light_gray_text"
         android:textSize="16dp" />
 
 

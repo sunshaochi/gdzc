@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,8 +19,6 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Area;
 import com.gengcon.android.fixedassets.bean.CustomAttrWheelBean;
@@ -38,7 +35,6 @@ import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ImageFactory;
 import com.gengcon.android.fixedassets.util.Logger;
 import com.gengcon.android.fixedassets.util.MyBitmapUtils;
-import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.ActionSheetLayout;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
@@ -57,17 +53,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class AddAssetActivity extends BaseActivity implements AddAssetListView, View.OnClickListener, PickerLinearLayout.OnPickerListener, CustomAttrPickerLinearLayout.OnCustomAttrPickerListener, AreaPickerLinearLayout.OnAreaPickerListener {
 
@@ -749,11 +737,11 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 break;
             case R.id.tv_title_right:
                 try {
-                    if(!object.isNull("photourl")){
+                    if (!object.isNull("photourl")) {
                         object.remove("photourl");
                     }
-                    if(!TextUtils.isEmpty(uploadurl)){
-                        object.put("photourl",uploadurl);
+                    if (!TextUtils.isEmpty(uploadurl)) {
+                        object.put("photourl", uploadurl);
                     }
 
                     jsonObject.put("asset_data", object);
@@ -765,11 +753,13 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             case R.id.customClickLayout:
                 hideSoftInput();
                 List<CustomAttrWheelBean> data = new ArrayList<>();
-                for (int i = 0; i < customList.size(); i++) {
-                    CustomAttrWheelBean bean = new CustomAttrWheelBean();
-                    bean.setId(customList.get(i).getTpl_id());
-                    bean.setName(customList.get(i).getTpl_name());
-                    data.add(bean);
+                if (customList != null) {
+                    for (int i = 0; i < customList.size(); i++) {
+                        CustomAttrWheelBean bean = new CustomAttrWheelBean();
+                        bean.setId(customList.get(i).getTpl_id());
+                        bean.setName(customList.get(i).getTpl_name());
+                        data.add(bean);
+                    }
                 }
                 if (data.size() > 0) {
                     customAttrPicker.setData(data);

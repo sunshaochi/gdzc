@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
@@ -51,6 +52,7 @@ public class StaffManagerPersonAdapter extends RecyclerView.Adapter<StaffManager
 
         final EmpBean empBean = empBeans.get(position);
         holder.dataNameView.setText(empBean.getEmp_name());
+        holder.dataImg.setBackgroundResource(R.drawable.ic_emp);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,9 +71,12 @@ public class StaffManagerPersonAdapter extends RecyclerView.Adapter<StaffManager
 
         TextView dataNameView;
 
+        ImageView dataImg;
+
         public ViewHolder(View view) {
             super(view);
             dataNameView = view.findViewById(R.id.dataNameView);
+            dataImg = view.findViewById(R.id.dataImg);
         }
     }
 

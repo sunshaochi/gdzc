@@ -220,16 +220,6 @@ public class WebActivity extends BasePullRefreshActivity {
     @Override
     protected void initView() {
         super.initView();
-        reloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkConnected(WebActivity.this)) {
-                    mWebView.reload();
-                } else {
-                    ToastUtils.toastMessage(WebActivity.this, "网络连接不可用");
-                }
-            }
-        });
     }
 
     @JavascriptInterface
