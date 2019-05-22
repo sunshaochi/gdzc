@@ -46,6 +46,7 @@ import java.util.TimerTask;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import realid.rfidlib.EmshConstant;
 
 public class RFIDInventoryResultActivity extends BasePullRefreshActivity implements View.OnClickListener, InventoryResultView, BackResult {
@@ -387,7 +388,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         @Override
         public void onReceive(Context context, Intent intent) {
             isConnect = false;
-//            pdView.setTextColor(Color.parseColor("#666666"));
             pdView.setTextColor(getResources().getColor(R.color.gray_no));
             pdView.setEnabled(false);
 
@@ -423,8 +423,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                         dialog.dismiss();
                         dialog = null;
                     }
-//                    pdView.setTextColor(Color.parseColor("#666666"));
-//                    pdView.setEnabled(false);
                 }
             }
         }
@@ -504,27 +502,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         super.onBackPressed();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == Constant.PREVIEW_CODE && resultCode == RESULT_OK) {
-            onBackPressed();
-        } else if (requestCode == Constant.REQUEST_CODE_INVENTORY_MANUAL && resultCode == Constant.RESULT_OK_INVENTORY_MANUAL) {
-            showInfraredDialog();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mControll.close();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mScanReceiver);
-        mPresenter.detachView();
-    }
 
     /**
      * 开始
@@ -559,8 +536,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
             dialog = new RfidDialog(RFIDInventoryResultActivity.this).builder();
             dialog.setTotal((int) noFinishAssetCount);
-            dialog.setNum(realDataMap.size() + "");
-            dialog.setLeft("暂停");
             dialog.setStopClick(new RfidDialog.StopListener() {
                 @Override
                 public void onClick() {
@@ -582,7 +557,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 //                    realDataMap.clear();
 //                    realKeyList.clear();
                     dialog.dismiss();
-                    dialog = null;
+//                    dialog = null;
                 }
             });
 
@@ -612,11 +587,12 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     realDataMap.clear();
                     realKeyList.clear();
                     dialog.dismiss();
-                    dialog = null;
+//                    dialog = null;
                 }
             });
         }
-
+        dialog.setLeft("暂停");
+        dialog.setNum(realKeyList.size() + "");
         dialog.show();
     }
 
@@ -696,8 +672,8 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     realKeyList.add(epc);
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
-                if (realDataMap != null && realDataMap.size() > 0) {
-                    dialog.setNum(realDataMap.size() + "");
+                if (realKeyList != null && realKeyList.size() > 0) {
+                    dialog.setNum(realKeyList.size() + "");
                 } else {
                     dialog.setNum("0");
                 }
@@ -708,7 +684,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     @Override
     protected void onPause() {
         super.onPause();
-        recyclerResources();
+//        recyclerResources();
     }
 
     private void recyclerResources() {
@@ -725,6 +701,31 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 //        MUtil.cancelWaringDialog();
         rfidThread.destoryThread();
         Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Constant.PREVIEW_CODE && resultCode == RESULT_OK) {
+            onBackPressed();
+        } else if (requestCode == Constant.REQUEST_CODE_INVENTORY_MANUAL && resultCode == Constant.RESULT_OK_INVENTORY_MANUAL) {
+            showInfraredDialog();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mControll.close();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mScanReceiver);
+        recyclerResources();//释放rfid相关对象
+        mHandler.removeCallbacks(mBackgroundRunnable);//销毁线程
+        mPresenter.detachView();
     }
 
 
