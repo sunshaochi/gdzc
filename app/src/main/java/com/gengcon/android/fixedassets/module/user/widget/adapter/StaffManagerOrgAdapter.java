@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
@@ -50,6 +51,11 @@ public class StaffManagerOrgAdapter extends RecyclerView.Adapter<StaffManagerOrg
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final OrgBean orgBean = orgBeans.get(position);
         holder.dataNameView.setText(orgBean.getOrg_name()+"("+orgBean.getEmployee_num()+")");
+        if (orgBean.getType() == 1) {
+            holder.dataImg.setBackgroundResource(R.drawable.ic_company);
+        } else if (orgBean.getType() == 2) {
+            holder.dataImg.setBackgroundResource(R.drawable.ic_bumen);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,9 +74,12 @@ public class StaffManagerOrgAdapter extends RecyclerView.Adapter<StaffManagerOrg
 
         TextView dataNameView;
 
+        ImageView dataImg;
+
         public ViewHolder(View view) {
             super(view);
             dataNameView = view.findViewById(R.id.dataNameView);
+            dataImg = view.findViewById(R.id.dataImg);
         }
     }
 

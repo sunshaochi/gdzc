@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
@@ -50,6 +51,11 @@ public class OrgSettingSecondAdapter extends RecyclerView.Adapter<OrgSettingSeco
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final OrgBean orgBean = orgBeans.get(position);
+        if (orgBean.getType() == 1) {
+            holder.dataImg.setBackgroundResource(R.drawable.ic_company);
+        } else if (orgBean.getType() == 2) {
+            holder.dataImg.setBackgroundResource(R.drawable.ic_bumen);
+        }
         holder.dataNameView.setText(orgBean.getOrg_name());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +75,12 @@ public class OrgSettingSecondAdapter extends RecyclerView.Adapter<OrgSettingSeco
 
         TextView dataNameView;
 
+        ImageView dataImg;
+
         public ViewHolder(View view) {
             super(view);
             dataNameView = view.findViewById(R.id.dataNameView);
+            dataImg = view.findViewById(R.id.dataImg);
         }
     }
 

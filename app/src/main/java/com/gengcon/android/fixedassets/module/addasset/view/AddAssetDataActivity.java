@@ -60,7 +60,6 @@ public class AddAssetDataActivity extends BaseActivity implements View.OnClickLi
         } else if (addAssetType == 3) {
             ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.add_asset_use_org);
         }
-        ((TextView) findViewById(R.id.tv_title_text)).setText(R.string.add_asset_org);
         findViewById(R.id.iv_title_left).setOnClickListener(this);
         recyclerView = findViewById(R.id.recyclerview);
         headerRecyclerView = findViewById(R.id.headerRecyclerView);
