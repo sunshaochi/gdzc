@@ -66,6 +66,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 
     private TextView tv_title_text, tv_title_status, tv_title_right;
     private LinearLayout noFinishLayout;
+    private LinearLayout statusLayout;
 
     private InventoryResultPresenter mPresenter;
 
@@ -170,6 +171,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         tv_title_status = findViewById(R.id.tv_title_status);
         tv_title_right = findViewById(R.id.tv_title_right);
         noFinishLayout = findViewById(R.id.noFinishLayout);
+        statusLayout = findViewById(R.id.statusLayout);
         tv_title_text.setText(pd_name);
         tv_title_right.setOnClickListener(this);
         findViewById(R.id.syncDataView).setOnClickListener(this);
@@ -177,17 +179,33 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         findViewById(R.id.pdView).setOnClickListener(this);
         initPdStatus();
         if (assets.size() == 0) {
-            mPresenter.showInventoryResult(pd_no, mPage);
+            if (!isNetworkConnected(this)) {
+                if (pd_status == 4) {
+                    getFinishedFragment(assets);
+                } else {
+                    getNoFinishFragment(assets);
+                }
+            } else {
+                mPresenter.showInventoryResult(pd_no, mPage);
+            }
         } else {
             if (pd_status == 4) {
                 if (isUpdate != 1) {
-                    mPresenter.showInventoryResult(pd_no, mPage);
+                    if (!isNetworkConnected(this)) {
+                        getFinishedFragment(assets);
+                    } else {
+                        mPresenter.showInventoryResult(pd_no, mPage);
+                    }
                 } else {
                     getFinishedFragment(assets);
                 }
             } else if (pd_status == 2) {
                 if (isUpdate != 1) {
-                    mPresenter.showInventoryResult(pd_no, mPage);
+                    if (!isNetworkConnected(this)) {
+                        getNoFinishFragment(assets);
+                    } else {
+                        mPresenter.showInventoryResult(pd_no, mPage);
+                    }
                 } else {
                     getNoFinishFragment(assets);
                 }
@@ -206,17 +224,17 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private void initPdStatus() {
         if (pd_status == 1 || pd_status == 3) {
             tv_title_status.setText(R.string.inventory_doing);
-            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_doing);
+            statusLayout.setBackgroundResource(R.drawable.bg_inventory_doing);
             tv_title_right.setVisibility(View.VISIBLE);
             noFinishLayout.setVisibility(View.VISIBLE);
         } else if (pd_status == 2) {
             tv_title_status.setText(R.string.inventory_wait);
-            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_wait);
+            statusLayout.setBackgroundResource(R.drawable.bg_inventory_wait);
             tv_title_right.setVisibility(View.GONE);
             noFinishLayout.setVisibility(View.GONE);
         } else {
             tv_title_status.setText(R.string.inventory_finished);
-            tv_title_status.setBackgroundResource(R.drawable.bg_inventory_finished);
+            statusLayout.setBackgroundResource(R.drawable.bg_inventory_finished);
             tv_title_right.setVisibility(View.GONE);
             noFinishLayout.setVisibility(View.GONE);
         }
@@ -475,10 +493,14 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
                 .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
                 .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
-        inventoryUpdate.setWp_num((int) wpCount);
-        inventoryUpdate.setYp_num((int) ypCount);
-        inventoryBeanDao.update(inventoryUpdate);
-        finish();
+        if (wpCount == 0 && ypCount == 0) {
+            finish();
+        } else {
+            inventoryUpdate.setWp_num((int) wpCount);
+            inventoryUpdate.setYp_num((int) ypCount);
+            inventoryBeanDao.update(inventoryUpdate);
+            finish();
+        }
         super.onBackPressed();
     }
 

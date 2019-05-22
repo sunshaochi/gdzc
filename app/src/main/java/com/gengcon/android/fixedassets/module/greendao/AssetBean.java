@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.module.greendao;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Unique;
 
 @Entity
 public class AssetBean {
@@ -17,6 +18,8 @@ public class AssetBean {
      */
     @Id(autoincrement = true)
     private Long id;
+    @Unique
+    private String tag;
     private String pd_no;
     private String asset_id;
     private String asset_name;
@@ -27,11 +30,12 @@ public class AssetBean {
     private Integer isScanAsset;
     private String user_id;
 
-    @Generated(hash = 1191670223)
-    public AssetBean(Long id, String pd_no, String asset_id, String asset_name,
-            String asset_code, String photourl, Integer status, Integer pd_status,
-            Integer isScanAsset, String user_id) {
+    @Generated(hash = 236051683)
+    public AssetBean(Long id, String tag, String pd_no, String asset_id,
+            String asset_name, String asset_code, String photourl, Integer status,
+            Integer pd_status, Integer isScanAsset, String user_id) {
         this.id = id;
+        this.tag = tag;
         this.pd_no = pd_no;
         this.asset_id = asset_id;
         this.asset_name = asset_name;
@@ -133,5 +137,13 @@ public class AssetBean {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String getTag() {
+        return this.tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

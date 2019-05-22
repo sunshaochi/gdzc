@@ -297,10 +297,14 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         long ypCount = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.User_id.eq(user_id))
                 .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
                 .where(AssetBeanDao.Properties.Pd_status.eq(2)).count();
-        inventoryUpdate.setWp_num((int) wpCount);
-        inventoryUpdate.setYp_num((int) ypCount);
-        inventoryBeanDao.update(inventoryUpdate);
-        finish();
+        if (wpCount == 0 && ypCount == 0) {
+            finish();
+        } else {
+            inventoryUpdate.setWp_num((int) wpCount);
+            inventoryUpdate.setYp_num((int) ypCount);
+            inventoryBeanDao.update(inventoryUpdate);
+            finish();
+        }
         super.onBackPressed();
     }
 
@@ -381,6 +385,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
             for (int i = 0; i < mResultList.size(); i++) {
                 mResultList.get(i).setPd_no(pd_no);
                 mResultList.get(i).setUser_id(user_id);
+                mResultList.get(i).setTag(pd_no + user_id + mResultList.get(i).getAsset_id());
             }
             assetBeanDao.deleteInTx(assetBeanDao.queryBuilder()
                     .where(assetBeanDao.queryBuilder()
