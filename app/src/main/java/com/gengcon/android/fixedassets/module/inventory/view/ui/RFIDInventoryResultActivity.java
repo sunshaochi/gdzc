@@ -501,6 +501,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mScanReceiver);
+        recyclerResources();//将盘点广播线程在destory中销毁
         mPresenter.detachView();
     }
 
@@ -537,8 +538,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     .where(AssetBeanDao.Properties.Pd_status.eq(1)).count();
             dialog = new RfidDialog(RFIDInventoryResultActivity.this).builder();
             dialog.setTotal((int) noFinishAssetCount);
-            dialog.setNum(realDataMap.size() + "");
-            dialog.setLeft("暂停");
             dialog.setStopClick(new RfidDialog.StopListener() {
                 @Override
                 public void onClick() {
@@ -560,7 +559,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 //                    realDataMap.clear();
 //                    realKeyList.clear();
                     dialog.dismiss();
-                    dialog = null;
+//                    dialog = null;
                 }
             });
 
@@ -590,11 +589,12 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     realDataMap.clear();
                     realKeyList.clear();
                     dialog.dismiss();
-                    dialog = null;
+//                    dialog = null;
                 }
             });
         }
-
+        dialog.setLeft("暂停");
+        dialog.setNum(realKeyList.size() + "");
         dialog.show();
     }
 
@@ -674,8 +674,8 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     realKeyList.add(epc);
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
-                if (realDataMap != null && realDataMap.size() > 0) {
-                    dialog.setNum(realDataMap.size() + "");
+                if (realKeyList != null && realKeyList.size() > 0) {
+                    dialog.setNum(realKeyList.size() + "");
                 } else {
                     dialog.setNum("0");
                 }
@@ -686,7 +686,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     @Override
     protected void onPause() {
         super.onPause();
-        recyclerResources();
+//        recyclerResources();
     }
 
     private void recyclerResources() {
