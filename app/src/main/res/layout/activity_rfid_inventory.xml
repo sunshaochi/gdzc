@@ -21,38 +21,51 @@
             android:paddingRight="15dp"
             android:src="@drawable/ic_back" />
 
-        <TextView
-            android:id="@+id/tv_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:maxWidth="230dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            tools:text="2019年二季度资产盘点季度" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="9dp"
-            android:layout_weight="1">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_title_status"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_inventory_doing"
-                android:paddingLeft="9dp"
-                android:paddingTop="5dp"
-                android:paddingRight="9dp"
-                android:paddingBottom="5dp"
-                android:text="进行中"
-                android:textColor="@color/white"
-                android:textSize="11dp" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/tv_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    tools:text="2019年二季度资产盘点" />
+
+                <LinearLayout
+                    android:id="@+id/statusLayout"
+                    android:layout_width="50dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/bg_inventory_doing"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_title_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="进行中"
+                        android:textColor="@color/white"
+                        android:textSize="11dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_title_right"
@@ -75,9 +88,9 @@
         <FrameLayout
             android:id="@+id/fl"
             android:layout_width="match_parent"
-            android:background="@color/white"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@color/white" />
 
         <LinearLayout
             android:id="@+id/noFinishLayout"
@@ -102,7 +115,7 @@
                 android:layout_width="1sp"
                 android:layout_height="24sp"
                 android:layout_gravity="center"
-                android:background="@color/line_color"/>
+                android:background="@color/line_color" />
 
             <TextView
                 android:id="@+id/pdView"
@@ -119,7 +132,7 @@
                 android:layout_width="1sp"
                 android:layout_height="24sp"
                 android:layout_gravity="center"
-                android:background="@color/line_color"/>
+                android:background="@color/line_color" />
 
 
             <TextView

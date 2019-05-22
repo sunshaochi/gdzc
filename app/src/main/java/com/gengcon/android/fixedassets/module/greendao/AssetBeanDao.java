@@ -23,15 +23,16 @@ public class AssetBeanDao extends AbstractDao<AssetBean, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Pd_no = new Property(1, String.class, "pd_no", false, "PD_NO");
-        public final static Property Asset_id = new Property(2, String.class, "asset_id", false, "ASSET_ID");
-        public final static Property Asset_name = new Property(3, String.class, "asset_name", false, "ASSET_NAME");
-        public final static Property Asset_code = new Property(4, String.class, "asset_code", false, "ASSET_CODE");
-        public final static Property Photourl = new Property(5, String.class, "photourl", false, "PHOTOURL");
-        public final static Property Status = new Property(6, Integer.class, "status", false, "STATUS");
-        public final static Property Pd_status = new Property(7, Integer.class, "pd_status", false, "PD_STATUS");
-        public final static Property IsScanAsset = new Property(8, Integer.class, "isScanAsset", false, "IS_SCAN_ASSET");
-        public final static Property User_id = new Property(9, String.class, "user_id", false, "USER_ID");
+        public final static Property Tag = new Property(1, String.class, "tag", false, "TAG");
+        public final static Property Pd_no = new Property(2, String.class, "pd_no", false, "PD_NO");
+        public final static Property Asset_id = new Property(3, String.class, "asset_id", false, "ASSET_ID");
+        public final static Property Asset_name = new Property(4, String.class, "asset_name", false, "ASSET_NAME");
+        public final static Property Asset_code = new Property(5, String.class, "asset_code", false, "ASSET_CODE");
+        public final static Property Photourl = new Property(6, String.class, "photourl", false, "PHOTOURL");
+        public final static Property Status = new Property(7, Integer.class, "status", false, "STATUS");
+        public final static Property Pd_status = new Property(8, Integer.class, "pd_status", false, "PD_STATUS");
+        public final static Property IsScanAsset = new Property(9, Integer.class, "isScanAsset", false, "IS_SCAN_ASSET");
+        public final static Property User_id = new Property(10, String.class, "user_id", false, "USER_ID");
     }
 
 
@@ -48,15 +49,16 @@ public class AssetBeanDao extends AbstractDao<AssetBean, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ASSET_BEAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"PD_NO\" TEXT," + // 1: pd_no
-                "\"ASSET_ID\" TEXT," + // 2: asset_id
-                "\"ASSET_NAME\" TEXT," + // 3: asset_name
-                "\"ASSET_CODE\" TEXT," + // 4: asset_code
-                "\"PHOTOURL\" TEXT," + // 5: photourl
-                "\"STATUS\" INTEGER," + // 6: status
-                "\"PD_STATUS\" INTEGER," + // 7: pd_status
-                "\"IS_SCAN_ASSET\" INTEGER," + // 8: isScanAsset
-                "\"USER_ID\" TEXT);"); // 9: user_id
+                "\"TAG\" TEXT UNIQUE ," + // 1: tag
+                "\"PD_NO\" TEXT," + // 2: pd_no
+                "\"ASSET_ID\" TEXT," + // 3: asset_id
+                "\"ASSET_NAME\" TEXT," + // 4: asset_name
+                "\"ASSET_CODE\" TEXT," + // 5: asset_code
+                "\"PHOTOURL\" TEXT," + // 6: photourl
+                "\"STATUS\" INTEGER," + // 7: status
+                "\"PD_STATUS\" INTEGER," + // 8: pd_status
+                "\"IS_SCAN_ASSET\" INTEGER," + // 9: isScanAsset
+                "\"USER_ID\" TEXT);"); // 10: user_id
     }
 
     /** Drops the underlying database table. */
@@ -74,49 +76,54 @@ public class AssetBeanDao extends AbstractDao<AssetBean, Long> {
             stmt.bindLong(1, id);
         }
  
+        String tag = entity.getTag();
+        if (tag != null) {
+            stmt.bindString(2, tag);
+        }
+ 
         String pd_no = entity.getPd_no();
         if (pd_no != null) {
-            stmt.bindString(2, pd_no);
+            stmt.bindString(3, pd_no);
         }
  
         String asset_id = entity.getAsset_id();
         if (asset_id != null) {
-            stmt.bindString(3, asset_id);
+            stmt.bindString(4, asset_id);
         }
  
         String asset_name = entity.getAsset_name();
         if (asset_name != null) {
-            stmt.bindString(4, asset_name);
+            stmt.bindString(5, asset_name);
         }
  
         String asset_code = entity.getAsset_code();
         if (asset_code != null) {
-            stmt.bindString(5, asset_code);
+            stmt.bindString(6, asset_code);
         }
  
         String photourl = entity.getPhotourl();
         if (photourl != null) {
-            stmt.bindString(6, photourl);
+            stmt.bindString(7, photourl);
         }
  
         Integer status = entity.getStatus();
         if (status != null) {
-            stmt.bindLong(7, status);
+            stmt.bindLong(8, status);
         }
  
         Integer pd_status = entity.getPd_status();
         if (pd_status != null) {
-            stmt.bindLong(8, pd_status);
+            stmt.bindLong(9, pd_status);
         }
  
         Integer isScanAsset = entity.getIsScanAsset();
         if (isScanAsset != null) {
-            stmt.bindLong(9, isScanAsset);
+            stmt.bindLong(10, isScanAsset);
         }
  
         String user_id = entity.getUser_id();
         if (user_id != null) {
-            stmt.bindString(10, user_id);
+            stmt.bindString(11, user_id);
         }
     }
 
@@ -129,49 +136,54 @@ public class AssetBeanDao extends AbstractDao<AssetBean, Long> {
             stmt.bindLong(1, id);
         }
  
+        String tag = entity.getTag();
+        if (tag != null) {
+            stmt.bindString(2, tag);
+        }
+ 
         String pd_no = entity.getPd_no();
         if (pd_no != null) {
-            stmt.bindString(2, pd_no);
+            stmt.bindString(3, pd_no);
         }
  
         String asset_id = entity.getAsset_id();
         if (asset_id != null) {
-            stmt.bindString(3, asset_id);
+            stmt.bindString(4, asset_id);
         }
  
         String asset_name = entity.getAsset_name();
         if (asset_name != null) {
-            stmt.bindString(4, asset_name);
+            stmt.bindString(5, asset_name);
         }
  
         String asset_code = entity.getAsset_code();
         if (asset_code != null) {
-            stmt.bindString(5, asset_code);
+            stmt.bindString(6, asset_code);
         }
  
         String photourl = entity.getPhotourl();
         if (photourl != null) {
-            stmt.bindString(6, photourl);
+            stmt.bindString(7, photourl);
         }
  
         Integer status = entity.getStatus();
         if (status != null) {
-            stmt.bindLong(7, status);
+            stmt.bindLong(8, status);
         }
  
         Integer pd_status = entity.getPd_status();
         if (pd_status != null) {
-            stmt.bindLong(8, pd_status);
+            stmt.bindLong(9, pd_status);
         }
  
         Integer isScanAsset = entity.getIsScanAsset();
         if (isScanAsset != null) {
-            stmt.bindLong(9, isScanAsset);
+            stmt.bindLong(10, isScanAsset);
         }
  
         String user_id = entity.getUser_id();
         if (user_id != null) {
-            stmt.bindString(10, user_id);
+            stmt.bindString(11, user_id);
         }
     }
 
@@ -184,15 +196,16 @@ public class AssetBeanDao extends AbstractDao<AssetBean, Long> {
     public AssetBean readEntity(Cursor cursor, int offset) {
         AssetBean entity = new AssetBean( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // pd_no
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // asset_id
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // asset_name
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // asset_code
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // photourl
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // status
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // pd_status
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // isScanAsset
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // user_id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // tag
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // pd_no
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // asset_id
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // asset_name
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // asset_code
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // photourl
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // status
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // pd_status
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // isScanAsset
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // user_id
         );
         return entity;
     }
@@ -200,15 +213,16 @@ public class AssetBeanDao extends AbstractDao<AssetBean, Long> {
     @Override
     public void readEntity(Cursor cursor, AssetBean entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setPd_no(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setAsset_id(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setAsset_name(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setAsset_code(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setPhotourl(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setStatus(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setPd_status(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setIsScanAsset(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setUser_id(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setTag(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setPd_no(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setAsset_id(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setAsset_name(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setAsset_code(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setPhotourl(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setStatus(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setPd_status(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setIsScanAsset(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setUser_id(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     @Override
