@@ -71,7 +71,7 @@
                     android:layout_marginLeft="5dp"
                     android:visibility="gone"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ic_clear_button" />
+                    android:background="@drawable/ic_clear_blue" />
 
             </LinearLayout>
         </FrameLayout>
