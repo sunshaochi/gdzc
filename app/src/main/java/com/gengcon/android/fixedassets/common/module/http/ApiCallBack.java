@@ -66,6 +66,8 @@ public abstract class ApiCallBack<M> implements Observer<M> {
                 onFailure(500, "系统繁忙，请稍后重试！");
             } else if (((ResultException) e).getCode().equals("CODE_402")) {
                 onFailure(402, "合同到期");
+            } else if (((ResultException) e).getCode().equals("CODE_406")) {
+                onFailure(406, ((ResultException) e).getMsg());
             } else {
                 onFailure(-1, ((ResultException) e).getMsg());
             }

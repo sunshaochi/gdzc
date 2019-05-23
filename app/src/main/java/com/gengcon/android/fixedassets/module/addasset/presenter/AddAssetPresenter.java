@@ -181,12 +181,16 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 
             @Override
             public void onFinished() {
-                mMvpView.hideLoading();
+                if (isViewAttached()) {
+                    mMvpView.hideLoading();
+                }
             }
 
             @Override
             public void onStart() {
-                mMvpView.showLoading();
+                if (isViewAttached()) {
+                    mMvpView.showLoading();
+                }
             }
         });
     }

@@ -170,7 +170,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
             intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
             startActivity(intent);
         }
-        if (status == 500 || status == 400) {
+        if (status == 500 || status == 400 || status == 406) {
             ToastUtils.toastMessage(this, msg);
         }
     }

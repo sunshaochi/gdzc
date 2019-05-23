@@ -75,7 +75,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private TextView deleteImageView;
     private TextView checkImageView;
 
-
     private TextView classificationView, beOrgView, useOrgView, userNameView, areaNameView, adminView;
     private ImageView classificationClearView, beOrgClearView, useOrgClearView, userNameClearView, areaNameClearView, adminClearView;
     private ImageView classificationArrowView, beOrgArrowView, useOrgArrowView, userNameArrowView, areaNameArrowView, adminArrowView;
@@ -102,6 +101,8 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private String tpl_id = "";
     private String uploadurl = "";//上传到服务器返回来的path
     private LookDialog lookDialog;
+    private List<AddAsset> isNormalMust = new ArrayList<>();
+    private List<AddAssetCustom> isCustomMust = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -285,6 +286,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 editLayoutType1.setTag(asset);
                 if (asset.getIs_required() == 1) {
                     editIsRequiredImg.setVisibility(View.VISIBLE);
+                    isNormalMust.add(asset);
                 } else {
                     editIsRequiredImg.setVisibility(View.GONE);
                 }
@@ -306,6 +308,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 editLayoutType2.setTag(asset);
                 if (asset.getIs_required() == 1) {
                     edit2IsRequiredImg.setVisibility(View.VISIBLE);
+                    isNormalMust.add(asset);
                 } else {
                     edit2IsRequiredImg.setVisibility(View.GONE);
                 }
@@ -324,6 +327,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 imgLayout.setTag(asset);
                 if (asset.getIs_required() == 1) {
                     imgIsRequiredImg.setVisibility(View.VISIBLE);
+                    isNormalMust.add(asset);
                 } else {
                     imgIsRequiredImg.setVisibility(View.GONE);
                 }
@@ -341,6 +345,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 textLayout.setTag(asset);
                 if (asset.getIs_required() == 1) {
                     textIsRequiredImg.setVisibility(View.VISIBLE);
+                    isNormalMust.add(asset);
                 } else {
                     textIsRequiredImg.setVisibility(View.GONE);
                 }
@@ -556,6 +561,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             editLayoutType1.setTag(asset);
             if (asset.getIs_required() == 1) {
                 editIsRequiredImg.setVisibility(View.VISIBLE);
+                isCustomMust.add(asset);
             } else {
                 editIsRequiredImg.setVisibility(View.GONE);
             }
@@ -574,6 +580,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             editLayoutType2.setTag(asset);
             if (asset.getIs_required() == 1) {
                 edit2IsRequiredImg.setVisibility(View.VISIBLE);
+                isCustomMust.add(asset);
             } else {
                 edit2IsRequiredImg.setVisibility(View.GONE);
             }
@@ -592,6 +599,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             imgLayout.setTag(asset);
             if (asset.getIs_required() == 1) {
                 imgIsRequiredImg.setVisibility(View.VISIBLE);
+                isCustomMust.add(asset);
             } else {
                 imgIsRequiredImg.setVisibility(View.GONE);
             }
@@ -609,6 +617,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             textLayout.setTag(asset);
             if (asset.getIs_required() == 1) {
                 textIsRequiredImg.setVisibility(View.VISIBLE);
+                isCustomMust.add(asset);
             } else {
                 textIsRequiredImg.setVisibility(View.GONE);
             }
@@ -747,6 +756,20 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                     jsonObject.put("asset_data", object);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }
+                for (int i = 0; i < isNormalMust.size(); i++) {
+                    String content = isNormalMust.get(i).getContent();
+                    if (TextUtils.isEmpty(content)) {
+                        ToastUtils.toastMessage(this, isNormalMust.get(i).getAttr_name() + "不能为空");
+                        return;
+                    }
+                }
+                for (int i = 0; i < isCustomMust.size(); i++) {
+                    String content = isCustomMust.get(i).getContent();
+                    if (TextUtils.isEmpty(content)) {
+                        ToastUtils.toastMessage(this, isCustomMust.get(i).getAttr_name() + "不能为空");
+                        return;
+                    }
                 }
                 assetPresenter.getAddAsset(jsonObject.toString());
                 break;
