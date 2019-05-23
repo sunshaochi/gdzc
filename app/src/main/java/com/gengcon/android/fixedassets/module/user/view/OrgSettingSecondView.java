@@ -8,7 +8,7 @@ import java.util.List;
 public interface OrgSettingSecondView extends Iview {
     void showOrg(List<OrgBean> orgBeans);
 
-    void addOrg();
+    void addOrg(String msg);
 
     void onFail(String msg);
 

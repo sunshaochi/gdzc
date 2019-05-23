@@ -89,7 +89,10 @@ public class AlertEditDialog extends Dialog {
         }
 
         public void setEditText(String name) {
-            editText.setText(name);
+            if (!TextUtils.isEmpty(name)) {
+                editText.setSelection(name.length());
+                editText.setText(name);
+            }
         }
 
         public AlertEditDialog create() {
@@ -130,8 +133,6 @@ public class AlertEditDialog extends Dialog {
 
                     @Override
                     public void onClick(View view) {
-                        if (mPositiveDismiss)
-                            dialog.dismiss();
                         if (mPositiveListener != null) {
                             mPositiveListener.onClick(dialog, BUTTON_POSITIVE);
                         }

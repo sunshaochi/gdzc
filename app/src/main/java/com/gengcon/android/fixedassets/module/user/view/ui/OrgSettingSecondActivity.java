@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
+import com.gengcon.android.fixedassets.module.addasset.view.AddAssetActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.user.presenter.OrgSettingSecondPresenter;
 import com.gengcon.android.fixedassets.module.user.view.OrgSettingSecondView;
@@ -57,6 +58,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private List<OrgBean> orgDatas;
     private LinearLayout noDataLayout;
     private String companyName;
+    private DialogInterface addDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,7 +154,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
-    public void addOrg() {
+    public void addOrg(String msg) {
+        addDialog.dismiss();
+        ToastUtils.toastMessage(this, msg);
         if (pids.size() == 1) {
             orgSettingSecondPresenter.getOrgSettingList(-1);
         } else {
@@ -303,35 +307,37 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                if (!TextUtils.isEmpty(builder.getEditText())) {
-                    switch (dialogTitle) {
-                        case "新增子公司":
-                            addOrgJson = new JSONObject();
-                            try {
-                                addOrgJson.put("org_name", builder.getEditText());
-                                addOrgJson.put("pid", orgId);
-                                addOrgJson.put("type", 1);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            orgSettingSecondPresenter.addOrg(addOrgJson.toString());
-                            break;
-                        case "新增子部门":
-                            addOrgJson = new JSONObject();
-                            try {
-                                addOrgJson.put("org_name", builder.getEditText());
-                                addOrgJson.put("pid", orgId);
-                                addOrgJson.put("type", 2);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            orgSettingSecondPresenter.addOrg(addOrgJson.toString());
-                            break;
-                        case "编辑":
-                            if (headNames.get(headNames.size() - 1).equals(builder.getEditText())) {
-                                dialog.dismiss();
-                            } else {
+                addDialog = dialog;
+                if (TextUtils.isEmpty(builder.getEditText())) {
+                    ToastUtils.toastMessage(OrgSettingSecondActivity.this, "请输入组织名称");
+                } else {
+                    if (builder.getEditText().length() < 2 || builder.getEditText().length() > 30) {
+                        ToastUtils.toastMessage(OrgSettingSecondActivity.this, "组织名称格式（2-30位，可包含中文，数字，字母，(- _ 、符号) 中英文括号");
+                    } else {
+                        switch (dialogTitle) {
+                            case "新增子公司":
+                                addOrgJson = new JSONObject();
+                                try {
+                                    addOrgJson.put("org_name", builder.getEditText());
+                                    addOrgJson.put("pid", orgId);
+                                    addOrgJson.put("type", 1);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                orgSettingSecondPresenter.addOrg(addOrgJson.toString());
+                                break;
+                            case "新增子部门":
+                                addOrgJson = new JSONObject();
+                                try {
+                                    addOrgJson.put("org_name", builder.getEditText());
+                                    addOrgJson.put("pid", orgId);
+                                    addOrgJson.put("type", 2);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                orgSettingSecondPresenter.addOrg(addOrgJson.toString());
+                                break;
+                            case "编辑":
                                 editOrgJson = new JSONObject();
                                 try {
                                     editOrgJson.put("org_name", builder.getEditText());
@@ -340,11 +346,10 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                                     e.printStackTrace();
                                 }
                                 orgSettingSecondPresenter.editOrg(editOrgJson.toString());
-                            }
-                            break;
+                                break;
+                        }
                     }
                 }
-                dialog.dismiss();
             }
         }, "确定");
         builder.setNegativeButton(new DialogInterface.OnClickListener() {
