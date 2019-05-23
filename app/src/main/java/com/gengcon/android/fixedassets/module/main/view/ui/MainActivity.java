@@ -296,7 +296,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         Intent addAssetIntent = new Intent(MainActivity.this, AddAssetActivity.class);
                         startActivity(addAssetIntent);
                     } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
+                        ToastUtils.toastMessage(this, getString(R.string.user_jurisdiction));
                     }
                 } else {
                     ToastUtils.toastMessage(this, msg);
@@ -361,7 +361,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         Intent approvalIntent = new Intent(MainActivity.this, ApprovalListActivity.class);
                         startActivity(approvalIntent);
                     } else {
-                        ToastUtils.toastMessage(this, "当前您没有权限");
+                        ToastUtils.toastMessage(this, getString(R.string.user_jurisdiction));
                     }
                 } else {
                     ToastUtils.toastMessage(this, msg);

@@ -43,7 +43,7 @@ public class OrgSettingActivity extends BaseActivity implements View.OnClickList
                     Intent intent = new Intent(this, OrgSettingSecondActivity.class);
                     startActivity(intent);
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, getString(R.string.user_jurisdiction));
                 }
                 break;
             case R.id.staffManagerLayout:
@@ -51,7 +51,7 @@ public class OrgSettingActivity extends BaseActivity implements View.OnClickList
                     Intent staffIntent = new Intent(this, StaffMangerActivity.class);
                     startActivity(staffIntent);
                 } else {
-                    ToastUtils.toastMessage(this, "当前您没有权限");
+                    ToastUtils.toastMessage(this, getString(R.string.user_jurisdiction));
                 }
                 break;
         }
