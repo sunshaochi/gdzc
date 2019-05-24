@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.vlayout.DelegateAdapter;
+import com.alibaba.android.vlayout.LayoutHelper;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
@@ -15,17 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class StaffManagerOrgAdapter extends RecyclerView.Adapter<StaffManagerOrgAdapter.ViewHolder> {
+public class StaffManagerOrgAdapter extends DelegateAdapter.Adapter<StaffManagerOrgAdapter.ViewHolder> {
 
     private Context mContext;
     private List<OrgBean> orgBeans;
     private StaffManagerCallback staffManagerCallback;
+    private LayoutHelper layoutHelper;
 
-    public StaffManagerOrgAdapter(Context context) {
+    public StaffManagerOrgAdapter(Context context, LayoutHelper layoutHelper) {
         mContext = context;
         orgBeans = new ArrayList<>();
+        this.layoutHelper = layoutHelper;
     }
 
     public void setCallBack(StaffManagerCallback callBack) {
@@ -50,7 +53,7 @@ public class StaffManagerOrgAdapter extends RecyclerView.Adapter<StaffManagerOrg
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final OrgBean orgBean = orgBeans.get(position);
-        holder.dataNameView.setText(orgBean.getOrg_name()+"("+orgBean.getEmployee_num()+")");
+        holder.dataNameView.setText(orgBean.getOrg_name() + "(" + orgBean.getEmployee_num() + ")");
         if (orgBean.getType() == 1) {
             holder.dataImg.setBackgroundResource(R.drawable.ic_company);
         } else if (orgBean.getType() == 2) {
@@ -68,6 +71,11 @@ public class StaffManagerOrgAdapter extends RecyclerView.Adapter<StaffManagerOrg
     @Override
     public int getItemCount() {
         return orgBeans.size();
+    }
+
+    @Override
+    public LayoutHelper onCreateLayoutHelper() {
+        return layoutHelper;
     }
 
     class ViewHolder extends MyRecyclerView.ViewHolder {

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.vlayout.DelegateAdapter;
+import com.alibaba.android.vlayout.LayoutHelper;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.EmpBean;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
@@ -15,17 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class StaffManagerPersonAdapter extends RecyclerView.Adapter<StaffManagerPersonAdapter.ViewHolder> {
+public class StaffManagerPersonAdapter extends DelegateAdapter.Adapter<StaffManagerPersonAdapter.ViewHolder> {
 
     private Context mContext;
     private List<EmpBean> empBeans;
     private PersonDetailCallback personDetailCallback;
+    private LayoutHelper layoutHelper;
 
-    public StaffManagerPersonAdapter(Context context) {
+    public StaffManagerPersonAdapter(Context context, LayoutHelper layoutHelper) {
         mContext = context;
         empBeans = new ArrayList<>();
+        this.layoutHelper = layoutHelper;
     }
 
     public void setCallBack(PersonDetailCallback callBack) {
@@ -65,6 +68,11 @@ public class StaffManagerPersonAdapter extends RecyclerView.Adapter<StaffManager
     @Override
     public int getItemCount() {
         return empBeans.size();
+    }
+
+    @Override
+    public LayoutHelper onCreateLayoutHelper() {
+        return layoutHelper;
     }
 
     class ViewHolder extends MyRecyclerView.ViewHolder {
