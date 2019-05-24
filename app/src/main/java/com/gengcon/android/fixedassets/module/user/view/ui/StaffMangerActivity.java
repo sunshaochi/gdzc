@@ -171,6 +171,7 @@ public class StaffMangerActivity extends BaseActivity implements View.OnClickLis
         } else {
             noDataLayout.setVisibility(View.GONE);
         }
+        recyclerView.scrollToPosition(0);
         staffManagerOrgAdapter.addDataSource(orgBeans);
         personAdapter.addDataSource(empBeans);
         headerRecyclerView.scrollToPosition(headerAdapter.getItemCount() - 1);
