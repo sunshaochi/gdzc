@@ -90,8 +90,8 @@ public class AlertEditDialog extends Dialog {
 
         public void setEditText(String name) {
             if (!TextUtils.isEmpty(name)) {
-                editText.setSelection(name.length());
                 editText.setText(name);
+                editText.setSelection(name.length());
             }
         }
 
