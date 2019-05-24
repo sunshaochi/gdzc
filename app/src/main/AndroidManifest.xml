@@ -252,6 +252,10 @@
             android:name=".module.inventory.view.ui.RFIDInventoryResultActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".module.user.view.ui.UserWebActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.gengcon.android.fixedassets.fileProvider"

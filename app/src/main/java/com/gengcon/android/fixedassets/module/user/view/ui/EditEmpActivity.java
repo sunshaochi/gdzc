@@ -272,6 +272,22 @@ public class EditEmpActivity extends BaseActivity implements View.OnClickListene
                 onBackPressed();
                 break;
             case R.id.tv_title_right:
+                if (TextUtils.isEmpty(orgNameView.getText())) {
+                    ToastUtils.toastMessage(this, "请选择所属组织");
+                    return;
+                }
+                if (TextUtils.isEmpty(empNameEdit.getText().toString())) {
+                    ToastUtils.toastMessage(this, "请输入员工姓名");
+                    return;
+                }
+                if (TextUtils.isEmpty(empNoEdit.getText().toString())) {
+                    ToastUtils.toastMessage(this, "请输入员工工号");
+                    return;
+                }
+                if (TextUtils.isEmpty(empStateView.getText().toString())) {
+                    ToastUtils.toastMessage(this, "请选择员工当前状态");
+                    return;
+                }
                 editEmpPresenter.getEditEmp(jsonObject.toString());
                 break;
             case R.id.orgNameLayout:

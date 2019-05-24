@@ -70,7 +70,8 @@ public class JCPrinter {
             }
         } else if (label.getSize_id() == 2
                 || label.getSize_id() == 5
-                || label.getSize_id() == 6) {
+                || label.getSize_id() == 6
+                || label.getSize_id() == 7) {
 //            PrinterSubString.substring7050(printList.getTemplate_attr());
             if (label.getQrcode_position() == 1) {
                 flag = printerLabel70501(printList);
@@ -82,6 +83,8 @@ public class JCPrinter {
                 flag = printerLabel70504(printList);
             } else if (label.getQrcode_position() == 5) {
                 flag = printerLabel70505(printList);
+            }else if (label.getQrcode_position() == 6) {
+                flag = printerLabel70506(printList);
             }
         }
         if (!flag) {
@@ -210,6 +213,22 @@ public class JCPrinter {
         mDzAPI.drawText(list.getTemplate_attr().get(0), 2.5, 24, 67, 10, 2.85);
         mDzAPI.drawText(list.getTemplate_attr().get(1), 2.5, 33, 47, 10, 2.85);
         mDzAPI.drawText(list.getTemplate_attr().get(2), 2.5, 42.5, 47, 10, 2.85);
+
+        return mDzAPI.commitJob();
+    }
+
+    private static boolean printerLabel70506(Print.ListBean list) {
+        mDzAPI.startJob(70, 50, 1);
+        mDzAPI.drawRectangle(2, 15, 66, 35, 0.2);
+        mDzAPI.drawLine(50, 32, 50, 50, 0.2);
+        mDzAPI.drawLine(2, 23.5, 68, 23.5, 0.2);
+        mDzAPI.drawLine(2, 32, 68, 32, 0.2);
+        mDzAPI.drawLine(2, 41.5, 50, 41.5, 0.2);
+        mDzAPI.draw2DQRCode(list.getId(), 51, 33, 16);
+        mDzAPI.drawText(list.getTemplate_attr().get(0), 2.5, 17, 67, 10, 2.85);
+        mDzAPI.drawText(list.getTemplate_attr().get(1), 2.5, 25.5, 67, 10, 2.85);
+        mDzAPI.drawText(list.getTemplate_attr().get(2), 2.5, 34, 47, 10, 2.85);
+        mDzAPI.drawText(list.getTemplate_attr().get(3), 2.5, 43.5, 47, 10, 2.85);
 
         return mDzAPI.commitJob();
     }

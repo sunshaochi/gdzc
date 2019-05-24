@@ -292,6 +292,12 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         public void onReceive(Context context, Intent intent) {
             final String scanResult = intent.getStringExtra("value");
             String result = scanResult.replaceAll(" ", "");
+            if (dialog != null) {
+                if (dialog.isShowing()) {
+                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "取消RFID盘点后才可进行红外盘点");
+                    return;
+                }
+            }
             if (!TextUtils.isEmpty(result)) {
                 if (pd_status == 1 || pd_status == 3) {
                     if (result.length() == 24) {

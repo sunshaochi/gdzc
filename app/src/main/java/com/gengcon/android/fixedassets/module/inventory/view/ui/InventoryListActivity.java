@@ -105,6 +105,8 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         noFinishText.setTextColor(getResources().getColor(R.color.blue));
         finishedText.setTextColor(getResources().getColor(R.color.black));
         noFinishView.setVisibility(View.VISIBLE);
+        noFinishList = new ArrayList<>();
+        finishedList = new ArrayList<>();
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -160,8 +162,8 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                 .where(InventoryBeanDao.Properties.User_id.eq(user_id))
                 .orderDesc(InventoryBeanDao.Properties.Created_at)
                 .list();
-        noFinishList = new ArrayList<>();
-        finishedList = new ArrayList<>();
+        noFinishList.clear();
+        finishedList.clear();
         if (!isNetworkConnected(this)) {
             if (dbInventories.size() == 0) {
                 ToastUtils.toastMessage(this, "请检查网络");

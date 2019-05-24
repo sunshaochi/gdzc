@@ -79,7 +79,7 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                 if (isViewAttached()) {
                     if (modelBean.getCode().equals("CODE_200")) {
                         if (modelBean.getData() != null) {
-                            mMvpView.addOrg();
+                            mMvpView.addOrg(modelBean.getMsg());
                         }
                     } else if (modelBean.getCode().equals("CODE_401")) {
                         mMvpView.showInvalidType(2);

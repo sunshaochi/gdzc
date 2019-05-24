@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.vlayout.DelegateAdapter;
+import com.alibaba.android.vlayout.VirtualLayoutManager;
+import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.EmpBean;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
@@ -37,7 +40,6 @@ public class StaffMangerActivity extends BaseActivity implements View.OnClickLis
     private StaffManagerPersonAdapter personAdapter;
     private MyRecyclerView recyclerView;
     private RecyclerView headerRecyclerView;
-    private RecyclerView staffRecyclerView;
     private RecyclerView menuRecyclerView;
     private MenuAdapter staffMenuAdapter;
     private LinearLayout menuLayout;
@@ -76,36 +78,35 @@ public class StaffMangerActivity extends BaseActivity implements View.OnClickLis
         menuGoneView = findViewById(R.id.menuGoneView);
         menuGoneView.setOnClickListener(this);
         recyclerView = findViewById(R.id.orgRecyclerView);
-        staffRecyclerView = findViewById(R.id.staffRecyclerView);
         headerRecyclerView = findViewById(R.id.headerRecyclerView);
         menuLayout = findViewById(R.id.menuLayout);
         menuRecyclerView = findViewById(R.id.menuRecyclerView);
+        final VirtualLayoutManager layoutManager = new VirtualLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        DelegateAdapter delegateAdapter = new DelegateAdapter(layoutManager, false);
         menuRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         staffManagerPresenter = new StaffManagerPresenter();
         staffManagerPresenter.attachView(this);
         staffManagerPresenter.getStaffManagerList(-1);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        staffRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        staffRecyclerView.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider2));
         recyclerView.addItemDecoration(divider);
-        staffRecyclerView.addItemDecoration(divider);
 
         staffMenuAdapter = new MenuAdapter(this);
         staffMenuAdapter.setCallBack(this);
         menuRecyclerView.setAdapter(staffMenuAdapter);
 
-        staffManagerOrgAdapter = new StaffManagerOrgAdapter(this);
+        staffManagerOrgAdapter = new StaffManagerOrgAdapter(this, new LinearLayoutHelper());
         staffManagerOrgAdapter.setCallBack(this);
-        recyclerView.setAdapter(staffManagerOrgAdapter);
+        delegateAdapter.addAdapter(staffManagerOrgAdapter);
 
-        personAdapter = new StaffManagerPersonAdapter(this);
+        personAdapter = new StaffManagerPersonAdapter(this, new LinearLayoutHelper());
         personAdapter.setCallBack(this);
-        staffRecyclerView.setAdapter(personAdapter);
+        delegateAdapter.addAdapter(personAdapter);
+        recyclerView.setAdapter(delegateAdapter);
 
         headerRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         headerAdapter = new StaffHeaderAdapter(this);
@@ -170,6 +171,7 @@ public class StaffMangerActivity extends BaseActivity implements View.OnClickLis
         } else {
             noDataLayout.setVisibility(View.GONE);
         }
+        recyclerView.scrollToPosition(0);
         staffManagerOrgAdapter.addDataSource(orgBeans);
         personAdapter.addDataSource(empBeans);
         headerRecyclerView.scrollToPosition(headerAdapter.getItemCount() - 1);

@@ -69,7 +69,7 @@ public class StaffHeaderAdapter extends RecyclerView.Adapter<StaffHeaderAdapter.
         holder.headerNameView.setText(orgName);
         int index = orgNames.size() - 1;
         if (position == index) {
-            holder.headerNameView.setTextColor(mContext.getResources().getColor(R.color.black_text));
+            holder.headerNameView.setTextColor(mContext.getResources().getColor(R.color.light_gray_text));
             holder.headerNameView.setEnabled(false);
         } else {
             holder.headerNameView.setTextColor(mContext.getResources().getColor(R.color.blue));

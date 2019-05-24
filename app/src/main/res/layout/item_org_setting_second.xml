@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
+            android:singleLine="true"
             android:text="武汉精臣智慧"
             android:textColor="@color/black_text"
             android:textSize="16dp" />

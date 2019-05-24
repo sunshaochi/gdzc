@@ -137,4 +137,8 @@ MtjCirclePluginConfig {
         api 'com.hyphenate:kefu-easeui-android:1.1.9'
         implementation 'org.greenrobot:greendao:3.2.0'
         implementation files('libs/RFIDJar_V1.1.jar')
+
+        implementation ('com.alibaba.android:vlayout:1.2.8@aar') {
+            transitive = true
+        }
     }

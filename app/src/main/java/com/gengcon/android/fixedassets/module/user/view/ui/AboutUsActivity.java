@@ -71,12 +71,12 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 updateVersion();
                 break;
             case R.id.permitLayout:
-                Intent webIntent = new Intent(AboutUsActivity.this, AgreementActivity.class);
+                Intent webIntent = new Intent(AboutUsActivity.this, UserWebActivity.class);
                 webIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.REGISTER_AGREEMENT);
                 startActivity(webIntent);
                 break;
             case R.id.protectLayout:
-                Intent protectIntent = new Intent(AboutUsActivity.this, AgreementActivity.class);
+                Intent protectIntent = new Intent(AboutUsActivity.this, UserWebActivity.class);
                 protectIntent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.SECRET);
                 startActivity(protectIntent);
                 break;
