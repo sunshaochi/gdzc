@@ -584,6 +584,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
                             .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
                     getNoFinishFragment(assets);
+                    dataMap.clear();
                     realDataMap.clear();
                     realKeyList.clear();
                     dialog.dismiss();
