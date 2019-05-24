@@ -134,3 +134,7 @@
 public static java.lang.String TABLENAME;
 }
 -keep class **$Properties
+
+-keep class com.hyphenate.** {*;}
+-dontwarn com.hyphenate.**
+-keep class com.superrtc.** {*;}
