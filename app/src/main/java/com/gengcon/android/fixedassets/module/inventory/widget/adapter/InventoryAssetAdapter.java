@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.Asset;
-import com.gengcon.android.fixedassets.common.OnItemClickListener;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
 import com.gengcon.android.fixedassets.module.inventory.view.OnItemClick;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
@@ -70,24 +69,31 @@ public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAsset
         switch (asset.getStatus()) {
             case Asset.IDEL:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_idel);
+                holder.tvStatus.setText("闲置");
                 break;
             case Asset.PEPAIR:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_perair);
+                holder.tvStatus.setText("维修");
                 break;
             case Asset.IN_USE:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_in_use);
+                holder.tvStatus.setText("在用");
                 break;
             case Asset.SCRAP:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap);
+                holder.tvStatus.setText("报废");
                 break;
             case Asset.LEND:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_lend);
+                holder.tvStatus.setText("借出");
                 break;
             case Asset.SCRAP_AUDITING:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_scrap_auditing);
+                holder.tvStatus.setText("报废待审");
                 break;
             case Asset.ALLOT_AUDITING:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_allot_auditing);
+                holder.tvStatus.setText("调拨待审");
                 break;
         }
     }
