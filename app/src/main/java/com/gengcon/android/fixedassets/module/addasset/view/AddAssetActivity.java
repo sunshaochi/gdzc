@@ -159,7 +159,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 } else {
                     ToastUtils.toastMessage(AddAssetActivity.this, "请先上传图片");
                 }
-
             }
         });
         mActionSheet.setHanlderResultCallback(mOnHandlerResultCallback);
@@ -809,6 +808,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     }
 
     private void getTime(final TextView tv, final AddAsset asset, final ImageView arrowImg, final ImageView clearImg) {
+        hideSoftInput();
         TimePickerView pvTime = new TimePickerView.Builder(AddAssetActivity.this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date2, View v) {//选中事件回调
