@@ -67,14 +67,7 @@ public class SearchAssetAdapter extends RecyclerView.Adapter<SearchAssetAdapter.
         }
         holder.tvName.setText(assetBean.getAsset_name());
         holder.tvId.setText(assetBean.getAsset_code());
-//        holder.tvStatus.setText(asset.getStatus());
         holder.itemView.setTag(position);
-//        Glide.with(mContext).
-//                load(TextUtils.isEmpty(assetBean.getPhotourl()) ? assetBean.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + assetBean.getPhotourl())
-//                .error(R.drawable.ic_default_img)
-//                .placeholder(R.drawable.ic_default_img)
-//                .fallback(R.drawable.ic_default_img)
-//                .into(holder.ivIcon);
         Glide.with(mContext).load(TextUtils.isEmpty(assetBean.getPhotourl()) ? assetBean.getPhotourl() : SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "") + "/" + assetBean.getPhotourl())
                 .apply(new RequestOptions()
                         .error(R.drawable.ic_default_img)
