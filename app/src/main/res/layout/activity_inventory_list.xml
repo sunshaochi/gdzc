@@ -58,10 +58,11 @@
                     android:hint="搜索盘点单名称"
                     android:paddingLeft="10dp"
                     android:textColor="@color/white"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
                     android:textColorHint="#91a8e6"
                     android:textCursorDrawable="@drawable/search_white"
                     android:textSize="14dp" />
-
 
                 <Button
                     android:id="@+id/clearButton"

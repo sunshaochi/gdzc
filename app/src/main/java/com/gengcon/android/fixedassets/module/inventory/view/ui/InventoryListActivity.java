@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -155,6 +157,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                 }
             }
         });
+        search();
     }
 
     public void initData() {
@@ -417,6 +420,20 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         intent.putExtra("pd_status", inventory.getSon_status());
         intent.putExtra("is_update", inventory.getIsUpdate());
         startActivity(intent);
+    }
+
+    private void search() {
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    ((InputMethodManager) InventoryListActivity.this.getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(InventoryListActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+                return false;
+            }
+        });
     }
 
 }

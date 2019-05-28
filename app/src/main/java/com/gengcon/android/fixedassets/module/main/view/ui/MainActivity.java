@@ -510,8 +510,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void showNoticeImgDialog(String url, int model) {
+        String imgUrl = (String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.IMG_URL, "");
         AlertDialog.Builder builder = new AlertDialog.Builder(this, true);
-        builder.setImg(url);
+        builder.setImg(imgUrl + "/" + url);
         if (model == 1) {
             builder.setPositiveButton(new DialogInterface.OnClickListener() {
                 @Override
