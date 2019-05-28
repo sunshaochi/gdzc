@@ -312,7 +312,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                     ToastUtils.toastMessage(OrgSettingSecondActivity.this, "请输入组织名称");
                 } else {
                     if (builder.getEditText().length() < 2 || builder.getEditText().length() > 30) {
-                        ToastUtils.toastMessage(OrgSettingSecondActivity.this, "组织名称格式（2-30位，可包含中文，数字，字母，(- _ 、符号) 中英文括号");
+                        ToastUtils.toastMessage(OrgSettingSecondActivity.this, "组织名称格式错误（2-30位，可包含中文，数字，字母，符号“.-_()”）");
                     } else {
                         switch (dialogTitle) {
                             case "新增子公司":
