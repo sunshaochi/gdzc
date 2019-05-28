@@ -157,6 +157,7 @@ public class AddAssetDataActivity extends BaseActivity implements View.OnClickLi
         orgDatas.add(orgBeans);
         addAssetDataAdapter.addOrgDataSource(orgBeans);
         headerAdapter.addDataSource(headerNames);
+        headerRecyclerView.scrollToPosition(headerAdapter.getItemCount() - 1);
     }
 
     @Override
@@ -166,6 +167,7 @@ public class AddAssetDataActivity extends BaseActivity implements View.OnClickLi
         classificationDatas.add(classificationBeans);
         addAssetDataAdapter.addClassificationDataSource(classificationBeans);
         headerAdapter.addDataSource(headerNames);
+        headerRecyclerView.scrollToPosition(headerAdapter.getItemCount() - 1);
     }
 
     @Override

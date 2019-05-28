@@ -60,7 +60,7 @@ public class AddAssetDataHeaderAdapter extends RecyclerView.Adapter<AddAssetData
         holder.headerNameView.setText(orgName);
         int index = orgNames.size() - 1;
         if (position == index) {
-            holder.headerNameView.setTextColor(mContext.getResources().getColor(R.color.black_text));
+            holder.headerNameView.setTextColor(mContext.getResources().getColor(R.color.light_gray_text));
         } else {
             holder.headerNameView.setTextColor(mContext.getResources().getColor(R.color.blue));
         }

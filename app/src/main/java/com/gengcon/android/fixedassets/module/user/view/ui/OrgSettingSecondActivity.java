@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
-import com.gengcon.android.fixedassets.module.addasset.view.AddAssetActivity;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.user.presenter.OrgSettingSecondPresenter;
 import com.gengcon.android.fixedassets.module.user.view.OrgSettingSecondView;
