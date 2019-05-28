@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -296,6 +297,8 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 mStack.push(editLayoutType1);
                 if (asset.getAttr_id().equals("asset_code")) {
                     assetCodeView = editText;
+                } else if (asset.getAttr_id().equals("asset_name")) {
+                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 }
                 editClearButton1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -887,7 +890,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 //                        .setTitleBgColor(0xFF333333)//标题背景颜色 Night mode
 //                        .setBgColor(0xFF000000)//滚轮背景颜色 Night mode
 //                        .setContentTextSize(18)//滚轮文字大小
-                        .setTextColorCenter(getResources().getColor(R.color.blue))//设置选中项的颜色
+                .setTextColorCenter(getResources().getColor(R.color.blue))//设置选中项的颜色
                 .setTextColorCenter(getResources().getColor(R.color.blue))//设置选中项的颜色
 //                        .setLineSpacingMultiplier(1.6f)//设置两横线之间的间隔倍数
 //                        .setLinkage(false)//设置是否联动，默认true
