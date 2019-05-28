@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gengcon.android.fixedassets.R;
-import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.util.DensityUtils;
 
 public class AlertDialog extends Dialog {
@@ -223,7 +222,7 @@ public class AlertDialog extends Dialog {
             dialog.setCanceledOnTouchOutside(false);
             dialog.setContentView(mContentView);
             Glide.with(mContext)
-                    .load(URL.BASE_URL + url)
+                    .load(url)
                     .into(imgView);
 
             if (TextUtils.isEmpty(mPositiveText)) {
