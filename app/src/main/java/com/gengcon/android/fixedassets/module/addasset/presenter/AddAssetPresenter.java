@@ -292,24 +292,26 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
         subscribe(upLoadModel.upLoadPhoto(file), new ApiCallBack<Bean<UpLoadBean>>() {
             @Override
             public void onSuccess(Bean<UpLoadBean> modelBean) {
-                mMvpView.hideLoading();
+                if (isViewAttached()) {
+                    mMvpView.hideLoading();
 //                Logger.i("结果",modelBean.toString());
-                if (modelBean.getCode().equals("CODE_200")) {
-                    if (modelBean.getData() != null) {
-                        mMvpView.upLoadingSuc(modelBean.getData().getPath());
-                    }
-                } else {
-                    mMvpView.upLoadingFai();
-                    if (modelBean.getCode().equals("CODE_401")) {
-                        String json = modelBean.getData().toString();
-                        Gson gson = new Gson();
-                        InvalidBean invalidBean = gson.fromJson(json, InvalidBean.class);
-                        mMvpView.showInvalidType(invalidBean.getInvalid_type());
+                    if (modelBean.getCode().equals("CODE_200")) {
+                        if (modelBean.getData() != null) {
+                            mMvpView.upLoadingSuc(modelBean.getData().getPath());
+                        }
                     } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+                        mMvpView.upLoadingFai();
+                        if (modelBean.getCode().equals("CODE_401")) {
+                            String json = modelBean.getData().toString();
+                            Gson gson = new Gson();
+                            InvalidBean invalidBean = gson.fromJson(json, InvalidBean.class);
+                            mMvpView.showInvalidType(invalidBean.getInvalid_type());
+                        } else {
+                            mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+                        }
                     }
-                }
 
+                }
             }
 
             @Override
