@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -92,6 +93,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rfid_inventory);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         pd_no = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID);
         pd_name = getIntent().getStringExtra("pd_name");
         pd_status = getIntent().getIntExtra("pd_status", -1);
@@ -741,7 +743,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     }
 
 
-    private class MyAsyncTask extends AsyncTask<String,Void,List<AssetBean>>{
+    private class MyAsyncTask extends AsyncTask<String, Void, List<AssetBean>> {
 
         @Override
         protected List<AssetBean> doInBackground(String... strings) {
