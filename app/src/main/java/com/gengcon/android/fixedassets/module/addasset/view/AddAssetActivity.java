@@ -103,6 +103,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private LookDialog lookDialog;
     private List<AddAsset> isNormalMust = new ArrayList<>();
     private List<AddAssetCustom> isCustomMust = new ArrayList<>();
+    private List<Area> allAreas = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -437,7 +438,11 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                             areaNameView = textName;
                             areaNameClearView = clearImg;
                             areaNameArrowView = arrowImg;
-                            areaPickerLinearLayout.setVisibility(View.VISIBLE);
+                            if (allAreas.size() > 0) {
+                                areaPickerLinearLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                ToastUtils.toastMessage(AddAssetActivity.this, "请设置区域内容");
+                            }
                         }
                     }
                 });
@@ -724,6 +729,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
     @Override
     public void initArea(List<Area> areas) {
+        allAreas.clear();
         List<WheelBean> data = new ArrayList<>();
         for (int i = 0; i < areas.size(); i++) {
             WheelBean bean = new WheelBean();
@@ -732,6 +738,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             data.add(bean);
         }
         if (data.size() > 0) {
+            allAreas.addAll(areas);
             areaPickerLinearLayout.setData(data);
         }
         areaPickerLinearLayout.setOnSelectListener(this);
