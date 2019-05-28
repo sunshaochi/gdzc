@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.ResultAsset;
+import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
@@ -36,6 +38,8 @@ import com.gengcon.android.fixedassets.util.Logger;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.InfraredDialog;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -400,8 +404,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             if (EmshConstant.Action.INTENT_EMSH_BROADCAST.equalsIgnoreCase(intent.getAction())) {
                 int sessionStatus = intent.getIntExtra("SessionStatus", 0);
                 int batteryPowerMode = intent.getIntExtra("BatteryPowerMode", -1);
-//                Logger.e("监控把枪状态","action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode);
-//                ToastUtils.toastMessage(InventoryAct.this,"监控把枪状态"+" action= "+intent.getAction()+" sessionStatus = " + sessionStatus + "  batteryPowerMode  = " + batteryPowerMode+"");
                 if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
                     isConnect = true;
                     pdView.setTextColor(Color.parseColor("#333333"));
@@ -413,17 +415,16 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     currentStatue = batteryPowerMode;
                     switch (batteryPowerMode) {
                         case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_STANDBY://0
-//                            MUtil.cancelWaringDialog();
                             GApplication.getInstance().getIdataLib().powerOn();
-                            GApplication.getInstance().getIdataLib().powerSet(30);
-//                                GApplication.getInstance().getIdataLib().powerSet(30);
                             break;
                         case EmshConstant.EmshBatteryPowerMode.EMSH_PWR_MODE_DSG_UHF://2
+                            GApplication.getInstance().getIdataLib().powerSet(30);
+//                            MUtil.show("上电成功..."+"功率=="+GApplication.getInstance().getIdataLib().powerGet());
                             MUtil.show("上电成功...");
                             break;
                     }
-                } else {//未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
-//                    isConnect = false;
+                } else {
+                    //未上电的action="android.intent.extra.EMSH_STATUS" sessionStatus = 0 batteryPowerMode  = 0
                     stopRFID();
                     if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
@@ -571,29 +572,32 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 @Override
                 public void onClick() {
                     stopRFID();
-                    if (realKeyList.size() > 0) {
-                        for (int i = 0; i < realKeyList.size(); i++) {
-                            AssetBean asset = assetBeanDao.queryBuilder()
-                                    .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                                    .where(AssetBeanDao.Properties.User_id.eq(user_id))
-                                    .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i).toLowerCase()))
-                                    .unique();
-                            if (asset != null) {
-                                if (asset.getPd_status() != 2) {
-                                    asset.setPd_status(2);
-                                    asset.setIsScanAsset(1);
-                                    assetBeanDao.update(asset);
-                                }
-                            }
-                        }
-                    }
-                    assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                            .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
-                    getNoFinishFragment(assets);
-                    dataMap.clear();
-                    realDataMap.clear();
-                    realKeyList.clear();
                     dialog.dismiss();
+                    new MyAsyncTask().execute();
+//                    if (realKeyList.size() > 0) {
+//                        for (int i = 0; i < realKeyList.size(); i++) {
+//                            AssetBean asset = assetBeanDao.queryBuilder()
+//                                    .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+//                                    .where(AssetBeanDao.Properties.User_id.eq(user_id))
+//                                    .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i).toLowerCase()))
+//                                    .unique();
+//                            if (asset != null) {
+//                                if (asset.getPd_status() != 2) {
+//                                    asset.setPd_status(2);
+//                                    asset.setIsScanAsset(1);
+//                                    assetBeanDao.update(asset);
+//                                }
+//                            }
+//                        }
+//                    }
+//                    assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+//                            .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
+//                    getNoFinishFragment(assets);
+//                    dataMap.clear();
+//                    realDataMap.clear();
+//                    realKeyList.clear();
+//                    dialog.dismiss();
+
 //                    dialog = null;
                 }
             });
@@ -602,6 +606,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         dialog.setNum(realKeyList.size() + "");
         dialog.show();
     }
+
 
     private void showInfraredDialog() {
         long noFinishAssetCount = assetBeanDao.queryBuilder()
@@ -736,4 +741,46 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     }
 
 
+    private class MyAsyncTask extends AsyncTask<String,Void,List<AssetBean>>{
+
+        @Override
+        protected List<AssetBean> doInBackground(String... strings) {
+            if (realKeyList.size() > 0) {
+                for (int i = 0; i < realKeyList.size(); i++) {
+                    AssetBean asset = assetBeanDao.queryBuilder()
+                            .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                            .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                            .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i).toLowerCase()))
+                            .unique();
+                    if (asset != null) {
+                        if (asset.getPd_status() != 2) {
+                            asset.setPd_status(2);
+                            asset.setIsScanAsset(1);
+                            assetBeanDao.update(asset);
+                        }
+                    }
+                }
+            }
+            assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                    .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
+
+            return assets;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected void onPostExecute(List<AssetBean> assetBeans) {
+            super.onPostExecute(assetBeans);
+            hideLoading();
+            getNoFinishFragment(assets);
+            dataMap.clear();
+            realDataMap.clear();
+            realKeyList.clear();
+        }
+    }
 }
