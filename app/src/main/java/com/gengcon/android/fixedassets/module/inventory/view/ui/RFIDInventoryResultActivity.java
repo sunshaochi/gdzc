@@ -479,11 +479,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
                 break;
             case R.id.pdView:
-//                if (isConnect) {
-//                    startRFID();
-//                } else {
-//                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "电源无法开启");
-//                }
                 startRFID();
                 break;
         }
@@ -511,7 +506,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         super.onBackPressed();
     }
 
-
     /**
      * 开始
      */
@@ -522,7 +516,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             showRfidInventoryingDialog();
             rfidThread.setIfPostMsg(true);
         }
-
     }
 
     /**
@@ -609,7 +602,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         dialog.show();
     }
 
-
     private void showInfraredDialog() {
         long noFinishAssetCount = assetBeanDao.queryBuilder()
                 .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
@@ -665,7 +657,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             dataMap.put(epc, ++newNB);
             updateUI(epc, newNB);
         }
-
     }
 
     /**
@@ -717,7 +708,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constant.PREVIEW_CODE && resultCode == RESULT_OK) {
@@ -741,7 +731,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         mHandler.removeCallbacks(mBackgroundRunnable);//销毁线程
         mPresenter.detachView();
     }
-
 
     private class MyAsyncTask extends AsyncTask<String, Void, List<AssetBean>> {
 
