@@ -166,10 +166,9 @@ public class ScanActivity extends Activity implements Callback, CaptureActivityH
      */
     protected void switchLight() {
         boolean isCameraNull = CameraManager.get().isCameraNull();
-//        if (isCameraNull) {
-//            requestPermissions();
-//            return;
-//        }
+        if (isCameraNull) {
+            return;
+        }
         mIsLight = CameraManager.get().switchLight(!mIsLight);
         if (mIsLight) {
             ((ImageView) findViewById(R.id.iv_light)).setImageResource(R.drawable.ic_light_press);

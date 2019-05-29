@@ -16,6 +16,7 @@ import com.gengcon.android.fixedassets.module.greendao.AssetBean;
 import com.gengcon.android.fixedassets.module.inventory.view.OnItemClick;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.InventoryAssetAdapter;
 import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -198,8 +199,12 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
 
     @Override
     public void onItemClick(String assetId) {
-        Intent intent = new Intent(getActivity(), AssetDetailsActivity.class);
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.INVENTORY_ASSET_DETAIL + assetId + "&doc_no=" + pd_no);
-        startActivity(intent);
+        if (isNetworkConnected(getActivity())) {
+            Intent intent = new Intent(getActivity(), AssetDetailsActivity.class);
+            intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.INVENTORY_ASSET_DETAIL + assetId + "&doc_no=" + pd_no);
+            startActivity(intent);
+        } else {
+            ToastUtils.toastMessage(getActivity(), "网络连接不给力,请检查您的网络");
+        }
     }
 }

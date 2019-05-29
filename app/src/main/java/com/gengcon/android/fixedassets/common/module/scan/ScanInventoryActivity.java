@@ -171,6 +171,9 @@ public class ScanInventoryActivity extends Activity implements Callback, Capture
      */
     protected void switchLight() {
         boolean isCameraNull = CameraManager.get().isCameraNull();
+        if (isCameraNull) {
+            return;
+        }
         mIsLight = CameraManager.get().switchLight(!mIsLight);
         if (mIsLight) {
             ((ImageView) findViewById(R.id.iv_light)).setImageResource(R.drawable.ic_light_press);

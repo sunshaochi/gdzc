@@ -45,13 +45,11 @@ import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.module.main.view.HomeView;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
-import com.tbruyelle.rxpermissions2.Permission;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, HomeView {
@@ -85,6 +83,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         String testDeviceId = StatService.getTestDeviceId(this);
         // 日志输出
         android.util.Log.d("BaiduMobStat", "Test DeviceId : " + testDeviceId);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
@@ -262,7 +266,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.iv_title_right:
                 if (isNetworkConnected(this)) {
-                    requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
+                    methodRequiresCameraPermission();
                 } else {
                     ToastUtils.toastMessage(this, msg);
                 }
@@ -387,22 +391,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onStop();
         unregisterReceiver(mScanReceiver);
     }
-
-    private Consumer<Permission> mCamearConsumer = new Consumer<Permission>() {
-        @Override
-        public void accept(Permission permission) throws Exception {
-            if (permission.granted) {
-                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                intent.putExtra(Constant.INTENT_EXTRA_KEY_SCAN_MODE, ScanActivity.QR_SCAN_LOGIN_MODE);
-                startActivityForResult(intent, Constant.REQ_QR_CODE);
-            } else if (permission.shouldShowRequestPermissionRationale) {
-                ToastUtils.toastMessage(MainActivity.this, R.string.permission_camera_tips);
-                requestPermission(this, Manifest.permission.CAMERA);
-            } else {
-                ToastUtils.toastMessage(MainActivity.this, R.string.permission_camera_tips);
-            }
-        }
-    };
 
     private void isAssetId(final String assetId) {
         final AssetDetailModel mode = new AssetDetailModel();
@@ -571,6 +559,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
             }, "我知道了");
         }
+        builder.show();
+    }
+
+    private void methodRequiresCameraPermission() {
+        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+            intent.putExtra(Constant.INTENT_EXTRA_KEY_SCAN_MODE, ScanActivity.QR_SCAN_LOGIN_MODE);
+            startActivityForResult(intent, Constant.REQ_QR_CODE);
+        } else {
+            showCameraDialog();
+        }
+    }
+
+    public void showCameraDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
+        builder.setTitle("提示");
+        String content = "您暂未开启相机权限，请在设置" + "\n" + "中开启相机权限";
+        builder.setText(content);
+        builder.setUpDate(false);
+        builder.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, "确定");
         builder.show();
     }
 }

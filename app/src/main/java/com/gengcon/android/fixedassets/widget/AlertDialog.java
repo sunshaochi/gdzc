@@ -154,8 +154,13 @@ public class AlertDialog extends Dialog {
             dialog.setCanceledOnTouchOutside(false);
             dialog.setContentView(mContentView);
             if (mText.contains("\n")) {
-                mTvText.setGravity(Gravity.LEFT | Gravity.CENTER);
-                mTvText.setPadding(DensityUtils.dp2px(mContext, isUpdate ? 20 : 50), 0, 0, 0);
+                if (mText.contains("相机权限")) {
+                    mTvText.setGravity(Gravity.CENTER);
+                    mTvText.setPadding(DensityUtils.dp2px(mContext, 20), 0, DensityUtils.dp2px(mContext, 20), 0);
+                } else {
+                    mTvText.setGravity(Gravity.LEFT | Gravity.CENTER);
+                    mTvText.setPadding(DensityUtils.dp2px(mContext, isUpdate ? 20 : 50), 0, 0, 0);
+                }
             }
             mTvText.setText(mText);
             if (TextUtils.isEmpty(mTitle)) {
