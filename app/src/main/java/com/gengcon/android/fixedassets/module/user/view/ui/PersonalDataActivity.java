@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 
 public class PersonalDataActivity extends BaseActivity implements View.OnClickListener, PersonalView {
 
-    private TextView nameView, phoneView, companyNameView, industryView, powerView, versionNameView, dueTimeView, maxAssetNumView, maxTextView;
+    private TextView nameView, phoneView, companyNameView, industryView, powerView, versionNameView, maxAssetNumView;
     private PersonalPresenter presenter;
 
     @Override
@@ -45,9 +45,9 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         industryView = findViewById(R.id.industryView);
         powerView = findViewById(R.id.powerView);
         versionNameView = findViewById(R.id.versionNameView);
-        dueTimeView = findViewById(R.id.dueTimeView);
+//        dueTimeView = findViewById(R.id.dueTimeView);
         maxAssetNumView = findViewById(R.id.maxAssetNumView);
-        maxTextView = findViewById(R.id.maxTextView);
+//        maxTextView = findViewById(R.id.maxTextView);
         presenter = new PersonalPresenter();
         presenter.attachView(this);
         presenter.getUserData();
@@ -85,17 +85,16 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         if (!TextUtils.isEmpty(data.getVersion_name())) {
             versionNameView.setText(data.getVersion_name());
         }
-        if (!TextUtils.isEmpty(data.getDue_at())) {
-            dueTimeView.setText(data.getDue_at());
-        }
+//        if (!TextUtils.isEmpty(data.getDue_at())) {
+//            dueTimeView.setText(data.getDue_at());
+//        }
         if (data.getIs_unlimit() == 0) {
             maxAssetNumView.setText(data.getAsset_max_num() + "");
-            maxTextView.setVisibility(View.GONE);
+//            maxTextView.setVisibility(View.GONE);
         } else {
             maxAssetNumView.setText("无限制");
-            maxTextView.setVisibility(View.VISIBLE);
+//            maxTextView.setVisibility(View.VISIBLE);
         }
-
     }
 
     private void loginOut() {
