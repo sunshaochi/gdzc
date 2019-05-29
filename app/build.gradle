@@ -134,7 +134,8 @@ MtjCirclePluginConfig {
         api fileTree(dir: 'libs', include: ['*.jar'])
         //环信客服SDK
         // api 'com.hyphenate:kefu-easeui-android:latest.release' //或者 compile 'com.hyphenate:kefu-easeui-android:1.1.9'
-        api 'com.hyphenate:kefu-easeui-android:1.1.9'
+//        api 'com.hyphenate:kefu-easeui-android:1.1.9'
+        api 'com.hyphenate:kefu-easeui-android:1.1.9r2'
         implementation 'org.greenrobot:greendao:3.2.0'
         implementation files('libs/RFIDJar_V1.1.jar')
 
