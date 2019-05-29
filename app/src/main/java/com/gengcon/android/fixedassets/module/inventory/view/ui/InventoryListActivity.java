@@ -23,11 +23,11 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.ResultInventory;
-import com.gengcon.android.fixedassets.common.ItemTouchListener;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.greendao.InventoryBean;
 import com.gengcon.android.fixedassets.module.greendao.InventoryBeanDao;
+import com.gengcon.android.fixedassets.module.inventory.view.InventoryItemListener;
 import com.gengcon.android.fixedassets.module.inventory.view.InventoryListView;
 import com.gengcon.android.fixedassets.module.inventory.presenter.InventoryListPresenter;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.InventoryAdapter;
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class InventoryListActivity extends BaseActivity implements View.OnClickListener, InventoryListView, ItemTouchListener {
+public class InventoryListActivity extends BaseActivity implements View.OnClickListener, InventoryListView, InventoryItemListener {
 
     private MyRecyclerView recyclerView;
     private InventoryAdapter mAdapter;
@@ -99,7 +99,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new InventoryAdapter(this);
-        mAdapter.setItemTouchListener(this);
+        mAdapter.setInventoryItemListener(this);
         recyclerView.setAdapter(mAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(getResources().getDrawable(R.drawable.asset_divider4));
@@ -408,23 +408,6 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         initSelect();
     }
 
-    @Override
-    public void onItemClick(int position) {
-        InventoryBean inventory = mAdapter.getItem(position);
-        Intent intent = new Intent();
-        if (CheckTypeUtils.isPhoneOrEquipment()) {
-            intent.setClass(this, RFIDInventoryResultActivity.class);
-        } else {
-//            Intent intent = new Intent(this, InventoryResultActivity.class);
-            intent.setClass(this, InventoryResultActivity.class);
-        }
-        intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, inventory.getPd_no());
-        intent.putExtra("pd_name", inventory.getPd_name());
-        intent.putExtra("pd_status", inventory.getSon_status());
-        intent.putExtra("is_update", inventory.getIsUpdate());
-        startActivity(intent);
-    }
-
     private void search() {
         searchEdit.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -439,4 +422,19 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
         });
     }
 
+    @Override
+    public void onItemClick(InventoryBean inventory) {
+        Intent intent = new Intent();
+        if (CheckTypeUtils.isPhoneOrEquipment()) {
+            intent.setClass(this, RFIDInventoryResultActivity.class);
+        } else {
+//            Intent intent = new Intent(this, InventoryResultActivity.class);
+            intent.setClass(this, InventoryResultActivity.class);
+        }
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, inventory.getPd_no());
+        intent.putExtra("pd_name", inventory.getPd_name());
+        intent.putExtra("pd_status", inventory.getSon_status());
+        intent.putExtra("is_update", inventory.getIsUpdate());
+        startActivity(intent);
+    }
 }

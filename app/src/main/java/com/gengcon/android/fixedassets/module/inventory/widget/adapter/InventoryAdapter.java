@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.ResultInventory;
-import com.gengcon.android.fixedassets.common.ItemTouchListener;
 import com.gengcon.android.fixedassets.module.greendao.InventoryBean;
+import com.gengcon.android.fixedassets.module.inventory.view.InventoryItemListener;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.List;
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> implements View.OnClickListener {
 
     private Context mContext;
-    private ItemTouchListener mItemTouchListener;
+    private InventoryItemListener itemListener;
     private List<InventoryBean> mInventorys;
 
     public InventoryAdapter(Context context) {
@@ -32,8 +32,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         mInventorys = new ArrayList<>();
     }
 
-    public void setItemTouchListener(ItemTouchListener mItemTouchListener) {
-        this.mItemTouchListener = mItemTouchListener;
+    public void setInventoryItemListener(InventoryItemListener itemListener) {
+        this.itemListener = itemListener;
     }
 
     public void addDataSource(List<InventoryBean> list) {
@@ -100,7 +100,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemTouchListener.onItemClick(position);
+                itemListener.onItemClick(inventory);
             }
         });
     }
@@ -113,10 +113,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     @Override
     public void onClick(View view) {
 
-    }
-
-    public InventoryBean getItem(int i) {
-        return mInventorys.get(i);
     }
 
     class ViewHolder extends MyRecyclerView.ViewHolder {
