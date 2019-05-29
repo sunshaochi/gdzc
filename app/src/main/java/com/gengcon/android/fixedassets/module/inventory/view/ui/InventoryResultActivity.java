@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.module.inventory.view.ui;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -10,7 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import io.reactivex.functions.Consumer;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -34,8 +35,8 @@ import com.gengcon.android.fixedassets.module.inventory.presenter.InventoryResul
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
+import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.gengcon.android.fixedassets.widget.InfraredDialog;
-import com.tbruyelle.rxpermissions2.Permission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -245,7 +246,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
                 mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
                 break;
             case R.id.pdView:
-                requestPermission(mCamearConsumer, Manifest.permission.CAMERA);
+                methodRequiresCameraPermission();
                 break;
         }
     }
@@ -438,22 +439,32 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         mPresenter.showInventoryResult(pd_no, mPage);
     }
 
-    private Consumer<Permission> mCamearConsumer = new Consumer<Permission>() {
-        @Override
-        public void accept(Permission permission) throws Exception {
-            if (permission.granted) {
-                Intent intentScan = new Intent(InventoryResultActivity.this, ScanInventoryActivity.class);
-                intentScan.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
-                intentScan.putExtra("user_id", user_id);
-                startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
-            } else if (permission.shouldShowRequestPermissionRationale) {
-                ToastUtils.toastMessage(InventoryResultActivity.this, R.string.permission_camera_tips);
-                requestPermission(this, Manifest.permission.CAMERA);
-            } else {
-                ToastUtils.toastMessage(InventoryResultActivity.this, R.string.permission_camera_tips);
-            }
+    private void methodRequiresCameraPermission() {
+        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            Intent intentScan = new Intent(InventoryResultActivity.this, ScanInventoryActivity.class);
+            intentScan.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
+            intentScan.putExtra("user_id", user_id);
+            startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
+        } else {
+            showCameraDialog();
         }
-    };
+    }
+
+    public void showCameraDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
+        builder.setTitle("提示");
+        String content = "您暂未开启相机权限，请在设置" + "\n" + "中开启相机权限";
+        builder.setText(content);
+        builder.setUpDate(false);
+        builder.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, "确定");
+        builder.show();
+    }
 
     @Override
     public void keepSonAuditFailed(int type, String msg) {
