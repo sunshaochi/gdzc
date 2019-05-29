@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -103,6 +104,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private LookDialog lookDialog;
     private List<AddAsset> isNormalMust = new ArrayList<>();
     private List<AddAssetCustom> isCustomMust = new ArrayList<>();
+    private List<Area> allAreas = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -295,6 +297,8 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 mStack.push(editLayoutType1);
                 if (asset.getAttr_id().equals("asset_code")) {
                     assetCodeView = editText;
+                } else if (asset.getAttr_id().equals("asset_name")) {
+                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 }
                 editClearButton1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -437,7 +441,11 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                             areaNameView = textName;
                             areaNameClearView = clearImg;
                             areaNameArrowView = arrowImg;
-                            areaPickerLinearLayout.setVisibility(View.VISIBLE);
+                            if (allAreas.size() > 0) {
+                                areaPickerLinearLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                ToastUtils.toastMessage(AddAssetActivity.this, "请设置区域内容");
+                            }
                         }
                     }
                 });
@@ -689,7 +697,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             data.add(bean);
         }
         if (data.size() > 0) {
-            userPicker.setData(data);
+            userPicker.setData(data, 1);
         }
         userPicker.setOnSelectListener(this);
     }
@@ -724,6 +732,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
 
     @Override
     public void initArea(List<Area> areas) {
+        allAreas.clear();
         List<WheelBean> data = new ArrayList<>();
         for (int i = 0; i < areas.size(); i++) {
             WheelBean bean = new WheelBean();
@@ -732,6 +741,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
             data.add(bean);
         }
         if (data.size() > 0) {
+            allAreas.addAll(areas);
             areaPickerLinearLayout.setData(data);
         }
         areaPickerLinearLayout.setOnSelectListener(this);
@@ -827,14 +837,17 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 .setCancelText("取消")//取消按钮文字
                 .setSubmitText("确定")//确认按钮文字
                 .setContentSize(20)//滚轮文字大小
-                .setTitleSize(20)//标题文字大小
-//                        .setTitleText("请选择时间")//标题文字
+                .setSubCalSize(17)
+                .setTitleSize(17)//标题文字大小
+                .setTitleText(asset.getAttr_name())//标题文字
                 .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(true)//是否循环滚动
-                .setTextColorCenter(Color.BLACK)//设置选中项的颜色
-                .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.BLUE)//确定按钮文字颜色
-                .setCancelColor(Color.BLUE)//取消按钮文字颜色
+                .setTextColorCenter(getResources().getColor(R.color.blue))//设置选中项的颜色
+                .setTitleColor(getResources().getColor(R.color.blue))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.blue))//取消按钮文字颜色
+                .setTextColorCenter(getResources().getColor(R.color.blue))
+                .setDividerColor(getResources().getColor(R.color.blue))
 //                        .setTitleBgColor(0xFF666666)//标题背景颜色 Night mode
 //                        .setBgColor(0xFF333333)//滚轮背景颜色 Night mode
 //                        .setRange(calendar.get(Calendar.YEAR) - 20, calendar.get(Calendar.YEAR) + 20)//默认是1900-2100年
@@ -867,17 +880,18 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         })
                 .setSubmitText("确定")//确定按钮文字
                 .setCancelText("取消")//取消按钮文字
-//                        .setTitleText("城市选择")//标题
-                .setSubCalSize(16)//确定和取消文字大小
-//                        .setTitleSize(20)//标题文字大小
-//                        .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.BLUE)//确定按钮文字颜色
-                .setCancelColor(Color.BLUE)//取消按钮文字颜色
+                .setTitleText(asset.getAttr_name())//标题
+                .setSubCalSize(17)//确定和取消文字大小
+                .setTitleSize(17)//标题文字大小
+                .setTitleColor(getResources().getColor(R.color.blue))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.blue))//取消按钮文字颜色
+                .setDividerColor(getResources().getColor(R.color.blue))
 //                        .setTitleBgColor(0xFF333333)//标题背景颜色 Night mode
 //                        .setBgColor(0xFF000000)//滚轮背景颜色 Night mode
 //                        .setContentTextSize(18)//滚轮文字大小
-//                        .setTextColorCenter(Color.BLUE)//设置选中项的颜色
-                .setTextColorCenter(Color.BLACK)//设置选中项的颜色
+                .setTextColorCenter(getResources().getColor(R.color.blue))//设置选中项的颜色
+                .setTextColorCenter(getResources().getColor(R.color.blue))//设置选中项的颜色
 //                        .setLineSpacingMultiplier(1.6f)//设置两横线之间的间隔倍数
 //                        .setLinkage(false)//设置是否联动，默认true
 //                        .setLabels("省", "市", "区")//设置选择的三级单位
@@ -967,15 +981,17 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
         }).setType(TimePickerView.Type.YEAR_MONTH_DAY)//默认全部显示
                 .setCancelText("取消")//取消按钮文字
                 .setSubmitText("确定")//确认按钮文字
-                .setContentSize(20)//滚轮文字大小
-                .setTitleSize(20)//标题文字大小
-//                        .setTitleText("请选择时间")//标题文字
+                .setContentSize(17)//滚轮文字大小
+                .setTitleSize(17)//标题文字大小
+                .setTitleText(asset.getAttr_name())//标题文字
                 .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(true)//是否循环滚动
-                .setTextColorCenter(Color.BLACK)//设置选中项的颜色
-                .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.BLUE)//确定按钮文字颜色
-                .setCancelColor(Color.BLUE)//取消按钮文字颜色
+                .setTextColorCenter(getResources().getColor(R.color.blue))//设置选中项的颜色
+                .setTitleColor(getResources().getColor(R.color.blue))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.blue))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.blue))//取消按钮文字颜色
+                .setTextColorCenter(getResources().getColor(R.color.blue))
+                .setDividerColor(getResources().getColor(R.color.blue))
 //                        .setTitleBgColor(0xFF666666)//标题背景颜色 Night mode
 //                        .setBgColor(0xFF333333)//滚轮背景颜色 Night mode
 //                        .setRange(calendar.get(Calendar.YEAR) - 20, calendar.get(Calendar.YEAR) + 20)//默认是1900-2100年

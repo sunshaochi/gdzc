@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -92,6 +93,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rfid_inventory);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         pd_no = getIntent().getStringExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID);
         pd_name = getIntent().getStringExtra("pd_name");
         pd_status = getIntent().getIntExtra("pd_status", -1);
@@ -477,11 +479,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
                 break;
             case R.id.pdView:
-//                if (isConnect) {
-//                    startRFID();
-//                } else {
-//                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "电源无法开启");
-//                }
                 startRFID();
                 break;
         }
@@ -509,7 +506,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         super.onBackPressed();
     }
 
-
     /**
      * 开始
      */
@@ -520,7 +516,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             showRfidInventoryingDialog();
             rfidThread.setIfPostMsg(true);
         }
-
     }
 
     /**
@@ -607,7 +602,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         dialog.show();
     }
 
-
     private void showInfraredDialog() {
         long noFinishAssetCount = assetBeanDao.queryBuilder()
                 .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
@@ -663,7 +657,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             dataMap.put(epc, ++newNB);
             updateUI(epc, newNB);
         }
-
     }
 
     /**
@@ -715,7 +708,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         Logger.e("powoff = ", "" + GApplication.getInstance().getIdataLib().powerOff());
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Constant.PREVIEW_CODE && resultCode == RESULT_OK) {
@@ -740,8 +732,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         mPresenter.detachView();
     }
 
-
-    private class MyAsyncTask extends AsyncTask<String,Void,List<AssetBean>>{
+    private class MyAsyncTask extends AsyncTask<String, Void, List<AssetBean>> {
 
         @Override
         protected List<AssetBean> doInBackground(String... strings) {

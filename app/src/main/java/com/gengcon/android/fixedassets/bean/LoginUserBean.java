@@ -11,7 +11,7 @@ public class LoginUserBean implements Serializable {
     String user_id;
 
     String file_domain;
-    String is_demo;
+    boolean is_demo;
     String phone;
     String root_org_id;
     String user_name;
@@ -27,11 +27,11 @@ public class LoginUserBean implements Serializable {
         this.file_domain = file_domain;
     }
 
-    public String getIs_demo() {
+    public boolean getIs_demo() {
         return is_demo;
     }
 
-    public void setIs_demo(String is_demo) {
+    public void setIs_demo(boolean is_demo) {
         this.is_demo = is_demo;
     }
 

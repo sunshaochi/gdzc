@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.WheelBean;
@@ -20,6 +21,7 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
     private WheelView wva;
     private WheelBean select;
     private OnPickerListener onSelectListener;
+    private TextView titleNameView;
 
     public PickerLinearLayout(Context context) {
         super(context);
@@ -38,6 +40,7 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
 
     private void init(Context context) {
         View contentView = LayoutInflater.from(context).inflate(R.layout.picker_linear_layout, null);
+        titleNameView = contentView.findViewById(R.id.titleNameView);
         wva = contentView.findViewById(R.id.main_wv);
         wva.setOnWheelViewListener(onWheelViewListener);
 //        mPicker = contentView.findViewById(R.id.picker);
@@ -52,7 +55,14 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
         this.onSelectListener = listener;
     }
 
-    public void setData(List<WheelBean> users) {
+    public void setData(List<WheelBean> users, int type) {
+        if (type == 1) {
+            titleNameView.setText("管理员");
+        } else if (type == 2) {
+            titleNameView.setText("当前状态");
+        } else {
+            titleNameView.setText("");
+        }
         wva.setData(users);
     }
 
@@ -75,7 +85,7 @@ public class PickerLinearLayout extends LinearLayout implements View.OnClickList
         }
     }
 
-//    // 滚动选择器选中事件
+    //    // 滚动选择器选中事件
 //    PickerScrollView.OnSelectListener pickerListener = new PickerScrollView.OnSelectListener() {
 //
 //        @Override

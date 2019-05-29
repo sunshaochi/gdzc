@@ -226,12 +226,11 @@ public class WebActivity extends BasePullRefreshActivity {
     public void login(String token) {
         LoginUserBean userBean = new Gson().fromJson(token, LoginUserBean.class);
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.TOKEN, userBean.getToken());
-        SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.USER_ID, userBean.getUser_id());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IMG_URL, userBean.getImgurl());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.IS_SUPERADMIN, userBean.getIs_superadmin());
         SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.COMPANY_NAME, userBean.getCompany_name());
 
-        if(userBean.getIs_demo().equals("true")){
+        if(userBean.getIs_demo()){
             SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.USER_ID, "demo");
         }else {
             SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.USER_ID, userBean.getUser_id());

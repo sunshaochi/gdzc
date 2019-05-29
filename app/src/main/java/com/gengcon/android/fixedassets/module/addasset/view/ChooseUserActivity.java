@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ public class ChooseUserActivity extends BaseActivity implements View.OnClickList
     private EditText searchEdit;
     private LinearLayout searchLayout;
     private String org_id;
+    private Button clearButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +65,10 @@ public class ChooseUserActivity extends BaseActivity implements View.OnClickList
         searchLayout = findViewById(R.id.searchLayout);
         searchLayout.setOnClickListener(this);
         searchEdit = findViewById(R.id.searchEdit);
+
+        clearButton = findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(this);
+
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -77,6 +83,11 @@ public class ChooseUserActivity extends BaseActivity implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 String wd = s.toString();
+                if (wd.length() > 0) {
+                    clearButton.setVisibility(View.VISIBLE);
+                } else {
+                    clearButton.setVisibility(View.GONE);
+                }
                 chooseUserPresenter.getAssetUser(wd, org_id);
             }
         });
@@ -103,8 +114,8 @@ public class ChooseUserActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_title_left:
                 onBackPressed();
                 break;
-            case R.id.searchLayout:
-                searchEdit.setFocusable(true);
+            case R.id.clearButton:
+                searchEdit.setText("");
                 break;
         }
     }

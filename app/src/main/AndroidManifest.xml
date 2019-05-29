@@ -210,7 +210,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.addasset.view.ChooseUserActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <activity
             android:name=".module.user.view.ui.OrgSettingActivity"

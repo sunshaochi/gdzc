@@ -17,6 +17,7 @@
     <color name="black">#000000</color>
     <color name="black_text">#333333</color>
     <color name="gray_text">#666666</color>
+    <color name="gray_text_8">#888888</color>
     <color name="light_gray_text">#999999</color>
 
     <!-- asset list-->

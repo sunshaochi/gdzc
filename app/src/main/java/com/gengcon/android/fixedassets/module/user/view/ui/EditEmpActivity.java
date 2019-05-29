@@ -145,7 +145,7 @@ public class EditEmpActivity extends BaseActivity implements View.OnClickListene
             stateData.add(bean);
         }
         mLlPicker.setVisibility(View.VISIBLE);
-        mLlPicker.setData(stateData);
+        mLlPicker.setData(stateData, 2);
         mLlPicker.setOnSelectListener(this);
     }
 

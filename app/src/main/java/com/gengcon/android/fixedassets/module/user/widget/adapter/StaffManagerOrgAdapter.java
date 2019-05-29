@@ -53,7 +53,8 @@ public class StaffManagerOrgAdapter extends DelegateAdapter.Adapter<StaffManager
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final OrgBean orgBean = orgBeans.get(position);
-        holder.dataNameView.setText(orgBean.getOrg_name() + "(" + orgBean.getEmployee_num() + ")");
+        holder.dataNameView.setText(orgBean.getOrg_name());
+        holder.numView.setText("(" + orgBean.getEmployee_num() + ")");
         if (orgBean.getType() == 1) {
             holder.dataImg.setBackgroundResource(R.drawable.ic_company);
         } else if (orgBean.getType() == 2) {
@@ -80,13 +81,14 @@ public class StaffManagerOrgAdapter extends DelegateAdapter.Adapter<StaffManager
 
     class ViewHolder extends MyRecyclerView.ViewHolder {
 
-        TextView dataNameView;
+        TextView dataNameView, numView;
 
         ImageView dataImg;
 
         public ViewHolder(View view) {
             super(view);
             dataNameView = view.findViewById(R.id.dataNameView);
+            numView = view.findViewById(R.id.numView);
             dataImg = view.findViewById(R.id.dataImg);
         }
     }

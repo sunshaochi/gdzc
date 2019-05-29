@@ -122,6 +122,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void afterTextChanged(Editable s) {
+                initDefault(NORMAL);
                 if (isFinish == 1) {
                     if (s.toString().length() > 0) {
                         clearButton.setVisibility(View.VISIBLE);
@@ -133,6 +134,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                         if (searchList.size() == 0) {
                             initDefault(NO_DATA);
                         }
+                        finishedText.setText(finishedTitle + "(" + searchList.size() + ")");
                         mAdapter.addDataSource(searchList);
                     } else {
                         clearButton.setVisibility(View.GONE);
@@ -149,6 +151,7 @@ public class InventoryListActivity extends BaseActivity implements View.OnClickL
                         if (searchList.size() == 0) {
                             initDefault(NO_DATA);
                         }
+                        noFinishText.setText(noFinishTitle + "(" + searchList.size() + ")");
                         mAdapter.addDataSource(searchList);
                     } else {
                         clearButton.setVisibility(View.GONE);
