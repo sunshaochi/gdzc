@@ -226,7 +226,11 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
                         }
                     }
                 }
-                mPresenter.showSyncAssetData(pd_no, asset_ids);
+                if (isNetworkConnected(this)) {
+                    mPresenter.showSyncAssetData(pd_no, asset_ids);
+                } else {
+                    ToastUtils.toastMessage(this, "网络异常，请稍后重试");
+                }
                 break;
             case R.id.auditView:
                 List<AssetBean> scanAsset = assetBeanDao.queryBuilder()
@@ -243,7 +247,11 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
                         .where(InventoryBeanDao.Properties.User_id.eq(user_id))
                         .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
                 String remarks = inventory.getRemarks();
-                mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
+                if (isNetworkConnected(this)) {
+                    mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
+                } else {
+                    ToastUtils.toastMessage(this, "网络异常，请稍后重试");
+                }
                 break;
             case R.id.pdView:
                 methodRequiresCameraPermission();
