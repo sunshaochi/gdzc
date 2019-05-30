@@ -16,13 +16,14 @@ import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.common.module.update.ApkDownLoad;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.UpdateVersion;
-import com.gengcon.android.fixedassets.module.login.view.ui.AgreementActivity;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.util.Utils;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.tbruyelle.rxpermissions2.Permission;
+
+import java.util.Calendar;
 
 import androidx.annotation.Nullable;
 import io.reactivex.functions.Consumer;
@@ -89,7 +90,6 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void updateVersion(UpdateVersion version) {
-        super.updateVersion(version);
         mVersion = version;
         if (mVersion.getVersion_number() > Utils.getVersionCode(this)) {
             hasNewVersionLayout.setVisibility(View.VISIBLE);
@@ -108,9 +108,9 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
     private void showUpdateVersionDialog() {
         if (mVersion.getVersion_number() > Utils.getVersionCode(this)) {
-            if (mVersion.getUpdate_type() == 1) {
-                SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
-            }
+//            if (mVersion.getUpdate_type() == 1) {
+//                SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+//            }
             AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
             builder.setUpDate(true);
             builder.setTitle(getString(R.string.version_update));
@@ -133,12 +133,14 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                     requestPermission(permissionConsumer, Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 }
             }, getString(R.string.update));
-            builder.setNegativeButton(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+            if (mVersion.getUpdate_type() != 1) {
+                builder.setNegativeButton(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                }
-            }, getString(R.string.cancel));
+                    }
+                }, getString(R.string.cancel));
+            }
             builder.show();
         }
     }
