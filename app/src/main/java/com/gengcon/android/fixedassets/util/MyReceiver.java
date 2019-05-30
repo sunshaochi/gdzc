@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.inventory.view.ui.InventoryListActivity;
+import com.gengcon.android.fixedassets.module.login.view.ui.SplashActivity;
 import com.gengcon.android.fixedassets.module.main.view.ui.MainActivity;
+import com.gengcon.android.fixedassets.module.web.view.WebActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,20 +56,26 @@ public class MyReceiver extends BroadcastReceiver {
                     if (!isBackground(context)) {
                         return;
                     }
-                    if (messageType == 1) {
-                        Logger.d(TAG, "[MyReceiver] 用户打开了盘点" + messageType);
-                        Intent i = new Intent(context, InventoryListActivity.class);
-                        i.putExtras(bundle);
-                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        context.startActivity(i);
+                    if (TextUtils.isEmpty((String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.TOKEN, ""))) {
+                        Intent intentLogin = new Intent(context, WebActivity.class);
+                        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
+                        context.startActivity(intentLogin);
                     } else {
-                        Logger.d(TAG, "[MyReceiver] 用户打开了主页" + messageType);
-                        Intent i = new Intent(context, MainActivity.class);
-                        i.putExtras(bundle);
-                        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        context.startActivity(i);
+                        if (messageType == 1) {
+                            Logger.d(TAG, "[MyReceiver] 用户打开了盘点" + messageType);
+                            Intent i = new Intent(context, InventoryListActivity.class);
+                            i.putExtras(bundle);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            context.startActivity(i);
+                        } else {
+                            Logger.d(TAG, "[MyReceiver] 用户打开了主页" + messageType);
+                            Intent i = new Intent(context, MainActivity.class);
+                            i.putExtras(bundle);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            context.startActivity(i);
+                        }
                     }
                 }
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
