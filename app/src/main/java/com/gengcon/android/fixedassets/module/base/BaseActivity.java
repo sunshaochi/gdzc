@@ -147,7 +147,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
                     .setHintText(getString(R.string.loading))
                     .setHintTextSize(16)
                     .setCanceledOnTouchOutside(false)
-                    .setCancelable(false)
+                    .setCancelable(true)
                     .create();
         }
         mLoadingDialog.show();

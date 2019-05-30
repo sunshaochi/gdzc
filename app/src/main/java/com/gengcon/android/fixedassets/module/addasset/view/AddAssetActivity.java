@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
@@ -64,7 +65,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private LinearLayout customLayout;
     private LinearLayout otherLayout;
     private LinearLayout otherClickLayout;
-    private LinearLayout customClickLayout;
+    private RelativeLayout customClickLayout;
     private AddAssetPresenter assetPresenter;
     private PickerLinearLayout userPicker;
     private AreaPickerLinearLayout areaPickerLinearLayout;

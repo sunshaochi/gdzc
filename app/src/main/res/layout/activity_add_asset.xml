@@ -36,24 +36,27 @@
                     android:layout_height="15dp"
                     android:background="#eeeeee" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/customClickLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="45dp">
 
                     <ImageView
+                        android:id="@+id/customImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
                         android:background="@drawable/ic_v" />
 
                     <TextView
+                        android:id="@+id/customView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_weight="1"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/customImg"
+                        android:singleLine="true"
                         android:text="自定义信息"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
@@ -63,11 +66,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
-                        android:gravity="right"
-                        android:text="资产通用模板"
+                        android:layout_marginLeft="115dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        tools:text="资产通用模板潇洒下线按行啊是潇洒潇洒潇洒下相似性暗示潇洒下手"
+                        android:singleLine="true"
                         android:textColor="@color/blue" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
