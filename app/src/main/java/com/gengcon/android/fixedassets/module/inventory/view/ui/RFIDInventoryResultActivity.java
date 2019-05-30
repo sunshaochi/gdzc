@@ -37,6 +37,7 @@ import com.gengcon.android.fixedassets.rfid.RfidDialog;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.Logger;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
+import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.InfraredDialog;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -298,6 +299,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         public void onReceive(Context context, Intent intent) {
             final String scanResult = intent.getStringExtra("value");
             String result = scanResult.replaceAll(" ", "");
+            if (result.startsWith("\\000026")) {
+                result = result.substring(7);
+            }
             if (dialog != null) {
                 if (dialog.isShowing()) {
                     ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "取消RFID盘点后才可进行红外盘点");
@@ -306,31 +310,34 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             }
             if (!TextUtils.isEmpty(result)) {
                 if (pd_status == 1 || pd_status == 3) {
-                    if (result.length() == 24) {
-                        AssetBean asset = assetBeanDao.queryBuilder()
-                                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                                .where(AssetBeanDao.Properties.User_id.eq(user_id))
-                                .where(AssetBeanDao.Properties.Asset_id.eq(result))
-                                .unique();
-                        if (asset != null) {
-                            if (asset.getPd_status() == 1) {
-                                asset.setPd_status(2);
-                                asset.setIsScanAsset(1);
-                                assetBeanDao.update(asset);
-                                ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "盘点成功");
-                                showInfraredDialog();
+                    if (StringIsDigitUtil.isLetterDigit(result)) {
+                        if (result.length() == 24) {
+                            AssetBean asset = assetBeanDao.queryBuilder()
+                                    .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                                    .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                                    .where(AssetBeanDao.Properties.Asset_id.eq(result))
+                                    .unique();
+                            if (asset != null) {
+                                if (asset.getPd_status() == 1) {
+                                    asset.setPd_status(2);
+                                    asset.setIsScanAsset(1);
+                                    assetBeanDao.update(asset);
+                                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "盘点成功");
+                                    showInfraredDialog();
+                                } else {
+                                    ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "该资产已盘点");
+                                }
                             } else {
-                                ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "该资产已盘点");
+                                ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "未查询到此资产");
                             }
                         } else {
-                            ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "未查询到此资产");
+                            ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "非精臣固定资产有效二维码");
                         }
                     } else {
                         ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "非精臣固定资产有效二维码");
                     }
                 } else {
                     ToastUtils.toastMessage(RFIDInventoryResultActivity.this, "该盘点单已提交");
-
                 }
             }
         }
@@ -459,7 +466,11 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                         }
                     }
                 }
-                mPresenter.showSyncAssetData(pd_no, asset_ids);
+                if (isNetworkConnected(this)) {
+                    mPresenter.showSyncAssetData(pd_no, asset_ids);
+                } else {
+                    ToastUtils.toastMessage(this, "网络异常，请稍后重试");
+                }
                 break;
             case R.id.auditView:
                 List<AssetBean> scanAsset = assetBeanDao.queryBuilder()
@@ -476,7 +487,11 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                         .where(InventoryBeanDao.Properties.User_id.eq(user_id))
                         .where(InventoryBeanDao.Properties.Pd_no.eq(pd_no)).unique();
                 String remarks = inventory.getRemarks();
-                mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
+                if (isNetworkConnected(this)) {
+                    mPresenter.auditAssetData(pd_no, remarks, audit_asset_ids);
+                } else {
+                    ToastUtils.toastMessage(this, "网络异常，请稍后重试");
+                }
                 break;
             case R.id.pdView:
                 startRFID();
@@ -569,31 +584,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     stopRFID();
                     dialog.dismiss();
                     new MyAsyncTask().execute();
-//                    if (realKeyList.size() > 0) {
-//                        for (int i = 0; i < realKeyList.size(); i++) {
-//                            AssetBean asset = assetBeanDao.queryBuilder()
-//                                    .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-//                                    .where(AssetBeanDao.Properties.User_id.eq(user_id))
-//                                    .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i).toLowerCase()))
-//                                    .unique();
-//                            if (asset != null) {
-//                                if (asset.getPd_status() != 2) {
-//                                    asset.setPd_status(2);
-//                                    asset.setIsScanAsset(1);
-//                                    assetBeanDao.update(asset);
-//                                }
-//                            }
-//                        }
-//                    }
-//                    assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-//                            .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
-//                    getNoFinishFragment(assets);
-//                    dataMap.clear();
-//                    realDataMap.clear();
-//                    realKeyList.clear();
-//                    dialog.dismiss();
-
-//                    dialog = null;
                 }
             });
         }

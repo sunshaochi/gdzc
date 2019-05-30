@@ -34,6 +34,7 @@ import com.gengcon.android.fixedassets.module.inventory.view.InventoryResultView
 import com.gengcon.android.fixedassets.module.inventory.presenter.InventoryResultPresenter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
+import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.gengcon.android.fixedassets.widget.InfraredDialog;
@@ -264,25 +265,32 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         public void onReceive(Context context, Intent intent) {
             final String scanResult = intent.getStringExtra("value");
             String result = scanResult.replaceAll(" ", "");
+            if (result.startsWith("\\000026")) {
+                result = result.substring(7);
+            }
             if (!TextUtils.isEmpty(result)) {
                 if (pd_status == 1 || pd_status == 3) {
-                    if (result.length() == 24) {
-                        AssetBean asset = assetBeanDao.queryBuilder()
-                                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                                .where(AssetBeanDao.Properties.User_id.eq(user_id))
-                                .where(AssetBeanDao.Properties.Asset_id.eq(result))
-                                .unique();
-                        if (asset != null) {
-                            if (asset.getPd_status() == 1) {
-                                asset.setPd_status(2);
-                                assetBeanDao.update(asset);
-                                ToastUtils.toastMessage(InventoryResultActivity.this, "盘点成功");
-                                showInfraredDialog();
+                    if (StringIsDigitUtil.isLetterDigit(result)) {
+                        if (result.length() == 24) {
+                            AssetBean asset = assetBeanDao.queryBuilder()
+                                    .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
+                                    .where(AssetBeanDao.Properties.User_id.eq(user_id))
+                                    .where(AssetBeanDao.Properties.Asset_id.eq(result))
+                                    .unique();
+                            if (asset != null) {
+                                if (asset.getPd_status() == 1) {
+                                    asset.setPd_status(2);
+                                    assetBeanDao.update(asset);
+                                    ToastUtils.toastMessage(InventoryResultActivity.this, "盘点成功");
+                                    showInfraredDialog();
+                                } else {
+                                    ToastUtils.toastMessage(InventoryResultActivity.this, "该资产已盘点");
+                                }
                             } else {
-                                ToastUtils.toastMessage(InventoryResultActivity.this, "该资产已盘点");
+                                ToastUtils.toastMessage(InventoryResultActivity.this, "未查询到此资产");
                             }
                         } else {
-                            ToastUtils.toastMessage(InventoryResultActivity.this, "未查询到此资产");
+                            ToastUtils.toastMessage(InventoryResultActivity.this, "非精臣固定资产有效二维码");
                         }
                     } else {
                         ToastUtils.toastMessage(InventoryResultActivity.this, "非精臣固定资产有效二维码");
