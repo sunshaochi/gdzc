@@ -73,7 +73,7 @@ public class InventoryAssetAdapter extends MyRecyclerView.Adapter<InventoryAsset
                 break;
             case Asset.PEPAIR:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_perair);
-                holder.tvStatus.setText("维修");
+                holder.tvStatus.setText("维修中");
                 break;
             case Asset.IN_USE:
                 holder.tvStatus.setBackgroundResource(R.color.asset_status_in_use);
