@@ -219,6 +219,7 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
             if (!isUpdate() && mVersion.getUpdate_type() != 1) {
                 return;
             }
+
 //            if (mVersion.getUpdate_type() == 1) {
 //                SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
 //            }
