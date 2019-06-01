@@ -1,5 +1,7 @@
 package com.gengcon.android.fixedassets.module.addasset.presenter;
 
+import android.text.TextUtils;
+
 import com.gengcon.android.fixedassets.bean.Area;
 import com.gengcon.android.fixedassets.bean.User;
 import com.gengcon.android.fixedassets.bean.result.AddAssetCustom;
@@ -297,7 +299,9 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 //                Logger.i("结果",modelBean.toString());
                     if (modelBean.getCode().equals("CODE_200")) {
                         if (modelBean.getData() != null) {
-                            mMvpView.upLoadingSuc(modelBean.getData().getPath());
+                            if(!TextUtils.isEmpty(modelBean.getData().getPath())) {
+                                mMvpView.upLoadingSuc(modelBean.getData().getPath());
+                            }
                         }
                     } else {
                         mMvpView.upLoadingFai();

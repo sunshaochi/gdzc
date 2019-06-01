@@ -1111,7 +1111,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     private GalleryFinal.OnHanlderResultCallback mOnHandlerResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int requestCode, final List<PhotoInfo> resultList) {
-            if (resultList != null) {
+            if (resultList != null&&resultList.size()>0) {
                 Logger.i("图片", resultList.get(0).getPhotoPath());
                 Uri imageUri = MyBitmapUtils.pathToUri(AddAssetActivity.this, resultList.get(0).getPhotoPath());
                 try {
@@ -1123,7 +1123,6 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
             }
         }

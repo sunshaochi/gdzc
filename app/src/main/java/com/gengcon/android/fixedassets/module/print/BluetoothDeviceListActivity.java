@@ -81,7 +81,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
         mList = findViewById(R.id.list);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mIntentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        mIntentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
+//        mIntentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
         mIntentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         mIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         mIntentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -233,18 +233,18 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
 
             } else if (action.equals(BluetoothDevice.ACTION_PAIRING_REQUEST)) { //再次得到的action，会等于PAIRING_REQUEST
 
-                try {
+//                try {
 
 //                    //1.确认配对
 //                    ClsUtils.setPairingConfirmation(btDevice.getClass(), btDevice, true);
 //                    //2.终止有序广播
-                    abortBroadcast();//如果没有将广播终止，则会出现一个一闪而过的配对框。
+//                    abortBroadcast();//如果没有将广播终止，则会出现一个一闪而过的配对框。
 //                    //3.调用setPin方法进行配对...
-                    boolean ret = ClsUtils.setPin(btDevice.getClass(), btDevice, pin);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                    boolean ret = ClsUtils.setPin(btDevice.getClass(), btDevice, pin);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
             } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
                 mProgressBar.setVisibility(View.GONE);
@@ -374,6 +374,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
         protected Void doInBackground(BluetoothDevice... bluetoothDevices) {
             try {
                 ClsUtils.createBond(bluetoothDevices[0].getClass(), bluetoothDevices[0]);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -383,6 +384,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
         }
     }
 

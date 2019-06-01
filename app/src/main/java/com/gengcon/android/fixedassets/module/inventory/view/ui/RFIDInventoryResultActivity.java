@@ -131,20 +131,22 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     }
 
     private void monitorEmsh() {
-        mEmshStatusReceiver = new EmshStatusBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter(EmshConstant.Action.INTENT_EMSH_BROADCAST);
-        registerReceiver(mEmshStatusReceiver, intentFilter);
+        if(pd_status==1||pd_status==3) {//进行中 驳回
+            mEmshStatusReceiver = new EmshStatusBroadcastReceiver();
+            IntentFilter intentFilter = new IntentFilter(EmshConstant.Action.INTENT_EMSH_BROADCAST);
+            registerReceiver(mEmshStatusReceiver, intentFilter);
 
-        mTimer = new Timer();
-        mTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(EmshConstant.Action.INTENT_EMSH_REQUEST);
-                intent.putExtra(EmshConstant.IntentExtra.EXTRA_COMMAND, EmshConstant.Command.CMD_REFRESH_EMSH_STATUS);
-                sendBroadcast(intent);
-            }
-        };
-        mTimer.schedule(mTimerTask, 0, 1000);
+            mTimer = new Timer();
+            mTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(EmshConstant.Action.INTENT_EMSH_REQUEST);
+                    intent.putExtra(EmshConstant.IntentExtra.EXTRA_COMMAND, EmshConstant.Command.CMD_REFRESH_EMSH_STATUS);
+                    sendBroadcast(intent);
+                }
+            };
+            mTimer.schedule(mTimerTask, 0, 1000);
+        }
     }
 
     //实现耗时操作的线程
