@@ -1,17 +1,21 @@
 package com.gengcon.android.fixedassets.module.main.view.ui;
 
 import android.Manifest;
+import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Camera;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,6 +42,7 @@ import com.gengcon.android.fixedassets.module.message.view.ui.MessageActivity;
 import com.gengcon.android.fixedassets.module.message.view.ui.MessageDetailsActivity;
 import com.gengcon.android.fixedassets.common.module.scan.ScanActivity;
 import com.gengcon.android.fixedassets.util.Constant;
+import com.gengcon.android.fixedassets.util.LoacationUtil;
 import com.gengcon.android.fixedassets.util.RFIDUtils;
 import com.gengcon.android.fixedassets.util.RolePowerManager;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
@@ -45,11 +50,18 @@ import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.module.main.view.HomeView;
 import com.gengcon.android.fixedassets.widget.AlertDialog;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.core.app.AppOpsManagerCompat;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, HomeView {
@@ -85,11 +97,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         android.util.Log.d("BaiduMobStat", "Test DeviceId : " + testDeviceId);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
 
     @Override
     protected void initView() {
@@ -266,6 +273,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.iv_title_right:
                 if (isNetworkConnected(this)) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        if (!isHaveCameraPermission()) {
+                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启相机权限，请在设置中开启相机权限");
+                            return;
+                        }
+
+                    }
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        //其中2代表AppOpsManager.OP_GPS，如果要判断悬浮框权限，
+                        // 第二个参数需换成24即AppOpsManager。OP_SYSTEM_ALERT_WINDOW及，
+                        // 第三个参数需要换成AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW
+                        int checkResult = LoacationUtil.checkOp(this, 2, AppOpsManager.OPSTR_FINE_LOCATION);
+                        int checkResult2 = LoacationUtil.checkOp(this, 1, AppOpsManager.OPSTR_FINE_LOCATION);
+                        if (AppOpsManagerCompat.MODE_IGNORED == checkResult
+                                || AppOpsManagerCompat.MODE_IGNORED == checkResult2) {
+
+                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启位置权限，请在设置中开启位置权限");
+                            return;
+                        }
+                    }
+
+
                     methodRequiresCameraPermission();
                 } else {
                     ToastUtils.toastMessage(this, msg);
@@ -373,6 +403,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 return;
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -562,29 +593,66 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         builder.show();
     }
 
+    private List<String> list = new ArrayList<>();
+
     private void methodRequiresCameraPermission() {
-        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-            intent.putExtra(Constant.INTENT_EXTRA_KEY_SCAN_MODE, ScanActivity.QR_SCAN_LOGIN_MODE);
-            startActivityForResult(intent, Constant.REQ_QR_CODE);
-        } else {
-            showCameraDialog();
-        }
+        list.clear();
+        RxPermissions rxPermission = new RxPermissions(MainActivity.this);
+        rxPermission
+                .requestEach(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(Permission permission) {
+                        if (permission.granted) {
+                            Log.i("同意", permission.name);
+                            list.add(permission.name);
+                            // 用户已经同意该权限
+//                            if (permission.name.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                                GalleryFinal.openCamera(Constant.REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
+//                            }
+
+                            if (list.size() == 2) {//两个都要同意
+                                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                                intent.putExtra(Constant.INTENT_EXTRA_KEY_SCAN_MODE, ScanActivity.QR_SCAN_LOGIN_MODE);
+                                startActivityForResult(intent, Constant.REQ_QR_CODE);
+                            }
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            Log.i("拒绝", permission.name);
+                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时。还会提示请求权限的对话框
+                            if (permission.name.equals(Manifest.permission.CAMERA)) {
+                                ToastUtils.toastMessage(MainActivity.this, R.string.permission_camera_tips);
+
+                            } else {
+                                ToastUtils.toastMessage(MainActivity.this, R.string.permission_location_tips);
+                            }
+//                            requestPermission();
+                        } else {
+                            Log.i("静止", permission.name);
+                            // 用户拒绝了该权限，而且选中『不再询问』
+                            if (permission.name.equals(Manifest.permission.CAMERA)) {
+                                ToastUtils.toastMessage(MainActivity.this, "您暂未开启相机权限，请在设置中开启相机权限");
+                            } else {
+                                ToastUtils.toastMessage(MainActivity.this, "您暂未开启位置权限，请在设置中开启位置权限");
+                            }
+                        }
+                    }
+                });
     }
 
-    public void showCameraDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
-        builder.setTitle("提示");
-        String content = "您暂未开启相机权限，请在设置" + "\n" + "中开启相机权限";
-        builder.setText(content);
-        builder.setUpDate(false);
-        builder.setPositiveButton(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }, "确定");
-        builder.show();
+
+    private boolean isHaveCameraPermission() {
+        boolean isHave = true;
+        Camera camera = null;
+        try {
+            camera = Camera.open();
+            Camera.Parameters mParameters = camera.getParameters();
+            camera.setParameters(mParameters);
+            camera.release();
+        } catch (Exception e) {
+            isHave = false;
+        }
+        return isHave;
+
     }
+
 }

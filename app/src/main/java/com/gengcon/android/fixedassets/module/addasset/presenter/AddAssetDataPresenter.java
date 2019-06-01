@@ -67,6 +67,8 @@ public class AddAssetDataPresenter extends BasePresenter<AddAssetDataView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showClassification(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(2);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

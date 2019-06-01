@@ -420,6 +420,7 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     @Override
     public void syncAssetSuccess() {
         asset_ids.clear();
+        audit_asset_ids.clear();
         ToastUtils.toastMessage(this, "同步数据成功");
         mPage = 1;
         mPresenter.showInventoryResult(pd_no, mPage);

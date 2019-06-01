@@ -111,6 +111,7 @@
     <string name="permission_write_tips">没有写文件权限将无法进行下一步</string>
     <string name="permission_bluetooth_tips">没有蓝牙扫描权限将无法发现设备</string>
     <string name="permission_write_external_tips">没有读写权限将无法进行下一步</string>
+    <string name="permission_location_tips">没有位置权限将无法进行下一步</string>
 
     <string name="my_device_type">我的机型</string>
     <string name="confirm_login">确认登录</string>

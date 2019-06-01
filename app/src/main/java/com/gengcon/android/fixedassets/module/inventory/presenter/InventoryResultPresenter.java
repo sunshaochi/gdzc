@@ -1,5 +1,7 @@
 package com.gengcon.android.fixedassets.module.inventory.presenter;
 
+import android.util.Log;
+
 import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.bean.result.ResultAsset;
 import com.gengcon.android.fixedassets.bean.result.SyncDataFailBean;
@@ -90,10 +92,15 @@ public class InventoryResultPresenter extends BasePresenter<InventoryResultView>
                         mMvpView.showInvalidType(invalid);
                     } else if (modelBean.getCode().equals("CODE_400")) {
                         String json = modelBean.getData().toString();
-                        Gson gson = new Gson();
-                        SyncDataFailBean syncDataFailBean = gson.fromJson(json, SyncDataFailBean.class);
-                        int type = syncDataFailBean.getType();
-                        mMvpView.keepSonAuditFailed(type, modelBean.getMsg());
+                        Log.e("Inventory", "onSuccess: " + json);
+                        if (!json.equals("[]")) {
+                            Gson gson = new Gson();
+                            SyncDataFailBean syncDataFailBean = gson.fromJson(json, SyncDataFailBean.class);
+                            int type = syncDataFailBean.getType();
+                            mMvpView.keepSonAuditFailed(type, modelBean.getMsg());
+                        } else {
+                            mMvpView.keepSonAuditFailed(4, modelBean.getMsg());
+                        }
                     }
                 }
             }
