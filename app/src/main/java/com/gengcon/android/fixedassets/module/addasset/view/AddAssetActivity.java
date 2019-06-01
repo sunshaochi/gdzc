@@ -706,6 +706,7 @@ public class AddAssetActivity extends BaseActivity implements AddAssetListView, 
     @Override
     public void showAddAssetCustom(List<AddAssetCustom> assetCustom) {
         customLayout.removeAllViews();
+        isCustomMust.clear();
         for (int i = 0; i < assetCustom.size(); i++) {
             addCustomView(assetCustom.get(i));
         }
