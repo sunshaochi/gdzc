@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import com.example.iscandemo.ScannerInerface;
 import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.bean.result.ResultAsset;
-import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshActivity;
 import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
@@ -40,8 +39,6 @@ import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.InfraredDialog;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -251,7 +248,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private void getNoFinishFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans, pd_no);
+        InventoryNoFinishFragment noFinishFragment = InventoryNoFinishFragment.newInstance(assetBeans, pd_no);
         ft.replace(R.id.fl, noFinishFragment);
         ft.commitAllowingStateLoss();
     }
@@ -259,7 +256,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private void getFinishedFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans, pd_no);
+        InventoryFinishedFragment finishedFragment = InventoryFinishedFragment.newInstance(assetBeans, pd_no);
         ft.replace(R.id.fl, finishedFragment);
         ft.commitAllowingStateLoss();
     }
