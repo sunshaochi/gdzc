@@ -273,19 +273,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.iv_title_right:
                 if (isNetworkConnected(this)) {
-//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                        if (!isHaveCameraPermission()) {
-//                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启相机权限，请在设置中开启相机权限");
-//                            return;
-//                        }
-//                    }
-
-//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                        if(!LoacationUtil.isLocServiceEnable(this)){
-//                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启位置权限，请在设置中开启位置权限");
-//                            return;
-//                        }
-//                    }
                     methodRequiresCameraPermission();
                 } else {
                     ToastUtils.toastMessage(this, msg);
@@ -583,66 +570,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         builder.show();
     }
 
-    private List<String> list = new ArrayList<>();
-
     private void methodRequiresCameraPermission() {
-        list.clear();
         RxPermissions rxPermission = new RxPermissions(MainActivity.this);
         rxPermission
-                .requestEach(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
+                .requestEach(Manifest.permission.CAMERA)
                 .subscribe(new Consumer<Permission>() {
                     @Override
                     public void accept(Permission permission) {
                         if (permission.granted) {
-                            Log.i("同意", permission.name);
-                            list.add(permission.name);
-                            // 用户已经同意该权限
-//                            if (permission.name.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//                                GalleryFinal.openCamera(Constant.REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
-//                            }
-
-                            if (list.size() == 2) {//两个都要同意
-                                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                                intent.putExtra(Constant.INTENT_EXTRA_KEY_SCAN_MODE, ScanActivity.QR_SCAN_LOGIN_MODE);
-                                startActivityForResult(intent, Constant.REQ_QR_CODE);
-                            }
+                            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                            intent.putExtra(Constant.INTENT_EXTRA_KEY_SCAN_MODE, ScanActivity.QR_SCAN_LOGIN_MODE);
+                            startActivityForResult(intent, Constant.REQ_QR_CODE);
                         } else if (permission.shouldShowRequestPermissionRationale) {
-                            Log.i("拒绝", permission.name);
-                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时。还会提示请求权限的对话框
                             if (permission.name.equals(Manifest.permission.CAMERA)) {
                                 ToastUtils.toastMessage(MainActivity.this, R.string.permission_camera_tips);
-
                             } else {
                                 ToastUtils.toastMessage(MainActivity.this, R.string.permission_location_tips);
                             }
-//                            requestPermission();
                         } else {
-                            Log.i("静止", permission.name);
-                            // 用户拒绝了该权限，而且选中『不再询问』
                             if (permission.name.equals(Manifest.permission.CAMERA)) {
                                 ToastUtils.toastMessage(MainActivity.this, "您暂未开启相机权限，请在设置中开启相机权限");
-                            } else {
-                                ToastUtils.toastMessage(MainActivity.this, "您暂未开启位置权限，请在设置中开启位置权限");
                             }
                         }
                     }
                 });
     }
-
-
-    private boolean isHaveCameraPermission() {
-        boolean isHave = true;
-        Camera camera = null;
-        try {
-            camera = Camera.open();
-            Camera.Parameters mParameters = camera.getParameters();
-            camera.setParameters(mParameters);
-            camera.release();
-        } catch (Exception e) {
-            isHave = false;
-        }
-        return isHave;
-
-    }
-
 }

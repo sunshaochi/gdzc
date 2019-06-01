@@ -1,12 +1,15 @@
 package com.gengcon.android.fixedassets.module.greendao;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Unique;
 
 @Entity
-public class AssetBean {
+public class AssetBean implements Parcelable {
 
     /**
      * asset_id : 5c3597e32fd36e707233526d
@@ -50,6 +53,48 @@ public class AssetBean {
     @Generated(hash = 596597220)
     public AssetBean() {
     }
+
+    protected AssetBean(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        tag = in.readString();
+        pd_no = in.readString();
+        asset_id = in.readString();
+        asset_name = in.readString();
+        asset_code = in.readString();
+        photourl = in.readString();
+        if (in.readByte() == 0) {
+            status = null;
+        } else {
+            status = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            pd_status = null;
+        } else {
+            pd_status = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            isScanAsset = null;
+        } else {
+            isScanAsset = in.readInt();
+        }
+        user_id = in.readString();
+    }
+
+    public static final Creator<AssetBean> CREATOR = new Creator<AssetBean>() {
+        @Override
+        public AssetBean createFromParcel(Parcel in) {
+            return new AssetBean(in);
+        }
+
+        @Override
+        public AssetBean[] newArray(int size) {
+            return new AssetBean[size];
+        }
+    };
 
     public String getPd_no() {
         return pd_no;
@@ -145,5 +190,45 @@ public class AssetBean {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
+        dest.writeString(tag);
+        dest.writeString(pd_no);
+        dest.writeString(asset_id);
+        dest.writeString(asset_name);
+        dest.writeString(asset_code);
+        dest.writeString(photourl);
+        if (status == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(status);
+        }
+        if (pd_status == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(pd_status);
+        }
+        if (isScanAsset == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(isScanAsset);
+        }
+        dest.writeString(user_id);
     }
 }

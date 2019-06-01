@@ -19,6 +19,7 @@ import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +46,26 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
     private List<AssetBean> py_assets;
     private List<AssetBean> pk_assets;
 
-    @SuppressLint("ValidFragment")
-    public InventoryFinishedFragment(List<AssetBean> assetBeans, String pd_no) {
+    public InventoryFinishedFragment() {
+    }
+
+    public static InventoryFinishedFragment newInstance(List<AssetBean> assetBeans, String pd_no) {
+        Bundle bundle = new Bundle();
+        bundle.putString("pd_no", pd_no);
+        bundle.putSerializable("asset", (Serializable) assetBeans);
+        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment();
+        finishedFragment.setArguments(bundle);
+        return finishedFragment;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        List<AssetBean> assetBeans = (List<AssetBean>) getArguments().getSerializable("asset");
+        pd_no = getArguments().getString("pd_no");
         zc_assets = new ArrayList<>();
         py_assets = new ArrayList<>();
         pk_assets = new ArrayList<>();
-        this.pd_no = pd_no;
         for (int i = 0; i < assetBeans.size(); i++) {
             if (assetBeans.get(i).getPd_status() == 1) {
                 pk_assets.add(assetBeans.get(i));
@@ -60,11 +75,6 @@ public class InventoryFinishedFragment extends BasePullRefreshFragment implement
                 py_assets.add(assetBeans.get(i));
             }
         }
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         initSelect();
     }
 

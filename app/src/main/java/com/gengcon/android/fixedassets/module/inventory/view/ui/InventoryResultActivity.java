@@ -3,7 +3,6 @@ package com.gengcon.android.fixedassets.module.inventory.view.ui;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import pub.devrel.easypermissions.EasyPermissions;
+import io.reactivex.functions.Consumer;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -36,8 +35,9 @@ import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
 import com.gengcon.android.fixedassets.util.StringIsDigitUtil;
 import com.gengcon.android.fixedassets.util.ToastUtils;
-import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.gengcon.android.fixedassets.widget.InfraredDialog;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -373,7 +373,8 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private void getNoFinishFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans, pd_no);
+//        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment(assetBeans, pd_no);
+        InventoryNoFinishFragment noFinishFragment = InventoryNoFinishFragment.newInstance(assetBeans, pd_no);
         ft.replace(R.id.fl, noFinishFragment);
         ft.commitAllowingStateLoss();
     }
@@ -381,7 +382,8 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
     private void getFinishedFragment(List<AssetBean> assetBeans) {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans, pd_no);
+//        InventoryFinishedFragment finishedFragment = new InventoryFinishedFragment(assetBeans, pd_no);
+        InventoryFinishedFragment finishedFragment = InventoryFinishedFragment.newInstance(assetBeans, pd_no);
         ft.replace(R.id.fl, finishedFragment);
         ft.commitAllowingStateLoss();
     }
@@ -456,33 +458,6 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         mPresenter.showInventoryResult(pd_no, mPage);
     }
 
-    private void methodRequiresCameraPermission() {
-        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            Intent intentScan = new Intent(InventoryResultActivity.this, ScanInventoryActivity.class);
-            intentScan.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
-            intentScan.putExtra("user_id", user_id);
-            startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
-        } else {
-            showCameraDialog();
-        }
-    }
-
-    public void showCameraDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, false);
-        builder.setTitle("提示");
-        String content = "您暂未开启相机权限，请在设置" + "\n" + "中开启相机权限";
-        builder.setText(content);
-        builder.setUpDate(false);
-        builder.setPositiveButton(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }, "确定");
-        builder.show();
-    }
-
     @Override
     public void keepSonAuditFailed(int type, String msg) {
         ToastUtils.toastMessage(this, msg);
@@ -501,5 +476,32 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
             mPage = 1;
             mPresenter.showInventoryResult(pd_no, 1);
         }
+    }
+
+    private void methodRequiresCameraPermission() {
+        RxPermissions rxPermission = new RxPermissions(InventoryResultActivity.this);
+        rxPermission
+                .requestEach(Manifest.permission.CAMERA)
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(Permission permission) {
+                        if (permission.granted) {
+                            Intent intentScan = new Intent(InventoryResultActivity.this, ScanInventoryActivity.class);
+                            intentScan.putExtra(Constant.INTENT_EXTRA_KEY_INVENTORY_ID, pd_no);
+                            intentScan.putExtra("user_id", user_id);
+                            startActivityForResult(intentScan, Constant.REQUEST_CODE_INVENTORY_SCAN);
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            if (permission.name.equals(Manifest.permission.CAMERA)) {
+                                ToastUtils.toastMessage(InventoryResultActivity.this, R.string.permission_camera_tips);
+                            } else {
+                                ToastUtils.toastMessage(InventoryResultActivity.this, R.string.permission_location_tips);
+                            }
+                        } else {
+                            if (permission.name.equals(Manifest.permission.CAMERA)) {
+                                ToastUtils.toastMessage(InventoryResultActivity.this, "您暂未开启相机权限，请在设置中开启相机权限");
+                            }
+                        }
+                    }
+                });
     }
 }

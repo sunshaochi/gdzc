@@ -19,6 +19,7 @@ import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,18 +45,16 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     private List<AssetBean> wp_assets;
     private List<AssetBean> yp_assets;
 
-    @SuppressLint("ValidFragment")
-    public InventoryNoFinishFragment(List<AssetBean> assetBeans, String pd_no) {
-        wp_assets = new ArrayList<>();
-        yp_assets = new ArrayList<>();
-        this.pd_no = pd_no;
-        for (int i = 0; i < assetBeans.size(); i++) {
-            if (assetBeans.get(i).getPd_status() == 1) {
-                wp_assets.add(assetBeans.get(i));
-            } else {
-                yp_assets.add(assetBeans.get(i));
-            }
-        }
+    public InventoryNoFinishFragment() {
+    }
+
+    public static InventoryNoFinishFragment newInstance(List<AssetBean> assetBeans, String pd_no) {
+        Bundle bundle = new Bundle();
+        bundle.putString("pd_no", pd_no);
+        bundle.putSerializable("asset", (Serializable) assetBeans);
+        InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment();
+        noFinishFragment.setArguments(bundle);
+        return noFinishFragment;
     }
 
     @Nullable
@@ -127,6 +126,17 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        List<AssetBean> assetBeans = (List<AssetBean>) getArguments().getSerializable("asset");
+        pd_no = getArguments().getString("pd_no");
+        wp_assets = new ArrayList<>();
+        yp_assets = new ArrayList<>();
+        for (int i = 0; i < assetBeans.size(); i++) {
+            if (assetBeans.get(i).getPd_status() == 1) {
+                wp_assets.add(assetBeans.get(i));
+            } else {
+                yp_assets.add(assetBeans.get(i));
+            }
+        }
         initSelect();
     }
 
