@@ -273,29 +273,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.iv_title_right:
                 if (isNetworkConnected(this)) {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        if (!isHaveCameraPermission()) {
-                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启相机权限，请在设置中开启相机权限");
-                            return;
-                        }
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                        if (!isHaveCameraPermission()) {
+//                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启相机权限，请在设置中开启相机权限");
+//                            return;
+//                        }
+//                    }
 
-                    }
-
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        //其中2代表AppOpsManager.OP_GPS，如果要判断悬浮框权限，
-                        // 第二个参数需换成24即AppOpsManager。OP_SYSTEM_ALERT_WINDOW及，
-                        // 第三个参数需要换成AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW
-                        int checkResult = LoacationUtil.checkOp(this, 2, AppOpsManager.OPSTR_FINE_LOCATION);
-                        int checkResult2 = LoacationUtil.checkOp(this, 1, AppOpsManager.OPSTR_FINE_LOCATION);
-                        if (AppOpsManagerCompat.MODE_IGNORED == checkResult
-                                || AppOpsManagerCompat.MODE_IGNORED == checkResult2) {
-
-                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启位置权限，请在设置中开启位置权限");
-                            return;
-                        }
-                    }
-
-
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                        if(!LoacationUtil.isLocServiceEnable(this)){
+//                            ToastUtils.toastMessage(MainActivity.this, "您暂未开启位置权限，请在设置中开启位置权限");
+//                            return;
+//                        }
+//                    }
                     methodRequiresCameraPermission();
                 } else {
                     ToastUtils.toastMessage(this, msg);
