@@ -282,7 +282,7 @@ public class ApiService {
 
     //获取资产区域
     public interface GetArea {
-        @GET("common/getArea")
+        @GET("common/getAllowArea")
         Observable<Bean<List<Area>>> getArea();
     }
 

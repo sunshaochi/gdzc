@@ -28,7 +28,6 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.BluetoothBean;
 import com.gengcon.android.fixedassets.util.ClsUtils;
-import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -112,7 +111,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
             case R.id.btn_discovery:
                 if (mCkBluetooth.isChecked()) {
                     if (mBluetoothAdapter != null) {
-                        methodRequiresCameraPermission();
+                        methodRequiresLocationPermission();
 //                        requestPermission(mConsumer, Manifest.permission.ACCESS_COARSE_LOCATION);
 //                    mBluetoothAdapter.startDiscovery();
 //                    mProgressBar.setVisibility(View.VISIBLE);
@@ -198,7 +197,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
 //        }
 //    };
 
-    private void methodRequiresCameraPermission() {
+    private void methodRequiresLocationPermission() {
         RxPermissions rxPermission = new RxPermissions(BluetoothDeviceListActivity.this);
         rxPermission
                 .requestEach(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -280,6 +279,10 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
                             mBluetoothSelected.setDeviceStatus(12);
                             connectPrint();
                         }
+                        hideLoading();
+                        break;
+                    case BluetoothDevice.BOND_NONE:
+                        hideLoading();
                         break;
                     default:
                         break;
@@ -331,7 +334,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
             mBluetoothList.clear();
             mDeviceAddress.clear();
             mBluetoothDeviceAdapter.notifyDataSetChanged();
-            methodRequiresCameraPermission();
+            methodRequiresLocationPermission();
 //            mBluetoothAdapter.startDiscovery();
 //            mProgressBar.setVisibility(View.VISIBLE);
         } else {
