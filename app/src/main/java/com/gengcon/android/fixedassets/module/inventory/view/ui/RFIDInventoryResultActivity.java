@@ -128,7 +128,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     }
 
     private void monitorEmsh() {
-        if(pd_status==1||pd_status==3) {//进行中 驳回
+        if (pd_status == 1 || pd_status == 3) {//进行中 驳回
             mEmshStatusReceiver = new EmshStatusBroadcastReceiver();
             IntentFilter intentFilter = new IntentFilter(EmshConstant.Action.INTENT_EMSH_BROADCAST);
             registerReceiver(mEmshStatusReceiver, intentFilter);

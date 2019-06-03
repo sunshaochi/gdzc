@@ -296,7 +296,6 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
             public void onSuccess(Bean<UpLoadBean> modelBean) {
                 if (isViewAttached()) {
                     mMvpView.hideLoading();
-//                Logger.i("结果",modelBean.toString());
                     if (modelBean.getCode().equals("CODE_200")) {
                         if (modelBean.getData() != null) {
                             if(!TextUtils.isEmpty(modelBean.getData().getPath())) {
