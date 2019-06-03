@@ -3,6 +3,7 @@ package com.gengcon.android.fixedassets.module.user.view.ui;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -173,6 +174,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 
     @Override
     public void editOrg() {
+        addDialog.dismiss();
         menuNames.clear();
         headNames.remove(headNames.get(headNames.size() - 1));
         pids.remove(pids.get(pids.size() - 1));
@@ -337,14 +339,19 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                                 orgSettingSecondPresenter.addOrg(addOrgJson.toString());
                                 break;
                             case "编辑":
-                                editOrgJson = new JSONObject();
-                                try {
-                                    editOrgJson.put("org_name", builder.getEditText());
-                                    editOrgJson.put("org_id", orgId);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                if (headNames.get(headNames.size() - 1).equals(builder.getEditText())) {
+                                    dialog.dismiss();
+                                    Log.e("OrgSecond", "headNames: "+ headNames.get(headNames.size() - 1) + "builder.getEditText(): " +builder.getEditText());
+                                } else {
+                                    editOrgJson = new JSONObject();
+                                    try {
+                                        editOrgJson.put("org_name", builder.getEditText());
+                                        editOrgJson.put("org_id", orgId);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    orgSettingSecondPresenter.editOrg(editOrgJson.toString());
                                 }
-                                orgSettingSecondPresenter.editOrg(editOrgJson.toString());
                                 break;
                         }
                     }

@@ -179,8 +179,8 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
     public void showCodeMsg(String code, String msg) {
         if (!isNetworkConnected(this)) {
             ToastUtils.toastMessage(BaseActivity.this, "网络连接不可用");
-        } else {
-//            ToastUtils.toastMessage(BaseActivity.this, msg);
+        } else if (code.equals("CODE_400")) {
+            ToastUtils.toastMessage(BaseActivity.this, msg);
         }
         if (code.equals("CODE_301")) {
             SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
