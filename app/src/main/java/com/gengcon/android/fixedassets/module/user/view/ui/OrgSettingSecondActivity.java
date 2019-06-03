@@ -173,7 +173,8 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
-    public void editOrg() {
+    public void editOrg(String msg) {
+        ToastUtils.toastMessage(this, msg);
         addDialog.dismiss();
         menuNames.clear();
         headNames.remove(headNames.get(headNames.size() - 1));
@@ -202,7 +203,8 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
-    public void delOrg() {
+    public void delOrg(String msg) {
+        ToastUtils.toastMessage(this, msg);
         menuNames.clear();
         headNames.remove(headNames.get(headNames.size() - 1));
         pids.remove(pids.get(pids.size() - 1));
@@ -341,7 +343,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                             case "编辑":
                                 if (headNames.get(headNames.size() - 1).equals(builder.getEditText())) {
                                     dialog.dismiss();
-                                    Log.e("OrgSecond", "headNames: "+ headNames.get(headNames.size() - 1) + "builder.getEditText(): " +builder.getEditText());
+                                    Log.e("OrgSecond", "headNames: " + headNames.get(headNames.size() - 1) + "builder.getEditText(): " + builder.getEditText());
                                 } else {
                                     editOrgJson = new JSONObject();
                                     try {

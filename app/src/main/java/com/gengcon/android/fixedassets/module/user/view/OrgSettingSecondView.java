@@ -12,7 +12,7 @@ public interface OrgSettingSecondView extends Iview {
 
     void onFail(String msg);
 
-    void editOrg();
+    void editOrg(String msg);
 
-    void delOrg();
+    void delOrg(String msg);
 }
