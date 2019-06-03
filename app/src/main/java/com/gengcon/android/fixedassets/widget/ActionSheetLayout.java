@@ -137,7 +137,6 @@ public class ActionSheetLayout extends LinearLayout implements View.OnClickListe
                             } else {
                                 ToastUtils.toastMessage(getContext(), R.string.permission_camera_tips);
                             }
-                            requestPermission();
                         } else {
                             Log.i("静止",permission.name);
                             // 用户拒绝了该权限，而且选中『不再询问』
