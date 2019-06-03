@@ -12,14 +12,15 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.approval.view.ui.AssetDetailsActivity;
 import com.gengcon.android.fixedassets.module.base.BasePullRefreshFragment;
+import com.gengcon.android.fixedassets.module.base.GApplication;
 import com.gengcon.android.fixedassets.module.greendao.AssetBean;
+import com.gengcon.android.fixedassets.module.greendao.AssetBeanDao;
 import com.gengcon.android.fixedassets.module.inventory.view.OnItemClick;
 import com.gengcon.android.fixedassets.module.inventory.widget.adapter.InventoryAssetAdapter;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,18 +41,21 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     private View v_wp, v_yp;
     private int status = 1;
     private String pd_no;
+    private String user_id;
 
 
     private List<AssetBean> wp_assets;
     private List<AssetBean> yp_assets;
 
+    private AssetBeanDao assetBeanDao;
+
     public InventoryNoFinishFragment() {
     }
 
-    public static InventoryNoFinishFragment newInstance(List<AssetBean> assetBeans, String pd_no) {
+    public static InventoryNoFinishFragment newInstance(String user_id, String pd_no) {
         Bundle bundle = new Bundle();
         bundle.putString("pd_no", pd_no);
-        bundle.putSerializable("asset", (Serializable) assetBeans);
+        bundle.putSerializable("user_id", user_id);
         InventoryNoFinishFragment noFinishFragment = new InventoryNoFinishFragment();
         noFinishFragment.setArguments(bundle);
         return noFinishFragment;
@@ -126,8 +130,12 @@ public class InventoryNoFinishFragment extends BasePullRefreshFragment implement
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        List<AssetBean> assetBeans = (List<AssetBean>) getArguments().getSerializable("asset");
+        user_id = getArguments().getString("user_id");
         pd_no = getArguments().getString("pd_no");
+        assetBeanDao = GApplication.getDaoSession().getAssetBeanDao();
+        List<AssetBean> assetBeans = assetBeanDao.queryBuilder()
+                .where(AssetBeanDao.Properties.Pd_no.eq(pd_no)).where(
+                        AssetBeanDao.Properties.User_id.eq(user_id)).list();
         wp_assets = new ArrayList<>();
         yp_assets = new ArrayList<>();
         for (int i = 0; i < assetBeans.size(); i++) {

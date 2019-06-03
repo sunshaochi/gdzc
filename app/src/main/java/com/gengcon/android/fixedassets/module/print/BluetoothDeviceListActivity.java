@@ -28,8 +28,10 @@ import com.gengcon.android.fixedassets.R;
 import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.BluetoothBean;
 import com.gengcon.android.fixedassets.util.ClsUtils;
+import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.ToastUtils;
 import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +112,8 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
             case R.id.btn_discovery:
                 if (mCkBluetooth.isChecked()) {
                     if (mBluetoothAdapter != null) {
-                        requestPermission(mConsumer, Manifest.permission.ACCESS_COARSE_LOCATION);
+                        methodRequiresCameraPermission();
+//                        requestPermission(mConsumer, Manifest.permission.ACCESS_COARSE_LOCATION);
 //                    mBluetoothAdapter.startDiscovery();
 //                    mProgressBar.setVisibility(View.VISIBLE);
                     }
@@ -177,23 +180,42 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
         }
     }
 
-    Consumer<Permission> mConsumer = new Consumer<Permission>() {
-        @Override
-        public void accept(Permission permission) {
-            if (permission.granted) {
-//                if(mBluetoothAdapter.isDiscovering()) {
-//                    mBluetoothAdapter.cancelDiscovery();
-//                }
-                mBluetoothAdapter.startDiscovery();
-                mProgressBar.setVisibility(View.VISIBLE);
-            } else if (permission.shouldShowRequestPermissionRationale) {
-                ToastUtils.toastMessage(BluetoothDeviceListActivity.this, R.string.permission_bluetooth_tips);
-                requestPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-            } else {
-                ToastUtils.toastMessage(BluetoothDeviceListActivity.this, R.string.permission_bluetooth_tips);
-            }
-        }
-    };
+//    Consumer<Permission> mConsumer = new Consumer<Permission>() {
+//        @Override
+//        public void accept(Permission permission) {
+//            if (permission.granted) {
+////                if(mBluetoothAdapter.isDiscovering()) {
+////                    mBluetoothAdapter.cancelDiscovery();
+////                }
+//                mBluetoothAdapter.startDiscovery();
+//                mProgressBar.setVisibility(View.VISIBLE);
+//            } else if (permission.shouldShowRequestPermissionRationale) {
+//                ToastUtils.toastMessage(BluetoothDeviceListActivity.this, R.string.permission_bluetooth_tips);
+//                requestPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+//            } else {
+//                ToastUtils.toastMessage(BluetoothDeviceListActivity.this, R.string.permission_bluetooth_tips);
+//            }
+//        }
+//    };
+
+    private void methodRequiresCameraPermission() {
+        RxPermissions rxPermission = new RxPermissions(BluetoothDeviceListActivity.this);
+        rxPermission
+                .requestEach(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(Permission permission) {
+                        if (permission.granted) {
+                            mBluetoothAdapter.startDiscovery();
+                            mProgressBar.setVisibility(View.VISIBLE);
+                        }  else {
+                            if (permission.name.equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                                ToastUtils.toastMessage(BluetoothDeviceListActivity.this, R.string.permission_bluetooth_tips);
+                            }
+                        }
+                    }
+                });
+    }
 
 
     /**
@@ -309,7 +331,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
             mBluetoothList.clear();
             mDeviceAddress.clear();
             mBluetoothDeviceAdapter.notifyDataSetChanged();
-            requestPermission(mConsumer, Manifest.permission.ACCESS_COARSE_LOCATION);
+            methodRequiresCameraPermission();
 //            mBluetoothAdapter.startDiscovery();
 //            mProgressBar.setVisibility(View.VISIBLE);
         } else {

@@ -188,9 +188,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         if (assets.size() == 0) {
             if (!isNetworkConnected(this)) {
                 if (pd_status == 4) {
-                    getFinishedFragment(assets);
+                    getFinishedFragment();
                 } else {
-                    getNoFinishFragment(assets);
+                    getNoFinishFragment();
                 }
             } else {
                 mPresenter.showInventoryResult(pd_no, mPage);
@@ -199,25 +199,25 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             if (pd_status == 4) {
                 if (isUpdate != 1) {
                     if (!isNetworkConnected(this)) {
-                        getFinishedFragment(assets);
+                        getFinishedFragment();
                     } else {
                         mPresenter.showInventoryResult(pd_no, mPage);
                     }
                 } else {
-                    getFinishedFragment(assets);
+                    getFinishedFragment();
                 }
             } else if (pd_status == 2) {
                 if (isUpdate != 1) {
                     if (!isNetworkConnected(this)) {
-                        getNoFinishFragment(assets);
+                        getNoFinishFragment();
                     } else {
                         mPresenter.showInventoryResult(pd_no, mPage);
                     }
                 } else {
-                    getNoFinishFragment(assets);
+                    getNoFinishFragment();
                 }
             } else {
-                getNoFinishFragment(assets);
+                getNoFinishFragment();
             }
         }
     }
@@ -247,18 +247,18 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         }
     }
 
-    private void getNoFinishFragment(List<AssetBean> assetBeans) {
+    private void getNoFinishFragment() {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryNoFinishFragment noFinishFragment = InventoryNoFinishFragment.newInstance(assetBeans, pd_no);
+        InventoryNoFinishFragment noFinishFragment = InventoryNoFinishFragment.newInstance(user_id, pd_no);
         ft.replace(R.id.fl, noFinishFragment);
         ft.commitAllowingStateLoss();
     }
 
-    private void getFinishedFragment(List<AssetBean> assetBeans) {
+    private void getFinishedFragment() {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        InventoryFinishedFragment finishedFragment = InventoryFinishedFragment.newInstance(assetBeans, pd_no);
+        InventoryFinishedFragment finishedFragment = InventoryFinishedFragment.newInstance(user_id, pd_no);
         ft.replace(R.id.fl, finishedFragment);
         ft.commitAllowingStateLoss();
     }
@@ -286,9 +286,9 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                                     AssetBeanDao.Properties.User_id.eq(user_id))).list());
             assetBeanDao.insertInTx(mResultList);
             if (pd_status == 4) {
-                getFinishedFragment(mResultList);
+                getFinishedFragment();
             } else if (pd_status == 1 || pd_status == 3 || pd_status == 2) {
-                getNoFinishFragment(mResultList);
+                getNoFinishFragment();
             }
         }
     }
@@ -617,9 +617,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         infraredDialog.setCompleteClick(new InfraredDialog.CompleteListener() {
             @Override
             public void onClick() {
-                assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                        .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
-                getNoFinishFragment(assets);
+                getNoFinishFragment();
                 infraredDialog.dismiss();
                 infraredDialog = null;
             }
@@ -741,10 +739,8 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     }
                 }
             }
-            assets = assetBeanDao.queryBuilder().where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
-                    .where(AssetBeanDao.Properties.User_id.eq(user_id)).list();
 
-            return assets;
+            return null;
         }
 
         @Override
@@ -757,7 +753,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
         protected void onPostExecute(List<AssetBean> assetBeans) {
             super.onPostExecute(assetBeans);
             hideLoading();
-            getNoFinishFragment(assets);
+            getNoFinishFragment();
             dataMap.clear();
             realDataMap.clear();
             realKeyList.clear();
