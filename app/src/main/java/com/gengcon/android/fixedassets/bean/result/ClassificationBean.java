@@ -18,6 +18,7 @@ public class ClassificationBean extends InvalidBean implements Serializable {
     private int pid;
     private String custom_type_name;
     private int level;
+    private boolean disabled;
     private List<ClassificationBean> children;
 
     public int getId() {
@@ -42,6 +43,14 @@ public class ClassificationBean extends InvalidBean implements Serializable {
 
     public void setCustom_type_name(String custom_type_name) {
         this.custom_type_name = custom_type_name;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
     public int getLevel() {

@@ -81,12 +81,19 @@ public class AddAssetDataAdapter extends RecyclerView.Adapter<AddAssetDataAdapte
             } else {
                 holder.childrenLayout.setVisibility(View.GONE);
             }
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addAssetDataCallback.clickDataItem(orgBean.getId(), orgBean.getOrg_name());
-                }
-            });
+            if (orgBean.isDisabled()) {
+                holder.dataNameView.setTextColor(mContext.getResources().getColor(R.color.light_gray_text));
+                holder.itemView.setEnabled(false);
+            } else {
+                holder.itemView.setEnabled(true);
+                holder.dataNameView.setTextColor(mContext.getResources().getColor(R.color.black_text));
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addAssetDataCallback.clickDataItem(orgBean.getId(), orgBean.getOrg_name());
+                    }
+                });
+            }
             holder.childrenLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -103,13 +110,19 @@ public class AddAssetDataAdapter extends RecyclerView.Adapter<AddAssetDataAdapte
             } else {
                 holder.childrenLayout.setVisibility(View.GONE);
             }
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addAssetDataCallback.clickDataItem(classificationBean.getId(), classificationBean.getCustom_type_name());
-                }
-            });
-
+            if (classificationBean.isDisabled()) {
+                holder.itemView.setEnabled(false);
+                holder.dataNameView.setTextColor(mContext.getResources().getColor(R.color.light_gray_text));
+            } else {
+                holder.itemView.setEnabled(true);
+                holder.dataNameView.setTextColor(mContext.getResources().getColor(R.color.black_text));
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addAssetDataCallback.clickDataItem(classificationBean.getId(), classificationBean.getCustom_type_name());
+                    }
+                });
+            }
             holder.childrenLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

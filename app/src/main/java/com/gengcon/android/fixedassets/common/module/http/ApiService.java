@@ -258,7 +258,7 @@ public class ApiService {
 
     //资产入库分类
     public interface GetClassificationList {
-        @GET("common/getCustomType")
+        @GET("common/getAllowCustomType")
         Observable<Bean<List<ClassificationBean>>> getClassificationList();
     }
 

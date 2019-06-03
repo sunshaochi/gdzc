@@ -140,8 +140,6 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.2.0'
     implementation files('libs/RFIDJar_V1.1.jar')
 
-    implementation 'pub.devrel:easypermissions:3.0.0'
-
     implementation('com.alibaba.android:vlayout:1.2.8@aar') {
         transitive = true
     }

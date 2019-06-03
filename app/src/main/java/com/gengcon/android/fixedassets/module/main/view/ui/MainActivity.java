@@ -42,7 +42,6 @@ import com.gengcon.android.fixedassets.module.message.view.ui.MessageActivity;
 import com.gengcon.android.fixedassets.module.message.view.ui.MessageDetailsActivity;
 import com.gengcon.android.fixedassets.common.module.scan.ScanActivity;
 import com.gengcon.android.fixedassets.util.Constant;
-import com.gengcon.android.fixedassets.util.LoacationUtil;
 import com.gengcon.android.fixedassets.util.RFIDUtils;
 import com.gengcon.android.fixedassets.util.RolePowerManager;
 import com.gengcon.android.fixedassets.util.SharedPreferencesUtils;
@@ -53,10 +52,6 @@ import com.gengcon.android.fixedassets.widget.AlertDialog;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import androidx.core.app.AppOpsManagerCompat;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

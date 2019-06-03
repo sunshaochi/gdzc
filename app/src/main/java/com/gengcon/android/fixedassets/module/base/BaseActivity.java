@@ -257,10 +257,6 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
         }
     }
 
-    public void showPermissionDeniedTips() {
-        ToastUtils.toastMessage(BaseActivity.this, R.string.permission_denied_tips);
-    }
-
     //Manifest.permission.CAMERA
     protected void requestPermission(Consumer<Permission> consumer, String... permission) {
         RxPermissions rxPermission = new RxPermissions(this);
