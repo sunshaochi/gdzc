@@ -192,13 +192,11 @@ public class BaseActivity extends AppCompatActivity implements Iview, UpdateVers
 
     @Override
     public void showInvalidType(int invalid_type) {
-        if (invalid_type == 2) {
-            SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
-            Intent intent = new Intent(BaseActivity.this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
-            intent.putExtra("invalid_type", invalid_type + "");
-            startActivity(intent);
-        }
+        SharedPreferencesUtils.getInstance().clear(SharedPreferencesUtils.TOKEN);
+        Intent intent = new Intent(BaseActivity.this, WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Constant.INTENT_EXTRA_KEY_URL, URL.HTTP_HEAD + URL.LOGIN);
+        intent.putExtra("invalid_type", invalid_type + "");
+        startActivity(intent);
     }
 
     public void hideSoftInput() {
