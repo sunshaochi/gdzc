@@ -206,38 +206,6 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
 
             }
         });
-        ChatClient.getInstance().chatManager().getCurrentSessionId(toChatUsername, new ValueCallBack<String>() {
-            @Override
-            public void onSuccess(String value) {
-                if(TextUtils.isEmpty(value)){
-                    ChatClient.getInstance().chatManager().getEnterpriseWelcome(new ValueCallBack<String>() {
-                        @Override
-                        public void onSuccess(String value) {
-//                            Logger.i("欢迎语句",value+"");
-                            Message message=Message.createReceiveMessage(Message.Type.TXT);
-                            EMTextMessageBody body=null;
-                            body=new EMTextMessageBody(value);
-                            message.setFrom(toChatUsername);
-                            message.addBody(body);
-                            message.setMessageTime(System.currentTimeMillis());
-                            message.setStatus(Message.Status.SUCCESS);
-                            ChatClient.getInstance().chatManager().saveMessage(message);
-                        }
-
-                        @Override
-                        public void onError(int error, String errorMsg) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onError(int error, String errorMsg) {
-                Logger.i("是否在会话",errorMsg+"");
-            }
-        });
 
         // 为测试获取账号用，无实际意义
         setUserNameView();
