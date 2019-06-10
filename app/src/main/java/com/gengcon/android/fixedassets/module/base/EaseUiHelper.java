@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gengcon.android.fixedassets.EaseChate.MyIntentBuilder;
 import com.gengcon.android.fixedassets.R;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.Message;
@@ -175,7 +176,13 @@ public class EaseUiHelper {
      * 跳转到聊天界面
      */
     public void goTalk() {
-        Intent intent = new IntentBuilder(appContext).setServiceIMNumber(SERVICEIMNUMBER)
+//        Intent intent = new IntentBuilder(appContext).setServiceIMNumber(SERVICEIMNUMBER)
+//                .setTitleName("武汉精臣智慧标识科技有限公司")
+//                .build();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+//        appContext.startActivity(intent);
+
+        Intent intent = new MyIntentBuilder(appContext).setServiceIMNumber(SERVICEIMNUMBER)
                 .setTitleName("武汉精臣智慧标识科技有限公司")
                 .build();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );

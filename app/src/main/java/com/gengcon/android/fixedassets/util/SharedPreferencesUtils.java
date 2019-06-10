@@ -11,6 +11,7 @@ public class SharedPreferencesUtils {
     public static final String IS_SUPERADMIN = "is_superadmin";
     public static final String COMPANY_NAME = "company_name";
     public static final String USER_ID = "user_id";
+    public static final String WELCOME="easui_wel";
 
     private static SharedPreferencesUtils mInstance;
     private Context mContext;

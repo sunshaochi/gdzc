@@ -257,6 +257,13 @@
             android:name=".module.user.view.ui.UserWebActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".EaseChate.MyChatActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|navigation"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.gengcon.android.fixedassets.fileProvider"
