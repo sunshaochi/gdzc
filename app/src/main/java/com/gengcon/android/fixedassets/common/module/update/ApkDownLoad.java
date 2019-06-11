@@ -90,6 +90,9 @@ public class ApkDownLoad {
         File folder = Environment.getExternalStoragePublicDirectory(getDOWNLOAD_FOLDER_NAME());
         if (!folder.exists() || !folder.isDirectory()) {
             folder.mkdirs();
+        } else {
+            deleteFile(folder);
+            folder.mkdirs();
         }
         request.setDestinationInExternalPublicDir(getDOWNLOAD_FOLDER_NAME(), getDOWNLOAD_FILE_NAME());
         // 设置文件类型
@@ -101,6 +104,20 @@ public class ApkDownLoad {
         downloadDialog.show();
         DownloadChangeObserver downloadObserver = new DownloadChangeObserver(null);
         mContext.getContentResolver().registerContentObserver(CONTENT_URI, true, downloadObserver);
+    }
+
+
+    private void deleteFile(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                File f = files[i];
+                deleteFile(f);
+            }
+//            file.delete();
+        } else if (file.exists()) {
+            file.delete();
+        }
     }
 
     class DownloadChangeObserver extends ContentObserver {
