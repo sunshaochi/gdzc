@@ -89,7 +89,6 @@ public class WebActivity extends BasePullRefreshActivity {
     private String rgsId;
     private WebPresenter webPresenter;
     String invalid_type;
-    private boolean backHome;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -163,7 +162,6 @@ public class WebActivity extends BasePullRefreshActivity {
                     ArrayList<String> assetIds = (ArrayList<String>) getIntent().getSerializableExtra(Constant.INTENT_EXTRA_KEY_ASSETS);
                     mWebView.loadUrl("javascript:beCall(" + "'" + new Gson().toJson(new AddAssetRequest(assetIds)) + "'" + ")");
                 } else if (url.equals(URL.HTTP_HEAD + URL.LOGIN)) {
-                    backHome = true;
                     if (!TextUtils.isEmpty(invalid_type)) {
                         mWebView.loadUrl("javascript:ToastMsg(" + "'" + invalid_type + "'" + ")");
                         invalid_type = null;
