@@ -303,8 +303,8 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 
     private void showEditDialog() {
         final AlertEditDialog.Builder builder = new AlertEditDialog.Builder(this);
-        builder.setTitle(dialogTitle);
         if (dialogTitle.equals("编辑")) {
+            builder.setTitle(dialogTitle + "组织名称");
             builder.setEditText(headNames.get(headNames.size() - 1));
         }
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
