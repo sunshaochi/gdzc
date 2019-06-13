@@ -60,7 +60,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
     private InfraredDialog infraredDialog;
     private EmshStatusBroadcastReceiver mEmshStatusReceiver;
     private int currentStatue = -1;
-    private boolean isConnect;
 
     private List<AssetBean> mResultList;
     private String pd_no;
@@ -405,7 +404,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            isConnect = false;
             pdView.setTextColor(getResources().getColor(R.color.gray_no));
             pdView.setEnabled(false);
 
@@ -413,7 +411,6 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                 int sessionStatus = intent.getIntExtra("SessionStatus", 0);
                 int batteryPowerMode = intent.getIntExtra("BatteryPowerMode", -1);
                 if ((sessionStatus & EmshConstant.EmshSessionStatus.EMSH_STATUS_POWER_STATUS) != 0) {
-                    isConnect = true;
                     pdView.setTextColor(Color.parseColor("#333333"));
                     pdView.setEnabled(true);
                     // 把枪电池当前状态
@@ -658,10 +655,10 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
             @Override
             public void run() {
                 if (readNumberss > 1) {
-                    realDataMap.put(epc, readNumberss); //修改数量
+                    realDataMap.put(epc.toLowerCase(), readNumberss); //修改数量
                 } else {
-                    realDataMap.put(epc, 1);
-                    realKeyList.add(epc);
+                    realDataMap.put(epc.toLowerCase(), 1);
+                    realKeyList.add(epc.toLowerCase());
                 }
 //                useTimes.setText(takeTime + usTim); //花费的时间
                 if (realKeyList != null && realKeyList.size() > 0) {
@@ -728,7 +725,7 @@ public class RFIDInventoryResultActivity extends BasePullRefreshActivity impleme
                     AssetBean asset = assetBeanDao.queryBuilder()
                             .where(AssetBeanDao.Properties.Pd_no.eq(pd_no))
                             .where(AssetBeanDao.Properties.User_id.eq(user_id))
-                            .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i).toLowerCase()))
+                            .where(AssetBeanDao.Properties.Asset_id.eq(realKeyList.get(i)))
                             .unique();
                     if (asset != null) {
                         if (asset.getPd_status() != 2) {
