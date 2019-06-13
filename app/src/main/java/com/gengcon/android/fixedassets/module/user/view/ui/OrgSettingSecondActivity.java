@@ -54,6 +54,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private JSONObject editOrgJson;
     private JSONObject delOrgJson;
     private int orgId;
+    private String org_code;
     private boolean isFatherOrg;
     private List<OrgBean> orgDatas;
     private LinearLayout noDataLayout;
@@ -87,7 +88,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 
         orgSettingSecondPresenter = new OrgSettingSecondPresenter();
         orgSettingSecondPresenter.attachView(this);
-        orgSettingSecondPresenter.getOrgSettingList(-1);
+        orgSettingSecondPresenter.getOrgSettingList(-1);//获取组织信息
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -142,7 +143,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         if (orgBeans != null && orgBeans.size() > 0) {
             noDataLayout.setVisibility(View.GONE);
             if (isFatherOrg) {
-                orgId = orgBeans.get(0).getPid();
+                orgId = orgBeans.get(0).getPid();//只返回一个
+                if (!TextUtils.isEmpty(orgBeans.get(0).getOrg_code()))
+                    org_code = orgBeans.get(0).getOrg_code();
             }
         } else {
             noDataLayout.setVisibility(View.VISIBLE);
@@ -197,6 +200,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                 menuNames.add("删除");
             }
             orgId = pids.get(pids.size() - 1);
+            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+                org_code = orgBean.getOrg_code();
+            }
             orgSettingSecondPresenter.getOrgSettingList(pids.get(pids.size() - 1));
         }
         headerAdapter.changeDataSource(headNames, pids);
@@ -224,6 +230,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                 menuNames.add("删除");
             }
             orgId = pids.get(pids.size() - 1);
+            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+                org_code = orgBean.getOrg_code();
+            }
             orgSettingSecondPresenter.getOrgSettingList(pids.get(pids.size() - 1));
         }
         headerAdapter.changeDataSource(headNames, pids);
@@ -240,6 +249,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         } else {
             OrgBean orgBean = orgDatas.get(position - 1);
             orgId = orgBean.getId();
+            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+                org_code = orgBean.getOrg_code();
+            }
             if (orgBean.getType() == 1) {
                 menuNames.add("新增子公司");
                 menuNames.add("新增子部门");
@@ -272,6 +284,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         headerName.add(orgBean.getOrg_name());
         pid.add(orgBean.getId());
         orgId = orgBean.getId();
+        if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+            org_code = orgBean.getOrg_code();
+        }
         if (orgBean.getType() == 1) {
             menuNames.add("新增子公司");
             menuNames.add("新增子部门");
@@ -285,7 +300,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         orgDatas.add(orgBean);
         headNames.add(orgBean.getOrg_name());
         pids.add(orgBean.getId());
-        headerAdapter.addDataSource(headerName, pid);
+        headerAdapter.addDataSource(headerName, pid);//跟新头部
         orgSettingSecondPresenter.getOrgSettingList(orgBean.getId());
     }
 
@@ -306,60 +321,85 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         if (dialogTitle.equals("编辑")) {
             builder.setTitle(dialogTitle + "组织名称");
             builder.setEditText(headNames.get(headNames.size() - 1));
+            builder.setbackground(R.drawable.alert_edit_bg_enable);
+            if (!TextUtils.isEmpty(org_code)) {
+                builder.setEditCode(org_code);
+            }
+            builder.setEnable(false);
+        } else {
+            builder.setTitle(dialogTitle + "");
+            builder.setbackground(R.drawable.alert_edit_bg);
+            builder.setEditCode("");
+            builder.setEnable(true);
         }
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 addDialog = dialog;
+                if (TextUtils.isEmpty(builder.getEditCode())) {
+                    ToastUtils.toastMessage(OrgSettingSecondActivity.this, "请输入组织编码");
+                    return;
+                }
+//                if (builder.getEditCode().length() < 8) {
+//                    ToastUtils.toastMessage(OrgSettingSecondActivity.this, "组织编码格式错误（8位，可包含大写英文字母，数字 ）");
+//                    return;
+//                }
                 if (TextUtils.isEmpty(builder.getEditText())) {
                     ToastUtils.toastMessage(OrgSettingSecondActivity.this, "请输入组织名称");
-                } else {
-                    if (builder.getEditText().length() < 2 || builder.getEditText().length() > 30) {
-                        ToastUtils.toastMessage(OrgSettingSecondActivity.this, "组织名称格式错误（2-30位，可包含中文，数字，字母，符号“.-_()”）");
-                    } else {
-                        switch (dialogTitle) {
-                            case "新增子公司":
-                                addOrgJson = new JSONObject();
-                                try {
-                                    addOrgJson.put("org_name", builder.getEditText());
-                                    addOrgJson.put("pid", orgId);
-                                    addOrgJson.put("type", 1);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                orgSettingSecondPresenter.addOrg(addOrgJson.toString());
-                                break;
-                            case "新增子部门":
-                                addOrgJson = new JSONObject();
-                                try {
-                                    addOrgJson.put("org_name", builder.getEditText());
-                                    addOrgJson.put("pid", orgId);
-                                    addOrgJson.put("type", 2);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                orgSettingSecondPresenter.addOrg(addOrgJson.toString());
-                                break;
-                            case "编辑":
-                                if (headNames.get(headNames.size() - 1).equals(builder.getEditText())) {
-                                    dialog.dismiss();
-                                    Log.e("OrgSecond", "headNames: " + headNames.get(headNames.size() - 1) + "builder.getEditText(): " + builder.getEditText());
-                                } else {
-                                    editOrgJson = new JSONObject();
-                                    try {
-                                        editOrgJson.put("org_name", builder.getEditText());
-                                        editOrgJson.put("org_id", orgId);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    orgSettingSecondPresenter.editOrg(editOrgJson.toString());
-                                }
-                                break;
-                        }
-                    }
+                    return;
                 }
+
+                if (builder.getEditText().length() < 2 || builder.getEditText().length() > 30) {
+                    ToastUtils.toastMessage(OrgSettingSecondActivity.this, "组织名称格式错误（2-30位，可包含中文，数字，字母，符号“.-_()”）");
+                    return;
+                }
+
+                switch (dialogTitle) {
+                    case "新增子公司":
+                        addOrgJson = new JSONObject();
+                        try {
+                            addOrgJson.put("org_name", builder.getEditText());
+                            addOrgJson.put("pid", orgId);
+                            addOrgJson.put("type", 1);
+                            addOrgJson.put("org_code", builder.getEditCode());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        orgSettingSecondPresenter.addOrg(addOrgJson.toString());
+                        break;
+                    case "新增子部门":
+                        addOrgJson = new JSONObject();
+                        try {
+                            addOrgJson.put("org_name", builder.getEditText());
+                            addOrgJson.put("pid", orgId);
+                            addOrgJson.put("type", 2);
+                            addOrgJson.put("org_code", builder.getEditCode());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        orgSettingSecondPresenter.addOrg(addOrgJson.toString());
+                        break;
+                    case "编辑":
+                        if (headNames.get(headNames.size() - 1).equals(builder.getEditText())) {
+                            dialog.dismiss();
+                            Log.e("OrgSecond", "headNames: " + headNames.get(headNames.size() - 1) + "builder.getEditText(): " + builder.getEditText());
+                        } else {
+                            editOrgJson = new JSONObject();
+                            try {
+                                editOrgJson.put("org_name", builder.getEditText());
+                                editOrgJson.put("org_id", orgId);
+                                addOrgJson.put("org_code", builder.getEditCode());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            orgSettingSecondPresenter.editOrg(editOrgJson.toString());
+                        }
+                        break;
+                }
+
+
             }
-        }, "确定");
+        }, "保存");
         builder.setNegativeButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

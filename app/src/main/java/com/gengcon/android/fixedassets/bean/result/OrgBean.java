@@ -19,6 +19,7 @@ public class OrgBean extends InvalidBean implements Serializable {
     private int id;
     private int pid;
     private String org_name;
+    private String org_code;
     private int level;
     private int type;
     private String paths;
@@ -98,4 +99,27 @@ public class OrgBean extends InvalidBean implements Serializable {
         this.children = children;
     }
 
+    public String getOrg_code() {
+        return org_code;
+    }
+
+    public void setOrg_code(String org_code) {
+        this.org_code = org_code;
+    }
+
+    @Override
+    public String toString() {
+        return "OrgBean{" +
+                "id=" + id +
+                ", pid=" + pid +
+                ", org_name='" + org_name + '\'' +
+                ", org_code='" + org_code + '\'' +
+                ", level=" + level +
+                ", type=" + type +
+                ", paths='" + paths + '\'' +
+                ", disabled=" + disabled +
+                ", employee_num=" + employee_num +
+                ", children=" + children +
+                '}';
+    }
 }
