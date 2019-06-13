@@ -304,7 +304,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                             try {
                                 editOrgJson.put("org_name", builder.getEditText());
                                 editOrgJson.put("org_id", orgId);
-                                addOrgJson.put("org_code", builder.getEditCode());
+                                editOrgJson.put("org_code", builder.getEditCode());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
