@@ -110,12 +110,12 @@ public class AlertEditDialog extends Dialog {
         public Builder setEnable(boolean b) {
             et_code.setEnabled(b);
             iv_delete.setEnabled(b);
-            if(b){
+            if (b) {
                 et_code.setText("");
                 ll_code.setBackgroundResource(R.drawable.alert_edit_bg);
                 et_code.addTextChangedListener(new MyTextWatcher());
                 iv_delete.setOnClickListener(new MyOnClick());
-            }else {
+            } else {
                 et_code.addTextChangedListener(null);
                 ll_code.setBackgroundResource(R.drawable.alert_edit_bg_enable);
                 iv_delete.setVisibility(View.GONE);
