@@ -179,4 +179,5 @@
     <string name="search_asset">手动输入查询</string>
     <string name="inventory_remarks">盘点单备注</string>
     <string name="user_jurisdiction">您没有权限访问，请联系管理员</string>
+    <string name="type_code">ABCDEFGHIGKLMNOPQRSTUVWXYZ0123456798</string>
 </resources>

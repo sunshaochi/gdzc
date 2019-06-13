@@ -3,11 +3,16 @@ package com.gengcon.android.fixedassets.widget;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gengcon.android.fixedassets.R;
@@ -25,6 +30,9 @@ public class AlertEditDialog extends Dialog {
         private boolean mNegativeDismiss, mPositiveDismiss;
         private View mContentView;
         private EditText editText;
+        private EditText et_code;
+        private ImageView iv_delete;
+        private LinearLayout ll_code;
 
         private OnClickListener mPositiveListener, mNegativeListener;
 
@@ -33,6 +41,10 @@ public class AlertEditDialog extends Dialog {
             mContentView = LayoutInflater.from(mContext).inflate(
                     R.layout.alert_edit_dialog, null);
             editText = mContentView.findViewById(R.id.tv_text);
+            et_code = mContentView.findViewById(R.id.et_code);
+            iv_delete = mContentView.findViewById(R.id.iv_delete);
+            ll_code = mContentView.findViewById(R.id.ll_code);
+            iv_delete.setVisibility(View.GONE);
             mNegativeDismiss = true;
             mPositiveDismiss = true;
         }
@@ -95,6 +107,39 @@ public class AlertEditDialog extends Dialog {
             }
         }
 
+        public Builder setbackground(int background) {
+//            et_code.setBackgroundResource(background);
+            ll_code.setBackgroundResource(background);
+            return this;
+        }
+
+        public Builder setEnable(boolean b) {
+            et_code.setEnabled(b);
+            iv_delete.setEnabled(b);
+            if(b){
+
+                et_code.addTextChangedListener(new MyTextWatcher());
+                iv_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        et_code.setText("");
+                        iv_delete.setVisibility(View.GONE);
+                    }
+                });
+            }else {
+                et_code.addTextChangedListener(null);
+                iv_delete.setVisibility(View.GONE);
+            }
+            return this;
+        }
+
+
+        public Builder setEditCode(String org_code) {
+            et_code.setText(org_code);
+            return this;
+        }
+
+
         public AlertEditDialog create() {
             final AlertEditDialog dialog = new AlertEditDialog(mContext);
             dialog.setCancelable(false);
@@ -152,6 +197,34 @@ public class AlertEditDialog extends Dialog {
             return dialog;
         }
 
+        public String getEditCode() {
+            return et_code.getText().toString().trim();
+        }
+
+        private class MyTextWatcher implements TextWatcher {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    iv_delete.setVisibility(View.GONE);
+                } else {
+                    iv_delete.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    iv_delete.setVisibility(View.GONE);
+                } else {
+                    iv_delete.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        }
     }
 
 }
