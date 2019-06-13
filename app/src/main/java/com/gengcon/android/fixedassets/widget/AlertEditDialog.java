@@ -107,27 +107,17 @@ public class AlertEditDialog extends Dialog {
             }
         }
 
-        public Builder setbackground(int background) {
-//            et_code.setBackgroundResource(background);
-            ll_code.setBackgroundResource(background);
-            return this;
-        }
-
         public Builder setEnable(boolean b) {
             et_code.setEnabled(b);
             iv_delete.setEnabled(b);
             if(b){
-
+                et_code.setText("");
+                ll_code.setBackgroundResource(R.drawable.alert_edit_bg);
                 et_code.addTextChangedListener(new MyTextWatcher());
-                iv_delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        et_code.setText("");
-                        iv_delete.setVisibility(View.GONE);
-                    }
-                });
+                iv_delete.setOnClickListener(new MyOnClick());
             }else {
                 et_code.addTextChangedListener(null);
+                ll_code.setBackgroundResource(R.drawable.alert_edit_bg_enable);
                 iv_delete.setVisibility(View.GONE);
             }
             return this;
@@ -223,6 +213,14 @@ public class AlertEditDialog extends Dialog {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        }
+
+        private class MyOnClick implements View.OnClickListener {
+            @Override
+            public void onClick(View v) {
+                et_code.setText("");
+                v.setVisibility(View.GONE);
             }
         }
     }
