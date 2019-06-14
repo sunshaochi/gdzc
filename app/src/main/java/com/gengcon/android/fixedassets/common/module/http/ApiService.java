@@ -25,6 +25,7 @@ import com.gengcon.android.fixedassets.bean.result.AssetCode;
 import com.gengcon.android.fixedassets.bean.result.ChooseUserBean;
 import com.gengcon.android.fixedassets.bean.result.ClassificationBean;
 import com.gengcon.android.fixedassets.bean.result.ContactUs;
+import com.gengcon.android.fixedassets.bean.result.DefaultBean;
 import com.gengcon.android.fixedassets.bean.result.ForgetPwd;
 import com.gengcon.android.fixedassets.bean.result.Industry;
 import com.gengcon.android.fixedassets.bean.result.MessageBean;
@@ -302,6 +303,12 @@ public class ApiService {
     public interface GetAddOrg {
         @POST("org/add")
         Observable<Bean> getAddOrg(@Body RequestBody request);
+    }
+
+    //新增组织获取默code
+    public interface GetDefaultCode {
+        @GET("common/getDefaultCode")
+        Observable<Bean<DefaultBean>> getDefaultCode(@Query("type") int type);
     }
 
     //编辑组织

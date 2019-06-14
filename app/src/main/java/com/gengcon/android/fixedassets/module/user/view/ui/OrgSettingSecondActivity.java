@@ -55,6 +55,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private JSONObject delOrgJson;
     private int orgId;
     private String org_code;
+    private String defaultcode;
     private boolean isFatherOrg;
     private List<OrgBean> orgDatas;
     private LinearLayout noDataLayout;
@@ -231,7 +232,11 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         if (dialogTitle.equals("删除")) {
             showDelDialog();
         } else {
-            showEditDialog();
+            if (dialogTitle.equals("编辑")) {
+                showEditDialog();
+            } else {
+                orgSettingSecondPresenter.getDefaultCode(1);
+            }
         }
     }
 
@@ -246,8 +251,12 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
             builder.setEnable(false);
         } else {
             builder.setTitle(dialogTitle + "");
+            if (!TextUtils.isEmpty(defaultcode)) {
+                builder.setEditCode(defaultcode);
+            }
             builder.setEnable(true);
         }
+
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -434,7 +443,11 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         headerAdapter.changeDataSource(headNamelist, pidlist);
     }
 
-
+    @Override
+    public void getCodeSuc(String code) {
+        defaultcode = code;
+        showEditDialog();
+    }
 
 
 }
