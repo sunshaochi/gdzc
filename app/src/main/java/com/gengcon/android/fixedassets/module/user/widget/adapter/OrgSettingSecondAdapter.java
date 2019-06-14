@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OrgSettingSecondAdapter extends RecyclerView.Adapter<OrgSettingSecondAdapter.ViewHolder> {
-
     private Context mContext;
     private List<OrgBean> orgBeans;
     private OrgSettingSecondCallback orgSettingSecondCallback;

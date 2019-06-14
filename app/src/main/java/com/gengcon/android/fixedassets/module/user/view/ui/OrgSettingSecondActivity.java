@@ -44,9 +44,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private RecyclerView headerRecyclerView;
     private RecyclerView menuRecyclerView;
     private LinearLayout menuLayout;
-    private List<String> headNames;
-    private List<String> menuNames;
-    private List<Integer> pids;
+    private List<String> headNamelist;
+    private List<Integer> pidlist;
+    private List<String> menuNamelist;
     private MenuAdapter orgMenuAdapter;
     private View menuGoneView;
     private String dialogTitle;
@@ -55,6 +55,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private JSONObject delOrgJson;
     private int orgId;
     private String org_code;
+    private String defaultcode;
     private boolean isFatherOrg;
     private List<OrgBean> orgDatas;
     private LinearLayout noDataLayout;
@@ -110,15 +111,15 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         headerRecyclerView.setAdapter(headerAdapter);
         headerRecyclerView.requestLayout();
         orgDatas = new ArrayList<>();
-        headNames = new ArrayList<>();
-        pids = new ArrayList<>();
-        menuNames = new ArrayList<>();
-        headNames.add(companyName);
-        menuNames.add("新增子公司");
-        menuNames.add("新增子部门");
-        pids.add(-1);
-        headerAdapter.addDataSource(headNames, pids);
-        orgMenuAdapter.addDataSource(menuNames);
+        headNamelist = new ArrayList<>();
+        pidlist = new ArrayList<>();
+        menuNamelist = new ArrayList<>();
+        headNamelist.add(companyName);
+        menuNamelist.add("新增子公司");
+        menuNamelist.add("新增子部门");
+        pidlist.add(-1);
+        headerAdapter.addDataSource(headNamelist, pidlist);
+        orgMenuAdapter.addDataSource(menuNamelist);
     }
 
     @Override
@@ -151,99 +152,18 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
             noDataLayout.setVisibility(View.VISIBLE);
         }
         isFatherOrg = false;
-        orgMenuAdapter.addDataSource(menuNames);
+        orgMenuAdapter.addDataSource(menuNamelist);
         orgSettingSecondAdapter.addDataSource(orgBeans);
         headerRecyclerView.scrollToPosition(headerAdapter.getItemCount() - 1);
     }
 
-    @Override
-    public void addOrg(String msg) {
-        addDialog.dismiss();
-        ToastUtils.toastMessage(this, msg);
-        if (pids.size() == 1) {
-            orgSettingSecondPresenter.getOrgSettingList(-1);
-        } else {
-            if (menuNames.contains("删除")) {
-                menuNames.remove("删除");
-            }
-            orgSettingSecondPresenter.getOrgSettingList(orgId);
-        }
-    }
-
-    @Override
-    public void onFail(String msg) {
-        ToastUtils.toastMessage(this, msg);
-    }
-
-    @Override
-    public void editOrg(String msg) {
-        ToastUtils.toastMessage(this, msg);
-        addDialog.dismiss();
-        menuNames.clear();
-        headNames.remove(headNames.get(headNames.size() - 1));
-        pids.remove(pids.get(pids.size() - 1));
-        if (pids.size() == 1) {
-            menuNames.add("新增子公司");
-            menuNames.add("新增子部门");
-            orgSettingSecondPresenter.getOrgSettingList(-1);
-        } else {
-            orgDatas.remove(orgDatas.get(orgDatas.size() - 1));
-            OrgBean orgBean = orgDatas.get(orgDatas.size() - 1);
-            if (orgBean.getType() == 1) {
-                menuNames.add("新增子公司");
-                menuNames.add("新增子部门");
-            } else if (orgBean.getType() == 2) {
-                menuNames.add("新增子部门");
-            }
-            menuNames.add("编辑");
-            if (orgBean.getChildren() == null || orgBean.getChildren().size() == 0) {
-                menuNames.add("删除");
-            }
-            orgId = pids.get(pids.size() - 1);
-            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
-                org_code = orgBean.getOrg_code();
-            }
-            orgSettingSecondPresenter.getOrgSettingList(pids.get(pids.size() - 1));
-        }
-        headerAdapter.changeDataSource(headNames, pids);
-    }
-
-    @Override
-    public void delOrg(String msg) {
-        ToastUtils.toastMessage(this, msg);
-        menuNames.clear();
-        headNames.remove(headNames.get(headNames.size() - 1));
-        pids.remove(pids.get(pids.size() - 1));
-        if (pids.size() == 1) {
-            orgSettingSecondPresenter.getOrgSettingList(-1);
-        } else {
-            orgDatas.remove(orgDatas.get(orgDatas.size() - 1));
-            OrgBean orgBean = orgDatas.get(orgDatas.size() - 1);
-            if (orgBean.getType() == 1) {
-                menuNames.add("新增子公司");
-                menuNames.add("新增子部门");
-            } else if (orgBean.getType() == 2) {
-                menuNames.add("新增子部门");
-            }
-            menuNames.add("编辑");
-            if (orgBean.getChildren() == null || orgBean.getChildren().size() == 0 || orgBean.getChildren().size() == 1) {
-                menuNames.add("删除");
-            }
-            orgId = pids.get(pids.size() - 1);
-            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
-                org_code = orgBean.getOrg_code();
-            }
-            orgSettingSecondPresenter.getOrgSettingList(pids.get(pids.size() - 1));
-        }
-        headerAdapter.changeDataSource(headNames, pids);
-    }
 
     @Override
     public void clickHeader(List<String> headerNames, List<Integer> pid, int position) {
-        menuNames.clear();
+        menuNamelist.clear();
         if (position == 0) {
-            menuNames.add("新增子公司");
-            menuNames.add("新增子部门");
+            menuNamelist.add("新增子公司");
+            menuNamelist.add("新增子部门");
             orgDatas.clear();
             isFatherOrg = true;
         } else {
@@ -253,12 +173,12 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                 org_code = orgBean.getOrg_code();
             }
             if (orgBean.getType() == 1) {
-                menuNames.add("新增子公司");
-                menuNames.add("新增子部门");
+                menuNamelist.add("新增子公司");
+                menuNamelist.add("新增子部门");
             } else if (orgBean.getType() == 2) {
-                menuNames.add("新增子部门");
+                menuNamelist.add("新增子部门");
             }
-            menuNames.add("编辑");
+            menuNamelist.add("编辑");
             List<OrgBean> orgBeans = new ArrayList<>();
             for (int i = 0; i < position; i++) {
                 orgBeans.add(orgDatas.get(i));
@@ -267,17 +187,17 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
             orgDatas.addAll(orgBeans);
             isFatherOrg = false;
         }
-        pids.clear();
-        headNames.clear();
-        headNames.addAll(headerNames);
-        pids.addAll(pid);
+        pidlist.clear();
+        headNamelist.clear();
+        headNamelist.addAll(headerNames);
+        pidlist.addAll(pid);
         headerAdapter.changeDataSource(headerNames, pid);
         orgSettingSecondPresenter.getOrgSettingList(pid.get(position));
     }
 
     @Override
     public void clickItem(OrgBean orgBean) {
-        menuNames.clear();
+        menuNamelist.clear();
         isFatherOrg = false;
         List<String> headerName = new ArrayList<>();
         List<Integer> pid = new ArrayList<>();
@@ -288,18 +208,18 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
             org_code = orgBean.getOrg_code();
         }
         if (orgBean.getType() == 1) {
-            menuNames.add("新增子公司");
-            menuNames.add("新增子部门");
+            menuNamelist.add("新增子公司");
+            menuNamelist.add("新增子部门");
         } else if (orgBean.getType() == 2) {
-            menuNames.add("新增子部门");
+            menuNamelist.add("新增子部门");
         }
-        menuNames.add("编辑");
+        menuNamelist.add("编辑");
         if (orgBean.getChildren() == null || orgBean.getChildren().size() == 0) {
-            menuNames.add("删除");
+            menuNamelist.add("删除");
         }
         orgDatas.add(orgBean);
-        headNames.add(orgBean.getOrg_name());
-        pids.add(orgBean.getId());
+        headNamelist.add(orgBean.getOrg_name());
+        pidlist.add(orgBean.getId());
         headerAdapter.addDataSource(headerName, pid);//跟新头部
         orgSettingSecondPresenter.getOrgSettingList(orgBean.getId());
     }
@@ -308,11 +228,15 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     public void clickMenu(int position) {
         menuLayout.setVisibility(View.GONE);
         menuGoneView.setVisibility(View.GONE);
-        dialogTitle = menuNames.get(position);
+        dialogTitle = menuNamelist.get(position);
         if (dialogTitle.equals("删除")) {
             showDelDialog();
         } else {
-            showEditDialog();
+            if (dialogTitle.equals("编辑")) {
+                showEditDialog();
+            } else {
+                orgSettingSecondPresenter.getDefaultCode(1);
+            }
         }
     }
 
@@ -320,18 +244,19 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         final AlertEditDialog.Builder builder = new AlertEditDialog.Builder(this);
         if (dialogTitle.equals("编辑")) {
             builder.setTitle(dialogTitle + "组织名称");
-            builder.setEditText(headNames.get(headNames.size() - 1));
-            builder.setbackground(R.drawable.alert_edit_bg_enable);
+            builder.setEditText(headNamelist.get(headNamelist.size() - 1));
             if (!TextUtils.isEmpty(org_code)) {
                 builder.setEditCode(org_code);
             }
             builder.setEnable(false);
         } else {
             builder.setTitle(dialogTitle + "");
-            builder.setbackground(R.drawable.alert_edit_bg);
-            builder.setEditCode("");
+            if (!TextUtils.isEmpty(defaultcode)) {
+                builder.setEditCode(defaultcode);
+            }
             builder.setEnable(true);
         }
+
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -380,15 +305,15 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                         orgSettingSecondPresenter.addOrg(addOrgJson.toString());
                         break;
                     case "编辑":
-                        if (headNames.get(headNames.size() - 1).equals(builder.getEditText())) {
+                        if (headNamelist.get(headNamelist.size() - 1).equals(builder.getEditText())) {
                             dialog.dismiss();
-                            Log.e("OrgSecond", "headNames: " + headNames.get(headNames.size() - 1) + "builder.getEditText(): " + builder.getEditText());
+                            Log.e("OrgSecond", "headNamelist: " + headNamelist.get(headNamelist.size() - 1) + "builder.getEditText(): " + builder.getEditText());
                         } else {
                             editOrgJson = new JSONObject();
                             try {
                                 editOrgJson.put("org_name", builder.getEditText());
                                 editOrgJson.put("org_id", orgId);
-                                addOrgJson.put("org_code", builder.getEditCode());
+                                editOrgJson.put("org_code", builder.getEditCode());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -412,7 +337,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private void showDelDialog() {
         final AlertTextDialog.Builder builder = new AlertTextDialog.Builder(this);
         builder.setTitle(dialogTitle);
-        builder.setText("确定要删除\"" + headNames.get(headNames.size() - 1) + "\"吗?");
+        builder.setText("确定要删除\"" + headNamelist.get(headNamelist.size() - 1) + "\"吗?");
         builder.setPositiveButton(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -434,4 +359,95 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         }, "取消");
         builder.show();
     }
+
+    @Override
+    public void addOrg(String msg) {
+        addDialog.dismiss();
+        ToastUtils.toastMessage(this, msg);
+        if (pidlist.size() == 1) {
+            orgSettingSecondPresenter.getOrgSettingList(-1);
+        } else {
+            if (menuNamelist.contains("删除")) {
+                menuNamelist.remove("删除");
+            }
+            orgSettingSecondPresenter.getOrgSettingList(orgId);
+        }
+    }
+
+    @Override
+    public void onFail(String msg) {
+        ToastUtils.toastMessage(this, msg);
+    }
+
+    @Override
+    public void editOrg(String msg) {
+        ToastUtils.toastMessage(this, msg);
+        addDialog.dismiss();
+        menuNamelist.clear();
+        headNamelist.remove(headNamelist.get(headNamelist.size() - 1));
+        pidlist.remove(pidlist.get(pidlist.size() - 1));
+        if (pidlist.size() == 1) {
+            menuNamelist.add("新增子公司");
+            menuNamelist.add("新增子部门");
+            orgSettingSecondPresenter.getOrgSettingList(-1);
+        } else {
+            orgDatas.remove(orgDatas.get(orgDatas.size() - 1));
+            OrgBean orgBean = orgDatas.get(orgDatas.size() - 1);
+            if (orgBean.getType() == 1) {
+                menuNamelist.add("新增子公司");
+                menuNamelist.add("新增子部门");
+            } else if (orgBean.getType() == 2) {
+                menuNamelist.add("新增子部门");
+            }
+            menuNamelist.add("编辑");
+            if (orgBean.getChildren() == null || orgBean.getChildren().size() == 0) {
+                menuNamelist.add("删除");
+            }
+            orgId = pidlist.get(pidlist.size() - 1);
+            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+                org_code = orgBean.getOrg_code();
+            }
+            orgSettingSecondPresenter.getOrgSettingList(pidlist.get(pidlist.size() - 1));
+        }
+        headerAdapter.changeDataSource(headNamelist, pidlist);
+    }
+
+
+    @Override
+    public void delOrg(String msg) {
+        ToastUtils.toastMessage(this, msg);
+        menuNamelist.clear();
+        headNamelist.remove(headNamelist.get(headNamelist.size() - 1));
+        pidlist.remove(pidlist.get(pidlist.size() - 1));
+        if (pidlist.size() == 1) {
+            orgSettingSecondPresenter.getOrgSettingList(-1);
+        } else {
+            orgDatas.remove(orgDatas.get(orgDatas.size() - 1));
+            OrgBean orgBean = orgDatas.get(orgDatas.size() - 1);
+            if (orgBean.getType() == 1) {
+                menuNamelist.add("新增子公司");
+                menuNamelist.add("新增子部门");
+            } else if (orgBean.getType() == 2) {
+                menuNamelist.add("新增子部门");
+            }
+            menuNamelist.add("编辑");
+            if (orgBean.getChildren() == null || orgBean.getChildren().size() == 0 || orgBean.getChildren().size() == 1) {
+                menuNamelist.add("删除");
+            }
+            orgId = pidlist.get(pidlist.size() - 1);
+            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+                org_code = orgBean.getOrg_code();
+            }
+            orgSettingSecondPresenter.getOrgSettingList(pidlist.get(pidlist.size() - 1));
+        }
+        headerAdapter.changeDataSource(headNamelist, pidlist);
+    }
+
+    @Override
+    public void getCodeSuc(String code) {
+        defaultcode = code;
+        showEditDialog();
+    }
+
+
 }

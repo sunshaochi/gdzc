@@ -1,6 +1,7 @@
 package com.gengcon.android.fixedassets.module.user.presenter;
 
 import com.gengcon.android.fixedassets.bean.result.Bean;
+import com.gengcon.android.fixedassets.bean.result.DefaultBean;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
 import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.AddOrgModel;
@@ -116,6 +117,52 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
             }
         });
     }
+
+    public void getDefaultCode(int type) {
+        subscribe(orgModel.getDefaultcode(type), new ApiCallBack<Bean<DefaultBean>>() {
+            @Override
+            public void onSuccess(Bean<DefaultBean> modelBean) {
+                if (isViewAttached()) {
+                    if (modelBean.getCode().equals("CODE_200")) {
+                        if (modelBean.getData() != null) {
+                            mMvpView.getCodeSuc(modelBean.getData().getCode());
+                        }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(2);
+                    } else {
+                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int status, String errorMsg) {
+                if (isViewAttached()) {
+                    mMvpView.hideLoading();
+                    if (status == 400) {
+                        mMvpView.onFail(errorMsg);
+                    } else {
+                        mMvpView.showErrorMsg(status, errorMsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFinished() {
+                if (isViewAttached()) {
+                    mMvpView.hideLoading();
+                }
+            }
+
+            @Override
+            public void onStart() {
+                if (isViewAttached()) {
+                    mMvpView.showLoading();
+                }
+            }
+        });
+    }
+
 
     public void editOrg(String json) {
         subscribe(editOrgModel.getEditOrg(json), new ApiCallBack<Bean>() {
