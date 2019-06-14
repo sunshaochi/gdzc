@@ -2,7 +2,6 @@ package com.gengcon.android.fixedassets.rfid;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ public class RfidDialog {
     private Context context;
     private Dialog dialog;
     private Display display;
-    private TextView tv_totlenum, tv_num, tv_zt, tv_qx, tv_wc;
+    private TextView tv_totlenum, yp_textView, tv_qx, tv_wc;
 
     public RfidDialog(Context context) {
         this.context = context;
@@ -33,36 +32,20 @@ public class RfidDialog {
     public RfidDialog builder() {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_rfid, null);
         tv_totlenum = view.findViewById(R.id.tv_totlenum);
-        tv_num = view.findViewById(R.id.tv_num);
-        tv_zt = view.findViewById(R.id.tv_zt);
+        yp_textView = view.findViewById(R.id.yp_textView);
         tv_qx = view.findViewById(R.id.tv_qx);
         tv_wc = view.findViewById(R.id.tv_wc);
-        // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.Dialog_General);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         Window dialogWindow = dialog.getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         dialogWindow.setGravity(Gravity.CENTER);
         WindowManager manager = dialogWindow.getWindowManager();
         Display d = manager.getDefaultDisplay();
         lp.width = d.getWidth();
-
-//        lp.x = 0;
-//        lp.y = 0;
         dialogWindow.setAttributes(lp);
-        return this;
-    }
-
-
-    public RfidDialog setCancelable(boolean cancel) {
-        dialog.setCancelable(cancel);
-        return this;
-    }
-
-    public RfidDialog setCanceledOnTouchOutside(boolean cancel) {
-        dialog.setCanceledOnTouchOutside(cancel);
         return this;
     }
 
@@ -75,29 +58,8 @@ public class RfidDialog {
         return this;
     }
 
-    /**
-     * @param
-     * @return
-     */
-    public RfidDialog setLeft(String text) {
-        tv_zt.setText(text + "");
-        return this;
-    }
-
-    public String getLeft() {
-        return tv_zt.getText().toString();
-    }
-
-    /**
-     * @param num
-     * @return
-     */
-    public RfidDialog setNum(String num) {
-        if (!TextUtils.isEmpty(num)) {
-            tv_num.setText(num);
-        } else {
-            tv_num.setText(0 + "");
-        }
+    public RfidDialog setYp(int num) {
+        yp_textView.setText(num + "");
         return this;
     }
 
@@ -110,15 +72,6 @@ public class RfidDialog {
         dialog.dismiss();
     }
 
-    public void setStopClick(final StopListener listener) {
-        tv_zt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClick();
-            }
-        });
-    }
-
     public void setQuxiaoClick(final QuxiaoListener listener) {
         tv_qx.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +81,7 @@ public class RfidDialog {
         });
     }
 
-    public void setCompleteClick(final CompileListener listener) {
+    public void setStartClick(final StartListener listener) {
         tv_wc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,17 +90,12 @@ public class RfidDialog {
         });
     }
 
-
-    public interface StopListener {
-        public void onClick();
-    }
-
     public interface QuxiaoListener {
-        public void onClick();
+        void onClick();
     }
 
-    public interface CompileListener {
-        public void onClick();
+    public interface StartListener {
+        void onClick();
     }
 
 

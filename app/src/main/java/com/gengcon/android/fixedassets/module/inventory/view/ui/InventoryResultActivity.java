@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import io.reactivex.functions.Consumer;
 
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -345,7 +346,14 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
 
             }
         });
-
+        infraredDialog.setDialogOnKeyDownListener(new InfraredDialog.DialogOnKeyDownListener() {
+            @Override
+            public void onKeyDownListener(int keyCode, KeyEvent event) {
+                getNoFinishFragment();
+                infraredDialog.dismiss();
+                infraredDialog = null;
+            }
+        });
         infraredDialog.setCompleteClick(new InfraredDialog.CompleteListener() {
             @Override
             public void onClick() {
