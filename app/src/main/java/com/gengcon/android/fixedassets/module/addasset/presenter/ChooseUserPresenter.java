@@ -34,7 +34,12 @@ public class ChooseUserPresenter extends BasePresenter<ChooseUserView> {
             @Override
             public void onFailure(int status, String errorMsg) {
                 if (isViewAttached()) {
-                    mMvpView.showErrorMsg(status, errorMsg);
+                    if (status == 2 || status == 1 || status == 3 || status == 4) {
+                        mMvpView.showInvalidType(status);
+                    } else {
+                        mMvpView.showErrorMsg(status, errorMsg);
+                    }
+
                 }
             }
 

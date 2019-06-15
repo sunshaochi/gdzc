@@ -26,6 +26,8 @@ public class InventoryListPresenter extends BasePresenter<InventoryListView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showOffnetList(modelBean.getData());
                         }
+                    } else if (modelBean.getCode().equals("CODE_401")) {
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     }
                 }
             }

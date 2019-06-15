@@ -30,8 +30,6 @@ public class AddAssetDataPresenter extends BasePresenter<AddAssetDataView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showOrg(modelBean.getData());
                         }
-                    } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -41,7 +39,11 @@ public class AddAssetDataPresenter extends BasePresenter<AddAssetDataView> {
             @Override
             public void onFailure(int status, String errorMsg) {
                 if (isViewAttached()) {
-                    mMvpView.showInvalidType(status);
+                    if (status == 2 || status == 1 || status == 3 || status == 4) {
+                        mMvpView.showInvalidType(status);
+                    } else {
+                        mMvpView.showErrorMsg(status, errorMsg);
+                    }
                 }
             }
 
@@ -67,8 +69,6 @@ public class AddAssetDataPresenter extends BasePresenter<AddAssetDataView> {
                         if (modelBean.getData() != null) {
                             mMvpView.showClassification(modelBean.getData());
                         }
-                    } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -77,9 +77,13 @@ public class AddAssetDataPresenter extends BasePresenter<AddAssetDataView> {
 
             @Override
             public void onFailure(int status, String errorMsg) {
-//                if (isViewAttached()) {
-//                    mMvpView.showErrorMsg(status, errorMsg);
-//                }
+                if (isViewAttached()) {
+                    if (status == 2 || status == 1 || status == 3 || status == 4) {
+                        mMvpView.showInvalidType(status);
+                    } else {
+                        mMvpView.showErrorMsg(status, errorMsg);
+                    }
+                }
             }
 
             @Override
