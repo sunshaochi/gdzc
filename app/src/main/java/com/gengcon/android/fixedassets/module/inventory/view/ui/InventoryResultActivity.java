@@ -349,9 +349,11 @@ public class InventoryResultActivity extends BasePullRefreshActivity implements 
         infraredDialog.setDialogOnKeyDownListener(new InfraredDialog.DialogOnKeyDownListener() {
             @Override
             public void onKeyDownListener(int keyCode, KeyEvent event) {
-                getNoFinishFragment();
-                infraredDialog.dismiss();
-                infraredDialog = null;
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    getNoFinishFragment();
+                    infraredDialog.dismiss();
+                    infraredDialog = null;
+                }
             }
         });
         infraredDialog.setCompleteClick(new InfraredDialog.CompleteListener() {
