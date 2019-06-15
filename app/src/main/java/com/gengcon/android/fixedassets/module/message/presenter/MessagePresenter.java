@@ -14,8 +14,8 @@ public class MessagePresenter extends BasePresenter<MessageView> {
         this.userNoticeModel = new UserNoticeModel();
     }
 
-    public void getUserNotice(final int page) {
-        subscribe(userNoticeModel.getUserNotice(page), new ApiCallBack<Bean<MessageBean>>() {
+    public void getUserNotice(final int type, final int page) {
+        subscribe(userNoticeModel.getUserNotice(type, page), new ApiCallBack<Bean<MessageBean>>() {
 
             @Override
             public void onSuccess(Bean<MessageBean> modelBean) {

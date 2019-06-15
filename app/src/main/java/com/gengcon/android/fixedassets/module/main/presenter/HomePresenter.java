@@ -102,8 +102,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
         });
     }
 
-    public void getUserNotice() {
-        subscribe(userPopupNoticeModel.getUserPopupNotice(), new ApiCallBack<Bean<UserPopupNotice>>() {
+    public void getUserNotice(int type) {
+        subscribe(userPopupNoticeModel.getUserPopupNotice(type), new ApiCallBack<Bean<UserPopupNotice>>() {
 
             @Override
             public void onSuccess(Bean<UserPopupNotice> modelBean) {
