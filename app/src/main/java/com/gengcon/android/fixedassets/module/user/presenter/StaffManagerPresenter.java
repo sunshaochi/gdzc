@@ -25,7 +25,7 @@ public class StaffManagerPresenter extends BasePresenter<StaffManagerView> {
                             mMvpView.showStaff(modelBean.getData());
                         }
                     } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
+                        mMvpView.showInvalidType(modelBean.getData().getInvalid_type());
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

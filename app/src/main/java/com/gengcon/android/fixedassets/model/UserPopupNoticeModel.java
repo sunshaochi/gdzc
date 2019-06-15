@@ -10,8 +10,13 @@ import io.reactivex.Observable;
 public class UserPopupNoticeModel extends BaseModel {
 
     ApiService.GetUserPopupNotice userPopupNotice = createService(ApiService.GetUserPopupNotice.class);
+    ApiService.GetUserPopupNoticePda userPopupNoticePda = createService(ApiService.GetUserPopupNoticePda.class);
 
-    public Observable<Bean<UserPopupNotice>> getUserPopupNotice() {
-        return userPopupNotice.getUserPopupNotice();
+    public Observable<Bean<UserPopupNotice>> getUserPopupNotice(int type) {
+        if (type == 2) {
+            return userPopupNoticePda.getUserPopupNoticePda();
+        } else {
+            return userPopupNotice.getUserPopupNotice();
+        }
     }
 }

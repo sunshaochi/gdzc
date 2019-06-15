@@ -2,6 +2,7 @@ package com.gengcon.android.fixedassets.module.user.presenter;
 
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.DefaultBean;
+import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.bean.result.OrgBean;
 import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.AddOrgModel;
@@ -10,6 +11,7 @@ import com.gengcon.android.fixedassets.model.EditOrgModel;
 import com.gengcon.android.fixedassets.model.OrgSettingListModel;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;
 import com.gengcon.android.fixedassets.module.user.view.OrgSettingSecondView;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -36,8 +38,6 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                         if (modelBean.getData() != null) {
                             mMvpView.showOrg(modelBean.getData());
                         }
-                    } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -50,6 +50,8 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                     mMvpView.hideLoading();
                     if (status == 400) {
                         mMvpView.onFail(errorMsg);
+                    } else if (status == 2 || status == 1 || status == 3 || status == 4) {
+                        mMvpView.showInvalidType(status);
                     } else {
                         mMvpView.showErrorMsg(status, errorMsg);
                     }
@@ -83,7 +85,11 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                             mMvpView.addOrg(modelBean.getMsg());
                         }
                     } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -128,7 +134,11 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                             mMvpView.getCodeSuc(modelBean.getData().getCode());
                         }
                     } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -175,7 +185,11 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                             mMvpView.editOrg(modelBean.getMsg());
                         }
                     } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);;
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -221,7 +235,11 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                             mMvpView.delOrg(modelBean.getMsg());
                         }
                     } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

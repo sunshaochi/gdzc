@@ -58,8 +58,6 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
                         if (modelBean.getData() != null) {
                             mMvpView.initUsers(modelBean.getData());
                         }
-                    } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
@@ -178,7 +176,13 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
 
             @Override
             public void onFailure(int status, String errorMsg) {
-
+                if (isViewAttached()) {
+                    if (status == 2 || status == 1 || status == 3 || status == 4) {
+                        mMvpView.showInvalidType(status);
+                    } else {
+                        mMvpView.showErrorMsg(status, errorMsg);
+                    }
+                }
             }
 
             @Override
@@ -258,8 +262,6 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
                         if (modelBean.getData() != null) {
                             mMvpView.initArea(modelBean.getData());
                         }
-                    } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

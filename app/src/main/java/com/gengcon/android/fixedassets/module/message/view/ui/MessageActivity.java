@@ -13,6 +13,7 @@ import com.gengcon.android.fixedassets.module.base.BaseActivity;
 import com.gengcon.android.fixedassets.bean.result.MessageBean;
 import com.gengcon.android.fixedassets.common.module.http.URL;
 import com.gengcon.android.fixedassets.module.message.presenter.MessagePresenter;
+import com.gengcon.android.fixedassets.rfid.CheckTypeUtils;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.module.message.view.MessageView;
 import com.gengcon.android.fixedassets.widget.MyRecyclerView;
@@ -63,7 +64,12 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
         messagePresenter = new MessagePresenter();
 //        homePresenter = new HomePresenter();
         messagePresenter.attachView(this);
-        messagePresenter.getUserNotice(mPage);
+        if (CheckTypeUtils.isPhoneOrEquipment()) {
+            messagePresenter.getUserNotice(2, mPage);
+        } else {
+            messagePresenter.getUserNotice(1, mPage);
+        }
+
 
         mRefreshLayout = findViewById(R.id.refreshLayout);
         mRefreshLayout.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
@@ -72,7 +78,11 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 if (mPage <= pageCount) {
-                    messagePresenter.getUserNotice(mPage);
+                    if (CheckTypeUtils.isPhoneOrEquipment()) {
+                        messagePresenter.getUserNotice(2, mPage);
+                    } else {
+                        messagePresenter.getUserNotice(1, mPage);
+                    }
                 } else {
                     mRefreshLayout.setEnableLoadmore(false);
                 }

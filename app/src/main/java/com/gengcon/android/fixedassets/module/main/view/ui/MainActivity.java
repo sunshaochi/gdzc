@@ -37,6 +37,7 @@ import com.gengcon.android.fixedassets.module.main.presenter.HomePresenter;
 import com.gengcon.android.fixedassets.module.message.view.ui.MessageActivity;
 import com.gengcon.android.fixedassets.module.message.view.ui.MessageDetailsActivity;
 import com.gengcon.android.fixedassets.common.module.scan.ScanActivity;
+import com.gengcon.android.fixedassets.rfid.CheckTypeUtils;
 import com.gengcon.android.fixedassets.util.Constant;
 import com.gengcon.android.fixedassets.util.RFIDUtils;
 import com.gengcon.android.fixedassets.util.RolePowerManager;
@@ -159,7 +160,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (!TextUtils.isEmpty((CharSequence) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.TOKEN, ""))) {
             mPresenter.getHome();
             mPresenter.getRoute();
-            mPresenter.getUserNotice();
+            if (CheckTypeUtils.isPhoneOrEquipment()) {
+                mPresenter.getUserNotice(2);
+            } else {
+                mPresenter.getUserNotice(1);
+            }
 //            mRolePresenter.getRole("home_page");
         }
     }

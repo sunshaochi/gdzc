@@ -1,12 +1,14 @@
 package com.gengcon.android.fixedassets.module.user.presenter;
 
 import com.gengcon.android.fixedassets.bean.result.Bean;
+import com.gengcon.android.fixedassets.bean.result.InvalidBean;
 import com.gengcon.android.fixedassets.bean.result.StaffDetailBean;
 import com.gengcon.android.fixedassets.common.module.http.ApiCallBack;
 import com.gengcon.android.fixedassets.model.DelEmpModel;
 import com.gengcon.android.fixedassets.model.StaffDetailModel;
 import com.gengcon.android.fixedassets.module.base.BasePresenter;
 import com.gengcon.android.fixedassets.module.user.view.StaffDetailView;
+import com.google.gson.Gson;
 
 public class StaffDetailPresenter extends BasePresenter<StaffDetailView> {
 
@@ -69,7 +71,11 @@ public class StaffDetailPresenter extends BasePresenter<StaffDetailView> {
                     if (modelBean.getCode().equals("CODE_200")) {
                         mMvpView.showDelEmp();
                     } else if (modelBean.getCode().equals("CODE_401")) {
-                        mMvpView.showInvalidType(2);
+                        String json = modelBean.getData().toString();
+                        Gson gson = new Gson();
+                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+                        int invalid = invalidType.getInvalid_type();
+                        mMvpView.showInvalidType(invalid);
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }

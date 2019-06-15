@@ -104,10 +104,22 @@ public class ApiService {
         Observable<Bean<UserPopupNotice>> getUserPopupNotice();
     }
 
+    //首页PDA消息通知
+    public interface GetUserPopupNoticePda {
+        @GET("app/notice/newNoticePda")
+        Observable<Bean<UserPopupNotice>> getUserPopupNoticePda();
+    }
+
     //消息列表页面
     public interface GetUserNotice {
         @GET("app/notice/list")
         Observable<Bean<MessageBean>> getUserNotice(@Query("page") int page);
+    }
+
+    //消息列表页面
+    public interface GetUserNoticePda {
+        @GET("app/notice/listPda")
+        Observable<Bean<MessageBean>> getUserNoticePda(@Query("page") int page);
     }
 
     //打印接口
