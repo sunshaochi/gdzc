@@ -243,12 +243,13 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     private void showEditDialog() {
         final AlertEditDialog.Builder builder = new AlertEditDialog.Builder(this);
         if (dialogTitle.equals("编辑")) {
-            builder.setTitle(dialogTitle + "组织名称");
+            builder.setTitle(dialogTitle + "组织信息");
             builder.setEditText(headNamelist.get(headNamelist.size() - 1));
             if (!TextUtils.isEmpty(org_code)) {
                 builder.setEditCode(org_code);
             }
-            builder.setEnable(false);
+//            builder.setEnable(false);
+              builder.setEnable(true);
         } else {
             builder.setTitle(dialogTitle + "");
             if (!TextUtils.isEmpty(defaultcode)) {
