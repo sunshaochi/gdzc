@@ -262,10 +262,10 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 addDialog = dialog;
-                if (TextUtils.isEmpty(builder.getEditCode())) {
-                    ToastUtils.toastMessage(OrgSettingSecondActivity.this, "请输入组织编码");
-                    return;
-                }
+//                if (TextUtils.isEmpty(builder.getEditCode())) {
+//                    ToastUtils.toastMessage(OrgSettingSecondActivity.this, "请输入组织编码");
+//                    return;
+//                }
 //                if (builder.getEditCode().length() < 8) {
 //                    ToastUtils.toastMessage(OrgSettingSecondActivity.this, "组织编码格式错误（8位，可包含大写英文字母，数字 ）");
 //                    return;
