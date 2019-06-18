@@ -409,7 +409,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                                 webIntent.putExtra("webName", "资产详情");
                                 startActivity(webIntent);
                             } else {
-                                ToastUtils.toastMessage(MainActivity.this, "未找到该资产");
+                                ToastUtils.toastMessage(MainActivity.this, modelBean.getMsg());
                             }
                         } else {
                             showCodeMsg(modelBean.getCode(), modelBean.getMsg());
