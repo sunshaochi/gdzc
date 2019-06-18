@@ -57,13 +57,13 @@
             android:orientation="horizontal">
 
             <EditText
-                android:hint="1-8位,可包含数字,大写字母"
-                android:layout_weight="1"
                 android:id="@+id/et_code"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@null"
                 android:digits="@string/type_code"
+                android:hint="1-8位,可包含数字,大写字母"
                 android:maxLength="8"
                 android:paddingLeft="11dp"
                 android:singleLine="true"
@@ -71,14 +71,15 @@
                 android:textCursorDrawable="@drawable/phone_blue"
                 android:textSize="16dp"
                 tools:text="" />
+
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_delete"
-                android:layout_marginRight="15dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_clear_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/ic_clear_button"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
