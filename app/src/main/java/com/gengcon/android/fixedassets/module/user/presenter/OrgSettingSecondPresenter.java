@@ -1,5 +1,7 @@
 package com.gengcon.android.fixedassets.module.user.presenter;
 
+import android.util.Log;
+
 import com.gengcon.android.fixedassets.bean.result.Bean;
 import com.gengcon.android.fixedassets.bean.result.DefaultBean;
 import com.gengcon.android.fixedassets.bean.result.InvalidBean;
@@ -175,7 +177,8 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
 
 
     public void editOrg(String json) {
-        subscribe(editOrgModel.getEditOrg(json), new ApiCallBack<Bean>() {
+         Log.e("请求参数", json );
+         subscribe(editOrgModel.getEditOrg(json), new ApiCallBack<Bean>() {
 
             @Override
             public void onSuccess(Bean modelBean) {

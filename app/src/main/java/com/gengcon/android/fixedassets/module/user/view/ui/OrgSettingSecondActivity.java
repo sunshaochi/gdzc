@@ -146,7 +146,8 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
             if (isFatherOrg) {
                 orgId = orgBeans.get(0).getPid();//只返回一个
                 if (!TextUtils.isEmpty(orgBeans.get(0).getOrg_code()))
-                    org_code = orgBeans.get(0).getOrg_code();
+//                    org_code = orgBeans.get(0).getOrg_code();
+                    org_code = TextUtils.isEmpty(orgBeans.get(0).getOrg_code())?"":orgBeans.get(0).getOrg_code();
             }
         } else {
             noDataLayout.setVisibility(View.VISIBLE);
@@ -169,9 +170,10 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         } else {
             OrgBean orgBean = orgDatas.get(position - 1);
             orgId = orgBean.getId();
-            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
-                org_code = orgBean.getOrg_code();
-            }
+//            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+//                org_code = orgBean.getOrg_code();
+//            }
+            org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
             if (orgBean.getType() == 1) {
                 menuNamelist.add("新增子公司");
                 menuNamelist.add("新增子部门");
@@ -204,9 +206,10 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         headerName.add(orgBean.getOrg_name());
         pid.add(orgBean.getId());
         orgId = orgBean.getId();
-        if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
-            org_code = orgBean.getOrg_code();
-        }
+//        if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+//            org_code = orgBean.getOrg_code();
+//        }
+        org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
         if (orgBean.getType() == 1) {
             menuNamelist.add("新增子公司");
             menuNamelist.add("新增子部门");
@@ -306,10 +309,10 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                         orgSettingSecondPresenter.addOrg(addOrgJson.toString());
                         break;
                     case "编辑":
-                        if (headNamelist.get(headNamelist.size() - 1).equals(builder.getEditText())) {
-                            dialog.dismiss();
-                            Log.e("OrgSecond", "headNamelist: " + headNamelist.get(headNamelist.size() - 1) + "builder.getEditText(): " + builder.getEditText());
-                        } else {
+//                        if (headNamelist.get(headNamelist.size() - 1).equals(builder.getEditText())&&org_code.equals(builder.getEditCode())) {
+//                            dialog.dismiss();
+//                            Log.e("OrgSecond", "headNamelist: " + headNamelist.get(headNamelist.size() - 1) + "builder.getEditText(): " + builder.getEditText());
+//                        } else {
                             editOrgJson = new JSONObject();
                             try {
                                 editOrgJson.put("org_name", builder.getEditText());
@@ -319,7 +322,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                                 e.printStackTrace();
                             }
                             orgSettingSecondPresenter.editOrg(editOrgJson.toString());
-                        }
+//                        }
                         break;
                 }
 
@@ -405,9 +408,10 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                 menuNamelist.add("删除");
             }
             orgId = pidlist.get(pidlist.size() - 1);
-            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
-                org_code = orgBean.getOrg_code();
-            }
+//            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+//                org_code = orgBean.getOrg_code();
+//            }
+            org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
             orgSettingSecondPresenter.getOrgSettingList(pidlist.get(pidlist.size() - 1));
         }
         headerAdapter.changeDataSource(headNamelist, pidlist);
@@ -436,9 +440,10 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                 menuNamelist.add("删除");
             }
             orgId = pidlist.get(pidlist.size() - 1);
-            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
-                org_code = orgBean.getOrg_code();
-            }
+//            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
+//                org_code = orgBean.getOrg_code();
+//            }
+            org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
             orgSettingSecondPresenter.getOrgSettingList(pidlist.get(pidlist.size() - 1));
         }
         headerAdapter.changeDataSource(headNamelist, pidlist);
