@@ -17,4 +17,6 @@ public interface OrgSettingSecondView extends Iview {
     void delOrg(String msg);
 
     void getCodeSuc(String code);
+
+    void getCodeFail();
 }

@@ -135,41 +135,45 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                         if (modelBean.getData() != null) {
                             mMvpView.getCodeSuc(modelBean.getData().getCode());
                         }
-                    } else if (modelBean.getCode().equals("CODE_401")) {
-                        String json = modelBean.getData().toString();
-                        Gson gson = new Gson();
-                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
-                        int invalid = invalidType.getInvalid_type();
-                        mMvpView.showInvalidType(invalid);
                     } else {
-                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+                        mMvpView.getCodeFail();
                     }
+//                    else if (modelBean.getCode().equals("CODE_401")) {
+//                        String json = modelBean.getData().toString();
+//                        Gson gson = new Gson();
+//                        InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
+//                        int invalid = invalidType.getInvalid_type();
+//                        mMvpView.showInvalidType(invalid);
+//                    } else {
+//                        mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
+//                    }
                 }
             }
 
             @Override
             public void onFailure(int status, String errorMsg) {
                 if (isViewAttached()) {
-                    mMvpView.hideLoading();
-                    if (status == 400) {
-                        mMvpView.onFail(errorMsg);
-                    } else {
-                        mMvpView.showErrorMsg(status, errorMsg);
-                    }
+//                    mMvpView.hideLoading();
+//                    if (status == 400) {
+////                        mMvpView.onFail(errorMsg);
+////                    } else {
+////                        mMvpView.showErrorMsg(status, errorMsg);
+////                    }
+                    mMvpView.getCodeFail();
                 }
             }
 
             @Override
             public void onFinished() {
                 if (isViewAttached()) {
-                    mMvpView.hideLoading();
+//                    mMvpView.hideLoading();
                 }
             }
 
             @Override
             public void onStart() {
                 if (isViewAttached()) {
-                    mMvpView.showLoading();
+//                    mMvpView.showLoading();
                 }
             }
         });

@@ -237,7 +237,11 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
             if (dialogTitle.equals("编辑")) {
                 showEditDialog();
             } else {
-                orgSettingSecondPresenter.getDefaultCode(1);
+                if(!isNetworkConnected(this)){
+                    showEditDialog();
+                }else {
+                    orgSettingSecondPresenter.getDefaultCode(1);
+                }
             }
         }
     }
@@ -454,6 +458,12 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
     @Override
     public void getCodeSuc(String code) {
         defaultcode = code;
+        showEditDialog();
+    }
+
+    @Override
+    public void getCodeFail() {
+        defaultcode = "";
         showEditDialog();
     }
 
