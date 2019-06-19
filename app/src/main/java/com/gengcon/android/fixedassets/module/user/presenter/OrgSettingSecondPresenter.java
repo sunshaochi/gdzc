@@ -177,8 +177,8 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
 
 
     public void editOrg(String json) {
-         Log.e("请求参数", json );
-         subscribe(editOrgModel.getEditOrg(json), new ApiCallBack<Bean>() {
+        Log.e("请求参数", json);
+        subscribe(editOrgModel.getEditOrg(json), new ApiCallBack<Bean>() {
 
             @Override
             public void onSuccess(Bean modelBean) {

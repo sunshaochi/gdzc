@@ -147,7 +147,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                 orgId = orgBeans.get(0).getPid();//只返回一个
                 if (!TextUtils.isEmpty(orgBeans.get(0).getOrg_code()))
 //                    org_code = orgBeans.get(0).getOrg_code();
-                    org_code = TextUtils.isEmpty(orgBeans.get(0).getOrg_code())?"":orgBeans.get(0).getOrg_code();
+                    org_code = TextUtils.isEmpty(orgBeans.get(0).getOrg_code()) ? "" : orgBeans.get(0).getOrg_code();
             }
         } else {
             noDataLayout.setVisibility(View.VISIBLE);
@@ -173,7 +173,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 //            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
 //                org_code = orgBean.getOrg_code();
 //            }
-            org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
+            org_code = TextUtils.isEmpty(orgBean.getOrg_code()) ? "" : orgBean.getOrg_code();
             if (orgBean.getType() == 1) {
                 menuNamelist.add("新增子公司");
                 menuNamelist.add("新增子部门");
@@ -209,7 +209,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 //        if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
 //            org_code = orgBean.getOrg_code();
 //        }
-        org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
+        org_code = TextUtils.isEmpty(orgBean.getOrg_code()) ? "" : orgBean.getOrg_code();
         if (orgBean.getType() == 1) {
             menuNamelist.add("新增子公司");
             menuNamelist.add("新增子部门");
@@ -313,15 +313,15 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 //                            dialog.dismiss();
 //                            Log.e("OrgSecond", "headNamelist: " + headNamelist.get(headNamelist.size() - 1) + "builder.getEditText(): " + builder.getEditText());
 //                        } else {
-                            editOrgJson = new JSONObject();
-                            try {
-                                editOrgJson.put("org_name", builder.getEditText());
-                                editOrgJson.put("org_id", orgId);
-                                editOrgJson.put("org_code", builder.getEditCode());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            orgSettingSecondPresenter.editOrg(editOrgJson.toString());
+                        editOrgJson = new JSONObject();
+                        try {
+                            editOrgJson.put("org_name", builder.getEditText());
+                            editOrgJson.put("org_id", orgId);
+                            editOrgJson.put("org_code", builder.getEditCode());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        orgSettingSecondPresenter.editOrg(editOrgJson.toString());
 //                        }
                         break;
                 }
@@ -411,7 +411,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 //            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
 //                org_code = orgBean.getOrg_code();
 //            }
-            org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
+            org_code = TextUtils.isEmpty(orgBean.getOrg_code()) ? "" : orgBean.getOrg_code();
             orgSettingSecondPresenter.getOrgSettingList(pidlist.get(pidlist.size() - 1));
         }
         headerAdapter.changeDataSource(headNamelist, pidlist);
@@ -443,7 +443,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
 //            if (!TextUtils.isEmpty(orgBean.getOrg_code())) {
 //                org_code = orgBean.getOrg_code();
 //            }
-            org_code = TextUtils.isEmpty(orgBean.getOrg_code())?"":orgBean.getOrg_code();
+            org_code = TextUtils.isEmpty(orgBean.getOrg_code()) ? "" : orgBean.getOrg_code();
             orgSettingSecondPresenter.getOrgSettingList(pidlist.get(pidlist.size() - 1));
         }
         headerAdapter.changeDataSource(headNamelist, pidlist);
