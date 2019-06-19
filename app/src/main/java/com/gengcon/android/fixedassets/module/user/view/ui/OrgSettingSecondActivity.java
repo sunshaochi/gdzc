@@ -249,7 +249,7 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
                 builder.setEditCode(org_code);
             }
 //            builder.setEnable(false);
-              builder.setEnable(true);
+            builder.setEnable(true);
         } else {
             builder.setTitle(dialogTitle + "");
             if (!TextUtils.isEmpty(defaultcode)) {

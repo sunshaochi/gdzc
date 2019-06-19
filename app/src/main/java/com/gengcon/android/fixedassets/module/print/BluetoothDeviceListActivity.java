@@ -207,7 +207,7 @@ public class BluetoothDeviceListActivity extends BaseActivity implements View.On
                         if (permission.granted) {
                             mBluetoothAdapter.startDiscovery();
                             mProgressBar.setVisibility(View.VISIBLE);
-                        }  else {
+                        } else {
                             if (permission.name.equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                                 ToastUtils.toastMessage(BluetoothDeviceListActivity.this, R.string.permission_bluetooth_tips);
                             }

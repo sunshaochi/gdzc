@@ -13,7 +13,6 @@ import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.Message;
 import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.UIProvider;
-import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.hyphenate.helpdesk.model.AgentInfo;
 import com.hyphenate.helpdesk.model.MessageHelper;
 
@@ -185,7 +184,7 @@ public class EaseUiHelper {
         Intent intent = new MyIntentBuilder(appContext).setServiceIMNumber(SERVICEIMNUMBER)
                 .setTitleName("武汉精臣智慧标识科技有限公司")
                 .build();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         appContext.startActivity(intent);
 
     }

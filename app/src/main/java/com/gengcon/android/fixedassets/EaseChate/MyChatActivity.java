@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.gengcon.android.fixedassets.R;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.helpdesk.easeui.UIProvider;
-import com.hyphenate.helpdesk.easeui.ui.ChatFragment;
 import com.hyphenate.helpdesk.easeui.util.Config;
 
 public class MyChatActivity extends FragmentActivity {
@@ -80,6 +79,7 @@ public class MyChatActivity extends FragmentActivity {
 
     /**
      * 通过xml查找相应的ID，通用方法
+     *
      * @param id
      * @param <T>
      * @return

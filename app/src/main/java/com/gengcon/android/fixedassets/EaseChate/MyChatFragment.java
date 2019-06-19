@@ -154,7 +154,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
         titleName = fragmentArgs.getString(Config.EXTRA_TITLE_NAME);
         //在父类中调用了initView和setUpView两个方法
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             cameraFilePath = savedInstanceState.getString("cameraFilePath");
         }
         ChatClient.getInstance().chatManager().bindChat(toChatUsername);
@@ -174,15 +174,15 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
         ChatClient.getInstance().chatManager().getEnterpriseWelcome(new ValueCallBack<String>() {
             @Override
             public void onSuccess(String value) {
-                if(!TextUtils.isEmpty(value)){
-                    SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.WELCOME,value);
+                if (!TextUtils.isEmpty(value)) {
+                    SharedPreferencesUtils.getInstance().setParam(SharedPreferencesUtils.WELCOME, value);
                     ChatClient.getInstance().chatManager().getCurrentSessionId(toChatUsername, new ValueCallBack<String>() {
                         @Override
                         public void onSuccess(String value) {
-                            if(TextUtils.isEmpty(value)){
-                                Message message=Message.createReceiveMessage(Message.Type.TXT);
-                                EMTextMessageBody body=null;
-                                body=new EMTextMessageBody((String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.WELCOME,"欢迎您，这里是精臣在线帮助，请问有什么可以帮忙吗?"));
+                            if (TextUtils.isEmpty(value)) {
+                                Message message = Message.createReceiveMessage(Message.Type.TXT);
+                                EMTextMessageBody body = null;
+                                body = new EMTextMessageBody((String) SharedPreferencesUtils.getInstance().getParam(SharedPreferencesUtils.WELCOME, "欢迎您，这里是精臣在线帮助，请问有什么可以帮忙吗?"));
                                 message.setFrom(toChatUsername);
                                 message.addBody(body);
                                 message.setMessageTime(System.currentTimeMillis());
@@ -211,12 +211,12 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
         setUserNameView();
     }
 
-    private void setUserNameView(){
-        if (ChatClient.getInstance().isLoggedInBefore()){
+    private void setUserNameView() {
+        if (ChatClient.getInstance().isLoggedInBefore()) {
             String currentUsername = ChatClient.getInstance().currentUserName();
             if (getView() != null) {
                 TextView tvUname = (TextView) getView().findViewById(R.id.tv_username);
-                if (tvUname != null){
+                if (tvUname != null) {
                     tvUname.setText(currentUsername);
                 }
             }
@@ -281,17 +281,17 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     ChatManager.VisitorWaitListener visitorWaitListener = new ChatManager.VisitorWaitListener() {
         @Override
         public void waitCount(final int num) {
-            if (getActivity() == null){
+            if (getActivity() == null) {
                 return;
             }
 //            EMLog.d(TAG, "waitCount--num:" + num);
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (num > 0){
+                    if (num > 0) {
                         tvTipWaitCount.setVisibility(View.VISIBLE);
                         tvTipWaitCount.setText(getString(R.string.current_wait_count, num));
-                    }else{
+                    } else {
                         tvTipWaitCount.setVisibility(View.GONE);
                     }
                 }
@@ -302,7 +302,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     ChatManager.AgentInputListener agentInputListener = new ChatManager.AgentInputListener() {
         @Override
         public void onInputState(final String input) {
-            if (getActivity() == null){
+            if (getActivity() == null) {
                 return;
             }
             getActivity().runOnUiThread(new Runnable() {
@@ -344,7 +344,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
 
             @Override
             public void onClick(View v) {
-                if(getActivity() != null){
+                if (getActivity() != null) {
                     getActivity().finish();
                 }
             }
@@ -411,7 +411,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (!inputMenu.isVoiceRecording()){//录音时，点击列表不做操作
+                if (!inputMenu.isVoiceRecording()) {//录音时，点击列表不做操作
                     hideKeyboard();
                     inputMenu.hideExtendMenuContainer();
                 }
@@ -593,7 +593,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
 
         @Override
         public void onExtendMenuItemClick(int itemId, View view) {
-            if (getActivity() == null){
+            if (getActivity() == null) {
                 return;
             }
             if (chatFragmentListener != null) {
@@ -721,15 +721,15 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
-                if (cursor != null){
+            } finally {
+                if (cursor != null) {
                     cursor.close();
                 }
             }
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             filePath = uri.getPath();
         }
-        if (filePath == null){
+        if (filePath == null) {
             return;
         }
         File file = new File(filePath);
@@ -745,7 +745,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
-        if (cameraFilePath != null){
+        if (cameraFilePath != null) {
             outState.putString("cameraFile", cameraFilePath);
         }
     }
@@ -758,11 +758,11 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
             Toast.makeText(getActivity(), R.string.sd_card_does_not_exist, Toast.LENGTH_SHORT).show();
             return;
         }
-        try{
+        try {
             File cameraFile = new File(PathUtil.getInstance().getImagePath(), ChatClient.getInstance().currentUserName()
                     + System.currentTimeMillis() + ".jpg");
             cameraFilePath = cameraFile.getAbsolutePath();
-            if (!cameraFile.getParentFile().exists()){
+            if (!cameraFile.getParentFile().exists()) {
                 cameraFile.getParentFile().mkdirs();
             }
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -770,10 +770,10 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
             } else {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getContext().getApplicationContext(), getContext().getPackageName() +  ".ease", cameraFile));
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getContext().getApplicationContext(), getContext().getPackageName() + ".ease", cameraFile));
             }
             startActivityForResult(intent, REQUEST_CODE_CAMERA);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -903,7 +903,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     // 发送消息方法
     //=============================================
     protected void sendTextMessage(String content) {
-        if (content != null && content.length() > 1500){
+        if (content != null && content.length() > 1500) {
             Toast.makeText(getContext(), R.string.message_content_beyond_limit, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -914,7 +914,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     }
 
     protected void sendVoiceMessage(String filePath, int length) {
-        if (TextUtils.isEmpty(filePath)){
+        if (TextUtils.isEmpty(filePath)) {
             return;
         }
         Message message = Message.createVoiceSendMessage(filePath, length, toChatUsername);
@@ -924,11 +924,11 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     }
 
     protected void sendImageMessage(String imagePath) {
-        if (TextUtils.isEmpty(imagePath)){
+        if (TextUtils.isEmpty(imagePath)) {
             return;
         }
         File imageFile = new File(imagePath);
-        if (!imageFile.exists()){
+        if (!imageFile.exists()) {
             return;
         }
 
@@ -939,7 +939,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     }
 
     protected void sendCustomEmojiMessage(String imagePath) {
-        if (TextUtils.isEmpty(imagePath)){
+        if (TextUtils.isEmpty(imagePath)) {
             return;
         }
 
@@ -957,7 +957,7 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
         messageList.refreshSelectLastDelay(MessageList.defaultDelay);
     }
 
-    protected void sendLocationMessage(double latitude, double longitude, String locationAddress, String toChatUsername){
+    protected void sendLocationMessage(double latitude, double longitude, String locationAddress, String toChatUsername) {
         Message message = Message.createLocationSendMessage(latitude, longitude, locationAddress, toChatUsername);
         attachMessageAttrs(message);
         ChatClient.getInstance().chatManager().sendMessage(message);
@@ -972,14 +972,14 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
     }
 
 
-    public void attachMessageAttrs(Message message){
-        if (visitorInfo != null){
+    public void attachMessageAttrs(Message message) {
+        if (visitorInfo != null) {
             message.addContent(visitorInfo);
         }
-        if (queueIdentityInfo != null){
+        if (queueIdentityInfo != null) {
             message.addContent(queueIdentityInfo);
         }
-        if (agentIdentityInfo != null){
+        if (agentIdentityInfo != null) {
             message.addContent(agentIdentityInfo);
         }
 
@@ -990,7 +990,6 @@ public class MyChatFragment extends ChatBaseFragment implements ChatManager.Mess
         super.onPause();
         MediaManager.pause();
     }
-
 
 
 }

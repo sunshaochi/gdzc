@@ -114,7 +114,7 @@ public class AlertEditDialog extends Dialog {
                 ll_code.setBackgroundResource(R.drawable.alert_edit_bg);
                 et_code.addTextChangedListener(new MyTextWatcher());
                 iv_delete.setOnClickListener(new MyOnClick());
-                if(!TextUtils.isEmpty(et_code.getText())){
+                if (!TextUtils.isEmpty(et_code.getText())) {
                     et_code.setSelection(et_code.getText().toString().trim().length());
                     iv_delete.setVisibility(View.VISIBLE);
                 }

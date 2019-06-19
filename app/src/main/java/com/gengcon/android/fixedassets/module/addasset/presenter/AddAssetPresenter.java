@@ -300,7 +300,7 @@ public class AddAssetPresenter extends BasePresenter<AddAssetListView> {
                     mMvpView.hideLoading();
                     if (modelBean.getCode().equals("CODE_200")) {
                         if (modelBean.getData() != null) {
-                            if(!TextUtils.isEmpty(modelBean.getData().getPath())) {
+                            if (!TextUtils.isEmpty(modelBean.getData().getPath())) {
                                 mMvpView.upLoadingSuc(modelBean.getData().getPath());
                             }
                         }

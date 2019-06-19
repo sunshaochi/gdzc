@@ -189,7 +189,8 @@ public class OrgSettingSecondPresenter extends BasePresenter<OrgSettingSecondVie
                         Gson gson = new Gson();
                         InvalidBean invalidType = gson.fromJson(json, InvalidBean.class);
                         int invalid = invalidType.getInvalid_type();
-                        mMvpView.showInvalidType(invalid);;
+                        mMvpView.showInvalidType(invalid);
+                        ;
                     } else {
                         mMvpView.showCodeMsg(modelBean.getCode(), modelBean.getMsg());
                     }
