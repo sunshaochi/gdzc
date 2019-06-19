@@ -158,7 +158,6 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         headerRecyclerView.scrollToPosition(headerAdapter.getItemCount() - 1);
     }
 
-
     @Override
     public void clickHeader(List<String> headerNames, List<Integer> pid, int position) {
         menuNamelist.clear();
@@ -425,6 +424,9 @@ public class OrgSettingSecondActivity extends BaseActivity implements View.OnCli
         headNamelist.remove(headNamelist.get(headNamelist.size() - 1));
         pidlist.remove(pidlist.get(pidlist.size() - 1));
         if (pidlist.size() == 1) {
+            isFatherOrg = true;
+            menuNamelist.add("新增子公司");
+            menuNamelist.add("新增子部门");
             orgSettingSecondPresenter.getOrgSettingList(-1);
         } else {
             orgDatas.remove(orgDatas.get(orgDatas.size() - 1));
